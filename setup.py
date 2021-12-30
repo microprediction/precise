@@ -22,9 +22,9 @@ setup(
     ],
     packages=["precise"],
     test_suite='pytest',
-    tests_require=['pytest','winning>=0.4.1','scikit-learn'],
+    tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['vectorbt'],
+    install_requires=['vectorbt','yfinance'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",
