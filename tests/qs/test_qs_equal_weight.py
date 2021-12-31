@@ -1,0 +1,2 @@
+
+stocks = ['FB','GOOG','APPL']
