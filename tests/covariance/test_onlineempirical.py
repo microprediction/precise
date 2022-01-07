@@ -2,14 +2,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.covariance.onlineempirical import online_empirical_cov,merge_online_empirical_cov
-
-
-def create_correlated_dataset(n, mu, dependency, scale):
-    latent = np.random.randn(n, dependency.shape[0])
-    dependent = latent.dot(dependency)
-    scaled = dependent * scale
-    scaled_with_offset = scaled + mu
-    return scaled_with_offset
+from precise.covariance.util import create_correlated_dataset
 
 
 def test_onlineempirical():
