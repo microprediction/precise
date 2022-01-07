@@ -48,5 +48,5 @@ Online covariance, correlation and precision matrix utilities
 
 ### See also
 
-For univariate sans numpy you may prefer [momentum](https://github.com/microprediction/momentum). 
+If you only need univariate, there is a really minimalise package [momentum](https://github.com/microprediction/momentum) which avoids use of numpy.  
 
