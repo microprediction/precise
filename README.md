@@ -1,6 +1,6 @@
 # precise
 
-Online covariance, correlation and precision matrix utilities
+Online covariance, correlation and precision matrix computations
 
 ## Install 
 
