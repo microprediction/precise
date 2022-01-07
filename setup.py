@@ -7,8 +7,8 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.0.1",
-    description="just playing around",
+    version="0.0.2",
+    description="Online covariance",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/microprediction/precise",
@@ -24,7 +24,7 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','vectorbt','yfinance','quantstats'],
+    install_requires=['numpy'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

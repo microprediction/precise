@@ -44,3 +44,9 @@ A package intended to make it easier to benchmark methods of estimating covarian
       array([[1.        , 0.81749783, 0.55345955],
        [0.81749783, 1.        , 0.92689045],
        [0.55345955, 0.92689045, 1.        ]])
+
+
+### See also
+
+For univariate sans numpy you may prefer [momentum](https://github.com/microprediction/momentum). 
+
