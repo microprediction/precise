@@ -24,7 +24,7 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['vectorbt','yfinance','quantstats'],
+    install_requires=['numpy','vectorbt','yfinance','quantstats'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",
