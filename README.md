@@ -1,6 +1,6 @@
 # precise
 
-A package intended to make it easier to benchmark methods of estimating covariance and precision matrices 
+Online covariance, correlation and precision matrix computations
 
 ## Install 
 
@@ -48,5 +48,5 @@ A package intended to make it easier to benchmark methods of estimating covarian
 
 ### See also
 
-For univariate sans numpy you may prefer [momentum](https://github.com/microprediction/momentum). 
+If you only need univariate, there is a really minimalise package [momentum](https://github.com/microprediction/momentum) which avoids use of numpy.  
 
