@@ -20,7 +20,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=["precise","precise.oo","precise.covariance","precise.oo.empirical"],
+    packages=["precise","precise.oo","precise.covariance","precise.oo.empirical","precise.precision"],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
