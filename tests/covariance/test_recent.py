@@ -25,19 +25,12 @@ def test_diag():
     rho = 0.05
     r1 = rvar_init(rho=rho,n=1)
     r = rcov_init(rho=rho, n_dim=3, n_cold=1)
-    conventional_cov = np.cov(data, rowvar=False)
-    conventional_var = np.var(data[:,0])
-    print(conventional_cov)
-    print(conventional_var)
     for observation in data:
-        print(observation)
         r = rcov_update(m=r, x=observation)
         c = r['cov'][0, 0]
-
         r1 = rvar_update(m=r1,x=observation[0])
         c1 = r1['var']
-        print(c-c1)
-        print((c,c1))
+        assert np.isclose(c,c1)
 
 
 
