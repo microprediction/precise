@@ -22,3 +22,11 @@ def create_factor_dataset(n, n_dim):
     Xcommon = np.random.multivariate_normal(mean=np.zeros(n_dim), cov = Ecommon, size=n)
     x = Xcommon + Xidio
     return x
+
+
+def create_disjoint_dataset(n, n_dims:[int]):
+    xs = [ create_factor_dataset(n,n_dim) for n_dim in n_dims ]
+    x = xs[0]
+    for xi in xs[1:]:
+        x = np.concatenate( [x,xi], axis=1)
+    return x

@@ -1,5 +1,5 @@
 
-from precise.covariance.util import create_correlated_dataset
+from precise.covariance.generate import create_correlated_dataset
 from precise.covariance.empirical import cov_init
 import numpy as np
 from pprint import pprint

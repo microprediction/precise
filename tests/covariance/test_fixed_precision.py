@@ -3,65 +3,89 @@
 import numpy as np
 from precise.precision.fixed import fixed_rpre_init, fixed_rpre_update
 from precise.covariance.util import multiply_diag, normalize
-from precise.covariance.generate import create_correlated_dataset, create_factor_dataset
+from precise.covariance.generate import create_correlated_dataset, create_factor_dataset, create_disjoint_dataset
 from pprint import pprint
 from precise.covariance.adjacency import infer_adjacency
+import random
+
 
 def test_fixed_rpre_init():
-    n_dim = 50
-    big_data = create_factor_dataset(n=10000, n_dim=n_dim)
+    n_clusters = 20
+    n_dims = [ random.choice([5]) for _ in range(n_clusters)]
+    big_data = create_disjoint_dataset(n=10000, n_dims=n_dims)
     true_cov = np.cov(big_data, rowvar=False)
     true_pre = np.linalg.inv(true_cov)
 
-    lmbd = 1.5
-    small_data = big_data[:5000]
+
+    lmbd = 1.1
+    n_small=250
+    small_data = big_data[:n_small,:]
     small_cov = np.cov(small_data,rowvar=False)
     small_pre = np.linalg.inv(multiply_diag(small_cov, lmbd=lmbd))
     adj = infer_adjacency(small_pre)
+    
+    n_tiny = 100
+    tiny_data = big_data[:n_tiny]
+    emp_cov = np.cov(tiny_data, rowvar=False)
+    lmbd = 1.2
+    ridge_cov = multiply_diag(emp_cov, lmbd=lmbd, make_copy=True)
+    ridge_pre = np.linalg.inv(ridge_cov) # Conventional ridge approach 
 
-    data = big_data[:100]
-    conventional_cov = np.cov(data, rowvar=False)
+    rho = 1/n_tiny
+    lmbd = 1.2
+    pre = fixed_rpre_init(adj=adj, rho=rho, n_emp=n_tiny)
+    for x in tiny_data[:-1,:]:
+        pre = fixed_rpre_update(m=pre, x=x, with_precision=False, lmbd=lmbd)
+    pre = fixed_rpre_update(m=pre, x=tiny_data[-1,:], with_precision=True, lmbd=lmbd)
 
-    sgma = multiply_diag(conventional_cov, lmbd=lmbd, make_copy=True)
-    cpre = np.linalg.inv(sgma) # Conventional
-
-    rho = 0.05
-    pre = fixed_rpre_init(adj=adj, rho=rho)
-    for x in data:
-        pre = fixed_rpre_update(m=pre, x=x, with_precision=True, lmbd=lmbd)
-    #pprint(pre['pre'][:5,:5])
-    #pprint(cpre[:5,:5])
-    implied_sgma = np.linalg.inv(pre['pre'])
+    block_pre = pre['pre']
+    # block_cov = np.linalg.inv(block_pre)
+    
+    # Portfolios
     n_dim = np.shape(big_data)[1]
     wones = np.ones(shape=(n_dim,1))
-    w1 = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
-    w2 = normalize( np.squeeze(np.matmul( cpre, wones)))
-    w_tru = normalize( np.squeeze(np.matmul( true_pre, wones)))
-    w_uniform = normalize( np.copy(wones))
-    true_var_u = np.squeeze(np.matmul(np.matmul(w_uniform.T, true_cov), w_uniform))
-    true_var_1 = np.matmul(np.matmul( w1.T, true_cov), w1)
-    true_var_2 = np.matmul(np.matmul( w2.T, true_cov), w2)
-    true_var_0 = np.matmul(np.matmul(w_tru.T, true_cov), w_tru)
+    w_block = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
+    w_ridge = normalize( np.squeeze(np.matmul( ridge_pre, wones)))
+    w_perfect = normalize( np.squeeze(np.matmul( true_pre, wones)))
+    wu = np.ones(shape=(n_dim,1))/n_dim
+    true_var_uniform = np.matmul(np.matmul( wu.T, true_cov), wu)[0,0]
+    true_var_block = np.matmul(np.matmul( w_block.T, true_cov), w_block)
+    true_var_ridge = np.matmul(np.matmul( w_ridge.T, true_cov), w_ridge)
+    true_var_perfect = np.matmul(np.matmul(w_perfect.T, true_cov), w_perfect)
 
-    if true_var_1<true_var_2:
+    uniform_var_ratio = true_var_uniform/true_var_perfect
+    block_var_ratio = true_var_block/true_var_perfect
+    ridge_var_ratio = true_var_ridge/true_var_perfect
+
+    ridge_pre_error = np.linalg.norm(ridge_pre-true_pre)
+    block_pre_error = np.linalg.norm(block_pre-true_pre)
+
+
+    if true_var_block < min( true_var_ridge, true_var_uniform):
         print('*** BETTER ***')
     else:
         print('*** WORSE ***')
 
-    report = {'var1':true_var_1,'var2':true_var_2,'vart':true_var_0,'varu':true_var_u,'w1':w1[:10],'w2':w2[:10],'wt':w_tru[:10]}
+    from collections import OrderedDict
+    report = OrderedDict({'optimal_var':true_var_perfect,'uniform_var':true_var_uniform,'block_var':true_var_block,'ridge_var':true_var_ridge,
+              'block_ratio':block_var_ratio, 'uniform_ratio':uniform_var_ratio,
+                          'ridge_ratio':ridge_var_ratio,
+              'block_pre_norm':block_pre_error,'conv_pre_norm':ridge_pre_error,
+              'w1':w_block[:10],'w2':w_ridge[:10],'wt':w_perfect[:10]})
     pprint(report)
-    print('---implied sgma-')
-    pprint(implied_sgma[:5,:5])
-    print('---true sgma-')
-    pprint(true_cov[:5,:5])
-    print('---conventional-')
-    pprint(conventional_cov[:5,:5])
-    print('---block precision---')
-    pprint(pre['pre'])
-    print('---true precision---')
-    pprint(np.linalg.inv(true_cov[:5,:5]))
-    print('---conv precision---')
-    pprint(cpre[:5,:5])
+    if False:
+        print('---implied sgma-')
+        pprint(block_cov[:5,:5])
+        print('---true sgma-')
+        pprint(true_cov[:5,:5])
+        print('---conventional-')
+        pprint(emp_cov[:5,:5])
+        print('---block precision---')
+        pprint(pre['pre'])
+        print('---true precision---')
+        pprint(np.linalg.inv(true_cov[:5,:5]))
+        print('---conv precision---')
+        pprint(ridge_pre[:5,:5])
 
 
 if __name__=='__main__':
