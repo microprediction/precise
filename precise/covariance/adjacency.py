@@ -3,6 +3,7 @@ import math
 from precise.covariance.util import multiply_diag
 from kmeans1d import cluster
 
+
 def infer_adjacency(pre):
     a = np.copy(pre)
     n = np.shape(pre)[0]

@@ -32,7 +32,6 @@ def fixed_rpre_update(m, x, with_precision=True, lmbd=0.3, phi=1.3):
             for i,r in enumerate(m['states']):
                 R = multiply_diag(r['cov'], phi=phi, make_copy=True)
                 R = grand_shrink(R, lmbd=lmbd, make_copy=True)
-
                 Sinv = np.linalg.inv(R)
                 ei = np.zeros(shape=(n_dim,1))
                 ei[i] = 1.0
