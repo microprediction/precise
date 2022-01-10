@@ -5,7 +5,8 @@
 
 from precise.covariance.fixed import fixed_rcov_init, fixed_rcov_update
 import numpy as np
-from precise.covariance.util import multiply_diag
+from precise.covariance.util import multiply_diag, grand_shrink
+
 
 def fixed_rpre_init(adj, n_emp=10, rho=0.05):
     m = fixed_rcov_init(adj=adj, n_emp=n_emp, rho=rho)
@@ -19,9 +20,7 @@ def fixed_rpre_init(adj, n_emp=10, rho=0.05):
     return m
 
 
-
-
-def fixed_rpre_update(m, x, with_precision=True, lmbd=1.1):
+def fixed_rpre_update(m, x, with_precision=True, lmbd=0.3, phi=1.3):
     m = fixed_rcov_update(m,x)
     n_dim = np.shape(m['adj'])[0]
     omega = np.zeros(shape=(n_dim,n_dim))
@@ -31,9 +30,10 @@ def fixed_rpre_update(m, x, with_precision=True, lmbd=1.1):
             omega = np.eye(n_dim)
         else:
             for i,r in enumerate(m['states']):
-                R = multiply_diag(r['cov'], lmbd=lmbd, make_copy=True)
+                R = multiply_diag(r['cov'], phi=phi, make_copy=True)
+                R = grand_shrink(R, lmbd=lmbd, make_copy=True)
+
                 Sinv = np.linalg.inv(R)
-                nd = r['n_dim']
                 ei = np.zeros(shape=(n_dim,1))
                 ei[i] = 1.0
                 B = r['B']
