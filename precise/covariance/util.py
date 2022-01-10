@@ -7,9 +7,19 @@ def cov_to_corrcoef(cov):
     return cov / denominator
 
 
-def create_correlated_dataset(n, mu, dependency, scale):
-    latent = np.random.randn(n, dependency.shape[0])
-    dependent = latent.dot(dependency)
-    scaled = dependent * scale
-    scaled_with_offset = scaled + mu
-    return scaled_with_offset
+def normalize(x):
+    try:
+        return x/sum(x)
+    except:
+        return [xi/sum(x) for xi in x]
+
+def multiply_diag(A, lmbd, make_copy=True):
+    if make_copy:
+        B = np.copy(A)
+        return multiply_diag(B, lmbd=lmbd, make_copy=False)
+    else:
+        n = np.shape(A)[0]
+        for i in range(n):
+            A[i,i] = A[i,i] * lmbd
+        return A
+

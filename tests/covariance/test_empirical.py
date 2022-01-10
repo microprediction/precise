@@ -2,7 +2,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.covariance.empirical import cov_init,merge_cov, cov_update
-from precise.covariance.util import create_correlated_dataset
+from precise.covariance.generate import create_correlated_dataset
 
 
 def test_onlineempirical():

@@ -1,10 +1,15 @@
 import numpy as np
 from precise.covariance.empirical import cov_init, cov_update
 
-def rcov_init(n_dim=None, rho:float=0.05, n_cold=10):
-    """ Initialize object to track exp moving avg cov"""
+def rcov_init(n_dim=None, rho:float=0.05, n_emp=10):
+    """ Initialize object to track exp moving avg cov
+
+       rho:     Importance of current data point
+       n_emp:   Number of data points to use empirical cov, before switching over
+
+    """
     s = cov_init(n_dim=n_dim)
-    s.update({'rho':rho,'n_cold':n_cold})
+    s.update({'rho':rho,'n_cold':n_emp})
     return s
 
 def rcov_update(m:dict, x:[float], rho:float=None):

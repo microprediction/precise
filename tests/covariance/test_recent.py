@@ -3,7 +3,7 @@
 import numpy as np
 from precise.covariance.empirical import cov_init, cov_update
 from precise.covariance.recent import rcov_init, rcov_update
-from precise.covariance.util import create_correlated_dataset
+from precise.covariance.generate import create_correlated_dataset
 
 
 def test_same_burn_in():
@@ -24,7 +24,7 @@ def test_diag():
     from momentum import rvar_init, rvar_update
     rho = 0.05
     r1 = rvar_init(rho=rho,n=1)
-    r = rcov_init(rho=rho, n_dim=3, n_cold=1)
+    r = rcov_init(rho=rho, n_dim=3, n_emp=1)
     for observation in data:
         r = rcov_update(m=r, x=observation)
         c = r['cov'][0, 0]
