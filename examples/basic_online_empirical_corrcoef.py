@@ -1,15 +1,14 @@
 from precise.covariance.generate import create_correlated_dataset
-from precise.covariance.empirical import cov_init
-import numpy as np
+from precise.covariance.empirical import cov_init, cov_update
 from pprint import pprint
 from precise.covariance.util import cov_to_corrcoef
 
-if __name__=='__main__':
-    data = create_correlated_dataset(10000, (2.2, 4.4, 1.5),
-                                     np.array([[0.2, 0.5, 0.7], [0.3, 0.2, 0.2], [0.5, 0.3, 0.1]]), (1, 5, 3))
-    ocov = cov_init(n_dim=data.shape[1])
-    for observation in data:
-        ocov = cov_init(m=ocov, x=observation)
+# Basic example of running correlation matrix
 
-    ocorr = cov_to_corrcoef(ocov['cov'])
+if __name__=='__main__':
+    data = create_correlated_dataset(n=5000)
+    ocov = cov_init(n_dim=data.shape[1])
+    for x in data:
+        ocov = cov_update(m=ocov, x=x)
+    ocorr = cov_to_corrcoef(ocov['pcov'])
     pprint(ocorr)

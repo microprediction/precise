@@ -7,8 +7,8 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.0.2",
-    description="Online covariance",
+    version="0.0.3",
+    description="Online covariance and precision estimation",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/microprediction/precise",
@@ -18,13 +18,14 @@ setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
-    packages=["precise","precise.oo","precise.covariance","precise.oo.empirical","precise.precision"],
+    packages=["precise","precise.oo","precise.covariance","precise.structure","precise.plotting",
+              "precise.oo.empirical","precise.precision"],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum'],
+    install_requires=['numpy','momentum','kmeans1d','scikit-learn'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",
