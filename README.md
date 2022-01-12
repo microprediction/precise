@@ -8,17 +8,15 @@ Online covariance, correlation and precision matrix computations
     
 ## Example
 
-    from precise.covariance.util import create_correlated_dataset
-    from precise.covariance.onlineempirical import online_empirical_cov
-    import numpy as np
+    from precise.synthetic.generate import create_correlated_dataset
+    from precise.covariance.empirical import ecov_init, ecov_update
     from pprint import pprint
 
-    data = create_correlated_dataset(10000, (2.2, 4.4, 1.5),
-                                     np.array([[0.2, 0.5, 0.7], [0.3, 0.2, 0.2], [0.5, 0.3, 0.1]]), (1, 5, 3))
-    s = online_empirical_cov(n_dim=data.shape[1])
-    for observation in data:
-        s = online_empirical_cov(s=s, y=observation)
-    pprint(s)
+    xs = create_correlated_dataset(n=500)
+    ocov = ecov_init(n_dim=xs.shape[1])
+    for x in xs:
+        ocov = ecov_update(m=ocov, x=x)
+    pprint(ocov)
     
  This will return the running state, which includes the mean and cov
     
