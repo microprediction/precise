@@ -43,6 +43,16 @@ If we want some related quantity, say a sample correlation estimate, we use the 
     scorr = cov_to_corrcoef(s['scov'])
     pprint(scorr)    
 
+
+### Methods implemented 
+
+| Shorthand | Meaning               |
+|-----------|-----------------------|
+| emp       | Empirical     |
+| ema      | Exponential weighted moving average |
+
+Maybe more by the time you read this. 
+
 ### Related 
 
 The minimalise package [momentum](https://github.com/microprediction/momentum) is similar, but limited to univariate updates. 
