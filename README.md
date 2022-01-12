@@ -48,7 +48,7 @@ Method hints:
 
 (Maybe more by the time you read this) 
      
-## State functions & mutations
+### State functions & mutations
 Three types of utilities exist
 
    1. State [functions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
@@ -56,11 +56,12 @@ Three types of utilities exist
    3. Miscellaneous [util](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
      
 
-## Hyper-parameters
+### Updater hyper-parameters
 The intent is that methods are parameter free. However some not-quite autonomous methods admit just one additional scalar parameter *r* and that can make the creation of fully autonomous methods simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
 
 
-## Related 
+## Miscellaneous 
 
-If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
+ - Care to cite, some ideas [here](https://github.com/microprediction/microprediction/blob/master/CITE.md)
+ - If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
 
