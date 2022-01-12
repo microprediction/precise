@@ -53,7 +53,7 @@ Three types of utilities exist
      
 
 ## Hyper-parameters
-The intent is that methods are parameter free. However some admit just one additional scalar parameter *r* and that can make tuning simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
+The intent is that methods are parameter free. However some not-quite autonomous methods admit just one additional scalar parameter *r* and that can make the creation of fully autonomous methods simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
 
 
 ## Related 
