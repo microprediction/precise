@@ -1,6 +1,6 @@
 # precise
 
-A collection of autonomous, online covariance, correlation and precision matrix estimators. 
+A collection of autonomous online covariance matrix estimators. 
 
 ## Install 
 
