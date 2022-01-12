@@ -51,7 +51,9 @@ If we want some related quantity, say a sample correlation estimate, we use the 
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
 
-Maybe more by the time you read this. 
+Maybe more by the time you read this. Note that many popular approaches are functionals of this. See for instance 
+
+
 
 
 ## Hyper-parameters
