@@ -3,8 +3,7 @@
 import numpy as np
 from precise.precision.lezhong import lz_rpre_init, lz_rpre_update
 from precise.covariance.util import multiply_diag, normalize, grand_shrink
-from precise.covariance.generate import create_disjoint_dataset, create_band_dataset
-from pprint import pprint
+from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
 from precise.structure.adjacency import centroid_precision_adjacency
 import random
 
@@ -35,9 +34,9 @@ def test_fixed_rpre_init():
     emp_cov = np.cov(tiny_data, rowvar=False)
     phi = 1.3
     lmbd = 0.75
-    ridge_cov = multiply_diag(emp_cov, phi=phi, make_copy=True)
-    affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, make_copy=True)
-    shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, make_copy=True)
+    ridge_cov = multiply_diag(emp_cov, phi=phi, copy=True)
+    affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=True)
+    shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, copy=True)
     ridge_pre = np.linalg.inv(ridge_cov)
     shrink_pre = np.linalg.inv(shrink_cov)
     affine_pre = np.linalg.inv(affine_cov)

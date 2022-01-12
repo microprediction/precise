@@ -1,10 +1,7 @@
 import numpy as np
 
-# Minor adaptations to code by Carsten Schelp
-# https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
-
-def cov_init(m:dict=None, x:[float]=None, n_dim=None):
+def ecov_init(m:dict=None, x:[float]=None, n_dim=None):
     """ Empirical population covariance"""
     n_dim = len(x) if x is not None else n_dim
     if m is None:
@@ -17,7 +14,7 @@ def cov_init(m:dict=None, x:[float]=None, n_dim=None):
     m['pcov'] = np.zeros(m['shape'])
     return m
 
-def cov_update(m:dict, x:[float]):
+def ecov_update(m:dict, x:[float]):
     assert m['n_dim'] == len(x)
     m['count'] += 1
     delta = np.array(x - m['mean'])
@@ -30,7 +27,7 @@ def cov_update(m:dict, x:[float]):
     return m
 
 
-def merge_cov(s:dict, other_s:dict):
+def merge_ecov(s:dict, other_s:dict):
     """ Merge two online covariance tracking objects as if the data had been merged """
     if other_s['n_dim'] != s['n_dim']:
         raise ValueError(
@@ -39,7 +36,7 @@ def merge_cov(s:dict, other_s:dict):
                ({s['n_dim']} != {other_s['n_dim']})
                ''')
 
-    merged_cov = cov_init(n_dim=s['n_dim'])
+    merged_cov = ecov_init(n_dim=s['n_dim'])
     merged_cov['count'] = s['count'] + other_s['count']
     count_corr = (other_s['count'] * s['count']) / merged_cov['count']
     merged_cov['mean'] = (s['mean'] / other_s['count'] + other_s['mean'] / s['count']) * count_corr

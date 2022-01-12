@@ -14,7 +14,7 @@ def centroid_precision_adjacency(pre:np.ndarray)->np.ndarray:
     # minimum absolute precision value. Any entry above this threshold is considered 'real'.
     a = np.copy(pre)
     n = np.shape(pre)[0]
-    off_diag_values = sorted(np.abs(multiply_diag(a, phi=0, make_copy=True).ravel()))
+    off_diag_values = sorted(np.abs(multiply_diag(a, phi=0, copy=True).ravel()))
     clusters, centroids = cluster(array=off_diag_values, k=3)
     assert clusters[1]>=clusters[0]
     cutoff_value = min( centroids[1]*2.0, centroids[2]/2.0 )

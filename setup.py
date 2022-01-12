@@ -25,7 +25,7 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum','kmeans1d','scikit-learn'],
+    install_requires=['numpy','momentum','kmeans1d','scikit-learn','osqp'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

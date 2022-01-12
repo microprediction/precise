@@ -3,6 +3,7 @@ from precise.covariance.recent import rcov_update, rcov_init
 
 # Track running expon weighted cov estimates using a known sub-division
 
+
 def lz_rcov_init(adj, n_emp=10, rho=0.05):
     """ Minimal steps to ensure adjacency matrix is okay,
          and initialize one cov tracker for each variable.
@@ -19,6 +20,7 @@ def lz_rcov_init(adj, n_emp=10, rho=0.05):
     n_dims = [int(s) for s in np.sum(adj,axis=0)]
     m['states'] = [rcov_init(n_dim=nd, n_emp=n_emp, rho=rho) for nd in n_dims]
     return m
+
 
 def lz_rcov_update(m:dict, x:[float])->dict:
     """ Update one cov dict for each variable """

@@ -46,8 +46,8 @@ def lz_rpre_update(m:dict, x:[float], update_precision=True, lmbd=0.3, phi=1.3)-
             omega = np.eye(n_dim)
         else:
             for i,r in enumerate(m['states']):
-                R = multiply_diag(r['cov'], phi=phi, make_copy=True)
-                R = grand_shrink(R, lmbd=lmbd, make_copy=True)
+                R = multiply_diag(r['cov'], phi=phi, copy=True)
+                R = grand_shrink(R, lmbd=lmbd, copy=True)
                 Sinv = np.linalg.inv(R)
                 ei = np.zeros(shape=(n_dim,1))
                 ei[i] = 1.0
@@ -65,7 +65,7 @@ def lz_rpre_update(m:dict, x:[float], update_precision=True, lmbd=0.3, phi=1.3)-
 def glz_init(adj, cov_init, **kwargs):
     """ Stands for "General Le-Zhong"
 
-          cov_init(n_dims,**kwargs) creates cov tracking state
+          ecov_init(n_dims,**kwargs) creates cov tracking state
           kwargs : arguments passed to cover_init, in addition to n_dim
 
     """

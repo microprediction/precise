@@ -3,13 +3,15 @@
 import numpy as np
 from precise.precision.lezhong import lz_rpre_init, lz_rpre_update
 from precise.covariance.util import multiply_diag, normalize, grand_shrink
-from precise.covariance.generate import create_disjoint_dataset, create_band_dataset
+from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
 from pprint import pprint
 from precise.structure.adjacency import centroid_precision_adjacency
 import random
+from precise.portfolio.longonly import long_from_pre
 
+LONG_ONLY=True
 
-def test_fixed_rpre_init():
+if __name__=='__main__':
     if True:
         n_clusters = 30
         n_per_group = 5
@@ -35,9 +37,9 @@ def test_fixed_rpre_init():
     emp_cov = np.cov(tiny_data, rowvar=False)
     phi = 1.3
     lmbd = 0.75
-    ridge_cov = multiply_diag(emp_cov, phi=phi, make_copy=True)
-    affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, make_copy=True)
-    shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, make_copy=True)
+    ridge_cov = multiply_diag(emp_cov, phi=phi, copy=True)
+    affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=True)
+    shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, copy=True)
     ridge_pre = np.linalg.inv(ridge_cov)
     shrink_pre = np.linalg.inv(shrink_cov)
     affine_pre = np.linalg.inv(affine_cov)
@@ -56,11 +58,19 @@ def test_fixed_rpre_init():
     # Portfolios
     n_dim = np.shape(big_data)[1]
     wones = np.ones(shape=(n_dim,1))
-    w_lz = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
-    w_ridge = normalize( np.squeeze(np.matmul( ridge_pre, wones)))
-    w_affine = normalize(np.squeeze(np.matmul(affine_pre, wones)))
-    w_shrink = normalize(np.squeeze(np.matmul( shrink_pre, wones)))
-    w_perfect = normalize( np.squeeze(np.matmul( true_pre, wones)))
+
+    if LONG_ONLY:
+        w_lz = long_from_pre(pre['pre'], as_dense=True)
+        w_ridge = long_from_pre(ridge_pre, as_dense=True)
+        w_affine = long_from_pre(affine_pre, as_dense=True)
+        w_shrink = long_from_pre(shrink_pre, as_dense=True)
+        w_perfect = long_from_pre(true_pre, as_dense=True)
+    else:
+        w_lz = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
+        w_ridge = normalize( np.squeeze(np.matmul( ridge_pre, wones)))
+        w_affine = normalize(np.squeeze(np.matmul(affine_pre, wones)))
+        w_shrink = normalize(np.squeeze(np.matmul( shrink_pre, wones)))
+        w_perfect = normalize( np.squeeze(np.matmul( true_pre, wones)))
     import matplotlib.pyplot as plt
     descreasing = list(range(len(w_lz),0,-1))
 
@@ -136,5 +146,3 @@ def test_fixed_rpre_init():
         pprint(ridge_pre[:5,:5])
 
 
-if __name__=='__main__':
-    test_fixed_rpre_init()
