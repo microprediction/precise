@@ -6,25 +6,54 @@ Online covariance, correlation and precision matrix computations
 
     pip install precise 
     
-## Example
+## Examples
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
+
+
+## State updates  
+All updaters return a posterior state. Pass an empty dict on first use. Return the state on the next call. 
+
+Example: 
 
     from precise.synthetic.generate import create_correlated_dataset
-    from precise.covariance.empirical import ecov_init, ecov_update
-    from pprint import pprint
-
-    xs = create_correlated_dataset(n=500)
-    ocov = ecov_init(n_dim=xs.shape[1])
-    for x in xs:
-        ocov = ecov_update(m=ocov, x=x)
-    pprint(ocov)
-    
- This will return the running state, which includes the mean and cov
+    from precise.covariance.empirical import emp_pcov
  
-### Examples
+    if __name__=='__main__':
+        xs = create_correlated_dataset(n=500)
+        s = {}
+        for x in xs:
+            s = emp_pcov(s=s, x=x)
+        pprint(s['scov'])
+     
+This package contains similar updaters. Their states typically one of the following:
 
-See [examples](https://github.com/microprediction/precise/tree/main/examples).
+| Shorthand | Intent                |
+|-----------|-----------------------|
+| scov      | Sample covariance     |
+| pcov      | Population covariance |
+| spre      | Sample precision      |
+| ppre      | Population precision  |
+     
+If we want some related quantity, say a sample correlation estimate, we use the utility functions as follows:  
+ 
+    from pprint import pprint
+    from precise.covariance.util import both_cov, cov_to_corrcoef
 
-### See also
+    s = both_cov(s)  # <--- Adds 'pcov' to dictionary s 
+    scorr = cov_to_corrcoef(s['scov'])
+    pprint(scorr)    
 
-If you only need univariate, there is a really minimalise package [momentum](https://github.com/microprediction/momentum) which avoids use of numpy.  
+
+### Methods implemented 
+
+| Shorthand | Meaning               |
+|-----------|-----------------------|
+| emp       | Empirical     |
+| ema      | Exponential weighted moving average |
+
+Maybe more by the time you read this. 
+
+### Related 
+
+The minimalise package [momentum](https://github.com/microprediction/momentum) is similar, but limited to univariate updates. 
 
