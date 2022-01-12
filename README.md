@@ -10,7 +10,7 @@ A collection of *autonomous* *online* (incremental) covariance matrix estimators
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
 
 ## Explanation
-You use state updaters, then convenience functions of the same. 
+You use state updaters, then functions of the state. 
 
 ### State updates  
 All updaters take a prior state and return a posterior state (dict). An empty dict is passed to initialize. 
