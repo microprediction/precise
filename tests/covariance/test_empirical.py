@@ -46,7 +46,7 @@ def test_merging():
         ocov_both = _emp_pcov_update(s=ocov_both, x=row)
 
     ocov_merged = merge_emp_scov(s=ocov_part1, other_s=ocov_part2)
-    assert ocov_both['count'] == ocov_merged['count']
+    assert ocov_both['n_samples'] == ocov_merged['n_samples']
     assert np.isclose(ocov_both['mean'], ocov_merged['mean']).all()
     assert np.isclose(ocov_both['pcov'], ocov_merged['pcov']).all()
 

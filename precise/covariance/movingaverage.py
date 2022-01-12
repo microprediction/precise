@@ -10,7 +10,9 @@ def _ema_scov_init(n_dim=None, r:float=0.025, n_emp=None ):
     """ Initialize object to track exp moving avg cov
 
        r:       Importance of current data point
-       n_emp:   Discouraged. Really only used for tests
+       n_emp:   Discouraged. Really only used for tests.
+                This is the number of samples for which empirical is used, rather
+                than running updates. By default n_emp ~ 1/r
 
     """
     if n_emp is None:
@@ -22,13 +24,13 @@ def _ema_scov_init(n_dim=None, r:float=0.025, n_emp=None ):
 
 def _ema_scov_update(s:dict, x:[float], r:float=None):
     """ Update recency weighted estimate of scov """
-    if s['count']< s['n_cold']:
+    if s['n_samples']< s['n_cold']:
         # Use the regular cov update for a burn-in period
         # During this time both scov and pcov are maintained
         s = _emp_pcov_update(s=s, x=x)
-        s['scov'] = s['pcov'] * (s['count'] - 1) / s['count']
+        s['scov'] = s['pcov'] * (s['n_samples'] - 1) / s['n_samples']
     else:
-        s['count']+=1
+        s['n_samples']+=1
         r = s['rho'] if r is None else r
         assert s['n_dim'] == len(x)
         ycol = np.ndarray(shape=(s['n_dim'], 1))
@@ -42,7 +44,7 @@ def _ema_scov_update(s:dict, x:[float], r:float=None):
 
 def ema_pcov(s:dict, x:Union[List[float], int]=None, r:float=0.05):
     """ Maintain running population covariance """
-    if s.get('count') is None:
+    if s.get('n_samples') is None:
         if isinstance(x,int):
             n_dim = x
         elif len(x)>1:

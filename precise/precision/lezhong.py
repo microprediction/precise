@@ -42,7 +42,7 @@ def _lz_ema_spre_update(m:dict, x:[float], update_precision=True, lmbd=0.3, phi=
     n_dim = np.shape(m['adj'])[0]
     omega = np.zeros(shape=(n_dim,n_dim))
     if update_precision:
-        cnt = m['states'][0]['count']
+        cnt = m['states'][0]['n_samples']
         if cnt<2:
             omega = np.eye(n_dim)
         else:
@@ -108,7 +108,7 @@ def glz_update(m:dict, x, cov_update, cov_transform=None, with_precision=True):
     n_dim = np.shape(m['adj'])[0]
     omega = np.zeros(shape=(n_dim,n_dim))
     if with_precision:
-        cnt = m['states'][0]['count']
+        cnt = m['states'][0]['n_samples']
         if cnt<2:
             omega = np.eye(n_dim)
         else:
