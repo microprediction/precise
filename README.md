@@ -1,6 +1,6 @@
 # precise
 
-Online covariance, correlation and precision matrix computations
+A collection of autonomous, online covariance, correlation and precision matrix estimators. 
 
 ## Install 
 
@@ -44,7 +44,7 @@ If we want some related quantity, say a sample correlation estimate, we use the 
     pprint(scorr)    
 
 
-### Methods implemented 
+## Methods implemented 
 
 | Shorthand | Meaning               |
 |-----------|-----------------------|
@@ -53,7 +53,12 @@ If we want some related quantity, say a sample correlation estimate, we use the 
 
 Maybe more by the time you read this. 
 
-### Related 
 
-The minimalise package [momentum](https://github.com/microprediction/momentum) is similar, but limited to univariate updates. 
+## Hyper-parameters
+The intent is that methods are parameter free. However some admit just one additional scalar parameter *r* and that can make tuning simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
+
+
+## Related 
+
+If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
 
