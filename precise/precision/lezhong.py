@@ -7,8 +7,8 @@ from precise.covariance.lezhong import _lz_scov_init, _lz_scov_update
 import numpy as np
 from precise.covariance.util import multiply_diag, grand_shrink
 
-# Le-Zhong precision matrix
-# First version is easy to construct, and utilizes recency-weighted cov estimates
+
+# Uses moving average estimate of sub-covariance matrices
 
 
 def _lz_ema_spre_init(adj:np.ndarray, n_emp=10, rho=0.05)->dict:
