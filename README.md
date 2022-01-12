@@ -9,8 +9,10 @@ A collection of *autonomous* *online* (incremental) covariance matrix estimators
 ## Examples
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
 
+## Explanation
+You use state updaters, then convenience functions of the same. 
 
-## State updates  
+### State updates  
 All updaters take a prior state and return a posterior state (dict). An empty dict is passed to initialize. 
 
 Example: 
@@ -25,7 +27,7 @@ Example:
             s = emp_pcov(s=s, x=x)
         pprint(s['scov'])
      
-This package contains similar updaters. Their states typically one of the following:
+Naming hints: 
 
 | Shorthand | Intent                |
 |-----------|-----------------------|
@@ -35,14 +37,16 @@ This package contains similar updaters. Their states typically one of the follow
 | ppre      | Population precision  |
      
      
-Names of updaters contain hints of what is updated, and the method:
+Method hints: 
 
 | Shorthand | Meaning               |
 |-----------|-----------------------|
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
+| lz      | Le-Zhong variable-by-variable updating |
 
-Maybe more by the time you read this. 
+
+(Maybe more by the time you read this) 
      
 ## State functions & mutations
 Three types of utilities exist
