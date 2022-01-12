@@ -1,7 +1,8 @@
 from precise.synthetic.generate import create_correlated_dataset
 from precise.covariance.empirical import emp_pcov
 from pprint import pprint
-from precise.covariance.util import both_cov, cov_to_corrcoef
+from precise.covariance.util import cov_to_corrcoef
+from precise.covariance.statemutations import both_cov
 
 # Basic example of running empirical sample correlation
 

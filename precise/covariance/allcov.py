@@ -1,5 +1,5 @@
-from precise.covariance.empirical import _emp_pcov_init, _emp_pcov_update
+from precise.covariance.empirical import emp_pcov
 
 # List of fully autonomous estimators
 
-COV_ESTIMATORS = {'emp':(_emp_pcov_init, _emp_pcov_update)}
+COV_ESTIMATORS = [emp_pcov]

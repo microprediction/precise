@@ -100,7 +100,7 @@ def evaluate_lz(df, n_adj,n_cov, n_test, do_plot):
     w_ridge = long_from_pre(ridge_pre)
     w_affine = long_from_pre(affine_pre)
     w_shrink = long_from_pre(shrink_pre)
-    w_perfect = long_from_cov(grand_shrink(A=test_cov, lmbd=0.01, copy=True))
+    w_perfect = long_from_cov(grand_shrink(a=test_cov, lmbd=0.01, copy=True))
     w_uniform = np.ones(shape=(n_dim,)) / n_dim
 
     w_half = (w_lz+w_uniform)/2

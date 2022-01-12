@@ -26,14 +26,14 @@ def multiply_diag(a, phi, copy=True):
         return a
 
 
-def grand_shrink(A, lmbd, copy=True):
+def grand_shrink(a, lmbd, copy=True):
     if copy:
-        B = np.copy(A)
+        B = np.copy(a)
         return grand_shrink(B, lmbd=lmbd, copy=False)
     else:
-        n = np.shape(A)[0]
-        mu = np.mean(A.diagonal())
-        return (1-lmbd)*A + lmbd*mu*np.eye(n)
+        n = np.shape(a)[0]
+        mu = np.mean(a.diagonal())
+        return (1-lmbd) * a + lmbd * mu * np.eye(n)
 
 
 def is_symmetric(a, rtol=1e-05, atol=1e-08):
@@ -119,13 +119,4 @@ def mean_off_diag(a):
     the_sum = np.sum(a,axis=None)
     return the_sum/(n*(n-1))
 
-
-def both_cov(s):
-    """ Ensure tracking object has both population and sample cov """
-    if s.get('n_samples')>1:
-        if s.get('scov') is None and s['pcov'] is not None:
-            s['scov'] = s['n_samples']/(s['n_samples']-1)*s['pcov']
-        if s.get('pcov') is None and s['scov'] is not None:
-            s['pcov'] = (s['n_samples'] - 1)/ s['n_samples'] * s['scov']
-    return s
 
