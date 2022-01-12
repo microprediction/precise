@@ -53,7 +53,9 @@ If we want some related quantity, say a sample correlation estimate, we use the 
 
 Maybe more by the time you read this. Note that many popular approaches are functionals of this. See for instance 
 
+## State functions 
 
+See [/covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) for OAS et cetera. 
 
 
 ## Hyper-parameters
