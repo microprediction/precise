@@ -20,17 +20,20 @@ def evaluate(do_plot=False):
 
     # Select some models-
     big_data_df = random_multivariate_residual(n_obs=5000,random_start=True).dropna()
-    models = list(big_data_df.columns)
-    models_to_use = ['empirical_last_value', 'sluggish_moving_average', 'slowly_moving_average', 'quickly_moving_average',
-     'rapidly_moving_average', 'balanced_ema_ensemble', 'aggressive_ema_ensemble',
-     'thinking_fast_and_fast', 'thinking_fast_and_slow', 'thinking_slow_and_slow', 'thinking_slow_and_fast',
-    'quick_balanced_ema_ensemble', 'slow_balanced_ema_ensemble',
-     'quick_aggressive_ema_ensemble', 'slow_aggressive_ema_ensemble', 'quick_precision_ema_ensemble']
     if True:
-         models_to_use = [ 'thinking_fast_and_slow', 'thinking_slow_and_slow', 'thinking_slow_and_fast',
-                          'rapidly_moving_average','quickly_moving_average','empirical_last_value','thinking_fast_and_fast']
+        # Filter out some?
+        models = list(big_data_df.columns)
+        models_to_use = ['empirical_last_value', 'sluggish_moving_average', 'slowly_moving_average', 'quickly_moving_average',
+         'rapidly_moving_average', 'balanced_ema_ensemble', 'aggressive_ema_ensemble',
+         'thinking_fast_and_fast', 'thinking_fast_and_slow', 'thinking_slow_and_slow', 'thinking_slow_and_fast',
+        'quick_balanced_ema_ensemble', 'slow_balanced_ema_ensemble',
+         'quick_aggressive_ema_ensemble', 'slow_aggressive_ema_ensemble', 'quick_precision_ema_ensemble']
+        if True:
+             models_to_use = [ 'thinking_fast_and_slow', 'thinking_slow_and_slow', 'thinking_slow_and_fast',
+                              'rapidly_moving_average','quickly_moving_average','empirical_last_value','thinking_fast_and_fast',
+                               'slow_aggressive_ema_ensemble', 'quick_precision_ema_ensemble']
 
-    big_data_df = big_data_df[models_to_use]
+        big_data_df = big_data_df[models_to_use]
     adj_data_df = big_data_df[:n_adj+n_cov]
     cov_data_df = big_data_df[n_adj:n_adj+n_cov]
     test_data_df = big_data_df[n_adj+n_cov:n_adj+n_cov+n_test]
@@ -53,13 +56,14 @@ def evaluate(do_plot=False):
     small_pre = np.linalg.inv(multiply_diag(small_cov, phi=phi))
     adj = centroid_precision_adjacency(small_pre)
     mean_adj = mean_off_diag(adj)
-    print('Mean adj = '+str(mean_adj))
+    if np.random.rand()<0.02:
+        print('Mean adj = '+str(mean_adj))
 
     # Then use recent data to estimate cov
     cov_data = cov_data_df.values
     emp_cov = np.cov(cov_data, rowvar=False)
 
-    phi, lmbd = 1.1, 0.2
+    phi, lmbd = 1.3, 0.75
     ridge_cov = multiply_diag(emp_cov, phi=phi, copy=True)
     affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=True)
     shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, copy=True)
@@ -70,7 +74,7 @@ def evaluate(do_plot=False):
 
 
     # LZ estimate
-    rho, phi, lmbd = 1 / n_cov, 1.01, 0.1
+    rho, phi, lmbd = 1 / n_cov, 1.01, 0.25
     pre = lz_rpre_init(adj=adj, rho=rho, n_emp=n_cov)
     for x in cov_data[:-1, :]:
         pre = lz_rpre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
@@ -90,20 +94,22 @@ def evaluate(do_plot=False):
     w_affine = long_from_pre(affine_pre)
     w_shrink = long_from_pre(shrink_pre)
     w_perfect = long_from_cov(grand_shrink(A=test_cov, lmbd=0.01, copy=True))
+    w_uniform = np.ones(shape=(n_dim,)) / n_dim
 
+    w_half = (w_lz+w_uniform)/2
     W = np.array([ w_lz, w_diagonal, w_ridge, w_affine, w_shrink, w_perfect ])
 
     import matplotlib.pyplot as plt
     descreasing = list(range(len(w_lz), 0, -1))
 
-    w_uniform = np.ones(shape=(n_dim, 1)) / n_dim
-    true_var_uniform = np.matmul(np.matmul(w_uniform.T, test_cov), w_uniform)[0, 0]
+    true_var_uniform = np.matmul(np.matmul(w_uniform.T, test_cov), w_uniform)
     true_var_lz = np.matmul(np.matmul(w_lz.T, test_cov), w_lz)
     true_var_diagonal = np.matmul(np.matmul(w_diagonal.T, test_cov), w_diagonal)
     true_var_shrink = np.matmul(np.matmul(w_shrink.T, test_cov), w_shrink)
     true_var_ridge = np.matmul(np.matmul(w_ridge.T, test_cov), w_ridge)
     true_var_perfect = np.matmul(np.matmul(w_perfect.T, test_cov), w_perfect)
     true_var_affine = np.matmul(np.matmul(w_affine.T, test_cov), w_affine)
+    true_var_half = np.matmul(np.matmul(w_half.T, test_cov), w_half)
 
     uniform_var_ratio = true_var_uniform / true_var_perfect
     lz_var_ratio = true_var_lz / true_var_perfect
@@ -111,6 +117,7 @@ def evaluate(do_plot=False):
     shrink_var_ratio = true_var_shrink / true_var_perfect
     affine_var_ratio = true_var_affine / true_var_perfect
     diagonal_var_ratio = true_var_diagonal / true_var_perfect
+    half_var_ratio = true_var_half / true_var_perfect
 
     if do_plot:
         plt.plot(descreasing, n_dim*w_uniform,
@@ -133,6 +140,7 @@ def evaluate(do_plot=False):
 
     report = {      'lz': lz_var_ratio-1,
                     'diagonal':diagonal_var_ratio-1,
+                    'half':half_var_ratio-1,
                     'ridge': ridge_var_ratio-1,
                      'uniform': uniform_var_ratio-1,
                      'affine':affine_var_ratio-1,
@@ -145,5 +153,5 @@ if __name__=='__main__':
     while True:
         report = evaluate()
         running.update(Counter(report))
-        if np.random.rand()<0.1:
+        if np.random.rand()<0.03:
             pprint(running.most_common())
