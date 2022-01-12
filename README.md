@@ -34,24 +34,30 @@ This package contains similar updaters. Their states typically one of the follow
 | spre      | Sample precision      |
 | ppre      | Population precision  |
      
-If we want some related quantity, say a sample correlation estimate, we use the utility functions as follows:  
- 
-    from pprint import pprint
-    from precise.covariance.util import both_cov, cov_to_corrcoef
-
-    s = both_cov(s)  # <--- Adds 'pcov' to dictionary s 
-    scorr = cov_to_corrcoef(s['scov'])
-    pprint(scorr)    
-
-
-## Methods implemented 
+     
+Names of updaters contain hints of what is updated, and the method:
 
 | Shorthand | Meaning               |
 |-----------|-----------------------|
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
 
-Maybe more by the time you read this. Note that many popular approaches are functionals of this. See for instance 
+Maybe more by the time you read this. 
+     
+## State functions & mutations
+Three types of utilities exist
+
+   1. State functions are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
+   2. State mutations  
+     
+Similarly there are statemutations 
+ 
+    from precise.covariance.statemutations import both_cov
+  
+    s = both_cov(s)  # <--- Adds 'pcov' to dictionary s 
+  
+
+
 
 ## State functions 
 
