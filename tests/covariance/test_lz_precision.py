@@ -1,7 +1,7 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.precision.lezhong import lz_rpre_init, lz_rpre_update
+from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
 from precise.covariance.util import multiply_diag, normalize, grand_shrink
 from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
 from precise.structure.adjacency import centroid_precision_adjacency
@@ -44,18 +44,18 @@ def test_fixed_rpre_init():
     rho = 1/n_tiny
     phi = 1.3
     lmbd = 0.75
-    pre = lz_rpre_init(adj=adj, rho=rho, n_emp=n_tiny)
+    pre = _lz_ema_spre_init(adj=adj, rho=rho, n_emp=n_tiny)
     for x in tiny_data[:-1,:]:
-        pre = lz_rpre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
-    pre = lz_rpre_update(m=pre, x=tiny_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
+        pre = _lz_ema_spre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
+    pre = _lz_ema_spre_update(m=pre, x=tiny_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
 
-    lz_pre = pre['pre']
+    lz_pre = pre['spre']
     # lz_cov = np.linalg.inv(lz_pre)
     
     # Portfolios
     n_dim = np.shape(big_data)[1]
     wones = np.ones(shape=(n_dim,1))
-    w_lz = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
+    w_lz = normalize( np.squeeze(np.matmul( pre['spre'],wones )) )
     w_ridge = normalize( np.squeeze(np.matmul( ridge_pre, wones)))
     w_affine = normalize(np.squeeze(np.matmul(affine_pre, wones)))
     w_shrink = normalize(np.squeeze(np.matmul( shrink_pre, wones)))

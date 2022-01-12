@@ -1,33 +1,47 @@
 import numpy as np
 
 
-def ecov_init(m:dict=None, x:[float]=None, n_dim=None):
+def _emp_pcov_init(s:dict=None, x:[float]=None, n_dim=None):
     """ Empirical population covariance"""
     n_dim = len(x) if x is not None else n_dim
-    if m is None:
-      m = dict()
-    m['n_dim']=n_dim
-    m['shape']=(n_dim, n_dim)
-    m['ones'] = np.ones(n_dim)
-    m['count'] = 0
-    m['mean'] = np.zeros(n_dim)
-    m['pcov'] = np.zeros(m['shape'])
-    return m
+    if s is None:
+       s = dict()
+    s['n_dim']=n_dim
+    s['shape']=(n_dim, n_dim)
+    s['ones'] = np.ones(n_dim)
+    s['count'] = 0
+    s['mean'] = np.zeros(n_dim)
+    s['pcov'] = np.zeros(s['shape'])
+    return s
 
-def ecov_update(m:dict, x:[float]):
-    assert m['n_dim'] == len(x)
-    m['count'] += 1
-    delta = np.array(x - m['mean'])
-    m['mean'] += delta / m['count']
-    weighted_delta_at_n = np.array(x - m['mean']) / m['count']
-    D_at_n = np.broadcast_to(weighted_delta_at_n, m['shape']).T
-    I = np.identity(m['n_dim'])
+
+def _emp_pcov_update(s:dict, x:[float]):
+    assert s['n_dim'] == len(x)
+    s['count'] += 1
+    delta = np.array(x - s['mean'])
+    s['mean'] += delta / s['count']
+    weighted_delta_at_n = np.array(x - s['mean']) / s['count']
+    D_at_n = np.broadcast_to(weighted_delta_at_n, s['shape']).T
+    I = np.identity(s['n_dim'])
     D = (delta * I).dot(D_at_n.T)
-    m['pcov'] = m['pcov'] * (m['count'] - 1) / m['count'] + D
-    return m
+    s['pcov'] = s['pcov'] * (s['count'] - 1) / s['count'] + D
+    return s
 
 
-def merge_ecov(s:dict, other_s:dict):
+def emp_pcov(s:dict, x:[float])->dict:
+    """
+        Track empirical sample covariance
+    """
+    if s.get('count') is None:
+        if isinstance(x,int):
+            return _emp_pcov_init(n_dim=x)
+        else:
+            return _emp_pcov_init(x=x)
+    else:
+        return _emp_pcov_update(s=s, x=x)
+
+
+def merge_emp_scov(s:dict, other_s:dict):
     """ Merge two online covariance tracking objects as if the data had been merged """
     if other_s['n_dim'] != s['n_dim']:
         raise ValueError(
@@ -36,7 +50,7 @@ def merge_ecov(s:dict, other_s:dict):
                ({s['n_dim']} != {other_s['n_dim']})
                ''')
 
-    merged_cov = ecov_init(n_dim=s['n_dim'])
+    merged_cov = _emp_pcov_init(n_dim=s['n_dim'])
     merged_cov['count'] = s['count'] + other_s['count']
     count_corr = (other_s['count'] * s['count']) / merged_cov['count']
     merged_cov['mean'] = (s['mean'] / other_s['count'] + other_s['mean'] / s['count']) * count_corr

@@ -119,3 +119,12 @@ def mean_off_diag(a):
     the_sum = np.sum(a,axis=None)
     return the_sum/(n*(n-1))
 
+
+def both_cov(s):
+    """ Ensure tracking object has both population and sample cov """
+    if s.get('count')>1:
+        if s.get('scov') is None and s['pcov'] is not None:
+            s['scov'] = s['count']/(s['count']+1)*s['pcov']
+        if s.get('pcov') is None and s['scov'] is not None:
+            s['pcov'] = (s['count'] + 1)/ s['count'] * s['scov']
+    return s

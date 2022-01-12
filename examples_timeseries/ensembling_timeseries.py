@@ -1,6 +1,6 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
-from precise.precision.lezhong import lz_rpre_init, lz_rpre_update
+from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
 from precise.covariance.util import multiply_diag, normalize, grand_shrink, make_diagnonal, mean_off_diag
 from pprint import pprint
 from precise.structure.adjacency import centroid_precision_adjacency
@@ -11,16 +11,17 @@ from precise.portfolio.longonly import long_from_pre, long_from_cov
 
 # Stacking time-series models
 
+# c.f. https://arxiv.org/pdf/1806.08200.pdf
+
 
 def evaluate(do_plot=False):
-
-    n_adj = 500 # <--- Use these points to estimate pre sparsity
-    n_cov = 100  # <--- Use this many to estimate cov
-    n_test = 5 # <--- Then use this many to judge
-
     # Select some models-
-    big_data_df = random_multivariate_residual(n_obs=5000,random_start=True).dropna()
-    if True:
+    n_adj = 15000  # <--- Use these points to estimate pre sparsity
+    n_cov = 500  # <--- Use this many to estimate cov
+    n_test = 500  # <--- Then use this many to judge
+
+    big_data_df = random_multivariate_residual(n_obs=n_adj+n_cov+n_test+100,random_start=True).dropna()
+    if False:
         # Filter out some?
         models = list(big_data_df.columns)
         models_to_use = ['empirical_last_value', 'sluggish_moving_average', 'slowly_moving_average', 'quickly_moving_average',
@@ -34,9 +35,15 @@ def evaluate(do_plot=False):
                                'slow_aggressive_ema_ensemble', 'quick_precision_ema_ensemble']
 
         big_data_df = big_data_df[models_to_use]
-    adj_data_df = big_data_df[:n_adj+n_cov]
-    cov_data_df = big_data_df[n_adj:n_adj+n_cov]
-    test_data_df = big_data_df[n_adj+n_cov:n_adj+n_cov+n_test]
+
+    return evaluate_lz(df=big_data_df, n_adj=n_adj, n_cov=n_cov, n_test=n_test, do_plot=do_plot)
+
+
+def evaluate_lz(df, n_adj,n_cov, n_test, do_plot):
+
+    adj_data_df = df[:n_adj+n_cov]
+    cov_data_df = df[n_adj:n_adj+n_cov]
+    test_data_df = df[n_adj+n_cov:n_adj+n_cov+n_test]
 
     test_data = test_data_df.values
     test_data_shape = np.shape(test_data)
@@ -63,7 +70,7 @@ def evaluate(do_plot=False):
     cov_data = cov_data_df.values
     emp_cov = np.cov(cov_data, rowvar=False)
 
-    phi, lmbd = 1.3, 0.75
+    phi, lmbd = 1.3, 0.5
     ridge_cov = multiply_diag(emp_cov, phi=phi, copy=True)
     affine_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=True)
     shrink_cov = grand_shrink(emp_cov, lmbd=lmbd, copy=True)
@@ -74,11 +81,11 @@ def evaluate(do_plot=False):
 
 
     # LZ estimate
-    rho, phi, lmbd = 1 / n_cov, 1.01, 0.25
-    pre = lz_rpre_init(adj=adj, rho=rho, n_emp=n_cov)
+    rho, phi, lmbd = 1 / n_cov, 1.01, 0.05   # 1.01, 0.25 works okayish
+    pre = _lz_ema_spre_init(adj=adj, rho=rho, n_emp=n_cov)
     for x in cov_data[:-1, :]:
-        pre = lz_rpre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
-    pre = lz_rpre_update(m=pre, x=cov_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
+        pre = _lz_ema_spre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
+    pre = _lz_ema_spre_update(m=pre, x=cov_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
 
     lz_pre = pre['pre']
     try:

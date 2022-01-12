@@ -1,9 +1,9 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.covariance.lezhong import lz_rcov_init, lz_rcov_update
+from precise.covariance.lezhong import _lz_scov_init, _lz_scov_update
 from precise.synthetic.generate import create_correlated_dataset
-from precise.covariance.recent import rcov_update, rcov_init
+from precise.covariance.movingaverage import _ema_scov_update, _ema_scov_init
 
 
 def test_fixed_rcov():
@@ -11,16 +11,16 @@ def test_fixed_rcov():
     conventional_cov = np.cov(data, rowvar=False)
     adjacency = np.array( [[1,1,0],[1,1,0],[0,0,1]] )
     rho = 0.01
-    kcov = lz_rcov_init(adj=adjacency, rho=rho)
+    kcov = _lz_scov_init(adj=adjacency, rho=rho)
     for observation in data:
-        kcov = lz_rcov_update(m=kcov, x=observation)
+        kcov = _lz_scov_update(m=kcov, x=observation)
 
     # Check against running
     data01 = data[:,:2]
-    cov01 = rcov_init(n_dim=2,rho=rho)
+    cov01 = _ema_scov_init(n_dim=2, r=rho)
     for x in data01:
-        cov01 = rcov_update(m=cov01, x=x)
-    assert np.allclose(cov01['cov'],kcov['states'][0]['cov'] )
+        cov01 = _ema_scov_update(s=cov01, x=x)
+    assert np.allclose(cov01['scov'],kcov['states'][0]['scov'] )
 
 
 if __name__=='__main__':

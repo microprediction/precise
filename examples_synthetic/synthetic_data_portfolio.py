@@ -1,7 +1,7 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.precision.lezhong import lz_rpre_init, lz_rpre_update
+from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
 from precise.covariance.util import multiply_diag, normalize, grand_shrink
 from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
 from pprint import pprint
@@ -47,10 +47,10 @@ if __name__=='__main__':
     rho = 1/n_tiny
     phi = 1.3
     lmbd = 0.75
-    pre = lz_rpre_init(adj=adj, rho=rho, n_emp=n_tiny)
+    pre = _lz_ema_spre_init(adj=adj, rho=rho, n_emp=n_tiny)
     for x in tiny_data[:-1,:]:
-        pre = lz_rpre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
-    pre = lz_rpre_update(m=pre, x=tiny_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
+        pre = _lz_ema_spre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
+    pre = _lz_ema_spre_update(m=pre, x=tiny_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
 
     lz_pre = pre['pre']
     # lz_cov = np.linalg.inv(lz_pre)
