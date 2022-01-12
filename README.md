@@ -11,7 +11,7 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
 
 
 ## State updates  
-All updaters return a posterior state. Pass an empty dict on first use. Return the state on the next call. 
+All updaters take a prior state and return a posterior state (dict). An empty dict is passed to initialize. 
 
 Example: 
 
