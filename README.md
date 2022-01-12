@@ -47,22 +47,10 @@ Maybe more by the time you read this.
 ## State functions & mutations
 Three types of utilities exist
 
-   1. State functions are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
-   2. State mutations  
+   1. State [functions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
+   2. State [mutations](https://github.com/microprediction/precise/blob/main/precise/covariance/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
+   3. Miscellaneous [util](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
      
-Similarly there are statemutations 
- 
-    from precise.covariance.statemutations import both_cov
-  
-    s = both_cov(s)  # <--- Adds 'pcov' to dictionary s 
-  
-
-
-
-## State functions 
-
-See [/covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) for OAS et cetera. 
-
 
 ## Hyper-parameters
 The intent is that methods are parameter free. However some admit just one additional scalar parameter *r* and that can make tuning simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
