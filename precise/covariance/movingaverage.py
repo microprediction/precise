@@ -18,13 +18,13 @@ def _ema_scov_init(n_dim=None, r:float=0.025, n_emp=None ):
     if n_emp is None:
         n_emp = int(min(50, max(5, math.ceil(1 / r))))
     s = _emp_pcov_init(n_dim=n_dim)
-    s.update({'rho':r, 'n_cold':n_emp})
+    s.update({'rho':r, 'n_emp':n_emp})
     return s
 
 
 def _ema_scov_update(s:dict, x:[float], r:float=None):
     """ Update recency weighted estimate of scov """
-    if s['n_samples']< s['n_cold']:
+    if s['n_samples']< s['n_emp']:
         # Use the regular cov update for a burn-in period
         # During this time both scov and pcov are maintained
         s = _emp_pcov_update(s=s, x=x)
@@ -42,20 +42,18 @@ def _ema_scov_update(s:dict, x:[float], r:float=None):
     return s
 
 
-def ema_pcov(s:dict, x:Union[List[float], int]=None, r:float=0.05):
+def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:
         if isinstance(x,int):
-            n_dim = x
+            return _ema_scov_init(n_dim=x,r=r)
         elif len(x)>1:
-            n_dim = len(x)
+            s = _ema_scov_init(n_dim=len(x),r=r)
         else:
             raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
-        return _ema_scov_init(n_dim=n_dim, r=r)
-    elif x is None:
-        return s
     if x is not None:
-        return _ema_scov_update(s=s, x=x, r=r)
+        s = _ema_scov_update(s=s, x=x, r=r)
+    return s
 
 
 

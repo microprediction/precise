@@ -5,7 +5,7 @@
 
 from precise.covariance.lezhong import _lz_scov_init, _lz_scov_update
 import numpy as np
-from precise.covariance.util import multiply_diag, grand_shrink
+from precise.covariance.matrixfunctions import multiply_diag, grand_shrink
 
 
 # Uses moving average estimate of sub-covariance matrices

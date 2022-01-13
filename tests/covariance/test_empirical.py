@@ -21,7 +21,7 @@ def test_onlineempirical():
         """
         Covariance-matrix should be the same with both approaches.
         """
-    from precise.covariance.util import cov_to_corrcoef
+    from precise.covariance.matrixfunctions import cov_to_corrcoef
     ocorr = cov_to_corrcoef(ocov['pcov'])
     assert np.isclose(conventional_corrcoef, ocorr).all(), \
         """

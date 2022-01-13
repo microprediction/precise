@@ -1,5 +1,5 @@
 import numpy as np
-from precise.covariance.util import multiply_diag
+from precise.covariance.matrixfunctions import multiply_diag
 from kmeans1d import cluster
 
 

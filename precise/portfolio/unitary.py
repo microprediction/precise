@@ -1,5 +1,5 @@
 import numpy as np
-from precise.covariance.util import normalize
+from precise.covariance.matrixfunctions import normalize
 
 # sum(w)=1
 

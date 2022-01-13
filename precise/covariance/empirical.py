@@ -36,9 +36,10 @@ def emp_pcov(s:dict, x:[float])->dict:
         if isinstance(x,int):
             return _emp_pcov_init(n_dim=x)
         else:
-            return _emp_pcov_init(x=x)
-    else:
-        return _emp_pcov_update(s=s, x=x)
+            s = _emp_pcov_init(x=x)
+    if len(x)>1:
+        s= _emp_pcov_update(s=s, x=x)
+    return s
 
 
 def merge_emp_scov(s:dict, other_s:dict):

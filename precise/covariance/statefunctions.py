@@ -4,7 +4,36 @@
 # i.e.   f(**s) usually works where s is the state
 
 import numpy as np
-from precise.covariance.util import both_cov
+
+
+def ledoit_wolf()
+
+
+def naive_ledoit_wolf_shrinkage(n_samples, pcov, p2cov):
+    """
+    :param n_samples:
+    :param pcov:        Covariance of X
+    :param p2cov:       Covariance of
+    :return:
+    """
+    # From https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/covariance/tests/test_covariance.py
+    # A simple implementation of the formulas from Ledoit & Wolf
+    # The computation below achieves the following computations of the
+    # "O. Ledoit and M. Wolf, A Well-Conditioned Estimator for
+    # Large-Dimensional Covariance Matrices"
+    # beta and delta are given in the beginning of section 3.2
+    n_features = np.shape(pcov)[0]
+    mu = np.trace(pcov) / n_features
+    delta_ = pcov.copy()
+    delta_.flat[:: n_features + 1] -= mu
+    delta = (delta_ ** 2).sum() / n_features
+    beta_ = 1.0 / (n_features * n_samples) * np.sum(p2cov - pcov ** 2)
+
+    beta = min(beta_, delta)
+    shrinkage = beta / delta
+    return shrinkage
+
+
 
 
 def oas(n_samples:int, pcov=None, scov=None, **ignore):

@@ -1,7 +1,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
 from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.covariance.util import multiply_diag, normalize, grand_shrink, make_diagnonal, mean_off_diag
+from precise.covariance.matrixfunctions import multiply_diag, normalize, grand_shrink, make_diagnonal, mean_off_diag
 from pprint import pprint
 from precise.structure.adjacency import centroid_precision_adjacency
 from precise.data.skaterresiduals import random_multivariate_residual

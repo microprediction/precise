@@ -2,7 +2,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.covariance.util import multiply_diag, normalize, grand_shrink
+from precise.covariance.matrixfunctions import multiply_diag, normalize, grand_shrink
 from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
 from pprint import pprint
 from precise.structure.adjacency import centroid_precision_adjacency

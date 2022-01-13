@@ -26,13 +26,18 @@ def multiply_diag(a, phi, copy=True):
         return a
 
 
+def grand_mean(a):
+    # tr(a)/n
+    return np.mean(a.diagonal())
+
+
 def grand_shrink(a, lmbd, copy=True):
     if copy:
         B = np.copy(a)
         return grand_shrink(B, lmbd=lmbd, copy=False)
     else:
         n = np.shape(a)[0]
-        mu = np.mean(a.diagonal())
+        mu = grand_mean(a)
         return (1-lmbd) * a + lmbd * mu * np.eye(n)
 
 
@@ -71,7 +76,6 @@ def nearest_pos_def(a):
 
     B = (a + a.T) / 2
     _, s, V = la.svd(B)
-
     H = np.dot(V.T, np.dot(np.diag(s), V))
     A2 = (B + H) / 2
     A3 = (A2 + A2.T) / 2
