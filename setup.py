@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.0.3",
+    version="0.1.0",
     description="Online covariance and precision estimation",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -21,7 +21,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     packages=["precise","precise.oo","precise.covariance","precise.structure","precise.plotting",
-              "precise.oo.empirical","precise.precision"],
+              "precise.oo.empirical","precise.precision","precise.data","precise.synthetic"],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
