@@ -87,7 +87,7 @@ def evaluate_lz(df, n_adj,n_cov, n_test, do_plot):
         pre = _lz_ema_spre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
     pre = _lz_ema_spre_update(m=pre, x=cov_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
 
-    lz_pre = pre['pre']
+    lz_pre = pre['spre']
     try:
         lz_cov = np.linalg.pinv(lz_pre)
     except:

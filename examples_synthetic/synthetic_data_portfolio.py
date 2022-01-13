@@ -52,21 +52,21 @@ if __name__=='__main__':
         pre = _lz_ema_spre_update(m=pre, x=x, update_precision=False, lmbd=lmbd, phi=phi)
     pre = _lz_ema_spre_update(m=pre, x=tiny_data[-1, :], update_precision=True, lmbd=lmbd, phi=phi)
 
-    lz_pre = pre['pre']
-    # lz_cov = np.linalg.inv(lz_pre)
+    lz_pre = pre['spre']
+    lz_cov = np.linalg.inv(lz_pre)
     
     # Portfolios
     n_dim = np.shape(big_data)[1]
     wones = np.ones(shape=(n_dim,1))
 
     if LONG_ONLY:
-        w_lz = long_from_pre(pre['pre'], as_dense=True)
+        w_lz = long_from_pre(pre['spre'], as_dense=True)
         w_ridge = long_from_pre(ridge_pre, as_dense=True)
         w_affine = long_from_pre(affine_pre, as_dense=True)
         w_shrink = long_from_pre(shrink_pre, as_dense=True)
         w_perfect = long_from_pre(true_pre, as_dense=True)
     else:
-        w_lz = normalize( np.squeeze(np.matmul( pre['pre'],wones )) )
+        w_lz = normalize( np.squeeze(np.matmul( pre['spre'],wones )) )
         w_ridge = normalize( np.squeeze(np.matmul( ridge_pre, wones)))
         w_affine = normalize(np.squeeze(np.matmul(affine_pre, wones)))
         w_shrink = normalize(np.squeeze(np.matmul( shrink_pre, wones)))
