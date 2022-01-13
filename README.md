@@ -51,9 +51,9 @@ Method hints:
 ### State functions & mutations
 Three types of utilities exist
 
-   1. State [functions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
-   2. State [mutations](https://github.com/microprediction/precise/blob/main/precise/covariance/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
-   3. Miscellaneous [util](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
+   1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
+   2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/covariance/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
+   3. Miscellaneous [/covariance/matrixfunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
      
 
 ### Updater hyper-parameters
