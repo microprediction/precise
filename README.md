@@ -65,5 +65,5 @@ The intent is that methods are parameter free. However some not-quite autonomous
  - This is part of the microprediction project, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md)
  - The uses include mixtures of experts models for time-series analysis. 
  - If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
- - The name refers to precision matrices. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!  
+ - The name refers to precision matrices, not numerical precision. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!  
 
