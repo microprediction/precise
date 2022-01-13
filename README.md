@@ -60,7 +60,7 @@ Three types of utilities exist
 
  - Related and potentially related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
  - This is part of the microprediction project, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md)
- - The uses include mixtures of experts models for time-series analysis. 
+ - The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
  - If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
  - The name refers to precision matrices, not numerical precision. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!
  - The intent is that methods are parameter free. However some not-quite autonomous methods admit just one additional scalar parameter *r* and that can make the creation of fully autonomous methods simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package.   
