@@ -4,26 +4,29 @@ import numpy as np
 from precise.covariance.empirical import _emp_pcov_init,merge_emp_scov, _emp_pcov_update
 from precise.synthetic.generate import create_correlated_dataset
 
+TOL = 1E-10
 
 def test_onlineempirical():
-    data = create_correlated_dataset(10000, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
+    data = create_correlated_dataset(100, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
     conventional_mean = np.mean(data, axis=0)
     conventional_cov = np.cov(data, rowvar=False)
     conventional_corrcoef = np.corrcoef(data, rowvar=False)
     ocov = _emp_pcov_init(n_dim=data.shape[1])
     for observation in data:
         ocov = _emp_pcov_update(s=ocov, x=observation)
+    from precise.covariance.statemutations import both_cov
+    ocov = both_cov(ocov)
     assert np.isclose(conventional_mean, ocov['mean']).all(), \
         """
         Mean should be the same with both approaches.
         """
-    assert np.isclose(conventional_cov, ocov['pcov'], atol=1e-3).all(), \
+    assert np.isclose(conventional_cov, ocov['scov'], atol=TOL).all(), \
         """
         Covariance-matrix should be the same with both approaches.
         """
     from precise.covariance.matrixfunctions import cov_to_corrcoef
-    ocorr = cov_to_corrcoef(ocov['pcov'])
-    assert np.isclose(conventional_corrcoef, ocorr).all(), \
+    ocorr = cov_to_corrcoef(ocov['scov'])
+    assert np.isclose(conventional_corrcoef, ocorr, atol=TOL).all(), \
         """
         Pearson-Correlationcoefficient-matrix should be the same with both approaches.
         """
