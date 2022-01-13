@@ -62,6 +62,7 @@ The intent is that methods are parameter free. However some not-quite autonomous
 
 ## Miscellaneous 
 
+ - Related and potentially related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
  - This is part of the microprediction project, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md)
  - The uses include mixtures of experts models for time-series analysis. 
  - If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
