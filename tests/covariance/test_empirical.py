@@ -24,7 +24,7 @@ def test_onlineempirical():
     assert np.isclose(conventional_cov, ocov['scov'], atol=TOL).all()
     from precise.covariance.matrixfunctions import cov_to_corrcoef
     ocorr = cov_to_corrcoef(ocov['scov'])
-    assert np.isclose(conventional_corrcoef, ocorr, atol=TOL).all(),
+    assert np.isclose(conventional_corrcoef, ocorr, atol=TOL).all()
 
 
 def test_merging():

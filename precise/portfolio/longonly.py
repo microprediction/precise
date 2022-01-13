@@ -1,7 +1,7 @@
 
 # See also https://osqp.org/docs/examples/portfolio.html
 import numpy as np
-from precise.covariance.matrixfunctions import make_symmetric, dense_weights_from_dict, normalize, nearest_pos_def
+from precise.covariance.matrixfunctions import to_symmetric, dense_weights_from_dict, normalize, nearest_pos_def
 
 # sum(w)=1
 # 0 < w < 1
@@ -10,7 +10,7 @@ from precise.covariance.matrixfunctions import make_symmetric, dense_weights_fro
 def long_from_cov( cov, as_dense=True ):
     """ Long only cov minimizing portfolio with weights summing to unity """
     import pypfopt
-    cov = make_symmetric(cov)
+    cov = to_symmetric(cov)
     cov = nearest_pos_def(cov)
     n_dim = np.shape(cov)[0]
     from pypfopt import EfficientFrontier
@@ -21,7 +21,7 @@ def long_from_cov( cov, as_dense=True ):
 
 
 def long_from_pre(pre, as_dense=True):
-    pre = make_symmetric(pre)
+    pre = to_symmetric(pre)
     cov = np.linalg.inv(pre)
     return long_from_cov(cov=cov, as_dense=as_dense )
 

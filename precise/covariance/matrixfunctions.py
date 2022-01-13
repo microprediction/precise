@@ -8,10 +8,9 @@ def cov_to_corrcoef(a):
 
 
 def normalize(x):
-    """ Normalize vector """
     try:
         return x/sum(x)
-    except:
+    except TypeError:
         return [xi/sum(x) for xi in x]
 
 
@@ -27,7 +26,7 @@ def multiply_diag(a, phi, copy=True):
 
 
 def grand_mean(a):
-    # tr(a)/n
+    # np.trace(a)/n might be faster, haven't checked
     return np.mean(a.diagonal())
 
 
@@ -45,7 +44,7 @@ def is_symmetric(a, rtol=1e-05, atol=1e-08):
     return np.allclose(a, a.T, rtol=rtol, atol=atol)
 
 
-def make_symmetric(a):
+def to_symmetric(a):
     return (a + a.T) / 2.0
 
 
@@ -57,10 +56,6 @@ def dense_weights_from_dict(d:dict, shape=None, n_dim:int=None):
     for i in range(n_dim):
         w[i] = d[i]
     return w
-
-
-from numpy import linalg as la
-
 
 def nearest_pos_def(a):
     """Find the nearest positive-definite matrix to input
@@ -75,7 +70,7 @@ def nearest_pos_def(a):
     """
 
     B = (a + a.T) / 2
-    _, s, V = la.svd(B)
+    _, s, V = np.linalg.svd(B)
     H = np.dot(V.T, np.dot(np.diag(s), V))
     A2 = (B + H) / 2
     A3 = (A2 + A2.T) / 2
@@ -83,7 +78,7 @@ def nearest_pos_def(a):
     if is_positive_def(A3):
         return A3
 
-    spacing = np.spacing(la.norm(a))
+    spacing = np.spacing(np.linalg.norm(a))
     # The above is different from [1]. It appears that MATLAB's `chol` Cholesky
     # decomposition will accept matrixes with exactly 0-eigenvalue, whereas
     # Numpy's will not. So where [1] uses `eps(mineig)` (where `eps` is Matlab
@@ -96,7 +91,7 @@ def nearest_pos_def(a):
     I = np.eye(a.shape[0])
     k = 1
     while not is_positive_def(A3):
-        mineig = np.min(np.real(la.eigvals(A3)))
+        mineig = np.min(np.real(np.linalg.eigvals(A3)))
         A3 += I * (-mineig * k**2 + spacing)
         k += 1
 
@@ -106,9 +101,9 @@ def nearest_pos_def(a):
 def is_positive_def(a):
     """Returns true when input is positive-definite, via Cholesky"""
     try:
-        _ = la.cholesky(a)
+        _ = np.linalg.cholesky(a)
         return True
-    except la.LinAlgError:
+    except np.linalg.LinAlgError:
         return False
 
 
