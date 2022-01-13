@@ -1,6 +1,6 @@
 # precise
 
-A collection of autonomous online covariance matrix estimators. 
+A collection of *autonomous* *online* (incremental) covariance matrix estimators. 
 
 ## Install 
 
@@ -9,9 +9,11 @@ A collection of autonomous online covariance matrix estimators.
 ## Examples
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
 
+## Explanation
+You use state updaters, then functions of the state. 
 
-## State updates  
-All updaters return a posterior state. Pass an empty dict on first use. Return the state on the next call. 
+### State updates  
+All updaters take a prior state and return a posterior state (dict). An empty dict is passed to initialize. 
 
 Example: 
 
@@ -25,7 +27,7 @@ Example:
             s = emp_pcov(s=s, x=x)
         pprint(s['scov'])
      
-This package contains similar updaters. Their states typically one of the following:
+Naming hints: 
 
 | Shorthand | Intent                |
 |-----------|-----------------------|
@@ -35,40 +37,31 @@ This package contains similar updaters. Their states typically one of the follow
 | ppre      | Population precision  |
      
      
-Names of updaters contain hints of what is updated, and the method:
+Method hints: 
 
 | Shorthand | Meaning               |
 |-----------|-----------------------|
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
+| lz      | Le-Zhong variable-by-variable updating |
 
-Maybe more by the time you read this. 
+
+(Maybe more by the time you read this) 
      
-## State functions & mutations
+### State functions & mutations
 Three types of utilities exist
 
-   1. State functions are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
-   2. State mutations  
+   1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
+   2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/covariance/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
+   3. Miscellaneous [/covariance/matrixfunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
      
-Similarly there are statemutations 
- 
-    from precise.covariance.statemutations import both_cov
-  
-    s = both_cov(s)  # <--- Adds 'pcov' to dictionary s 
-  
+
+### Updater hyper-parameters
+The intent is that methods are parameter free. However some not-quite autonomous methods admit just one additional scalar parameter *r* and that can make the creation of fully autonomous methods simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
 
 
+## Miscellaneous 
 
-## State functions 
-
-See [/covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) for OAS et cetera. 
-
-
-## Hyper-parameters
-The intent is that methods are parameter free. However some admit just one additional scalar parameter *r* and that can make tuning simpler, akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package. 
-
-
-## Related 
-
-If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
+ - Care to cite, some ideas [here](https://github.com/microprediction/microprediction/blob/master/CITE.md)
+ - If you just want univariate, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). 
 
