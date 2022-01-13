@@ -16,20 +16,11 @@ def test_onlineempirical():
         ocov = _emp_pcov_update(s=ocov, x=observation)
     from precise.covariance.statemutations import both_cov
     ocov = both_cov(ocov)
-    assert np.isclose(conventional_mean, ocov['mean']).all(), \
-        """
-        Mean should be the same with both approaches.
-        """
-    assert np.isclose(conventional_cov, ocov['scov'], atol=TOL).all(), \
-        """
-        Covariance-matrix should be the same with both approaches.
-        """
+    assert np.isclose(conventional_mean, ocov['mean']).all()
+    assert np.isclose(conventional_cov, ocov['scov'], atol=TOL).all()
     from precise.covariance.matrixfunctions import cov_to_corrcoef
     ocorr = cov_to_corrcoef(ocov['scov'])
-    assert np.isclose(conventional_corrcoef, ocorr, atol=TOL).all(), \
-        """
-        Pearson-Correlationcoefficient-matrix should be the same with both approaches.
-        """
+    assert np.isclose(conventional_corrcoef, ocorr, atol=TOL).all(),
 
 
 def test_merging():
