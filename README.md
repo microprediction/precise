@@ -1,6 +1,6 @@
 # precise
 
-A collection of *autonomous* *online* (incremental) covariance matrix estimators. 
+A collection of *autonomous* *incremental* covariance estimators. 
 
 ## Install 
 
