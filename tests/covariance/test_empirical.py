@@ -1,8 +1,12 @@
 
-# Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
+
 import numpy as np
 from precise.covariance.empirical import _emp_pcov_init,merge_emp_scov, _emp_pcov_update
 from precise.synthetic.generate import create_correlated_dataset
+
+# Some cut and paste https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
+# However I've removed the confusion between sample and population estimates, and taken the tolerance
+# down to 1e-10 
 
 TOL = 1E-10
 
