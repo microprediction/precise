@@ -44,9 +44,9 @@ Method hints:
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
 | lz      | Le-Zhong variable-by-variable updating |
+| lw      | (inspired by) Ledoit-Wolf              |
 
-
-(Maybe more by the time you read this) 
+Some, such as OAS, don't need their own state tracking. See [examples](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
      
 ### State functions & mutations
 Three types of utilities exist
