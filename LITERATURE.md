@@ -1,8 +1,7 @@
 
 
 
-### Numerically Stable Parallel Computation of (Co-)Variance
-[pdf](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf)
+### Numerically Stable Parallel Computation of (Co-)Variance [pdf](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf)
 With the advent of big data, we see an increasing interest in computing correlations in huge data sets with both many instances and
 many variables. Essential descriptive statistics such as the variance,
 standard deviation, covariance, and correlation can suffer from a
