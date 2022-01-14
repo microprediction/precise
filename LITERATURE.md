@@ -46,6 +46,16 @@ Marcos Lopez de Prado
 Convex optimization solutions tend to be unstable, to the point of entirely offsetting the benefits of optimization. For example, in the context of financial applications, it is known that portfolios optimized in-sample often underperform the naïve (equal weights) allocation out-of-sample. This instability can be traced back to two sources: (i) noise in the input variables; and (ii) signal structure that magnifies the estimation errors in the input variables. A first innovation of this paper is to introduce the nested clustered optimization algorithm (NCO), a method that tackles both sources of instability.
 
 
+### Robust Estimation of High-Dimensional Mean Regression [pdf](https://arxiv.org/pdf/1410.2150.pdf)
+Fan, Li, Wang
+
+Data subject to heavy-tailed errors are commonly encountered in various scientific fields, especially in the modern era with explosion of massive data. To address this problem, procedures
+based on quantile regression and Least Absolute Deviation (LAD) regression have been developed in recent years. These methods essentially estimate the conditional median (or quantile)
+function. They can be very different from the conditional mean functions when distributions
+are asymmetric and heteroscedastic. How can we efficiently estimate the mean regression functions in ultra-high dimensional setting with existence of only the second moment? To solve this
+problem, we propose a penalized Huber loss with diverging parameter to reduce biases created
+by the traditional Huber loss. 
+
 ### Noisy Covariance Matrices and Portfolio Optimization [pdf](https://arxiv.org/pdf/cond-mat/0111503.pdf)
 According to recent findings [1, 2], empirical covariance matrices deduced from
 financial return series contain such a high amount of noise that, apart from a
