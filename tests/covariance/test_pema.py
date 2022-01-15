@@ -10,7 +10,7 @@ from pprint import pprint
 def test_compare():
     data = create_correlated_dataset(100, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
 
-    s1 = _pema_scov_init(n_dim=data.shape[1],target=0)
+    s1 = _pema_scov_init(n_dim=data.shape[1],target=None)
     for x in data:
         s1 = _pema_scov_update(s=s1, x=x)
 
@@ -23,8 +23,10 @@ def test_compare():
         s2 = _ema_scov_update(s=s2, x=x)
 
     pprint(corr1)
-    pprint(s1)
-    pprint(s2)
+    pprint(s1['scov'])
+    pprint(s2['scov'])
+    sratio = s1['scov']/s2['scov']
+    pprint(sratio)
     pass
 
 

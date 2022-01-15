@@ -34,10 +34,11 @@ def _emp_pcov_update(s:dict, x:[float], target=None):
     s['n_samples'] += 1
     if target is not None:
         delta = np.array(x - target)
+        weighted_delta_at_n = np.array(x - target) / s['n_samples']
     else:
         delta = np.array(x - s['mean'])
+        weighted_delta_at_n = np.array(x - s['mean']) / s['n_samples']
     s['mean'] += delta / s['n_samples']
-    weighted_delta_at_n = np.array(x - s['mean']) / s['n_samples']
     D_at_n = np.broadcast_to(weighted_delta_at_n, s['shape']).T
     I = np.identity(s['n_dim'])
     D = (delta * I).dot(D_at_n.T)
