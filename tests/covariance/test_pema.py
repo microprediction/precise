@@ -8,7 +8,7 @@ from pprint import pprint
 
 
 def test_compare():
-    data = create_correlated_dataset(1000, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
+    data = create_correlated_dataset(500, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
 
     s1 = _pema_scov_init(n_dim=data.shape[1],target=None)
     for x in data:
