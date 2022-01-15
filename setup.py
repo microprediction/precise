@@ -21,7 +21,7 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     packages=["precise","precise.oo","precise.covariance","precise.structure","precise.plotting",
-              "precise.oo.empirical","precise.precision","precise.data","precise.synthetic"],
+              "precise.batch.empirical","precise.precision","precise.data","precise.synthetic","precise.vector"],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,

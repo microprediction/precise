@@ -9,8 +9,8 @@ def test_lw():
     data = create_factor_dataset(1000,n_dim=25)
 
     from sklearn.covariance._shrunk_covariance import ledoit_wolf_shrinkage
-    shrk_true = ledoit_wolf_shrinkage(X=data[-80:], assume_centered=True)
-    shrk_false = ledoit_wolf_shrinkage(X=data[-80:], assume_centered=False)
+    shrk_true = ledoit_wolf_shrinkage(X=data[-20:], assume_centered=True)
+    shrk_false = ledoit_wolf_shrinkage(X=data[-20:], assume_centered=False)
 
     s = {}
     for x in data:
@@ -19,7 +19,7 @@ def test_lw():
     del s['s_c']
     del s['scov']
     del s['buffer']
-    if False:
+    if True:
         pprint(s)
         print({'shrk_true': shrk_true,'shrk_false':shrk_false})
 

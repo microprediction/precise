@@ -1,7 +1,7 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.oo.empirical.onlineempirical import OnlineEmpiricalCovariance
+from precise.batch.covariance.onlineempirical import OnlineEmpiricalCovariance
 from precise.synthetic.generate import create_correlated_dataset
 
 

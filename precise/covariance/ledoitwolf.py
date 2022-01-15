@@ -48,10 +48,10 @@ def _lw_ema_scov_update(s, x, r):
         mn = grand_mean(scov)
         s['mn'] = mn
         n_dim = np.shape(scov)[0]
-        s['dn'] = np.linalg.norm(scov - mn * np.eye(n_dim))**2
+        s['dn'] = np.linalg.norm((scov - mn * np.eye(n_dim))**2)
 
         # Update b^2
-        xc2 = xc
+        xc2 = xc**2
         xl2 = np.dot(xc2.T,xc2) - scov
         if s.get('bn_bar') is None:
             s['bn_bar'] = s['lmbd']*s['dn']

@@ -1,6 +1,20 @@
 import numpy as np
 
 
+def emp_pcov(s:dict, x:[float])->dict:
+    """
+        Track empirical sample covariance
+    """
+    if s.get('n_samples') is None:
+        if isinstance(x,int):
+            return _emp_pcov_init(n_dim=x)
+        else:
+            s = _emp_pcov_init(x=x)
+    if len(x)>1:
+        s= _emp_pcov_update(s=s, x=x)
+    return s
+
+
 def _emp_pcov_init(s:dict=None, x:[float]=None, n_dim=None):
     """ Empirical population covariance"""
     n_dim = len(x) if x is not None else n_dim
@@ -15,10 +29,13 @@ def _emp_pcov_init(s:dict=None, x:[float]=None, n_dim=None):
     return s
 
 
-def _emp_pcov_update(s:dict, x:[float]):
+def _emp_pcov_update(s:dict, x:[float], target=None):
     assert s['n_dim'] == len(x)
     s['n_samples'] += 1
-    delta = np.array(x - s['mean'])
+    if target is not None:
+        delta = np.array(x - target)
+    else:
+        delta = np.array(x - s['mean'])
     s['mean'] += delta / s['n_samples']
     weighted_delta_at_n = np.array(x - s['mean']) / s['n_samples']
     D_at_n = np.broadcast_to(weighted_delta_at_n, s['shape']).T
@@ -28,18 +45,7 @@ def _emp_pcov_update(s:dict, x:[float]):
     return s
 
 
-def emp_pcov(s:dict, x:[float])->dict:
-    """
-        Track empirical sample covariance
-    """
-    if s.get('n_samples') is None:
-        if isinstance(x,int):
-            return _emp_pcov_init(n_dim=x)
-        else:
-            s = _emp_pcov_init(x=x)
-    if len(x)>1:
-        s= _emp_pcov_update(s=s, x=x)
-    return s
+
 
 
 def merge_emp_scov(s:dict, other_s:dict):
