@@ -9,8 +9,8 @@ from precise.vector.switchingaverage import sma
 # Don't use. BUGGY.
 
 QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
-             'du':(1.0,-1,1),
-             'dl':(1.0,1,-1),
+             'du':(-1.0,-1,1),
+             'dl':(-1.0,1,-1),
              'cl':(1.0,-1,-1)}
 
 
