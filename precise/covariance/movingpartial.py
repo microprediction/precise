@@ -60,6 +60,9 @@ def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
 
     # Update running partial scatter estimates
     for q,(w,sgn1,sgn2) in QUADRANTS.items():
+        # Morally:
+        #    x1 = max(0, (x-target)*sgn1) * sgn1
+        #    x2 = (np.max(0, (x-target)*sgn2) * sgn2) if sgn1!=sgn2 else x1
         x1 = (x-target)*sgn1
         x2 = (x-target)*sgn2
         x1[x1<0]=0
@@ -68,10 +71,16 @@ def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
         x2 = sgn2*x2
         s[q] = _ema_scov_update(s[q],x=x1,r=r,target=0, y=x2)
 
-    s['scov'] = np.zeros(shape=((s['n_dim'],s['n_dim'])))
-    for q in QUADRANTS:
-        s['scov'] += s[q]['scov']
     s['mean'] = np.copy( s['sma']['mean'] )
+    s['n_samples'] = s['sma']['n_samples']
+
+    if s['n_samples']>=2:
+        s['scov'] = np.zeros(shape=((s['n_dim'],s['n_dim'])))
+        for q in QUADRANTS:
+            try:
+                s['scov'] += s[q]['scov']
+            except:
+                pass
     return s
 
 

@@ -49,7 +49,8 @@ def _ema_scov_update(s:dict, x:[float], r:float=None, target=None, y=None):
         # Use the regular cov update for a burn-in period
         # During this time both scov and pcov are maintained
         s = _emp_pcov_update(s=s, x=x, target=target)
-        s['scov'] = s['pcov'] * (s['n_samples'] - 1) / s['n_samples']
+        if s['n_samples']>1:
+            s['scov'] = s['pcov'] * s['n_samples'] / (s['n_samples'] - 1)
     else:
         s['n_samples']+=1
         r = s['rho'] if r is None else r
@@ -72,7 +73,7 @@ def _ema_scov_update(s:dict, x:[float], r:float=None, target=None, y=None):
         yyt = np.dot(xcol, ycolT)
         s['scov'] = (1 - r) * s['scov'] + r * yyt
         s['mean'] = (1 - r) * s['mean'] + r * x
-        s['pcov']=None # Invaliate stale pcov
+        s['pcov']= s['scov']*(s['n_samples']-1)/s['n_samples']
     return s
 
 
