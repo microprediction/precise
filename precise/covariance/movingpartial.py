@@ -50,7 +50,6 @@ def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
     """ Update recency weighted estimate of scov-like matrix by treating quadrants individually """
 
     assert len(x)==s['n_dim']
-    s['sma'] = sma(s=s['sma'], x=x, r=r)
 
     # If target is not supplied we maintain a mean that switches from emp to ema
     if target is None:
@@ -81,6 +80,9 @@ def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
                 s['scov'] += s[q]['scov']
             except:
                 pass
+
+    s['sma'] = sma(s=s['sma'], x=x, r=r)
+
     return s
 
 

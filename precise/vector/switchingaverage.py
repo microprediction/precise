@@ -13,9 +13,10 @@ def sma(s:dict=None, x=None, r:float=0.025):
         if r is None:
             r = s['r']
         if r is None:
-            pass
             raise Exception('r must be supplied at initialization, or on the fly')
         s['n_samples'] += 1
-        rho = max(r, 1/s['n_samples'])
-        s['mean'] = (1-rho)*s['mean'] + rho*x
+        if s['n_samples']<1/r:
+            s['mean'] += x/s['n_samples']
+        else:
+            s['mean'] = (1-r)*s['mean'] + r*x
     return s

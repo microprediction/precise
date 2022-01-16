@@ -31,21 +31,19 @@ def _emp_pcov_init(s:dict=None, x:[float]=None, n_dim=None):
 
 def _emp_pcov_update(s:dict, x:[float], target=None):
     assert s['n_dim'] == len(x)
+    prev_cov = np.copy( s['pcov'] )
+    prev_mean = s['mean']
     s['n_samples'] += 1
-    if target is not None:
-        delta = np.array(x - target)
-        weighted_delta_at_n = np.array(x - target) / s['n_samples']
+    s['mean'] = prev_mean + (x - prev_mean)/s['n_samples']
+    if target is None:
+        delta_x_prev = np.atleast_2d(x-prev_mean)
+        delta_x_current = np.atleast_2d(x - s['mean'])
     else:
-        delta = np.array(x - s['mean'])
-        weighted_delta_at_n = np.array(x - s['mean']) / s['n_samples']
-    s['mean'] += delta / s['n_samples']
-    D_at_n = np.broadcast_to(weighted_delta_at_n, s['shape']).T
-    I = np.identity(s['n_dim'])
-    D = (delta * I).dot(D_at_n.T)
-    s['pcov'] = s['pcov'] * (s['n_samples'] - 1) / s['n_samples'] + D
+        delta_x_prev = np.atleast_2d(x - target)
+        delta_x_current = np.atleast_2d(x - target)
+    s['pcov'] = prev_cov + ( np.matmul( delta_x_current.transpose(),delta_x_prev) - prev_cov ) / s['n_samples']
+
     return s
-
-
 
 
 
