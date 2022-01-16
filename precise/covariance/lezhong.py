@@ -1,10 +1,17 @@
 import numpy as np
 from precise.covariance.movingaverage import _ema_scov_update, _ema_scov_init
 
-# Track running expon weighted cov estimates using a known sub-division
+# Tracks running expon weighted cov estimates ... so that
+# the precision matrix can be estimated assuming a known
+# sparsity structure (see precise.precision.lezhong)
 
 
-# 1. Variable by variable cov tracking
+def lz_scov(m, x, adj=None, rho=0.05, n_emp=None):
+    if (not m) or (m.get('states')):
+        m = _lz_scov_init(adj=adj, rho=rho, n_emp=n_emp)
+    m = _lz_scov_update(m=m,x=x)
+    return m
+
 
 def _lz_scov_init(adj, n_emp=10, rho=0.05):
     """ Minimal steps to ensure adjacency matrix is okay,
@@ -26,10 +33,10 @@ def _lz_scov_init(adj, n_emp=10, rho=0.05):
 
 def _lz_scov_update(m:dict, x:[float])->dict:
     """ Update one cov dict for each variable """
-    for i,r in enumerate(m['states']):
+    for i,s in enumerate(m['states']):
         indx = m['adj'][:, i]
         xi = x[indx]
-        r = _ema_scov_update(s=r, x=xi)
+        s = _ema_scov_update(s=s, x=xi)
     return m
 
 

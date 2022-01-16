@@ -3,10 +3,9 @@ from precise.covariance.movingaverage import _ema_scov_update, _ema_scov_init
 from typing import Union, List
 from precise.vector.switchingaverage import sma
 
-# Running average scatter estimate based on partial moments
-# If no target is supplied, either initially or for the update call, then a running mean will be used.
+# Exponential weighted partial moment covariance estimation
 
-# Don't use. BUGGY.
+# If no target is supplied, either initially or for the update call, then a running mean will be used.
 
 QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
              'du':(-1.0,-1,1),

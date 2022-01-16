@@ -6,7 +6,8 @@ import numpy as np
 
 # Experimental estimator inspired by Ledoit-Wolf
 # Keeps a buffer of last n_buffer observations
-# Tracks quantities akin to a^2, d^2 in LW
+# Tracks quantities akin to a^2, d^2 used by LW to
+# estimate a reasonable linear shrinkage
 
 
 def lw_ema_scov(s:dict, x=None, r=0.025)->dict:
