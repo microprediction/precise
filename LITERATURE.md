@@ -292,3 +292,8 @@ are the matrix dimensions. The power of this new perturbation result is shown in
 covariance estimation, particularly when random variables have heavy tails. There, we propose new robust covariance estimators and establish their asymptotic properties using the
 newly developed perturbation bound. Our theoretical results are verified through extensive
 numerical experiments.
+
+### Accounting for the Epps effect: Realized covariation, cointegration and common factors. Unpublished paper: Oxford-Man (2007)
+jeremy large [pdf](http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.371.4076&rep=rep1&type=pdf)
+
+High-frequency realized variance approaches offer great promise for estimating asset prices ’ covariation, but encounter difficulties connected to the Epps effect. This paper models the Epps effect in a stochastic volatility setting. It adds dependent noise to a factor representation of prices. The noise both offsets covariation and describes plausible lags in information transmission. Non-synchronous trading, another recognized source of the effect, is not required. A resulting estimator of correlations and betas performs well on LSE mid-quote data, lending empirical credence to the approach. 
