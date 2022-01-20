@@ -6,21 +6,16 @@ from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_d
 
 def ewa(s:dict=None, x:X_TYPE=None, r:float=0.025, n_dim:int=None):
     """ Exponential weighted average """
-    return _sma(s=s,x=x,r=r,n_dim=n_dim,method='ma')
-
-
-def em(s:dict=None, x:X_TYPE=None, r:float=0.025, n_dim:int=None):
-    """ Empirical mean """
-    return _sma(s=s, x=x, r=r, n_dim=n_dim, method='emp')
+    return averager(s=s, x=x, r=r, n_dim=n_dim, method='ma')
 
 
 def sma(s:dict=None, x:X_TYPE=None, r:float=0.025, n_dim:int=None):
     """ Switching from empirical to ewa """
-    return _sma(s=s, x=x, r=r, n_dim=n_dim, method='switch')
+    return averager(s=s, x=x, r=r, n_dim=n_dim, method='switch')
 
 
 
-def _sma(s:dict=None, x:X_TYPE=None, r:float=0.025, method:str='switch', n_dim:int=None):
+def averager(s:dict=None, x:X_TYPE=None, r:float=0.025, method:str= 'switch', n_dim:int=None):
     """ Stands for "switching moving average"
           method:   'switch', 'ma' or 'emp'
     """

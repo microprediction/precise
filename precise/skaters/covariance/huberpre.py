@@ -1,6 +1,6 @@
 from precise.skaters.covarianceutil.conventions import is_data, infer_dimension, X_TYPE, X_DATA_TYPE
-from precise.skaters.vector.bufferstatspre import buf_mean_and_median
-from precise.skaters.vector.movingaveragepre import sma
+from precise.skaters.covariance.bufferedpre import buf_mean_and_median
+from precise.skaters.vectormean.averagingpre import sma
 import numpy as np
 from precise.skaters.vectorutil.hubermean import huber_deriv, parallel_bisection_root_finder, mean_huber_squared_error
 from pprint import pprint

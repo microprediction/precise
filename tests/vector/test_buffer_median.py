@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from precise.skaters.vector.buffermedianpre import med
+from precise.skaters.vectormean.buffermedianpre import med
 
 
 def test_buffer_median():
