@@ -1,0 +1,51 @@
+import numpy as np
+from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
+
+# Tracks running expon weighted cov estimates ... so that
+# the precision matrix can be estimated assuming a known
+# sparsity structure (see precise.skaters.precision.lezhong)
+
+
+def lz_scov(m, x, adj=None, rho=0.05, n_emp=None):
+    if (not m) or (m.get('states')):
+        m = _lz_scov_init(adj=adj, rho=rho, n_emp=n_emp)
+    m = _lz_scov_update(m=m,x=x)
+    return m
+
+
+def _lz_scov_init(adj, n_emp=10, rho=0.05):
+    """ Minimal steps to ensure adjacency matrix is okay,
+         and initialize one cov tracker for each variable.
+
+    :param adj:     Adjacency matrix. Only positivity will be used.
+    :param n_emp:   Number of data points to use empirical cov before switching to expon weighted
+    :return:
+    """
+    n_dim, n_dim_check = np.shape(adj)
+    assert n_dim==n_dim_check
+    adj = np.vectorize(float)(adj > 0)
+    m = dict()
+    m['adj'] = adj.astype(bool)
+    n_dims = [int(s) for s in np.sum(adj,axis=0)]
+    m['states'] = [_ema_scov_init(n_dim=nd, n_emp=n_emp, r=rho) for nd in n_dims]
+    return m
+
+
+def _lz_scov_update(m:dict, x:[float])->dict:
+    """ Update one cov dict for each variable """
+    for i,s in enumerate(m['states']):
+        indx = m['adj'][:, i]
+        xi = x[indx]
+        s = _ema_scov_update(s=s, x=xi)
+    return m
+
+
+
+
+
+
+
+
+
+
+

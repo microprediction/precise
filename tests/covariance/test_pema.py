@@ -1,10 +1,11 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.covariance.movingpartial import _pema_scov_init, _pema_scov_update
-from precise.covariance.movingaverage import _ema_scov_update, _ema_scov_init
-from precise.covariance.empirical import emp_pcov
-from precise.synthetic.generate import create_correlated_dataset
+from precise.skaters.covariance.movingpartialpre import _pema_scov_init, _pema_scov_update
+from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
+from precise.skaters.covariance.empiricalpre import emp_pcov
+from precise.skaters.covarianceutil.matrixfunctions import cov_to_corrcoef
+from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from pprint import pprint
 
 
@@ -19,7 +20,6 @@ def test_compare():
     for x in data:
         s1 = _pema_scov_update(s=s1, x=x,r=r)
 
-    from precise.covariance.matrixfunctions import cov_to_corrcoef
     corr1 = cov_to_corrcoef(s1['scov'])
 
     # MA

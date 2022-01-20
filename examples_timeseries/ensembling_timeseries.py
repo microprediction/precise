@@ -1,13 +1,13 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
-from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.covariance.matrixfunctions import multiply_diag, normalize, grand_shrink, make_diagnonal, mean_off_diag
+from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
+from precise.skaters.covarianceutil.matrixfunctions import multiply_diag, grand_shrink, make_diagnonal, mean_off_diag
 from pprint import pprint
-from precise.structure.adjacency import centroid_precision_adjacency
-from precise.data.skaterresiduals import random_multivariate_residual
+from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
+from precise.skatertools.data.skaterresiduals import random_multivariate_residual
 import numpy as np
 from collections import Counter
-from precise.portfolio.longonly import long_from_pre, long_from_cov
+from precise.skaters.portfolioutil.longonly import long_from_pre, long_from_cov
 
 # Stacking time-series models
 

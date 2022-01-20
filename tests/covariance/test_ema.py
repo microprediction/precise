@@ -1,9 +1,9 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.covariance.empirical import emp_pcov
-from precise.covariance.movingaverage import ema_scov
-from precise.synthetic.generate import create_correlated_dataset
+from precise.skaters.covariance.empiricalpre import emp_pcov
+from precise.skaters.covariance.movingaveragepre import ema_scov
+from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from momentum import rvar
 
 

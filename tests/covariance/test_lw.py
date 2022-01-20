@@ -1,6 +1,6 @@
-import numpy as np
-from precise.synthetic.generate import create_correlated_dataset, create_factor_dataset
-from precise.covariance.ledoitwolf import lw_ema_scov
+from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
+from precise.skatertools.syntheticdata.factor import create_factor_dataset
+from precise.skaters.covariance.ledoitwolfpre import lw_ema_scov
 from pprint import pprint
 
 

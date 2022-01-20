@@ -1,8 +1,8 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.batch.covariance.onlineempirical import OnlineEmpiricalCovariance
-from precise.synthetic.generate import create_correlated_dataset
+from precise.zotherimplementationsfortesting.covariance.onlineempirical import OnlineEmpiricalCovariance
+from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 
 
 def test_onlineempirical():

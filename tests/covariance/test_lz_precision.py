@@ -1,10 +1,10 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.covariance.matrixfunctions import multiply_diag, normalize, grand_shrink
-from precise.synthetic.generate import create_disjoint_dataset, create_band_dataset
-from precise.structure.adjacency import centroid_precision_adjacency
+from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
+from precise.skaters.covarianceutil.matrixfunctions import multiply_diag, normalize, grand_shrink
+from precise.skatertools.syntheticdata.factor import create_disjoint_factor_dataset, create_band_dataset
+from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
 import random
 
 
@@ -13,7 +13,7 @@ def test_fixed_rpre_init():
         n_clusters = 30
         n_per_group = 5
         n_dims = [ random.choice([n_per_group]) for _ in range(n_clusters)]
-        big_data = create_disjoint_dataset(n=10000, n_dims=n_dims)
+        big_data = create_disjoint_factor_dataset(n=10000, n_dims=n_dims)
     else:
         n_dim = 100
         big_data = create_band_dataset(n=10000, n_dim=n_dim, n_bands=3)

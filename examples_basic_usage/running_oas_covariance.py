@@ -1,7 +1,7 @@
-from precise.synthetic.generate import create_correlated_dataset
-from precise.covariance.empirical import emp_pcov
+from precise.skatertools.syntheticdata import create_correlated_dataset
+from precise.skaters.covariance import emp_pcov
 from pprint import pprint
-from precise.covariance.statefunctions import oas
+from precise.skaters.covariance import oas
 
 # Basic example of running OAS covariance
 # (just a simple function of the running state)
