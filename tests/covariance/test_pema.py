@@ -1,7 +1,7 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.skaters.covariance.movingpartialpre import _pema_scov_init, _pema_scov_update
+from precise.skaters.covariance.movingpartialpre import _partial_ema_scov_init, _partial_ema_scov_update
 from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
 from precise.skaters.covariance.empiricalpre import emp_pcov
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
@@ -16,9 +16,9 @@ def test_compare():
 
     # Partial moments
     r = 0.001
-    s1 = _pema_scov_init(n_dim=data.shape[1],target=known_mean)
+    s1 = _partial_ema_scov_init(n_dim=data.shape[1], target=known_mean)
     for x in data:
-        s1 = _pema_scov_update(s=s1, x=x,r=r)
+        s1 = _partial_ema_scov_update(s=s1, x=x, r=r)
 
     corr1 = cov_to_corrcoef(s1['scov'])
 

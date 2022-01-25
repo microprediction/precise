@@ -13,22 +13,30 @@ QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
              'cl':(1.0,-1,-1)}
 
 
-def pema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
+def partial_ema_scov_factory(s,y,k,r,target=0):
+    """ Skater """
+    assert k==1
+    s = partial_ema_scov(s=s,x=y,r=r,target=target)
+    x = s['sma']['mean']
+    x_cov = s['scov']
+    return x, x_cov, s
+
+
+def partial_ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, target=None):
     """ Maintain running population covariance """
-    target = 0
     if s.get('n_samples') is None:
         if isinstance(x,(int,float)):
-            return _pema_scov_init(n_dim=int(x),r=r,target=target)
+            return _partial_ema_scov_init(n_dim=int(x), r=r, target=target)
         elif len(x)>1:
-            s = _pema_scov_init(n_dim=len(x),r=r,target=target)
+            s = _partial_ema_scov_init(n_dim=len(x), r=r, target=target)
         else:
             raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
     if x is not None:
-        s = _ema_scov_update(s=s, x=x, r=r)
+        s = _partial_ema_scov_update(s=s, x=x, r=r)
     return s
 
 
-def _pema_scov_init(n_dim=None, r:float=0.025, n_emp=None, target:float=None )->dict:
+def _partial_ema_scov_init(n_dim=None, r:float=0.025, n_emp=None, target:float=None)->dict:
     """ Initialize object to track partial moments
 
        r:       Importance of current data point
@@ -40,12 +48,14 @@ def _pema_scov_init(n_dim=None, r:float=0.025, n_emp=None, target:float=None )->
     s = dict([ (q,_ema_scov_init(n_dim=n_dim,r=r,n_emp=n_emp)) for q in QUADRANTS ])
     q = next(iter(s.keys())) # Choose any
     s['n_dim'] = s[q]['n_dim']
+    s['n_emp'] = s[q]['n_emp']
+    s['rho'] = s[q]['rho']
     s['target'] = target
     s['sma'] = sma({},n_dim,r=r)
     return s
 
 
-def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
+def _partial_ema_scov_update(s:dict, x:[float], r:float=None, target=None):
     """ Update recency weighted estimate of scov-like matrix by treating quadrants individually """
 
     assert len(x)==s['n_dim']
@@ -79,9 +89,10 @@ def _pema_scov_update(s:dict, x:[float], r:float=None, target=None):
                 s['scov'] += s[q]['scov']
             except:
                 pass
+    else:
+        s['scov'] = np.eye(s['n_dim'])
 
     s['sma'] = sma(s=s['sma'], x=x, r=r)
-
     return s
 
 

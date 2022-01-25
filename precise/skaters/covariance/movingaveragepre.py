@@ -15,8 +15,6 @@ def ema_pcov_r(y, s:dict, k=1,r=0.025):
 
 
 
-
-
 def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:

@@ -1,5 +1,4 @@
 import numpy as np
-import math
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef, nearest_pos_def
 from precise.skaters.covarianceutil.datascatterfunctions import scatter_tensor_flat
 

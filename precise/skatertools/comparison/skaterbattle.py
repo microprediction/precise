@@ -15,12 +15,12 @@ from precise.whereami import SKATER_WIN_DATA
 
 # Creates a new file to put on the skater win data queue
 
-params = {'n_dim': 6,
+params = {'n_dim': 25,
           'n_obs': 160,
           'n_burn':140,
           'atol': 1e-4,
           'lb':-1000,
-          'ub':100,
+          'ub':1000,
           'interval':'d'}
 
 descriptions = {'m':'equity_monthly',

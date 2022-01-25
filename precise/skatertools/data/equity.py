@@ -20,11 +20,12 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m'):
     :param interval: 'd' or 'm'
     :return:
     """
-    assert n_dim<50
+    assert n_dim<=25
     if interval=='m':
         assert n_obs<=60
     constituents = pd.read_csv('https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
-    tickers = list(np.random.choice(constituents['symbol'][:50],3*n_dim, replace=False))
+    stock_tickers_repeatd = constituents['symbol'][:50]
+    tickers = list(np.random.choice(stock_tickers_repeatd,n_dim*2, replace=False))
     prices = list()
     while (len(prices)<n_dim) and len(tickers):
         ticker = tickers.pop()
