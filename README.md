@@ -15,14 +15,16 @@ You use state updaters, then functions of the state.
 ### Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, covariance skaters take one data point at a time, and also the prior state, and spit out a prediction vector *x*, a prediction covariance *x_cov*, and the posterior state.
 
-    from precise.synthetic.generate import create_correlated_dataset
-    from precise.covariance.empirical import emp_pcov_d0
- 
+    from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
+    from precise.skaters.covariance.empirical import emp_pcov_d0
+    from pprint import pprint
+
     if __name__=='__main__':
         ys = create_correlated_dataset(n=500)
         s = {}
         for y in ys:
-            x, x_cov, s = emp_pcov(s=s, y=y)
+            x, x_cov, s = emp_pcov_d0(s=s, y=y)
+        pprint(x_cov)
      
 You can hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
      
