@@ -18,7 +18,7 @@ def elo_from_win_counts(ctn):
         if not finished:
             b_rand = random.choice(remaining_choices)
             winner, loser = b_rand[0].split('>')
-            winner_change, loser_change = elo_change(elo[winner],elo[loser],points=1.0)
+            winner_change, loser_change = elo_change(elo[winner],elo[loser],points=1.0, k=10)
             ctn[b_rand[0]] -= 1
             elo[winner] += winner_change
             elo[loser] += loser_change

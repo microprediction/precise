@@ -8,11 +8,18 @@ from functools import lru_cache
 
 
 @lru_cache(maxsize=500)
-def get_prices(ticker,n_obs):
-    return web.get_data_yahoo(ticker, interval='m')[-n_obs - 1:]['Close'].values
+def get_prices(ticker,n_obs,interval):
+    return web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
 
 
-def random_m6_monthly_returns(n_dim=10, n_obs:int=60, verbose=True):
+def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m'):
+    """
+    :param n_dim:
+    :param n_obs:
+    :param verbose:
+    :param interval: 'd' or 'm'
+    :return:
+    """
     assert n_dim<50
     assert n_obs<=60
     constituents = pd.read_csv('https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
@@ -22,7 +29,7 @@ def random_m6_monthly_returns(n_dim=10, n_obs:int=60, verbose=True):
         ticker = tickers.pop()
         data = []
         try:
-            data = get_prices(ticker=ticker,n_obs=n_obs)
+            data = get_prices(ticker=ticker,n_obs=n_obs, interval=interval)
             if len(data)==n_obs+1:
                 prices.append(np.diff(np.log(data)))
             if verbose:
@@ -38,6 +45,6 @@ def random_m6_monthly_returns(n_dim=10, n_obs:int=60, verbose=True):
 if __name__=='__main__':
     import numpy as np
     from pprint import pprint
-    a = random_m6_monthly_returns(n_dim=3, n_obs=60)
+    a = random_m6_returns(n_dim=3, n_obs=60)
     c = np.corrcoef(np.array(a),rowvar=False)
     pprint(c)

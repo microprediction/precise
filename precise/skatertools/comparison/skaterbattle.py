@@ -1,7 +1,6 @@
 from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
 from precise.skatertools.data.skaterresiduals import random_multivariate_residual
 from precise.skaters.covarianceutil.likelihood import cov_skater_loglikelihood
-from precise.whereami import TOP
 from uuid import uuid4
 import os
 import json
@@ -11,7 +10,7 @@ from pprint import pprint
 import traceback
 from collections import Counter
 from momentum.functions import rvar
-from precise.skatertools.data.equity import random_m6_monthly_returns
+from precise.skatertools.data.equity import random_m6_returns
 from precise.whereami import SKATER_WIN_DATA
 
 # Creates a new file to put on the skater win data queue
@@ -22,7 +21,12 @@ params = {'n_dim': 3,
           'atol': 1e-4,
           'lb':-1000,
           'ub':100,
-          'description':'equity_monthly'}
+          'interval':'d'}
+
+descriptions = {'m':'equity_monthly',
+                'd':'equity_daily'}
+
+params['description'] = descriptions[params['interval']]
 
 if __name__=='__main__':
     atol = 1.0
@@ -42,14 +46,14 @@ if __name__=='__main__':
     worst_ll_seen = 10000000
     lb = params['lb']
     ub = params['ub']
+    interval = params['interval']
 
     while True:
         n_dim = params['n_dim']
         n_obs = params['n_obs']
-        xs = random_m6_monthly_returns(n_dim=n_dim,n_obs=n_obs, verbose=False)
+        xs = random_m6_returns(n_dim=n_dim, n_obs=n_obs, verbose=False, interval=interval)
         assert len(xs)==n_obs
         xs = np.array(xs)
-
         np.random.shuffle(ALL_D0_SKATERS)
         fs = ALL_D0_SKATERS[:3]
         stuff = list()
