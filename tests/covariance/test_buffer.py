@@ -1,9 +1,10 @@
 
 
 import numpy as np
-from precise.skaters.covariance.bufferedempirical import buf_pcov_d0_n20, buf_pcov_d1_n100
+from precise.skaters.covariance.bufferedempirical import buf_pcov_d0_n20
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
-from precise.skaters.covarianceutil.matrixfunctions import cov_to_corrcoef, np_pcorrcoef
+from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
+from precise.skaters.covarianceutil.datacovfunctions import np_pcorrcoef
 
 
 TOL = 1E-10

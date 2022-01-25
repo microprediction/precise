@@ -2,7 +2,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.skaters.covarianceutil.matrixfunctions import multiply_diag, normalize, grand_shrink
+from precise.skaters.covarianceutil.covfunctions import multiply_diag, normalize, grand_shrink
 from precise.skatertools.syntheticdata.factor import create_disjoint_factor_dataset, create_band_dataset
 from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
 import random

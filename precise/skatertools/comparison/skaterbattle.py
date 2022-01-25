@@ -15,9 +15,9 @@ from precise.whereami import SKATER_WIN_DATA
 
 # Creates a new file to put on the skater win data queue
 
-params = {'n_dim': 3,
-          'n_obs': 50,
-          'n_burn':40,
+params = {'n_dim': 6,
+          'n_obs': 160,
+          'n_burn':140,
           'atol': 1e-4,
           'lb':-1000,
           'ub':100,

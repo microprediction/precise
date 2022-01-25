@@ -21,7 +21,8 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m'):
     :return:
     """
     assert n_dim<50
-    assert n_obs<=60
+    if interval=='m':
+        assert n_obs<=60
     constituents = pd.read_csv('https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
     tickers = list(np.random.choice(constituents['symbol'][:50],3*n_dim, replace=False))
     prices = list()

@@ -1,8 +1,9 @@
 import numpy as np
 from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_data
 from precise.skaters.covariance.bufferedpre import buf_pcov_factory
-from precise.skaters.covarianceutil.matrixfunctions import pcov_of_columns
+from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns
 import warnings
+
 
 def buf_sk_factory(cls, y:X_TYPE=None, s:dict=None,  n_buffer:int=100, n_emp=5, cls_kwargs:dict=None, fit_kwargs:dict=None):
     """

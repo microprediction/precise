@@ -2,7 +2,7 @@ import numpy as np
 from precise.skaters.covariance.movingaveragepre import ema_scov
 from precise.skaters.covariance.huberpre import huber_pcov
 from precise.skatertools.syntheticdata.factor import create_factor_dataset
-from precise.skaters.covarianceutil.matrixfunctions import cov_to_corrcoef
+from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from pprint import pprint
 
 TOL = 1E-10

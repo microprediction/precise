@@ -3,8 +3,8 @@
 import numpy as np
 from precise.skaters.covariance.empiricalpre import emp_pcov, merge_emp_scov
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
-from precise.skaters.covarianceutil.matrixfunctions import cov_to_corrcoef
-from precise.skaters.covarianceutil.matrixfunctions import pcov_of_columns
+from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
+from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns
 
 # Some cut and paste https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 # However I've removed the confusion between sample and population estimates, and taken the tolerance

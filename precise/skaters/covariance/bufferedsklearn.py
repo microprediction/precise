@@ -38,6 +38,7 @@ def buf_mcd_pcov_d0_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, 
 
 def buf_oas_pcov_d0_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1):
     """ OAS based estimator for IID observations """
+    #https://arxiv.org/abs/0907.4698
     assert k == 1
     return buf_sk_factory(cls=OAS, y=y, s=s, n_buffer=n_buffer, n_emp=10)
 

@@ -1,7 +1,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.skaters.covarianceutil.matrixfunctions import multiply_diag, grand_shrink, make_diagnonal, mean_off_diag
+from precise.skaters.covarianceutil.covfunctions import multiply_diag, grand_shrink, make_diagonal, mean_off_diag
 from pprint import pprint
 from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
 from precise.skatertools.data.skaterresiduals import random_multivariate_residual
@@ -77,7 +77,7 @@ def evaluate_lz(df, n_adj,n_cov, n_test, do_plot):
     ridge_pre = np.linalg.inv(ridge_cov)
     shrink_pre = np.linalg.inv(shrink_cov)
     affine_pre = np.linalg.inv(affine_cov)
-    diag_cov = make_diagnonal(emp_cov)
+    diag_cov = make_diagonal(emp_cov)
 
 
     # LZ estimate

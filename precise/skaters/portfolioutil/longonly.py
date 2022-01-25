@@ -1,7 +1,7 @@
 
 # See also https://osqp.org/docs/examples/portfolio.html
 import numpy as np
-from precise.skaters.covarianceutil.matrixfunctions import to_symmetric, dense_weights_from_dict, normalize, nearest_pos_def
+from precise.skaters.covarianceutil.covfunctions import to_symmetric, dense_weights_from_dict, normalize, nearest_pos_def
 
 # sum(w)=1
 # 0 < w < 1
