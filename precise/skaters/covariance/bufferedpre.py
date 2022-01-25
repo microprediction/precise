@@ -5,7 +5,6 @@ from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns, np_
 # State machines that track stats for finite buffers of vectors
 
 
-
 def buf_cov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.nanstd(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
     return _buf1(func=np_pcorrcoef, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)

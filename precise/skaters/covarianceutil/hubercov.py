@@ -1,4 +1,4 @@
-from precise.skaters.locationutil import hubermean
+from precise.skaters.locationutil.hubermean import huber_mean
 from precise.skaters.covarianceutil.datacovfunctions import scatter_func_cov
 import numpy as np
 from pprint import pprint
@@ -7,9 +7,9 @@ from pprint import pprint
 def scatter_huber_cov(xs, a ,b ,n_iter=20, atol=1e-8, demean=False):
     """ Huber cov """
     def hloc(xs):
-        return hubermean(xs=xs, a=a, b=b, n_iter=n_iter, atol=atol, with_fraction_converged=False)
+        return huber_mean(xs=xs, a=a, b=b, n_iter=n_iter, atol=atol)
 
-    return scatter_func_cov(xs=xs, cov_loc_func=hloc)
+    return scatter_func_cov(xs=xs, cov_loc_func=hloc, demean=demean)
 
 
 def scatter_emp_cov(xs, demean=False):

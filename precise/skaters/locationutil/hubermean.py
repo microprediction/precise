@@ -2,10 +2,10 @@
 
 import numpy as np
 import math
-from precise.skaters.locationutil.bisection import parallel_bisection_root_finder
+from scipy.optimize import newton
 
 
-def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8, with_fraction_converged=False)->[float]:
+def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8)->[float]:
     """ Compute a columnwise pseudo-mean of xs, by minimizing a generalized Huber error that is
         proportional to x^2 near zero and asymptotes to |x| as |x|->infinity.
                f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
@@ -20,11 +20,14 @@ def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8, with_frac
     if len(xs)==0:
         raise ValueError('Cannot compute huber mean for no data')
     elif len(xs)==1:
-        return xs[0], 1.0 if with_fraction_converged else xs[0]
+        return xs[0]
     else:
         x_std = np.nanstd(xs,axis=0)
-        a_abs = a*x_std
-        return huber_mean_absolute_params(xs=xs, a=a_abs, b=b, n_iter=n_iter, atol=atol, with_fraction_converged=with_fraction_converged)
+        xs_rescaled = xs/(10*x_std)
+        a_abs = a/10.
+        scaled_mean = huber_mean_absolute_params(xs=xs_rescaled, a=a_abs, b=b, n_iter=n_iter, atol=atol, with_fraction_converged=False)
+        unscaled_mean = scaled_mean * x_std*10
+        return unscaled_mean
 
 
 def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_fraction_converged=False)->[float]:
@@ -49,10 +52,13 @@ def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_fr
     """
     x_median = np.median(xs, axis=0)
     x_mean = np.mean(xs, axis=0)
-    lb = np.where(x_median < x_mean, x_median, x_mean)
-    ub = np.where(x_median > x_mean, x_median, x_mean)
-    mu, fraction_converged = parallel_bisection_root_finder(f=huber_deriv, lb=lb, ub=ub, a=a, b=b, xs=xs, atol=atol, n_iter=n_iter)
-    return mu, fraction_converged if with_fraction_converged else mu
+    lb = np.where(x_median < x_mean, x_median, x_mean)-0.01
+    ub = np.where(x_median > x_mean, x_median, x_mean)+0.01
+    x0 = 0.75*lb+0.25*ub
+    flb = huber_deriv(lb,a,b,xs)
+    fub = huber_deriv(ub,a,b,xs)
+    mu = newton(func=huber_deriv, x0=x0, args=(a, b, xs), tol=1e-6, rtol=1e-4 )
+    return mu
 
 
 def huber_deriv(mu, a, b, xs):

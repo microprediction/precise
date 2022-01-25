@@ -1,6 +1,9 @@
 import numpy as np
 
 
+
+
+
 def parallel_bisection_root_finder(f, lb, ub, atol=1e-6, n_iter=10, copy=True, guess=None, *args, **kwargs):
     """  Find many zeros of f for many different choices of function parameters
 
