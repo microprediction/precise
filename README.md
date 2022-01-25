@@ -26,7 +26,7 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
      
 You can hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
      
-Naming hints: 
+Naming hints for values in the state dict s:  
 
 | Shorthand | Intent                            |
 |-----------|-----------------------------------|
