@@ -24,14 +24,16 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
         for y in ys:
             x, x_cov, s = emp_pcov(s=s, y=y)
      
+You can hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
+     
 Naming hints: 
 
-| Shorthand | Intent                |
-|-----------|-----------------------|
-| scov      | Sample covariance     |
-| pcov      | Population covariance |
-| spre      | Sample precision      |
-| ppre      | Population precision  |
+| Shorthand | Intent                            |
+|-----------|-----------------------------------|
+| scov      | Sample covariance                 |
+| pcov      | Population covariance             |
+| spre      | Inverse of sample covariance      |
+| ppre      | Inverse of population covariance  |
      
      
 Method hints: 
