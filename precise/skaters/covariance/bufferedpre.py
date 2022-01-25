@@ -1,13 +1,14 @@
 import numpy as np
 from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_data
-
+from precise.skaters.covarianceutil.matrixfunctions import pcov_of_columns, np_pcorrcoef
 
 # State machines that track stats for finite buffers of vectors
 
 
+
 def buf_cov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.nanstd(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
-    return _buf1(func=np.corrcoef, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)
+    return _buf1(func=np_pcorrcoef, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)
 
 
 def buf_std(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
@@ -35,7 +36,7 @@ def buf_mean_and_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
 
 def buf_mean_and_pcov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.cov(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
-    return _buf(funcs=[np.nanmean, np.cov], func_names=['mean','pcov'], func_kwargs=[{'axis':0},{'axis':0}], s=s, x=x, n_buffer=n_buffer)
+    return _buf(funcs=[np.nanmean, pcov_of_columns], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, n_buffer=n_buffer)
 
 
 def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
@@ -50,7 +51,7 @@ def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None
     if not s:
         s = _buf_init(s=s, n_buffer=n_buffer)
     if is_data(x):
-        s = _buf_update(funcs=funcs, func_names=func_names, func_kwargs=func_kwargs, s=s, x=x)
+        s = _buf_update(funcs=funcs, func_names=func_names, func_kwargs=func_kwargs, s=s, x=x, n_buffer=n_buffer)
     return s
 
 
@@ -85,7 +86,7 @@ def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
     :return:
     """
     from precise.skaters.covariance.bufferedpre import _buf
-    s = _buf(funcs=[func], func_names=['mav'], s=s, x=y, n_buffer=n_buffer)
+    s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer)
     x = s['mav']['loc']
     x_cov = s['mav']['pcov']
     return x, x_cov, s

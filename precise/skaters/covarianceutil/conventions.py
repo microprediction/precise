@@ -3,6 +3,8 @@ import numpy as np
 
 X_TYPE = Union[list,np.ndarray,int]
 X_DATA_TYPE = Union[list,np.ndarray]
+Y_TYPE = X_TYPE
+Y_DATA_TYPE = X_DATA_TYPE
 
 
 def infer_dimension(n_dim:int=None, x:X_TYPE=None, **ignore)->int:

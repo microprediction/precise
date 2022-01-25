@@ -2,10 +2,11 @@ import numpy as np
 from precise.skaters.covarianceutil.conventions import infer_dimension, X_DATA_TYPE, is_data
 
 
-def emp_pcov(s:dict, x:[float]=None, n_dim=None)->dict:
+def emp_pcov(s:dict, x:[float]=None, n_dim=None, k=1)->dict:
     """
         Track empirical sample covariance
     """
+    assert k==1
     if not s:
         s = _emp_pcov_init(x=x,n_dim=n_dim)
     if is_data(x):

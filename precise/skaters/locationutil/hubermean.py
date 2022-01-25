@@ -2,10 +2,10 @@
 
 import numpy as np
 import math
-from precise.skaters.vectorutil.bisection import parallel_bisection_root_finder
+from precise.skaters.locationutil.bisection import parallel_bisection_root_finder
 
 
-def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8, with_gradients=False)->[float]:
+def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8, with_fraction_converged=False)->[float]:
     """ Compute a columnwise pseudo-mean of xs, by minimizing a generalized Huber error that is
         proportional to x^2 near zero and asymptotes to |x| as |x|->infinity.
                f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
@@ -13,16 +13,21 @@ def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8, with_grad
         :param xs:    (n_samples, n_vars)
         :param a:    Generalized Huber parameter as per formula
         :param b:    Generalized Huber parameter as per formula above, scalar or (nvars,)
-        :param with_gradients: If True, will return the Huber gradients at the minimum found in addition to the pesudo-mean
+        :param with_fraction_converged: If True, will return the mean number of rows where convergence was achieved
         :return:      (n_vars,)   location parameters
 
     """
-    x_std = np.nanstd(xs,axis=0)
-    a_abs = a*x_std
-    return huber_mean_absolute_params(xs=xs, a=a_abs, b=b, n_iter=n_iter, atol=atol, with_convergence=with_gradients)
+    if len(xs)==0:
+        raise ValueError('Cannot compute huber mean for no data')
+    elif len(xs)==1:
+        return xs[0], 1.0 if with_fraction_converged else xs[0]
+    else:
+        x_std = np.nanstd(xs,axis=0)
+        a_abs = a*x_std
+        return huber_mean_absolute_params(xs=xs, a=a_abs, b=b, n_iter=n_iter, atol=atol, with_fraction_converged=with_fraction_converged)
 
 
-def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_convergence=False)->[float]:
+def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_fraction_converged=False)->[float]:
     """ Finds the generalized Huber locations for many variables at once
         Each column of xs represents a different variable whose pseudo-mean will be computed
         Thus the result mu might be compared to np.mean(xs, axis=0)
@@ -46,8 +51,8 @@ def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_co
     x_mean = np.mean(xs, axis=0)
     lb = np.where(x_median < x_mean, x_median, x_mean)
     ub = np.where(x_median > x_mean, x_median, x_mean)
-    mu, all_converged = parallel_bisection_root_finder(f=huber_deriv, lb=lb, ub=ub, a=a, b=b, xs=xs, atol=atol, n_iter=n_iter)
-    return mu, all_converged if with_convergence else mu
+    mu, fraction_converged = parallel_bisection_root_finder(f=huber_deriv, lb=lb, ub=ub, a=a, b=b, xs=xs, atol=atol, n_iter=n_iter)
+    return mu, fraction_converged if with_fraction_converged else mu
 
 
 def huber_deriv(mu, a, b, xs):

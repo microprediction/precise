@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.1.1",
+    version="0.2.0",
     description="Online covariance and precision estimation",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -20,12 +20,18 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["precise","precise.oo","precise.covariance","precise.structure","precise.plotting",
-              "precise.batch.empirical","precise.precision","precise.data","precise.synthetic","precise.vector","precise.scalar"],
+    packages=["precise","precise.z","precise.skaters",
+              "precise.skaters.covariance","precise.skaters.covarianceutil",
+               "precise.skaters.scalarutil",
+              "precise.skaters.portfolio","precise.skaters.portfolioutil",
+              "precise.skaters.location","precise.skaters.locationutil",
+              "precise.skatertools",
+              "precise.skatertools.comparison","precise.skatertools.data",
+              "precise.skatertools.syntheticdata","precise.skatertools.visualization"],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum','kmeans1d','scikit-learn','osqp'],
+    install_requires=['numpy','momentum','kmeans1d','scikit-learn','osqp','pandas_datareader'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

@@ -2,7 +2,7 @@
 # Fully autonomous empirical cov skaters
 
 from precise.skaters.covariance.empirical import emp_pcov
-from precise.skaters.vectormean.empirical import emp_d0
+from precise.skaters.location.empirical import emp_d0
 import numpy as np
 
 

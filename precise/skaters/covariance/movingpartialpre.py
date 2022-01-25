@@ -1,7 +1,7 @@
 import numpy as np
 from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
 from typing import Union, List
-from precise.skaters.vectormean.averagingpre import sma
+from precise.skaters.location.averagingpre import sma
 
 # Exponential weighted partial moment covariance estimation
 

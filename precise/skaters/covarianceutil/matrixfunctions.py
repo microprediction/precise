@@ -1,6 +1,24 @@
 import numpy as np
 
 
+def pcov_of_columns(a):
+    """
+        Dimension of out put is consistent. c.f. np.cov( )
+    """
+    if any([dim==1 for dim in np.shape(a)]):
+        n_dim = max(np.shape(a))
+        return np.eye( n_dim )
+    else:
+        return np.cov( np.array(a),rowvar=False, bias=True)
+
+
+def np_pcorrcoef(a):
+    """
+        Dimension of output is consistent.
+    """
+    return cov_to_corrcoef(pcov_of_columns(a))
+
+
 def cov_to_corrcoef(a):
     variances = np.diagonal(a)
     denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])

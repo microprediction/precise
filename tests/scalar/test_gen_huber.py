@@ -1,5 +1,5 @@
 
-from precise.skaters.vectorutil.hubermean import parallel_bisection_root_finder, huber_deriv
+from precise.skaters.locationutil.hubermean import parallel_bisection_root_finder, huber_deriv
 import numpy as np
 
 

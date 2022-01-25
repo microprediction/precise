@@ -1,8 +1,8 @@
 from precise.skaters.covarianceutil.conventions import is_data, infer_dimension, X_TYPE, X_DATA_TYPE
 from precise.skaters.covariance.bufferedpre import buf_mean_and_median
-from precise.skaters.vectormean.averagingpre import sma
+from precise.skaters.location.averagingpre import sma
 import numpy as np
-from precise.skaters.vectorutil.hubermean import huber_deriv, parallel_bisection_root_finder, mean_huber_squared_error
+from precise.skaters.locationutil.hubermean import huber_deriv, parallel_bisection_root_finder, mean_huber_squared_error
 from pprint import pprint
 
 
@@ -90,15 +90,13 @@ def _huber_pcov_update(s:dict, x:X_DATA_TYPE,n_buffer, n_iter=10, atol=1e-8, r=0
         # Alternatively...
 
 
-
-
         DEBUGGING = True
         if DEBUGGING:
             scatter = mean_huber_squared_error(mu=mu, a=a_abs, b=b, xs=ys)
             mu_zero = np.zeros(shape=np.shape(mu))
             zero_scatter = mean_huber_squared_error(mu=mu_zero, a=a_abs, b=b, xs=ys)
             scatter_ratio = scatter/zero_scatter
-            from precise.skaters.vectorutil.hubermean import mean_quadratic_error
+            from precise.skaters.locationutil.hubermean import mean_quadratic_error
             sq = mean_quadratic_error(mu=mu,xs=ys)
             sq_zero = mean_quadratic_error(mu=mu_zero,xs=ys)
             sq_ratio = sq/sq_zero

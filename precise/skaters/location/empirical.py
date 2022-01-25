@@ -1,4 +1,4 @@
-from precise.skaters.vectormean.empricalpre import emp
+from precise.skaters.location.empricalpre import emp
 import numpy as np
 
 

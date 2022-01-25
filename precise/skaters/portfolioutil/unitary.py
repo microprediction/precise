@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skaters.vectorutil import normalize
+from precise.skaters.locationutil import normalize
 
 # sum(w)=1
 

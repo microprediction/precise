@@ -4,6 +4,7 @@ import numpy as np
 from precise.skaters.covariance.empiricalpre import emp_pcov, merge_emp_scov
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from precise.skaters.covarianceutil.matrixfunctions import cov_to_corrcoef
+from precise.skaters.covarianceutil.matrixfunctions import pcov_of_columns
 
 # Some cut and paste https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 # However I've removed the confusion between sample and population estimates, and taken the tolerance
@@ -17,14 +18,16 @@ def test_onlineempirical():
 
     np_corrcoef = np.corrcoef(data, rowvar=False)
     s = {}
-    for k,x in enumerate(data[:2]):
-        s = emp_pcov(s=s, x=x)
-        if k>=1:
-            np_mean = np.mean(data[:k+1,:],axis=0)
-            np_pop_cov = np.cov(data[:k+1,:], rowvar=False, bias=True)
-            np_corrcoef = np.corrcoef(data[:k+1,:], rowvar=False)
+    for j,x in enumerate(data[:2]):
+        s = emp_pcov(s=s, x=x, k=1)
+        if j>=1:
+            np_mean = np.mean(data[:j+1,:],axis=0)
+            np_pcov = np.cov(data[:j+1,:], rowvar=False, bias=True)
+            np_pcov2 = pcov_of_columns(data[:j + 1, :])
+            np_corrcoef = np.corrcoef(data[:j+1,:], rowvar=False)
             ocorr = cov_to_corrcoef(s['pcov'])
-            assert np.isclose(np_pop_cov, s['pcov'], atol=TOL).all()
+            assert np.isclose(np_pcov, s['pcov'], atol=TOL).all()
+            assert np.isclose(np_pcov2, s['pcov'], atol=TOL).all()
             assert np.isclose(np_mean, s['mean'], atol=TOL).all()
             assert np.isclose(np_corrcoef, ocorr, atol=TOL).all()
 

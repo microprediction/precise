@@ -47,6 +47,7 @@ if using_pandas:
         if random_start:
             k = random.choice(list(range(0, len(df.index) - n_obs - 5)))
             df = df[k:k+n_obs]
+        df.dropna(axis=0, how='any', inplace=True)
         return df[:n_obs] if as_dataframe else df[:n_obs].values
 
 

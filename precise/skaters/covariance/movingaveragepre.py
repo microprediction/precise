@@ -6,6 +6,17 @@ from typing import Union, List
 # Exponential weighted sample covariance
 
 
+def ema_pcov_r(y, s:dict, k=1,r=0.025):
+    assert k==1
+    s = ema_scov(s=s,x=y,r=r)
+    x = s['mean']
+    x_cov = s['pcov']
+    return x, x_cov, s
+
+
+
+
+
 def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:
