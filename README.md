@@ -9,11 +9,9 @@ A collection of *autonomous* *incremental* estimators for covariance, precision,
 ## Examples
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
 
-## Explanation
-You use state updaters, then functions of the state. 
 
 ### Covariance skaters  
-Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, covariance skaters take one data point at a time, and also the prior state, and spit out a prediction vector *x*, a prediction covariance *x_cov*, and the posterior state.
+Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance "skaters" - functions taking one data point at a time, and also the prior state, and spitting out a prediction vector *x*, a prediction covariance *x_cov*, and the posterior state. Easy to use once you've found your skater:
 
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
     from precise.skaters.covariance.empirical import emp_pcov_d0
@@ -26,7 +24,7 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
             x, x_cov, s = emp_pcov_d0(s=s, y=y)
         pprint(x_cov)
      
-You can hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). Naming hints for values in the state dict s:  
+You can hunt for skaters other than *emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). Naming hints for values in the state dict s:  
 
 | Shorthand | Intent                            |
 |-----------|-----------------------------------|
@@ -35,6 +33,13 @@ You can hunt for skaters in [precise/skaters/covariance](https://github.com/micr
 | spre      | Inverse of sample covariance      |
 | ppre      | Inverse of population covariance  |
      
+     
+Differencing hints:
+
+| Shorthand | Intent                                                  |
+|-----------|---------------------------------------------------------|
+| d0        | For use on stationary, ideally IID data                 |
+| d1        | For use on data that is iid after taking one difference | 
      
 Method hints: 
 
