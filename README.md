@@ -12,20 +12,17 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
 ## Explanation
 You use state updaters, then functions of the state. 
 
-### State updates  
-All updaters take a prior state and return a posterior state (dict). An empty dict is passed to initialize. 
-
-Example: 
+### Covariance skaters  
+Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, covariance skaters take one data point at a time, and also the prior state, and spit out a prediction vector *x*, a prediction covariance *x_cov*, and the posterior state.
 
     from precise.synthetic.generate import create_correlated_dataset
-    from precise.covariance.empirical import emp_pcov
+    from precise.covariance.empirical import emp_pcov_d0
  
     if __name__=='__main__':
-        xs = create_correlated_dataset(n=500)
+        ys = create_correlated_dataset(n=500)
         s = {}
-        for x in xs:
-            s = emp_pcov(s=s, x=x)
-        pprint(s['scov'])
+        for y in ys:
+            x, x_cov, s = emp_pcov(s=s, y=y)
      
 Naming hints: 
 
@@ -59,13 +56,14 @@ Speed hints:
 
 Others are incremental, taking one vector of data at a time. 
      
-### State functions & mutations
-Three types of utilities exist
+### Some stand-alone utilities
 
    1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
    2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/covariance/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
-   3. Miscellaneous [/covariance/matrixfunctions](https://github.com/microprediction/precise/blob/main/precise/covariance/util.py) functions act directly on matrices. 
-     
+   3. Some [/covariance/datascatterfunctions](https://github.com/microprediction/precise/blob/main/precise/covarianceutil/datascatterfunctions.py)
+   4. The [/covariance/datacovfunctions](https://github.com/microprediction/precise/blob/main/precise/covarianceutil/datacovfunctions.py) take data and produce covariance functions. 
+   5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/covarianceutil/covfunctions.py) manipulate 2d arrays. 
+  
 
 ## Miscellaneous 
 
