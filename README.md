@@ -39,14 +39,25 @@ Naming hints:
      
 Method hints: 
 
-| Shorthand | Meaning               |
+| Shorthand | Inspiration           |
 |-----------|-----------------------|
 | emp       | Empirical     |
 | ema      | Exponential weighted moving average |
 | lz      | Le-Zhong variable-by-variable updating |
-| lw      | (inspired by) Ledoit-Wolf              |
+| lw      | Ledoit-Wolf              |
+| partial | Partial moments                        | 
+| huber | Generalized Huber pseudo-mean            |
+| oas   | Oracle approximating shrinkage.          |
+| gl    | Graphical Lasso                          |
+| mcd   | Minimum covariance determinant           |
 
-Some, such as OAS, don't need their own state tracking. See [examples](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
+Speed hints:
+
+| Shorthand | Interpretation                          |
+|-----------|-----------------------------------------|
+| buffered  | Maintains fixed window of data          |
+
+Others are incremental, taking one vector of data at a time. 
      
 ### State functions & mutations
 Three types of utilities exist
