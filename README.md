@@ -57,9 +57,9 @@ Method hints:
 
 Speed hints:
 
-| Shorthand | Interpretation                          |
-|-----------|-----------------------------------------|
-| buf       | Maintains fixed window of data          |
+| Shorthand | Interpretation                                                                                 |
+|-----------|------------------------------------------------------------------------------------------------|
+| buf       | Performs classical calculation on a fixed window of data, so unlikely to be efficient          |
 
 Others are incremental, taking one vector of data at a time. 
      
