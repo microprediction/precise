@@ -26,7 +26,7 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
      
 ### Finding cov skaters
      
-You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). Here are some examples. 
+You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). There are some location utilities in [precise/whereami](https://github.com/microprediction/precise/blob/main/precise/whereami.py). 
 
 
 | Skater name            | Location   | Meaning            |
@@ -35,8 +35,7 @@ You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covari
 | buf_sk_ld_pcov_d0_n100 | [skaters/covariance/bufsk](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py) | Applies sk-learn's implementation of Ledoit-Wolf to stationary buffered data of length 100 | 
 | ewa_partial_scov_r01 | [skaters/covariance/ewapartial](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapartial.py) | Performs an incremental, recency-weighted covariance estimate that exploits partial moments. Uses a memory parameter r=0.01 | 
 
-
-
+There are many more. 
 
 | Shorthand | Intent                            |
 |-----------|-----------------------------------|
@@ -44,7 +43,6 @@ You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covari
 | pcov      | Population covariance             |
 | spre      | Inverse of sample covariance      |
 | ppre      | Inverse of population covariance  |
-     
      
 Differencing hints:
 
