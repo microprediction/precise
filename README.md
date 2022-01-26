@@ -59,7 +59,7 @@ Speed hints:
 
 | Shorthand | Interpretation                          |
 |-----------|-----------------------------------------|
-| buffered  | Maintains fixed window of data          |
+| buf       | Maintains fixed window of data          |
 
 Others are incremental, taking one vector of data at a time. 
      
