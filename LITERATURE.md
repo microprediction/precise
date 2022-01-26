@@ -297,3 +297,21 @@ numerical experiments.
 jeremy large [pdf](http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.371.4076&rep=rep1&type=pdf)
 
 High-frequency realized variance approaches offer great promise for estimating asset prices ’ covariation, but encounter difficulties connected to the Epps effect. This paper models the Epps effect in a stochastic volatility setting. It adds dependent noise to a factor representation of prices. The noise both offsets covariation and describes plausible lags in information transmission. Non-synchronous trading, another recognized source of the effect, is not required. A resulting estimator of correlations and betas performs well on LSE mid-quote data, lending empirical credence to the approach. 
+
+
+
+### Performance Improvements for Risk Balanced Portfolios
+Kanstantsin Kulak
+
+This paper focuses on the risk balanced portfolio approach. It comprises a careful consideration
+of the techniques that can be used for tactical portfolio tilts in order to improve portfolio performance. The emphasis is on usability of these techniques by the majority of investors, regardless of
+their asset preferences or risk appetite. After an overview of the topic, the macroeconomic regimes
+model is constructed for portfolio tilts. Then a topic is switched to assets covariances and correlations - a crucial step in portfolio construction. Hidden Markov, regression and ARIMA models
+are used in an attempt to predict future assets correlation values. The results are quantified and
+analysed
+
+### The Gerber statistic: a robust co-movement measure for portfolio optimization
+Gerber, Markowitz, Ernst, Sargen, Miao, Javid
+
+he purpose of this paper is to introduce the Gerber statistic, a robust co-movementmeasure for covariance matrix estimation for the purpose of portfolio construction. TheGerber statistic extends Kendall’s Tau by counting the proportion of simultaneous co-movements in series when their amplitudes exceed data-dependent thresholds. Sincethe statistic is neither affected by extremely large or extremely small movements, it isespecially well-suited for financial time series, which often exhibit extreme movementsas well as a great amount of noise. Operating within the mean-variance portfolio op-timization framework of Markowitz (1952, 1959), we consider the performance of theGerber statistic against two other commonly used methods for estimating the covari-ance matrix of stock returns: the sample covariance matrix (also called the historicalcovariance matrix) and shrinkage of the sample covariance matrix as formulated inLedoit and Wolf (2004). Using a well-diversified portfolio of nine assets over a thirtyyear time period (January 1990-December 2020), we empirically find that, for almostall scenarios considered, the Gerber statistic’s returns dominate those achieved by bothhistorical covariance and by the shrinkage method of Ledoit and Wolf (2004) 
+
