@@ -33,8 +33,33 @@ You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covari
 |------------------------|------------|--------------------|
 | buf_huber_pcov_d1_a1_b2_n50 | [skaters/covariance/bufhuber](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufhuber.py) | Applies an approach that exploits Huber pseudo-means to a buffer of data of length 50 in need of differencing once, with generalized Huber loss parameters a=1, b=2. | 
 | buf_sk_ld_pcov_d0_n100 | [skaters/covariance/bufsk](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py) | Applies sk-learn's implementation of Ledoit-Wolf to stationary buffered data of length 100 | 
-| ewa_partial_scov_r01 | [skaters/covariance/ewapartial](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapartial.py) | Performs an incremental, recency-weighted covariance estimate that exploits partial moments. Uses a memory parameter r=0.01 | 
+| ewa_pm_emp_scov_r01 | [skaters/covariance/ewapartial](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapartial.py) | Performs an incremental, recency-weighted covariance estimate that exploits partial moments. Uses a memory parameter r=0.01 | 
 
+### Reading skater names 
+
+Broad calculation style categories
+
+| Shorthand | Interpretation                                                                  | Incremental ? |
+|-----------|---------------------------------------------------------------------------------|---------------|
+| buf       | Performs classical batch calculation on a fixed window of data each time        | No            |
+| win       | Performs incremental fixed window calculation.                                  | Yes           |
+| run       | Running calculation weighing all observations equally                           | Yes           |  
+| ewa       | Running calculation weighing recent observations more                           | Yes           |
+
+Methodology hints (can be combined)
+
+| Shorthand | Inspiration                            |
+|-----------|----------------------------------------|
+| emp       | "Empirical" (not shrunk or augmented)  |
+| lz        | Le-Zhong variable-by-variable updating |
+| lw        | Ledoit-Wolf                            |
+| pm        | Partial moments                        | 
+| huber     | Generalized Huber pseudo-mean          |
+| oas       | Oracle approximating shrinkage.        |
+| gl        | Graphical Lasso                        |
+| mcd       | Minimum covariance determinant         |
+
+Intended main target (more than one may be produced in the state)
 
 | Shorthand | Intent                            |
 |-----------|-----------------------------------|
@@ -50,28 +75,6 @@ Differencing hints:
 | d0        | For use on stationary, ideally IID data                 |
 | d1        | For use on data that is iid after taking one difference | 
      
-Method hints: 
-
-| Shorthand | Inspiration                          |
-|-----------|--------------------------------------|
-| emp       | "Empirical" (not shrunk, augmented)  |
-| ema      | Exponential weighted moving average   |
-| lz      | Le-Zhong variable-by-variable updating |
-| lw      | Ledoit-Wolf                            |
-| partial | Partial moments                        | 
-| huber | Generalized Huber pseudo-mean            |
-| oas   | Oracle approximating shrinkage.          |
-| gl    | Graphical Lasso                          |
-| mcd   | Minimum covariance determinant           |
-
-Implementation and speed hints:
-
-| Shorthand | Interpretation                                                                  | Incremental ? |
-|-----------|---------------------------------------------------------------------------------|---------------|
-| buf       | Performs classical batch calculation on a fixed window of data each time        | No            |
-| win       | Performs incremental fixed window calculation.                                  | Yes           |
-| run       | Running calculation weighing all observations equally                           | Yes           |  
-| ewa       | Running calculation weighing recent observations                                | Yes           |
 
 
 
