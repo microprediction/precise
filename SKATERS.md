@@ -1,4 +1,4 @@
-{'buf_emp_pcov_d0_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py',
+ 'buf_emp_pcov_d0_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py',
  'buf_emp_pcov_d0_n20': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py',
  'buf_emp_pcov_d0_n50': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py',
  'buf_emp_pcov_d1_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py',
@@ -45,4 +45,4 @@
  'ewa_pm_emp_scov_r05': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapm.py',
  'ewa_pm_emp_scov_r05_t0': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapm.py',
  'run_emp_pcov_d0': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/runemp.py',
- 'run_emp_pcov_d1': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/runemp.py'}
+ 'run_emp_pcov_d1': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/runemp.py'
