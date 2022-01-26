@@ -31,7 +31,7 @@ You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covari
 
 | Skater name            | Location   | Meaning            |
 |------------------------|------------|--------------------|
-| buf_huber_pcov_d1_a1_b2_n50 | [skaters/covariance/bufhuber](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufhuber.py) | Applies an approch that exploits Huber pseudo-means to a buffer of length 50, with generalized Huber loss parameters a=1, b=2, and the intent of estimating population covariance. | 
+| buf_huber_pcov_d1_a1_b2_n50 | [skaters/covariance/bufhuber](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufhuber.py) | Applies an approach that exploits Huber pseudo-means to a buffer of length 50, with generalized Huber loss parameters a=1, b=2, and the intent of estimating population covariance. | 
 | buf_sk_ld_pcov_d0_n100 | [skaters/covariance/bufsk](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py) | Applies sk-learn's implementation of Ledoit-Wolf to stationary buffered data of length 100 | 
 | ewa_partial_scov_r01 | [skaters/covariance/ewapartial](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapartial.py) | Performs an incremental, recency-weighted covariance estimate that exploits partial moments. Uses a memory parameter r=0.01 | 
 
