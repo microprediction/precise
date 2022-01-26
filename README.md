@@ -60,7 +60,7 @@ Speed hints:
 | Shorthand | Interpretation                                                                                 |
 |-----------|------------------------------------------------------------------------------------------------|
 | buf       | Performs classical calculation on a fixed window of data, so unlikely to be efficient          |
-| inc       | Incremental calculation, at least in part                                                      |
+| run       | Incremental calculation, at least in part                                                      |
 
 All skaters at least fake incremental behaviour, for consistency. 
      
