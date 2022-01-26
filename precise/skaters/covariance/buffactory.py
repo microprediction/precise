@@ -5,6 +5,22 @@ from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns, np_
 # State machines that track stats for finite buffers of vectors
 
 
+def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
+    """
+         Factory for building estimators from functions that return dicts with 'loc' and 'pcov' keys
+
+    :param func:  Acts on buffer and returns object with 'loc', 'pcov'
+    :param y:
+    :param s:
+    :param n_buffer:
+    :return:
+    """
+    s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer)
+    x = s['mav']['loc']
+    x_cov = s['mav']['pcov']
+    return x, x_cov, s
+
+
 def buf_cov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.nanstd(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
     return _buf1(func=np_pcorrcoef, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)
@@ -36,8 +52,6 @@ def buf_mean_and_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
 def buf_mean_and_pcov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.cov(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
     return _buf(funcs=[np.nanmean, pcov_of_columns], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, n_buffer=n_buffer)
-
-
 
 
 def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
@@ -74,24 +88,6 @@ def _buf_update(funcs, func_names, func_kwargs, s:dict, x:X_DATA_TYPE, n_buffer:
     for func, func_name, func_kwargs in zip(funcs, func_names, func_kwargs):
         s[func_name] = func(s['buffer'],**func_kwargs)
     return s
-
-
-def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
-    """
-         Factory for building estimators from functions that return dicts with 'loc' and 'pcov' keys
-
-    :param func:  Acts on buffer and returns object with 'loc', 'pcov'
-    :param y:
-    :param s:
-    :param n_buffer:
-    :return:
-    """
-    from precise.skaters.covariance.bufferedpre import _buf
-    s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer)
-    x = s['mav']['loc']
-    x_cov = s['mav']['pcov']
-    return x, x_cov, s
-
 
 
 

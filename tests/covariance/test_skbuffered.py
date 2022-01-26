@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skaters.covariance.bufferedsklearn import SK_BUFFERED_D0_SKATERS
+from precise.skaters.covariance.bufsk import SK_BUFFERED_D0_SKATERS
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 
 

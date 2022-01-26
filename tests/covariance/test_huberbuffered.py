@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skaters.covariance.bufferedhuber import BUFFERED_HUBER_D0_COV_SKATERS
+from precise.skaters.covariance.bufhuber import BUFFERED_HUBER_D0_COV_SKATERS
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 
 

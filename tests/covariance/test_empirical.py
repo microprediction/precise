@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from precise.skaters.covariance.empiricalpre import emp_pcov, merge_emp_scov
+from precise.skaters.covariance.runempfactory import emp_pcov, merge_emp_scov
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns

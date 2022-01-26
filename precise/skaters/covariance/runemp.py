@@ -1,11 +1,13 @@
 
 # Fully autonomous empirical cov skaters
 
-from precise.skaters.covariance.empiricalpre import emp_pcov
+from precise.skaters.covariance.runempfactory import emp_pcov
 import numpy as np
 
+# Running empirical cov
 
-def emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=None):
+
+def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=None):
     """
         Empirical covariance skater that assumes y's are iid
 
@@ -25,7 +27,7 @@ def emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=None):
     return x, x_cov, s
 
 
-def emp_pcov_d1(y, s:dict, k=1, a=None, t=None, e=None):
+def run_emp_pcov_d1(y, s:dict, k=1, a=None, t=None, e=None):
     """
        Empirical covariance skater that assumes changes in y's are iid
     """
@@ -36,13 +38,13 @@ def emp_pcov_d1(y, s:dict, k=1, a=None, t=None, e=None):
         return y, np.eye(len(y)), s
     else:
         dy = y-s['prev_y']
-        dy_hat, dy_cov, s['dy'] = emp_pcov_d0(y=dy, s=s['dy'], k=1)
+        dy_hat, dy_cov, s['dy'] = run_emp_pcov_d0(y=dy, s=s['dy'], k=1)
         y['prev_y'] = y
         x = s['prev_y'] + dy_hat
         return x, dy_cov, s
 
 
-EMPIRICAL_DO_COV_SKATERS = [emp_pcov_d0]
-EMPIRICAL_D1_COV_SKATERS = [emp_pcov_d1]
+EMPIRICAL_DO_COV_SKATERS = [run_emp_pcov_d0]
+EMPIRICAL_D1_COV_SKATERS = [run_emp_pcov_d1]
 
 

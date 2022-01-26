@@ -1,14 +1,14 @@
-from precise.skatertools.syntheticdata import create_correlated_dataset
-from precise.skaters.covariance import emp_pcov
+from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
+from precise.skaters.covariance.runemp import run_emp_pcov_d0
 from pprint import pprint
 from precise.skaters.covarianceutil.statemutations import both_cov
 
 # Basic example of running empirical population covariance
 
 if __name__=='__main__':
-    xs = create_correlated_dataset(n=500)
+    ys = create_correlated_dataset(n=500)
     s = {}
-    for x in xs:
-        s = emp_pcov(s=s, x=x)
+    for y in ys:
+        x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
     s = both_cov(s)  # <--- Converts scov to pcov
     pprint(s['scov'])

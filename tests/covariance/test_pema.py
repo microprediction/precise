@@ -3,7 +3,7 @@
 import numpy as np
 from precise.skaters.covariance.movingpartialpre import _partial_ema_scov_init, _partial_ema_scov_update
 from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
-from precise.skaters.covariance.empiricalpre import emp_pcov
+from precise.skaters.covariance.runempfactory import emp_pcov
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from pprint import pprint

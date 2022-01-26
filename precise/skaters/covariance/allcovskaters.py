@@ -1,8 +1,8 @@
-from precise.skaters.covariance.empirical import EMPIRICAL_DO_COV_SKATERS, EMPIRICAL_D1_COV_SKATERS
-from precise.skaters.covariance.bufferedempirical import BUFFERED_EMPIRICAL_D0_SKATERS, BUFFERED_EMPIRICAL_D1_SKATERS
-from precise.skaters.covariance.bufferedsklearn import SK_BUFFERED_D0_SKATERS, SK_BUFFERED_D1_SKATERS
+from precise.skaters.covariance.runemp import EMPIRICAL_DO_COV_SKATERS, EMPIRICAL_D1_COV_SKATERS
+from precise.skaters.covariance.bufemp import BUFFERED_EMPIRICAL_D0_SKATERS, BUFFERED_EMPIRICAL_D1_SKATERS
+from precise.skaters.covariance.bufsk import SK_BUFFERED_D0_SKATERS, SK_BUFFERED_D1_SKATERS
 from precise.skaters.covariance.movingaverage import EMA_DO_COV_SKATERS, EMA_D1_COV_SKATERS
-from precise.skaters.covariance.bufferedhuber import BUFFERED_HUBER_D0_COV_SKATERS, BUFFERED_HUBER_D1_COV_SKATERS
+from precise.skaters.covariance.bufhuber import BUFFERED_HUBER_D0_COV_SKATERS, BUFFERED_HUBER_D1_COV_SKATERS
 from precise.skaters.covariance.movingpartial import PARTIAL_EMA_D0_COV_SKATERS
 
 # List of fully autonomous multivariate gaussian forecasters

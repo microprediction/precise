@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skaters.covariance.empiricalpre import _emp_pcov_init, _emp_pcov_update
+from precise.skaters.covariance.runempfactory import _emp_pcov_init, _emp_pcov_update
 import math
 from typing import Union, List
 

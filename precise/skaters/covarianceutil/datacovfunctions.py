@@ -3,7 +3,7 @@ from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef, nearest
 from precise.skaters.covarianceutil.datascatterfunctions import scatter_tensor_flat
 
 
-# Functions that take xs: (n_samples, n_vars) and do something cov related
+# Functions that take xs: (n_samples, n_vars) and produce cov matrices, or related
 
 
 def pcov_of_columns(xs):
@@ -27,7 +27,7 @@ def np_pcorrcoef(xs):
 def scatter_func_cov(xs, cov_loc_func, demean=False, make_pos=True):
     """ Compute covariance using some location function acting on the flattenned scatter data
     :param xs:
-    :param cov_loc_func:    Should take 2d array and return a columnwise pseudo-mean (i.e. axis=0)
+    :param cov_loc_func:    Should take 2d array and return a column-wise pseudo-mean (i.e. axis=0)
     :param make_pos:        If True, will ensure cov matrix is pos def
     :param demean:
     :return:
@@ -46,7 +46,7 @@ def scatter_func_cov(xs, cov_loc_func, demean=False, make_pos=True):
 
 
 def scatter_skater_cov(xs, f, demean=False):
-    """ Compute covariance using a univariate skater function on the flattenned scatter data entries """
+    """ Compute covariance using a univariate skater function on the flattened scatter data entries """
 
     def skater_func(xs_):
         n_samples, n_entries = np.shape(xs_)

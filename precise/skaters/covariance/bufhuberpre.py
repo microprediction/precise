@@ -1,6 +1,6 @@
 import numpy as np
 from precise.skaters.covarianceutil.hubercov import scatter_huber_cov
-from precise.skaters.covariance.bufferedpre import _buf
+from precise.skaters.covariance.buffactory import _buf
 from precise.skaters.covarianceutil.conventions import X_TYPE
 
 

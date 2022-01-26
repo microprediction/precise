@@ -1,6 +1,6 @@
 import numpy as np
 from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_data
-from precise.skaters.covariance.bufferedpre import buf_pcov_factory
+from precise.skaters.covariance.buffactory import buf_pcov_factory
 from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns
 import warnings
 

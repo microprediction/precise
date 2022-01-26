@@ -80,9 +80,9 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
 
 
 if __name__=='__main__':
-    from precise.skaters.covariance.empirical import emp_pcov_d0
+    from precise.skaters.covariance.runemp import run_emp_pcov_d0
     xs = np.random.randn(500,3)
-    ll, metrics = cov_skater_loglikelihood(f=emp_pcov_d0, xs=xs, with_metrics=True)
+    ll, metrics = cov_skater_loglikelihood(f=run_emp_pcov_d0, xs=xs, with_metrics=True)
     print(ll)
     from pprint import pprint
     pprint(metrics)

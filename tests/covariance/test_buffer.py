@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from precise.skaters.covariance.bufferedempirical import buf_pcov_d0_n20
+from precise.skaters.covariance.bufemp import buf_emp_pcov_d0_n20
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skaters.covarianceutil.datacovfunctions import np_pcorrcoef
@@ -14,7 +14,7 @@ def test_empirical_buffer():
     data = create_correlated_dataset(100, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
     s = {}
     for j,y in enumerate(data[:5]):
-        x, x_cov, s = buf_pcov_d0_n20(s=s, y=y, k=1)
+        x, x_cov, s = buf_emp_pcov_d0_n20(s=s, y=y, k=1)
         if j>=1:
             np_mean = np.mean(data[:j+1,:],axis=0)
             np_pop_cov = np.cov(data[:j+1,:], rowvar=False, bias=True)

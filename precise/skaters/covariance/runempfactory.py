@@ -45,7 +45,6 @@ def _emp_pcov_update(s:dict, x:X_DATA_TYPE, target=None):
     return s
 
 
-
 def merge_emp_scov(s:dict, other_s:dict):
     """ Merge two online covariance tracking objects as if the data had been merged """
     if other_s['n_dim'] != s['n_dim']:

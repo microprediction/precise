@@ -1,7 +1,7 @@
 
 # Fully autonomous empirical cov skaters
 
-from precise.skaters.covariance.empirical import emp_pcov
+from precise.skaters.covariance.runemp import emp_pcov
 import numpy as np
 
 
