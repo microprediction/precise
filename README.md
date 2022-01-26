@@ -61,7 +61,7 @@ Speed hints:
 |-----------|------------------------------------------------------------------------------------------------|
 | buf       | Performs classical calculation on a fixed window of data, so unlikely to be efficient          |
 
-Others are incremental, taking one vector of data at a time. 
+The buffering skaters merely "pretend" to be online algorithms. 
      
 ## Stand-along utilities
 
