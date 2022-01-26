@@ -43,24 +43,26 @@ Differencing hints:
      
 Method hints: 
 
-| Shorthand | Inspiration           |
-|-----------|-----------------------|
-| emp       | Empirical     |
-| ema      | Exponential weighted moving average |
+| Shorthand | Inspiration                          |
+|-----------|--------------------------------------|
+| emp       | "Empirical" (not shrunk, augmented)  |
+| ema      | Exponential weighted moving average   |
 | lz      | Le-Zhong variable-by-variable updating |
-| lw      | Ledoit-Wolf              |
+| lw      | Ledoit-Wolf                            |
 | partial | Partial moments                        | 
 | huber | Generalized Huber pseudo-mean            |
 | oas   | Oracle approximating shrinkage.          |
 | gl    | Graphical Lasso                          |
 | mcd   | Minimum covariance determinant           |
 
-Speed hints:
+Implementation and speed hints:
 
-| Shorthand | Interpretation                                                                                 |
-|-----------|------------------------------------------------------------------------------------------------|
-| buf       | Performs classical calculation on a fixed window of data, so unlikely to be efficient          |
-| run       | Incremental calculation, at least in part                                                      |
+| Shorthand | Interpretation                                                   |
+|-----------|------------------------------------------------------------------|
+| buf       | Performs classical calculation on a fixed window of data         |
+| run       | Running calculation weighing all observations equally            |
+| ewa       | Running calculation weighing recent observations more            |
+
 
 All skaters at least fake incremental behaviour, for consistency. 
      
