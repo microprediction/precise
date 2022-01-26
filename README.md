@@ -57,15 +57,19 @@ Method hints:
 
 Implementation and speed hints:
 
-| Shorthand | Interpretation                                                   |
-|-----------|------------------------------------------------------------------|
-| buf       | Performs classical calculation on a fixed window of data         |
-| run       | Running calculation weighing all observations equally            |
-| ewa       | Running calculation weighing recent observations more            |
+| Shorthand | Interpretation                                                                  | Incremental ? |
+|-----------|---------------------------------------------------------------------------------|---------------|
+| buf       | Performs classical batch calculation on a fixed window of data each time        | No            |
+| win       | Performs incremental fixed window calculation.                                  | Yes           |
+| run       | Running calculation weighing all observations equally                           | Yes           |  
+| ewa       | Running calculation weighing recent observations                                | Yes           |
 
+Examples of interpretation 
 
-All skaters at least fake incremental behaviour, for consistency. 
-     
+| Skater name            | Location   | Meaning            |
+|------------------------|------------|--------------------|
+| buf_huber_d1_a1_b2_n50 | [skaters/covariance/bufhuber](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufhuber.py) | Huber loss approach applied to a buffer of length 50, differenced once, with a=1, b=2 | 
+
 ## Stand-along utilities
 
    1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
