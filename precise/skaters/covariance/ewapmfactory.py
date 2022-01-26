@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
+from precise.skaters.covariance.ewaempfactory import _ema_scov_update, _ema_scov_init
 from typing import Union, List
 from precise.skaters.location.averagingpre import sma
 

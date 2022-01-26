@@ -2,7 +2,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.skaters.covariance.runempfactory import emp_pcov
-from precise.skaters.covariance.movingaveragepre import ema_scov
+from precise.skaters.covariance.ewaempfactory import ema_scov
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from momentum import rvar
 

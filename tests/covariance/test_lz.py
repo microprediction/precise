@@ -1,9 +1,9 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.skaters.covariance.lezhongpre import _lz_scov_init, _lz_scov_update
+from precise.skaters.covariance.ewalzfactory import _lz_scov_init, _lz_scov_update
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
-from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
+from precise.skaters.covariance.ewaempfactory import _ema_scov_update, _ema_scov_init
 
 
 def test_fixed_rcov():

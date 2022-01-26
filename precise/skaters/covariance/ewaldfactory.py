@@ -1,4 +1,4 @@
-from precise.skaters.covariance.movingaveragepre import ema_scov
+from precise.skaters.covariance.ewaempfactory import ema_scov
 from precise.skaters.covarianceutil.covfunctions import grand_mean, grand_shrink
 from sklearn.covariance._shrunk_covariance import ledoit_wolf_shrinkage
 import numpy as np

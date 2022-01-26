@@ -84,11 +84,11 @@ def buf_sk_mcd_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 10
     return d1_factory(f=buf_sk_mcd_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, k=1)
 
 
-SK_BUFFERED_D0_SKATERS = [buf_sk_emp_pcov_d0_n100, buf_sk_ld_pcov_d0_n100, buf_sk_gl_pcov_d0_n100, buf_sk_glcv_pcov_d0_n100,
-                          buf_sk_mcd_pcov_d0_n100, buf_sk_oas_pcov_d0_n100]
+BUF_SK_D0_SKATERS = [buf_sk_emp_pcov_d0_n100, buf_sk_ld_pcov_d0_n100, buf_sk_gl_pcov_d0_n100, buf_sk_glcv_pcov_d0_n100,
+                     buf_sk_mcd_pcov_d0_n100, buf_sk_oas_pcov_d0_n100]
 
-SK_BUFFERED_D1_SKATERS = [buf_sk_ec_pcov_d1_n100, buf_sk_ld_pcov_d1_n100, buf_sk_gl_pcov_d1_n100, buf_sk_glcv_pcov_d1_n100,
-                          buf_sk_mcd_pcov_d1_n100, buf_sk_oas_pcov_d1_n100]
+BUF_SK_D1_SKATERS = [buf_sk_ec_pcov_d1_n100, buf_sk_ld_pcov_d1_n100, buf_sk_gl_pcov_d1_n100, buf_sk_glcv_pcov_d1_n100,
+                     buf_sk_mcd_pcov_d1_n100, buf_sk_oas_pcov_d1_n100]
 
 
 if __name__=='__main__':

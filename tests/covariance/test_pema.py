@@ -1,8 +1,8 @@
 
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
-from precise.skaters.covariance.movingpartialpre import _partial_ema_scov_init, _partial_ema_scov_update
-from precise.skaters.covariance.movingaveragepre import _ema_scov_update, _ema_scov_init
+from precise.skaters.covariance.ewapmfactory import _partial_ema_scov_init, _partial_ema_scov_update
+from precise.skaters.covariance.ewaempfactory import _ema_scov_update, _ema_scov_init
 from precise.skaters.covariance.runempfactory import emp_pcov
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset

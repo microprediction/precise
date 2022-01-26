@@ -3,7 +3,7 @@
 # Simple algo whose theoretical properties are discussed by Le and Zhong in
 # the paper "High-Dimensional Precision Matrix Estimation with a Known Graphical Structure"
 
-from precise.skaters.covariance.lezhongpre import _lz_scov_init, _lz_scov_update
+from precise.skaters.covariance.ewalzfactory import _lz_scov_init, _lz_scov_update
 import numpy as np
 from precise.skaters.covarianceutil.covfunctions import multiply_diag, grand_shrink
 

@@ -1,11 +1,7 @@
-
-# Fully autonomous empirical cov skaters
-
 from precise.skaters.covariance.runempfactory import emp_pcov
 import numpy as np
 
-# Running empirical cov
-
+# Running empirical covariance with infinite memory, equal weighting
 
 def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=None):
     """
@@ -44,7 +40,7 @@ def run_emp_pcov_d1(y, s:dict, k=1, a=None, t=None, e=None):
         return x, dy_cov, s
 
 
-EMPIRICAL_DO_COV_SKATERS = [run_emp_pcov_d0]
-EMPIRICAL_D1_COV_SKATERS = [run_emp_pcov_d1]
+RUN_EMP_DO_COV_SKATERS = [run_emp_pcov_d0]
+RUN_EMP_D1_COV_SKATERS = [run_emp_pcov_d1]
 
 

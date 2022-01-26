@@ -1,15 +1,24 @@
-from precise.skaters.covariance.runemp import EMPIRICAL_DO_COV_SKATERS, EMPIRICAL_D1_COV_SKATERS
-from precise.skaters.covariance.bufemp import BUFFERED_EMPIRICAL_D0_SKATERS, BUFFERED_EMPIRICAL_D1_SKATERS
-from precise.skaters.covariance.bufsk import SK_BUFFERED_D0_SKATERS, SK_BUFFERED_D1_SKATERS
-from precise.skaters.covariance.movingaverage import EMA_DO_COV_SKATERS, EMA_D1_COV_SKATERS
-from precise.skaters.covariance.bufhuber import BUFFERED_HUBER_D0_COV_SKATERS, BUFFERED_HUBER_D1_COV_SKATERS
-from precise.skaters.covariance.movingpartial import PARTIAL_EMA_D0_COV_SKATERS
+from precise.skaters.covariance.runemp import RUN_EMP_DO_COV_SKATERS, RUN_EMP_D1_COV_SKATERS
+from precise.skaters.covariance.bufemp import BUF_EMP_D0_SKATERS, BUF_EMP_D1_SKATERS
+from precise.skaters.covariance.bufsk import BUF_SK_D0_SKATERS, BUF_SK_D1_SKATERS
+from precise.skaters.covariance.ewaemp import EMA_DO_COV_SKATERS, EXP_EMP_D1_COV_SKATERS
+from precise.skaters.covariance.bufhuber import BUF_HUBER_D0_COV_SKATERS, BUF_HUBER_D1_COV_SKATERS
+from precise.skaters.covariance.ewapm import EWA_PM_EMP_D0_COV_SKATERS
 
 # List of fully autonomous multivariate gaussian forecasters
 
-ALL_D0_SKATERS = BUFFERED_EMPIRICAL_D0_SKATERS + EMPIRICAL_DO_COV_SKATERS + SK_BUFFERED_D0_SKATERS + EMA_DO_COV_SKATERS + \
-                 BUFFERED_HUBER_D0_COV_SKATERS + PARTIAL_EMA_D0_COV_SKATERS
-ALL_D1_SKATERS = BUFFERED_EMPIRICAL_D1_SKATERS + EMPIRICAL_D1_COV_SKATERS + SK_BUFFERED_D1_SKATERS + EMA_D1_COV_SKATERS + BUFFERED_HUBER_D1_COV_SKATERS
+ALL_D0_SKATERS = BUF_EMP_D0_SKATERS + \
+                 RUN_EMP_DO_COV_SKATERS + \
+                 BUF_SK_D0_SKATERS + \
+                 EMA_DO_COV_SKATERS + \
+                 BUF_HUBER_D0_COV_SKATERS + \
+                 EWA_PM_EMP_D0_COV_SKATERS
+
+ALL_D1_SKATERS = BUF_EMP_D1_SKATERS + \
+                 RUN_EMP_D1_COV_SKATERS + \
+                 BUF_SK_D1_SKATERS + \
+                 EXP_EMP_D1_COV_SKATERS + \
+                 BUF_HUBER_D1_COV_SKATERS
 
 ALL_COV_SKATERS = ALL_D0_SKATERS + ALL_D1_SKATERS
 

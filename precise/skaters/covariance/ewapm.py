@@ -1,4 +1,4 @@
-from precise.skaters.covariance.movingpartialpre import partial_ema_scov_factory
+from precise.skaters.covariance.ewapmfactory import partial_ema_scov_factory
 
 
 def ewa_pm_emp_scov_r01(s, y, k=1):
@@ -26,5 +26,5 @@ def ewa_pm_emp_scov_r05_t0(s, y, k=1):
     return partial_ema_scov_factory(s=s,y=y,k=k,r=0.05, target=0)
 
 
-PARTIAL_EMA_D0_COV_SKATERS = [ewa_pm_emp_scov_r01, ewa_pm_emp_scov_r02, ewa_pm_emp_scov_r05,
-                              ewa_pm_emp_scov_r01_t0, ewa_pm_emp_scov_r02_t0, ewa_pm_emp_scov_r05_t0]
+EWA_PM_EMP_D0_COV_SKATERS = [ewa_pm_emp_scov_r01, ewa_pm_emp_scov_r02, ewa_pm_emp_scov_r05,
+                             ewa_pm_emp_scov_r01_t0, ewa_pm_emp_scov_r02_t0, ewa_pm_emp_scov_r05_t0]

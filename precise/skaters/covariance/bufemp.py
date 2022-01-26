@@ -53,6 +53,6 @@ def buf_emp_pcov_d1_long_form(y:Y_DATA_TYPE, s:dict, n_buffer:int=100, k=1):
         return x, dy_cov, s
     
 
-BUFFERED_EMPIRICAL_D0_SKATERS = [buf_emp_pcov_d0_n20, buf_emp_pcov_d0_n50, buf_emp_pcov_d0_n100]
-BUFFERED_EMPIRICAL_D1_SKATERS = [buf_emp_pcov_d1_n20, buf_emp_pcov_d1_n100]
-BUFFERED_EMPIRICAL_SKATERS = BUFFERED_EMPIRICAL_D0_SKATERS + BUFFERED_EMPIRICAL_D1_SKATERS
+BUF_EMP_D0_SKATERS = [buf_emp_pcov_d0_n20, buf_emp_pcov_d0_n50, buf_emp_pcov_d0_n100]
+BUF_EMP_D1_SKATERS = [buf_emp_pcov_d1_n20, buf_emp_pcov_d1_n100]
+BUFFERED_EMPIRICAL_SKATERS = BUF_EMP_D0_SKATERS + BUF_EMP_D1_SKATERS

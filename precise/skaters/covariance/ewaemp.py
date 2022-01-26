@@ -1,4 +1,4 @@
-from precise.skaters.covariance.movingaveragepre import ema_pcov_r
+from precise.skaters.covariance.ewaempfactory import ema_pcov_r
 from precise.skaters.covarianceutil.conventions import Y_DATA_TYPE
 from precise.skaters.covarianceutil.differencing import d1_factory
 
@@ -41,5 +41,5 @@ def ewa_emp_pcov_d1_r10(y:Y_DATA_TYPE, s:dict, k=1):
     return d1_factory(f = ewa_emp_pcov_d0_r10, y=y, s=s, k=k)
 
 
-EMA_D1_COV_SKATERS = [ewa_emp_pcov_d1_r01, ewa_emp_pcov_d1_r02, ewa_emp_pcov_d1_r05, ewa_emp_pcov_d1_r10]
+EXP_EMP_D1_COV_SKATERS = [ewa_emp_pcov_d1_r01, ewa_emp_pcov_d1_r02, ewa_emp_pcov_d1_r05, ewa_emp_pcov_d1_r10]
 
