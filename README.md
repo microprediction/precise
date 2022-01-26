@@ -24,6 +24,8 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
             x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
         pprint(x_cov)
      
+### Finding cov skaters
+     
 You can hunt for skaters other than *emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). Naming hints for values in the state dict s:  
 
 | Shorthand | Intent                            |
