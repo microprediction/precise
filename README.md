@@ -60,8 +60,9 @@ Speed hints:
 | Shorthand | Interpretation                                                                                 |
 |-----------|------------------------------------------------------------------------------------------------|
 | buf       | Performs classical calculation on a fixed window of data, so unlikely to be efficient          |
+| inc       | Incremental calculation, at least in part                                                      |
 
-The buffering skaters merely "pretend" to be online algorithms. 
+All skaters at least fake incremental behaviour, for consistency. 
      
 ## Stand-along utilities
 
