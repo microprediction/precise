@@ -26,8 +26,6 @@
  'buf_sk_mcd_pcov_d1_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py',
  'buf_sk_oas_pcov_d0_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py',
  'buf_sk_oas_pcov_d1_n100': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py',
- 
- 
  'ewa_emp_pcov_d0_r01': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewaemp.py',
  'ewa_emp_pcov_d0_r02': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewaemp.py',
  'ewa_emp_pcov_d0_r05': 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewaemp.py',
