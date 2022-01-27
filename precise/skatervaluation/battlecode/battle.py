@@ -53,7 +53,7 @@ def skater_battle( params:dict ):
         pprint(params)
         raise ValueError('Something is probably wrong with params for getting data, so this config will not fly')
 
-    print('Data retrieval test passed with the following parameters')
+    print('Data retrieval test passed for category '+category)
     pprint(params)
     time.sleep(1)
     print('Will test the following skaters')
@@ -76,7 +76,7 @@ def skater_battle( params:dict ):
 
     while True:
         n_obs = params['n_obs']
-        category, xs = category_and_data(**params)
+        params, category, xs = params_category_and_data(params=params)
         assert len(xs)==n_obs
         xs = np.array(xs)
         np.random.shuffle(ALL_D0_SKATERS)
