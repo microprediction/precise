@@ -12,26 +12,41 @@ from collections import Counter
 from momentum.functions import rvar
 from precise.skatertools.data.equity import random_m6_returns
 from precise.whereami import SKATER_WIN_DATA
+import numpy as np
 
-# Creates a new file to put on the skater win data queue
 
-params = {'n_dim': 25,
-          'n_obs': 160,
-          'n_burn':140,
-          'atol': 1e-4,
-          'lb':-1000,
-          'ub':1000,
-          'interval':'d'}
 
-descriptions = {'m':'equity_monthly',
-                'd':'equity_daily'}
+DEFAULT_M6_PARAMS = {'n_dim': 25,
+                      'n_obs': 356,
+                      'n_burn':300,
+                      'atol': 1,
+                      'lb':-1000,
+                      'ub':1000,
+                      'interval':'d'}
 
-params['description'] = descriptions[params['interval']]
 
-if __name__=='__main__':
+def category_and_data(params:dict):
+    if params['topic']== 'm6':
+        combined_params = DEFAULT_M6_PARAMS
+        combined_params.update(params)
+        descriptions = {'m': 'm6_stocks_monthly',
+                        'd': 'm6_stocks_daily'}
+        combined_params['description'] = descriptions[combined_params['interval']]
+        category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
+        xs = random_m6_returns(verbose=False, **combined_params)
+        return category, xs
+    else:
+        raise ValueError('m6 is only topic, for now')
+
+
+def skater_battle( params:dict ):
+    """
+        Write results to a new queue
+    """
+    n_per_battle = 3
     atol = 1.0
     pprint(ALL_D0_SKATERS)
-    category = params['description']+'_p'+str(params['n_dim'])+'_n'+str(params['n_burn'])
+    category, xs_test = category_and_data(**params )
     qn = str(uuid4())+'.json'
     queue_dir = os.path.join(SKATER_WIN_DATA, category)
     queue = os.path.join(queue_dir,qn)
@@ -46,16 +61,14 @@ if __name__=='__main__':
     worst_ll_seen = 10000000
     lb = params['lb']
     ub = params['ub']
-    interval = params['interval']
 
     while True:
-        n_dim = params['n_dim']
         n_obs = params['n_obs']
-        xs = random_m6_returns(n_dim=n_dim, n_obs=n_obs, verbose=False, interval=interval)
+        category, xs = category_and_data(**params)
         assert len(xs)==n_obs
         xs = np.array(xs)
         np.random.shuffle(ALL_D0_SKATERS)
-        fs = ALL_D0_SKATERS[:3]
+        fs = ALL_D0_SKATERS[:n_per_battle]
         stuff = list()
 
         for f in fs:

@@ -12,7 +12,7 @@ def get_prices(ticker,n_obs,interval):
     return web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
 
 
-def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m'):
+def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', **ignore):
     """
     :param n_dim:
     :param n_obs:
