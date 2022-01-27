@@ -327,7 +327,7 @@ Alexander Izmailov and Brian Shay
 Demonstration of the omnipresence of noise in financial correlation/covariance matrices revealed by means of random matrix theory, a branch of probability theory. Introduction of the Shannon entropy as a measure of noise in correlation matrices. Demonstration of substantial entropy decrease as a result of noise filtering on a few examples. A problem of paramount importance, but rarely addressed by buy-side and sell-side portfolio managers and other market practitioners, is the problem of filtering noise from correlation matrices. This noise is the inevitable consequence of the imperfection of traditional modeling assumptions, especially the representation of infinite returns time series as finite samples.
 
 
-## Reliable Covariance Estimation ([pdf](https://arxiv.org/pdf/2006.03311v3.pdf))
+## Reliable Covariance Estimation [pdf](https://arxiv.org/pdf/2006.03311v3.pdf)
 Ilya Soloveychik
 
 Covariance or scatter matrix estimation is ubiquitous in most modern statistical and machine learning
