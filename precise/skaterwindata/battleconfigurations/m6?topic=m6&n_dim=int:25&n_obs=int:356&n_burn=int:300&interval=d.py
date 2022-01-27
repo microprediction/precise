@@ -6,4 +6,4 @@ import os
 
 if __name__=='__main__':
     kwargs = parse_kwargs(__file__.split(os.path.sep)[-1])
-    m6_battle(**kwargs)
+    skater_battle(**kwargs)
