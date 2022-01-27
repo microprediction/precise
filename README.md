@@ -2,13 +2,12 @@
 
 A collection of *autonomous* *incremental* estimators for covariance, precision, correlation and associated quantities.  
 
+## TLDR: "Just a pile of functions that forecast covariance in online fashion"
+The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. 
+
 ## Install 
 
     pip install precise 
-    
-## Examples
-See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage)
-
 
 ### Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
@@ -28,7 +27,10 @@ This mildly unusual convention requires the caller to maintain state from one ca
      
 See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
      
-### Finding cov skaters
+## More basic examples
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). 
+     
+### Browsing for skaters
      
 You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). There are some location utilities in [precise/whereami](https://github.com/microprediction/precise/blob/main/precise/whereami.py). 
 
