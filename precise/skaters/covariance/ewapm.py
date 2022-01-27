@@ -19,7 +19,6 @@ def ewa_pm_emp_scov_r05(s, y, k=1):
 
 
 def ewa_pm_emp_scov_r005_t0(s, y, k=1):
-     """ target = 0 """
     return partial_ema_scov_factory(s=s,y=y,k=k,r=0.005, target=0)
 
 
