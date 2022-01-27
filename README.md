@@ -1,4 +1,5 @@
-# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg)
+# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 
 A collection of *autonomous* *incremental* estimators for covariance, precision, correlation and associated quantities.  
 
