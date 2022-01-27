@@ -326,3 +326,22 @@ Alexander Izmailov and Brian Shay
 
 Demonstration of the omnipresence of noise in financial correlation/covariance matrices revealed by means of random matrix theory, a branch of probability theory. Introduction of the Shannon entropy as a measure of noise in correlation matrices. Demonstration of substantial entropy decrease as a result of noise filtering on a few examples. A problem of paramount importance, but rarely addressed by buy-side and sell-side portfolio managers and other market practitioners, is the problem of filtering noise from correlation matrices. This noise is the inevitable consequence of the imperfection of traditional modeling assumptions, especially the representation of infinite returns time series as finite samples.
 
+
+## Reliable Covariance Estimation [pdf](https://arxiv.org/pdf/2006.03311v3.pdf)
+Ilya Soloveychik
+
+Covariance or scatter matrix estimation is ubiquitous in most modern statistical and machine learning
+applications. The task becomes especially challenging since most real-world datasets are essentially nonGaussian. The data is often contaminated by outliers and/or has heavy-tailed distribution causing the
+sample covariance to behave very poorly and calling for robust estimation methodology. The natural
+framework for the robust scatter matrix estimation is based on elliptical populations. Here, Tyler’s
+estimator stands out by being distribution-free within the elliptical family and easy to compute. The
+existing works thoroughly study the performance of Tyler’s estimator assuming ellipticity but without
+providing any tools to verify this assumption when the covariance is unknown in advance. We address
+the following open question: Given the sampled data and having no prior on the data generating process,
+how to assess the quality of the scatter matrix estimator? In this work we show that this question can
+be reformulated as an asymptotic uniformity test for certain sequences of exchangeable vectors on the
+unit sphere. We develop a consistent and easily applicable goodness-of-fit test against all alternatives
+to ellipticity when the scatter matrix is unknown. The findings are supported by numerical simulations
+demonstrating the power of the suggest technique.
+
+
