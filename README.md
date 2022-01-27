@@ -1,4 +1,4 @@
-# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg)!
+# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg)
 
 A collection of *autonomous* *incremental* estimators for covariance, precision, correlation and associated quantities.  
 
