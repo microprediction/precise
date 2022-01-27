@@ -2,7 +2,7 @@
 
 A collection of *autonomous* *incremental* estimators for covariance, precision, correlation and associated quantities.  
 
-## TLDR: functions that forecast covariance
+## TLDR: "Just a pile of functions that forecast covariance in online fashion"
 The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. 
 
 ## Install 
