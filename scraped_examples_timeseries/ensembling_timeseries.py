@@ -1,5 +1,7 @@
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 
+scrap = """
+
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
 from precise.skaters.covarianceutil.covfunctions import multiply_diag, grand_shrink, make_diagonal, mean_off_diag
 from pprint import pprint
@@ -162,3 +164,4 @@ if __name__=='__main__':
         running.update(Counter(report))
         if np.random.rand()<0.03:
             pprint(running.most_common())
+"""
