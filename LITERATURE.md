@@ -315,3 +315,15 @@ Gerber, Markowitz, Ernst, Sargen, Miao, Javid
 
 he purpose of this paper is to introduce the Gerber statistic, a robust co-movementmeasure for covariance matrix estimation for the purpose of portfolio construction. TheGerber statistic extends Kendall’s Tau by counting the proportion of simultaneous co-movements in series when their amplitudes exceed data-dependent thresholds. Sincethe statistic is neither affected by extremely large or extremely small movements, it isespecially well-suited for financial time series, which often exhibit extreme movementsas well as a great amount of noise. Operating within the mean-variance portfolio op-timization framework of Markowitz (1952, 1959), we consider the performance of theGerber statistic against two other commonly used methods for estimating the covari-ance matrix of stock returns: the sample covariance matrix (also called the historicalcovariance matrix) and shrinkage of the sample covariance matrix as formulated inLedoit and Wolf (2004). Using a well-diversified portfolio of nine assets over a thirtyyear time period (January 1990-December 2020), we empirically find that, for almostall scenarios considered, the Gerber statistic’s returns dominate those achieved by bothhistorical covariance and by the shrinkage method of Ledoit and Wolf (2004) 
 
+
+## Filtering NOise from Correlation Matrices (Detection of Correlation Diversion, Pairs Trading, Risk Analysis Et al) [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID2378911_code2184499.pdf?abstractid=2378911&mirid=1)
+Alexander Izmailov and Brian Shay
+
+Demonstration of the omnipresence of noise in financial correlation/covariance matrices revealed by means of random matrix theory, a branch of probability theory.
+
+Introduction of the Shannon entropy as a measure of noise in correlation matrices.
+
+Demonstration of substantial entropy decrease as a result of noise filtering on a few examples.
+
+A problem of paramount importance, but rarely addressed by buy-side and sell-side portfolio managers and other market practitioners, is the problem of filtering noise from correlation matrices. This noise is the inevitable consequence of the imperfection of traditional modeling assumptions, especially the representation of infinite returns time series as finite samples.
+
