@@ -11,7 +11,7 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
 
 
 ### Covariance skaters  
-Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and the posterior state. 
+Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller.  
 
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
     from precise.skaters.covariance.runemmp import run_emp_pcov_d0 # <-- Running empirical population covariance
