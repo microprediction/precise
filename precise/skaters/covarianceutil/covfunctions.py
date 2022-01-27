@@ -42,6 +42,27 @@ def grand_shrink(a, lmbd, copy=True):
         return (1-lmbd) * a + lmbd * mu * np.eye(n)
 
 
+def affine_inversion(a, phi=1.01, lmbd=0.01, copy=True):
+    """ Combination of "ridge" (multiply diagonal) and "shrinkage" (towards mu*I)
+    :param a:
+    :param phi:
+    :param lmbd:
+    :return:
+    """
+    shrunk_cov = affine_shrink(a=a, phi=phi, lmbd=lmbd)
+    try:
+        pre = np.linalg.inv(shrunk_cov)
+    except np.linalg.LinAlgError:
+        pre = np.linalg.pinv(shrunk_cov)
+    return pre
+
+
+def affine_shrink(a, phi=1.01, lmbd=0.01, copy=True):
+    ridge_cov = multiply_diag(a, phi=phi, copy=copy)
+    shrunk_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=copy)
+    return shrunk_cov
+
+
 def is_symmetric(a, rtol=1e-05, atol=1e-08):
     return np.allclose(a, a.T, rtol=rtol, atol=atol)
 

@@ -4,14 +4,23 @@ from sklearn.covariance._shrunk_covariance import ledoit_wolf_shrinkage
 import numpy as np
 
 
-# Experimental estimator inspired by Ledoit-Wolf
+# EWALD short for "Exp Weight Avg" Ledoit-Wolf 
+# ---------------------------------------------
+# Experimental online estimator inspired by Ledoit-Wolf
 # Keeps a buffer of last n_buffer observations
-# Tracks quantities akin to a^2, d^2 used by LW to
-# estimate a reasonable linear shrinkage
+# Tracks quantities somewhat akin to a^2, d^2 used by LW to
+# estimate a "reasonable" linear shrinkage
+
+
+def ewa_lw_scov_factory(s, y, r):
+    s = lw_ema_scov(s=s,x=y,r=r)
+    x = np.copy(s['ema_scov']['mean'])
+    x_cov = np.copy(s['scov'])
+    return x, x_cov, s
 
 
 def lw_ema_scov(s:dict, x=None, r=0.025)->dict:
-    if s.get('s_c') is None:
+    if s.get('ema_scov') is None:
         if isinstance(x,int):
             return _lw_ema_scov_init(n_dim=x, r=r)
         else:
@@ -23,7 +32,7 @@ def lw_ema_scov(s:dict, x=None, r=0.025)->dict:
 
 def _lw_ema_scov_init(n_dim, r):
     sc = ema_scov({}, n_dim, r=r)
-    return {'s_c':sc,
+    return {'ema_scov':sc,
             'bn_bar':None,
             'a2':0,
             'mn':0,
@@ -35,15 +44,16 @@ def _lw_ema_scov_update(s, x, r):
     """
         Attempts to track quantities similar to those used to estimate LD shrinkage
     """
+    # Uses buffered LD up to 2*n_emp observations, then switches to an updating scheme
     x = np.asarray(x)
-    s['s_c']  = ema_scov(s=s['s_c'], x=x, r=r)
+    s['ema_scov']  = ema_scov(s=s['ema_scov'], x=x, r=r)
     s['buffer'].append(x)
-    if len(s['buffer'])>s['s_c']['n_emp']:
+    if len(s['buffer'])>s['ema_scov']['n_emp']:
         # Update running estimate of the LD shrinkage parameter
         s['n_new'] = s['n_new']+1
         xl = s['buffer'].pop(0)
-        xc = np.atleast_2d(xl-s['s_c']['mean'])  # <--- Do we need this?
-        scov = s['s_c']['scov']
+        xc = np.atleast_2d(xl-s['ema_scov']['mean'])  # <--- Do we need this?
+        scov = s['ema_scov']['scov']
 
         # Compute d^2
         mn = grand_mean(scov)
@@ -66,13 +76,19 @@ def _lw_ema_scov_update(s, x, r):
         bn = min( s['bn_bar'], s['dn'] )
         lmbd = bn/s['dn']
         s['lmbd'] = lmbd
-    if 2< s['s_c']['n_samples']<2*s['s_c']['n_emp']:
-        # Override with traditional Ledoit-Shrinkage
+
+    # If still warming up, override lmbd with traditional Ledoit-Shrinkage
+    if 2 < s['ema_scov']['n_samples'] < 2*s['ema_scov']['n_emp']:
         X = np.asarray(s['buffer'])
         s['lmbd'] = ledoit_wolf_shrinkage(X=X)
-    if s['s_c']['n_samples']>2:
-        scov = s['s_c']['scov']
+
+    # Create shrunk version of moving avg sample covariance
+    if s['ema_scov']['n_samples']>2:
+        scov = s['ema_scov']['scov']
         s['scov'] = grand_shrink(a=scov, lmbd=s['lmbd'], copy=True)
+    else:
+        s['scov'] = np.eye(len(x))
+
     return s
 
 

@@ -6,7 +6,7 @@ from typing import Union, List
 # Exponential weighted sample covariance
 
 
-def ema_pcov_r(y, s:dict, k=1,r=0.025):
+def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025):
     assert k==1
     s = ema_scov(s=s,x=y,r=r)
     x = s['mean']
@@ -14,13 +14,12 @@ def ema_pcov_r(y, s:dict, k=1,r=0.025):
     return x, x_cov, s
 
 
-
 def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:
         if isinstance(x,int):
             return _ema_scov_init(n_dim=x,r=r)
-        elif len(x)>1:
+        elif isinstance(x,(List,np.ndarray)):
             s = _ema_scov_init(n_dim=len(x),r=r)
         else:
             raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
@@ -39,7 +38,7 @@ def _ema_scov_init(n_dim=None, r:float=0.025, n_emp=None ):
 
     """
     if n_emp is None:
-        n_emp = int(min(50, max(5, math.ceil(1 / r))))
+        n_emp = int(min(250, max(5, math.ceil(1 / r))))
     s = _emp_pcov_init(n_dim=n_dim)
     s.update({'rho':r, 'n_emp':n_emp})
     return s

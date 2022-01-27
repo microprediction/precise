@@ -5,7 +5,7 @@ from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_up
 from precise.skaters.covariance import multiply_diag, normalize, grand_shrink
 from precise.skatertools.syntheticdata import create_disjoint_dataset
 from pprint import pprint
-from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
+from precise.skaters.covarianceutil.adjacency import centroid_precision_adjacency
 import random
 from precise.skaters.portfolioutil import long_from_pre
 

@@ -24,7 +24,7 @@ def _emp_pcov_init(s:dict=None, x:X_DATA_TYPE=None, n_dim=None):
     s['ones'] = np.ones(n_dim)
     s['n_samples'] = 0
     s['mean'] = np.zeros(n_dim)
-    s['pcov'] = np.zeros(s['shape'])
+    s['pcov'] = np.eye(n_dim)
     return s
 
 

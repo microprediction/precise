@@ -3,7 +3,7 @@
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
 from precise.skaters.covarianceutil.covfunctions import multiply_diag, grand_shrink, make_diagonal, mean_off_diag
 from pprint import pprint
-from precise.skaters.precisionutil.adjacency import centroid_precision_adjacency
+from precise.skaters.covarianceutil.adjacency import centroid_precision_adjacency
 from precise.skatertools.data.skaterresiduals import random_multivariate_residual
 import numpy as np
 from collections import Counter
