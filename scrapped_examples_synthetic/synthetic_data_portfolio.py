@@ -1,4 +1,6 @@
 
+junk = """
+
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
@@ -146,3 +148,4 @@ if __name__=='__main__':
         pprint(ridge_pre[:5,:5])
 
 
+"""

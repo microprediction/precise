@@ -1,3 +1,9 @@
 numpy
 scikit-learn
 momentum>=0.2.3
+kmeans1d
+runthis
+scikit-learn
+osqp
+pandas_datareader
+
