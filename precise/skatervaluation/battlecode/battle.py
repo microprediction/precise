@@ -1,11 +1,9 @@
 from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
-from precise.skatertools.data.skaterresiduals import random_multivariate_residual
 from precise.skaters.covarianceutil.likelihood import cov_skater_loglikelihood
 from uuid import uuid4
 import os
 import json
 import pathlib
-import numpy as np
 from pprint import pprint
 import traceback
 from collections import Counter
@@ -13,7 +11,7 @@ from momentum.functions import rvar
 from precise.skatertools.data.equity import random_m6_returns
 from precise.whereami import SKATER_WIN_DATA
 import numpy as np
-
+import time
 
 
 DEFAULT_M6_PARAMS = {'n_dim': 25,
@@ -25,7 +23,10 @@ DEFAULT_M6_PARAMS = {'n_dim': 25,
                       'interval':'d'}
 
 
-def category_and_data(params:dict):
+def params_category_and_data(params:dict):
+    """
+         Supplement params (usually inferred from battle script file names) with defaults
+    """
     if params['topic']== 'm6':
         combined_params = DEFAULT_M6_PARAMS
         combined_params.update(params)
@@ -34,7 +35,7 @@ def category_and_data(params:dict):
         combined_params['description'] = descriptions[combined_params['interval']]
         category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
         xs = random_m6_returns(verbose=False, **combined_params)
-        return category, xs
+        return combined_params, category, xs
     else:
         raise ValueError('m6 is only topic, for now')
 
@@ -45,8 +46,19 @@ def skater_battle( params:dict ):
     """
     n_per_battle = 3
     atol = 1.0
+    try:
+        params, category, xs_test = params_category_and_data(params=params)
+    except Exception as e:
+        print(e)
+        pprint(params)
+        raise ValueError('Something is probably wrong with params for getting data, so this config will not fly')
+
+    print('Data retrieval test passed with the following parameters')
+    pprint(params)
+    time.sleep(1)
+    print('Will test the following skaters')
     pprint(ALL_D0_SKATERS)
-    category, xs_test = category_and_data(**params )
+
     qn = str(uuid4())+'.json'
     queue_dir = os.path.join(SKATER_WIN_DATA, category)
     queue = os.path.join(queue_dir,qn)
