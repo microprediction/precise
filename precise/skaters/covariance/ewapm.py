@@ -1,6 +1,10 @@
 from precise.skaters.covariance.ewapmfactory import partial_ema_scov_factory
 
 
+def ewa_pm_emp_scov_r005(s, y, k=1):
+    return partial_ema_scov_factory(s=s,y=y,k=k,r=0.005)
+
+
 def ewa_pm_emp_scov_r01(s, y, k=1):
     return partial_ema_scov_factory(s=s,y=y,k=k,r=0.01)
 
