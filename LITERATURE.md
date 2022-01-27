@@ -319,11 +319,5 @@ he purpose of this paper is to introduce the Gerber statistic, a robust co-movem
 ## Filtering NOise from Correlation Matrices (Detection of Correlation Diversion, Pairs Trading, Risk Analysis Et al) [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID2378911_code2184499.pdf?abstractid=2378911&mirid=1)
 Alexander Izmailov and Brian Shay
 
-Demonstration of the omnipresence of noise in financial correlation/covariance matrices revealed by means of random matrix theory, a branch of probability theory.
-
-Introduction of the Shannon entropy as a measure of noise in correlation matrices.
-
-Demonstration of substantial entropy decrease as a result of noise filtering on a few examples.
-
-A problem of paramount importance, but rarely addressed by buy-side and sell-side portfolio managers and other market practitioners, is the problem of filtering noise from correlation matrices. This noise is the inevitable consequence of the imperfection of traditional modeling assumptions, especially the representation of infinite returns time series as finite samples.
+Demonstration of the omnipresence of noise in financial correlation/covariance matrices revealed by means of random matrix theory, a branch of probability theory. Introduction of the Shannon entropy as a measure of noise in correlation matrices. Demonstration of substantial entropy decrease as a result of noise filtering on a few examples. A problem of paramount importance, but rarely addressed by buy-side and sell-side portfolio managers and other market practitioners, is the problem of filtering noise from correlation matrices. This noise is the inevitable consequence of the imperfection of traditional modeling assumptions, especially the representation of infinite returns time series as finite samples.
 
