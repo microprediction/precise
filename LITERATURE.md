@@ -344,4 +344,9 @@ unit sphere. We develop a consistent and easily applicable goodness-of-fit test 
 to ellipticity when the scatter matrix is unknown. The findings are supported by numerical simulations
 demonstrating the power of the suggest technique.
 
+## Elliptical Black-Litterman portfolio optimization
+Andrzej Palczewski and Jan Palczewski
+
+We extend the Black-Litterman framework beyond normality to general elliptical distributions of investor’s views and asset returns and portfolio risk measured by CVaR. Unlike existing solutions, cf. Xiao and Valdez [Quant. Finan. 2015, 15:3, 509–519], the choice of distributions, with the first and second moment constant, has a significant effect on optimal portfolio weights in a way that cannot be achieved by appropriate reparametrisation of the classical Black-Litterman methodology. The posterior distribution, in general, is not in a parametric form and, therefore, we design efficient numerical algorithms for approximating it in order to compute optimal portfolio weights. Of independent interest are our results on equivalence of a variety of portfolio optimization problems for elliptical distributions with linear constraints in the sense that they select portfolios from the same efficient frontier. We further prove a mutual fund theorem in this broad framework
+
 
