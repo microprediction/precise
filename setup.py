@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.3.4",
+    version="0.3.5",
     description="Online covariance and precision estimation",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -34,6 +34,7 @@ setup(
               "precise.skatertools.syntheticdata",
               "precise.skatertools.visualization",
               "precise.skatervaluation",
+              "precise.skatervaluation.queues",
               "precise.skatervaluation.battleutil",
               'precise.skatervaluation.battlescripts'],
     test_suite='pytest',
