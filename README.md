@@ -26,10 +26,13 @@ This mildly unusual convention requires the caller to maintain state from one ca
             x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
         pprint(x_cov)
      
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). 
+     
 See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
      
-## More basic examples
-See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). 
+### Skater Elo ratings 
+
+See [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb).  
      
 ### Browsing for skaters
      
