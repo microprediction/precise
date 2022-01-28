@@ -1,7 +1,7 @@
 
 from pprint import pprint
-from precise.skatervaluation.battlecode.battleio import win_data
-from precise.skatervaluation.battlecode.eloformulas import elo_change
+from precise.skatervaluation.battleutil.battleio import win_data
+from precise.skatervaluation.battleutil.eloformulas import elo_change
 from collections import Counter
 import random
 
