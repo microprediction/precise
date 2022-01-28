@@ -5,10 +5,34 @@ from precise.skatervaluation.battlecode.eloformulas import elo_change
 from collections import Counter
 import random
 
-# Creating Elo ratings from collections of wins and losses stored in hashed files /skaterwindata
+# Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
+
+
+def elo_from_win_files():
+    """
+    :return:  Elo ratings for all categories
+    """
+    # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
+    return [ (cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data() ]
 
 
 def elo_from_win_counts(ctn):
+    """
+        Elo ratings from a counter or dict of match results
+
+        Each key is a string of the form:
+
+              someone>someoneelse
+
+        indicating a win of someone over someonelese. Values are the number of occasions on
+        which the result eventuated.
+
+        Matches are sampled in random ordering, so the Elo ratings will be different each
+        time this script is run.
+
+        There is no temporality. When older battle results files become irrelevant they
+        should simply be deleted
+    """
     contestants = list(set( [ k.split('>')[0] for k in ctn.keys() ] + [ k.split('>')[1] for k in ctn.keys() ]))
     elo = Counter( dict([ (c,1500) for c in contestants ]))
     finished = False
@@ -27,10 +51,6 @@ def elo_from_win_counts(ctn):
     return elo
 
 
-def cat_elo():
-    return [ (cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data() ]
-
-
 
 if __name__=='__main__':
-   pprint(cat_elo())
+   pprint(elo_from_win_files())
