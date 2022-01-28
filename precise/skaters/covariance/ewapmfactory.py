@@ -13,7 +13,7 @@ QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
              'cl':(1.0,-1,-1)}
 
 
-def partial_ema_scov_factory(s,y,k,r,target=0):
+def ewa_pm_factory(s, y, k, r, target=0, n_emp=None):
     """ Skater """
     assert k==1
     s = partial_ema_scov(s=s,x=y,r=r,target=target)
@@ -22,13 +22,13 @@ def partial_ema_scov_factory(s,y,k,r,target=0):
     return x, x_cov, s
 
 
-def partial_ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, target=None):
+def partial_ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, target=None, n_emp=None):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:
         if isinstance(x,(int,float)):
-            return _partial_ema_scov_init(n_dim=int(x), r=r, target=target)
+            return _partial_ema_scov_init(n_dim=int(x), r=r, target=target, n_emp=n_emp)
         elif len(x)>1:
-            s = _partial_ema_scov_init(n_dim=len(x), r=r, target=target)
+            s = _partial_ema_scov_init(n_dim=len(x), r=r, target=target, n_emp=n_emp)
         else:
             raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
     if x is not None:

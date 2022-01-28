@@ -1,5 +1,5 @@
 from runthis import parse_kwargs
-from precise.skatervaluation.battlecode.battle import skater_battle
+from precise.skatervaluation.battlecode.arrangingbattles import skater_battle
 import os
 
 # Infers params from file name and runs a battle
