@@ -13,7 +13,8 @@ def elo_from_win_files():
     :return:  Elo ratings for all categories
     """
     # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
-    return [ (cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data() ]
+    the_lot = [ (cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data() ]
+    return the_lot
 
 
 def elo_from_win_counts(ctn):

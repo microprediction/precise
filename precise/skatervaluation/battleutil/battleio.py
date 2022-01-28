@@ -32,5 +32,6 @@ def load_win_data(cat_files):
 
 
 if __name__=='__main__':
-    pprint(win_data())
+    wd = win_data()
+    print([c for c,_ in win_data()])
 
