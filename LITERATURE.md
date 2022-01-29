@@ -350,21 +350,17 @@ Andrzej Palczewski and Jan Palczewski
 We extend the Black-Litterman framework beyond normality to general elliptical distributions of investor’s views and asset returns and portfolio risk measured by CVaR. Unlike existing solutions, cf. Xiao and Valdez [Quant. Finan. 2015, 15:3, 509–519], the choice of distributions, with the first and second moment constant, has a significant effect on optimal portfolio weights in a way that cannot be achieved by appropriate reparametrisation of the classical Black-Litterman methodology. The posterior distribution, in general, is not in a parametric form and, therefore, we design efficient numerical algorithms for approximating it in order to compute optimal portfolio weights. Of independent interest are our results on equivalence of a variety of portfolio optimization problems for elliptical distributions with linear constraints in the sense that they select portfolios from the same efficient frontier. We further prove a mutual fund theorem in this broad framework
 
 
-## Regularized M-estimators of scatter matrix
+## Regularized M-estimators of scatter matrix [pdf](https://arxiv.org/pdf/1405.2528.pdf)
 Esa Ollia and David Tyler
 
 In this paper, a general class of regularized
-M
--
-estimators of scatter matrix are proposed which are suitable also
-for low or insufficient sample support (small
-n and large
+M- estimators of scatter matrix are proposed which are suitable also
+for low or insufficient sample support (small n and large
 p) problems. The considered class constitutes a natural generalization of M-estimators of scatter matrix (Maronna, 1976) and are defined
 as a solution to a penalized
 M-estimation cost function that
 depend on a pair
-(α, β
-) of regularization parameters. We derive
+(α, β) of regularization parameters. We derive
 general conditions for uniqueness of the solution using concept of
 geodesic convexity. Since these conditions do not include Tyler’s M-estimator, necessary and sufficient conditions for uniqueness
 of the penalized Tyler’s cost function are established separately.
