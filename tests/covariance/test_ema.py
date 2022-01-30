@@ -27,10 +27,11 @@ def test_diag():
     rho = 0.05
     r0 = {}
     r1 = {}
+    n_emp = 10
     for k,x in enumerate(data):
-        r1 = ema_scov(s=r1, x=x,r=rho)
-        r0 = rvar(m=r0,x=x[0],rho=rho)
-        if k >= 1:
+        r1 = ema_scov(s=r1, x=x,r=rho, n_emp=n_emp)
+        r0 = rvar(m=r0,x=x[0],rho=rho, n=n_emp)
+        if k >= 2:
             c = r1['scov'][0, 0]
             c1 = r0['var']
             assert np.isclose(c,c1)

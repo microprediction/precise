@@ -14,13 +14,13 @@ def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025):
     return x, x_cov, s
 
 
-def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025):
+def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, n_emp=None):
     """ Maintain running population covariance """
     if s.get('n_samples') is None:
         if isinstance(x,int):
-            return _ema_scov_init(n_dim=x,r=r)
+            return _ema_scov_init(n_dim=x,r=r, n_emp=n_emp)
         elif isinstance(x,(List,np.ndarray)):
-            s = _ema_scov_init(n_dim=len(x),r=r)
+            s = _ema_scov_init(n_dim=len(x),r=r, n_emp=n_emp)
         else:
             raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
     if x is not None:
