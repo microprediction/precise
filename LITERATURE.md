@@ -372,3 +372,19 @@ the mean squared sense. An iterative algorithm that converges
 to the solution of the regularized
 M-estimating equation is
 also provided.
+
+## cvCovEst: Cross-validated covariance matrix estimator selection and evaluation in R [pdf](https://www.researchgate.net/publication/353470417_cvCovEst_Cross-validated_covariance_matrix_estimator_selection_and_evaluation_in_R/fulltext/60ff5b410c2bfa282a02e8d3/cvCovEst-Cross-validated-covariance-matrix-estimator-selection-and-evaluation-in-R.pdf?origin=figuresDialog_download)
+Boileau, Hejazi, Collica, van der Laan, Dudoit
+
+Covariance matrices play fundamental roles in myriad statistical procedures. When the observations in a dataset far outnumber the features, asymptotic theory and empirical evidence have
+demonstrated the sample covariance matrix to be the optimal estimator of this parameter.
+This assertion does not hold when the number of observations is commensurate with or smaller
+than the number of features. Consequently, statisticians have derived many novel covariance
+matrix estimators for the high-dimensional regime, often relying on additional assumptions
+about the parameter’s structural characteristics (e.g., sparsity). While these estimators have
+greatly improved the ability to estimate covariance matrices in high-dimensional settings, objectively selecting the best estimator from among the many possible candidates remains a
+largely unaddressed challenge. The cvCovEst package addresses this methodological gap
+through its implementation of a cross-validated framework for covariance matrix estimator
+selection. This data-adaptive procedure’s selections are asymptotically optimal under minimal
+assumptions – in fact, they are equivalent to the selections that would be made if given full
+knowledge of the true data-generating processes (i.e., an oracle selector
