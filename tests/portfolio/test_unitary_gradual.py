@@ -5,7 +5,7 @@ from precise.skaters.portfolioutil.portfunctions import portfolio_variance, excl
 from pprint import pprint
 
 
-def test_iterative_gradual():
+def dont_test_me():
     n_dim = 8
     dfcov0 = m6_cov(interval='d', n_dim=n_dim, n_obs=60)
     cov0 = dfcov0.values
@@ -23,4 +23,4 @@ def test_iterative_gradual():
 
 
 if __name__=='__main__':
-    test_iterative_gradual()
+    dont_test_me()
