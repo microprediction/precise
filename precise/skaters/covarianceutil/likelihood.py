@@ -4,23 +4,41 @@ import math
 import time
 
 
-def scatter_likelihood(cov, pre, y, lb):
+def empirical_log_likelihood(cov, pre, xs, lb, mu=None):
+    """ Log likelihood of matrix of data """
+    from sklearn.covariance._empirical_covariance import log_likelihood, empirical_covariance
+    if mu is None:
+        emp_cov = empirical_covariance(xs)
+    else:
+        emp_cov = empirical_covariance(xs - mu)
+    ll = log_likelihood(emp_cov=emp_cov, precision=pre)
+    if ll<lb:
+        ll=lb # Do something?!
+    return ll
+
+
+def vector_log_likelihood(pre, y, lb):
     """ Log likelihood of y
-    :param cov:
+    :param cov:    Inverse of pre, the predicted precision
     :param pre:
     :param y:      realized data points
     :param lb:     lower bound, returned if cov is degen
     :return:
     """
+    # c.f. sklearn
+    #     term2 = 1/2 fast_logdet(pre)
+    #     log_likelihood_  = -np.sum(emp_cov * precision) + fast_logdet(precision)
+    #     log_likelihood_ -= p * np.log(2 * np.pi)
+    # Derivation at
     # https://stats.stackexchange.com/questions/351549/maximum-likelihood-estimators-multivariate-gaussian
+    from sklearn.utils.extmath import fast_logdet
     p = len(y)
-    (sign, abslogdet) = np.linalg.slogdet(cov)
-    if np.isnan(abslogdet):
-        ll = lb
+    logdet = fast_logdet(pre)
+    if logdet < lb:
+        return lb
     else:
-        logdet = sign * abslogdet
         ll_term_1 = - (p / 2) * math.log(2 * math.pi)
-        ll_term_2 = - (1 / 2) * logdet
+        ll_term_2 =  (1 / 2) * logdet
         y_innovation = np.atleast_2d(y)
         y_innovation_t = y_innovation.transpose()
         ll_term_3 = - 1 / 2 * np.matmul(np.matmul(y_innovation, pre), y_innovation_t)[0, 0]
@@ -44,7 +62,6 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
     assert n_obs>n_burn
     s = {}
 
-
     for y in xs[:n_burn]:
         y_hat, y_cov, s = f(s=s,y=y,k=1)
 
@@ -62,7 +79,7 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
             inv_time += time.time()-inv_start_time
 
             dy = np.array(y) - np.array(y_hat_prev)
-            ll_delta = scatter_likelihood(cov=y_cov_prev, pre=y_inv_prev, y=dy, lb=lb)
+            ll_delta = vector_log_likelihood(pre=y_inv_prev, y=dy, lb=lb)
             if ll_delta>ub:
                 ll_delta = ub
             ll += ll_delta

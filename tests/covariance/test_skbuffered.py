@@ -4,11 +4,11 @@ from precise.skatertools.syntheticdata.miscellaneous import create_correlated_da
 
 
 def test_random_buffered_sk_d0():
-    data = create_correlated_dataset(400, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
-    for _ in range(50):
+    data = create_correlated_dataset(40, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7],[0.3, 0.2, 0.2],[0.5,0.3,0.1]]), (1, 5, 3))
+    for _ in range(5):
         f = np.random.choice(BUF_SK_D0_SKATERS)
         s = {}
-        for j,y in enumerate(data[:400]):
+        for j,y in enumerate(data[:40]):
             x, x_cov, s = f(s=s, y=y, k=1)
 
 
