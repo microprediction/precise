@@ -372,3 +372,45 @@ the mean squared sense. An iterative algorithm that converges
 to the solution of the regularized
 M-estimating equation is
 also provided.
+
+## cvCovEst: Cross-validated covariance matrix estimator selection and evaluation in R [pdf](https://www.researchgate.net/publication/353470417_cvCovEst_Cross-validated_covariance_matrix_estimator_selection_and_evaluation_in_R/fulltext/60ff5b410c2bfa282a02e8d3/cvCovEst-Cross-validated-covariance-matrix-estimator-selection-and-evaluation-in-R.pdf?origin=figuresDialog_download)
+Boileau, Hejazi, Collica, van der Laan, Dudoit
+
+Covariance matrices play fundamental roles in myriad statistical procedures. When the observations in a dataset far outnumber the features, asymptotic theory and empirical evidence have
+demonstrated the sample covariance matrix to be the optimal estimator of this parameter.
+This assertion does not hold when the number of observations is commensurate with or smaller
+than the number of features. Consequently, statisticians have derived many novel covariance
+matrix estimators for the high-dimensional regime, often relying on additional assumptions
+about the parameter’s structural characteristics (e.g., sparsity). While these estimators have
+greatly improved the ability to estimate covariance matrices in high-dimensional settings, objectively selecting the best estimator from among the many possible candidates remains a
+largely unaddressed challenge. The cvCovEst package addresses this methodological gap
+through its implementation of a cross-validated framework for covariance matrix estimator
+selection. This data-adaptive procedure’s selections are asymptotically optimal under minimal
+assumptions – in fact, they are equivalent to the selections that would be made if given full
+knowledge of the true data-generating processes (i.e., an oracle selector
+
+## Large Covariance Estimation by Thresholding Principal Orthogonal Complements
+Fan, Liao, Mincheva
+
+This paper deals with the estimation of a high-dimensional covariance with a conditional sparsity structure and fast-diverging eigenvalues. By assuming sparse error covariance matrix in an approximate factor model, we allow for the presence of some cross-sectional correlation even after taking out common but unobservable factors. We introduce the Principal Orthogonal complEment Thresholding (POET) method to explore such an approximate factor structure with sparsity. The POET estimator includes the sample covariance matrix, the factor-based covariance matrix (Fan, Fan, and Lv, 2008), the thresholding estimator (Bickel and Levina, 2008) and the adaptive thresholding estimator (Cai and Liu, 2011) as specific examples. We provide mathematical insights when the factor analysis is approximately the same as the principal component analysis for high-dimensional data. The rates of convergence of the sparse residual covariance matrix and the conditional sparse covariance matrix are studied under various norms. It is shown that the impact of estimating the unknown factors vanishes as the dimensionality increases. The uniform rates of convergence for the unobserved factors and their factor loadings are derived. The asymptotic results are also verified by extensive simulation studies. Finally, a real data application on portfolio allocation is presented.
+
+
+## Online Cross-Validation-Based Ensemble Learning [pdf](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5671383/pdf/nihms870890.pdf)
+Benkeser, Ju, Lendle, van der Laan
+
+Online estimators update a current estimate with a new incoming batch of data without having to revisit past data thereby providing streaming estimates that are scalable to big data. We develop flexible, ensemble-based online estimators of an infinite-dimensional target parameter, such as a regression function, in the setting where data are generated sequentially by a common conditional data distribution given summary measures of the past. This setting encompasses a wide range of time-series models and as special case, models for independent and identically distributed data. Our estimator considers a large library of candidate online estimators and uses online cross-validation to identify the algorithm with the best performance. We show that by basing estimates on the cross-validation-selected algorithm, we are asymptotically guaranteed to perform as well as the true, unknown best-performing algorithm. We provide extensions of this approach including online estimation of the optimal ensemble of candidate online estimators. We illustrate excellent performance of our methods using simulations and a real data example where we make streaming predictions of infectious disease incidence using data from a large database
+
+## Advances in High-Dimensional Covariance Matrix Estimation [via](https://depositonce.tu-berlin.de/handle/11303/5357)
+Daniel Bartz
+
+Many applications require precise estimates of high-dimensional covariance matrices. The standard estimator is the sample covariance matrix, which is conceptually simple, fast to compute and has favorable properties in the limit of infinitely many observations. The picture changes when the dimensionality is of the same order as the number of observations. In such cases, the eigenvalues of the sample covariance matrix are highly biased, the condition number becomes large and the inversion of the matrix gets numerically unstable.
+
+A number of alternative estimators are superior in the high-dimensional setting, which include as subcategories structured estimators, regularized estimators and spectrum correction methods. In this thesis I contribute to all three areas. In the area of structured estimation, I focus on models with low intrinsic dimensionality. I analyze the bias in Factor Analysis, the state-of-the-art factor model and propose Directional Variance Adjustment (DVA) Factor Analysis, which reduces bias and yields improved estimates of the covariance matrix.
+
+Analytical shrinkage of Ledoit and Wolf (LW-Shrinkage) is the most popular regularized estimator. I contribute in three aspects: first, I provide a theoretical analysis of the behavior of LW-Shrinkage in the presence of pronounced eigendirections, a case of great practical relevance. I show that LW-Shrinkage does not perform well in this setting and propose aoc-Shrinkage which yields significant improvements. Second, I discuss the effect of autocorrelation on LW-Shrinkage and review the Sancetta-Estimator, an extension of LW-Shrinkage to autocorrelated data. I show that the Sancetta-Estimator is biased and propose a theoretically and empirically superior estimator with reduced bias. Third, I propose an extension of shrinkage to multiple shrinkage targets. Multi-Target Shrinkage is not restricted to covariance estimation and allows for many interesting applications which go beyond regularization, including transfer learning. I provide a detailed theoretical and empirical analysis.
+
+Spectrum correction approaches the problem of covariance estimation by improving the estimates of the eigenvalues of the sample covariance matrix. I discuss the state-of-the-art approach, Nonlinear Shrinkage, and propose a cross-validation based covariance (CVC) estimator which yields competitive performance at increased numerical stability and greatly reduced complexity and computational cost. On all data sets considered, CVC is on par or superior in comparison to the regularized and structured estimators.
+
+In the last chapter, I conclude with a discussion of the advantages and disadvantages of all covariance estimators presented in this thesis and give situation-specific recommendations. In addition, the appendix contains a systematic analysis of Linear Discriminant Analysis as a model application, which sheds light on the interdependency between the generative model of the data and various covariance estimators.
+
+

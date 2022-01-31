@@ -1,9 +1,8 @@
 numpy
 scikit-learn
-momentum>=0.2.3
+momentum>=0.2.5
 kmeans1d
 runthis
 scikit-learn
-osqp
 pandas_datareader
 
