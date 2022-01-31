@@ -42,9 +42,18 @@ def params_category_and_data(params:dict):
         raise ValueError('m6 is only topic, for now')
 
 
-def skater_battle( params:dict ):
+def skater_likelihood_battle(params:dict):
     """
-        Write results to a new queue
+    :param
+    :return:
+    """
+    return skater_battle(evaluator=cov_skater_loglikelihood, evaluator_name='likelihood', params=params)
+
+
+def skater_battle(evaluator, evaluator_name:str, params:dict):
+    """
+        Write results to a new queue.
+        evaluator(f=f, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
     """
     n_per_battle = 3
     atol = 1.0
@@ -63,7 +72,7 @@ def skater_battle( params:dict ):
     pprint(ALL_D0_SKATERS)
 
     qn = str(uuid4())+'.json'
-    queue_dir = os.path.join(SKATER_WIN_DATA, category)
+    queue_dir = os.path.join(SKATER_WIN_DATA, evaluator_name, category)
     queue = os.path.join(queue_dir,qn)
     pathlib.Path(queue_dir).mkdir(parents=True, exist_ok=True)
     print(queue)
@@ -88,7 +97,7 @@ def skater_battle( params:dict ):
 
         for f in fs:
             try:
-                ll, metrics = cov_skater_loglikelihood(f=f, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
+                ll, metrics = evaluator(f=f, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
                 metrics['name']=f.__name__
                 metrics['traceback']=''
                 metrics['passing']=1

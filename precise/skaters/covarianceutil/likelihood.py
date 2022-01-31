@@ -4,7 +4,7 @@ import math
 import time
 
 
-def empirical_log_likelihood(cov, pre, xs, lb, mu=None):
+def historical_log_likelihood(pre, xs, lb, mu=None):
     """ Log likelihood of matrix of data """
     from sklearn.covariance._empirical_covariance import log_likelihood, empirical_covariance
     if mu is None:
@@ -94,6 +94,46 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
     total_time = time.time()-start_time
     metrics = {'total time':total_time,'inversion time':inv_time,'time':total_time-inv_time}
     return ll, metrics if with_metrics else ll
+
+
+def pre_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1000):
+    """
+        Gaussian likelihood of a precision skater applied to data xs
+
+    :param f:
+    :param lb, ub  lower and upper bounds for ll of individual point
+    :param xs:
+    :return:
+    """
+    start_time = time.time()
+
+    n_obs, n_dim = np.shape(xs)
+    assert n_obs>n_burn
+    s = {}
+
+    for y in xs[:n_burn]:
+        y_hat, y_pre, s = f(s=s,y=y,k=1)
+
+    ll = 0
+    y_hat_prev = None
+    y_pre_prev = None
+    for m,y in enumerate( xs[n_burn:]):
+        if y_hat_prev is not None:
+            dy = np.array(y) - np.array(y_hat_prev)
+            ll_delta = min( vector_log_likelihood(pre=y_pre_prev, y=dy, lb=lb),ub )
+            ll += ll_delta
+
+        # Store predictions for assessment against next data point
+        y_hat_prev = y_hat
+        y_pre_prev = y_cov
+
+        # Make next prediction
+        y_hat, y_cov, s = f(s=s, y=y, k=1)
+
+    total_time = time.time()-start_time
+    metrics = {'total time':total_time}
+    return ll, metrics if with_metrics else ll
+
 
 
 if __name__=='__main__':
