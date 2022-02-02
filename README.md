@@ -89,8 +89,12 @@ Differencing hints:
      
 
 
+## Portfolio & mixture of experts
 
-## Stand-along utilities
+See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). Work in progress. 
+
+
+## Stand-alone utilities
 
    1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
    2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 

@@ -423,3 +423,16 @@ Kinlaw Kritzman Page and Turkington
 
 That investors should diversify their portfolios is a core principle of modern finance. Yet there are some periods where diversification is undesirable. When the portfolio’s main growth engine performs well, investors prefer the opposite of diversification. An ideal complement to the growth engine would provide diversification when it performs poorly and unification when it performs well. Numerous studies have presented evidence of asymmetric correlations between assets. Unfortunately, this asymmetry is often of the undesirable variety: it is characterized by downside unification and upside diversification. In other words, diversification often disappears when it is most needed. In this article we highlight a fundamental flaw in the way that some prior studies have measured correlation asymmetry. Because they estimate downside correlations from subsamples where both assets perform poorly, they ignore instances of “successful” diversification; that is, periods where one asset’s gains offset the other’s losses. We propose instead that investors measure what matters: the degree to which a given asset diversifies the main growth engine when it underperforms. This approach yields starkly different conclusions, particularly for asset pairs with low full sample correlation. In this paper we review correlation mathematics, highlight the flaw in prior studies, motivate the correct approach, and present an empirical analysis of correlation asymmetry across major asset classes.
 
+## A constrained hierarchical risk parity algorithm with cluster-based capital allocation [via](https://ideas.repec.org/p/sza/wpaper/wpapers328.html)
+Johann Pfitzinger and Nico Ktazke
+
+Hierarchical Risk Parity (HRP) is a risk-based portfolio optimisation algorithm, which has been shown to
+generate diversified portfolios with robust out-of-sample properties without the need for a positive-definite
+return covariance matrix (Lopez de Prado 2016). The algorithm applies machine learning techniques to identify
+the underlying hierarchical correlation structure of the portfolio, allowing clusters of similar assets to compete for
+capital. The resulting allocation is both well-diversified over risk sources and intuitively appealing. This paper
+proposes a method of fully exploiting the information created by the clustering process, achieving enhanced
+out-of-sample risk and return characteristics. In addition, a practical approach to calculating HRP weights
+under box and group constraints is introduced. A comprehensive set of portfolio simulations over 6 equity
+universes demonstrates the appeal of the algorithm for portfolios consisting of 20 − 200 assets. HRP delivers
+highly diversified allocations with low volatility, low portfolio turnover and competitive performance metrics
