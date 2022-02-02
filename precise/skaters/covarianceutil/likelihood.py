@@ -125,10 +125,11 @@ def pre_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
 
         # Store predictions for assessment against next data point
         y_hat_prev = y_hat
-        y_pre_prev = y_cov
+        y_pre_prev = y_pre
 
         # Make next prediction
-        y_hat, y_cov, s = f(s=s, y=y, k=1)
+        y_hat, y_pre, s = f(s=s, y=y, k=1)
+
 
     total_time = time.time()-start_time
     metrics = {'total time':total_time}
