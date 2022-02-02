@@ -37,7 +37,7 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
         f = random_cov_skater()
 
     print('Computing rank probabilities')
-    df_prob, df_cov = m6_probabilities(f=f, interval=interval, n_dim=n_dim, n_samples=n_samples, n_obs=n_obs)
+    df_prob, df_cov = m6_probabilities(f=f, interval=interval, n_dim=n_dim, n_samples=n_samples, n_obs=n_obs, verbose=verbose)
     cov = df_cov.values
     if extra_shrink:
         cov = affine_shrink(cov, phi=phi, lmbd=lmbd)
