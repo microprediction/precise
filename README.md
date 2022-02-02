@@ -5,7 +5,7 @@ A collection of autonomous incremental estimators for covariance, precision, cor
 
 ## TLDR: "Just a pile of functions that forecast covariance in online fashion"
 The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. Or to look at Elo ratings,
-run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). 
+run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). Oh and if you are looking for M6 example entries, they are [here](https://github.com/microprediction/precise/tree/main/examples_m6/full). 
 
 ## Install 
 
