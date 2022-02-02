@@ -1,1 +1,2 @@
-recursive-include precise/skatervaluation/queues
+recursive-include precise/skatervaluation/battleresults
+recursive-include precise/examples_m6

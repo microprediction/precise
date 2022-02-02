@@ -1,11 +1,8 @@
-import numpy as np
-import pandas as pd
 from pprint import pprint
-from precise.skatertools.m6.covarianceforecasting import m6_cov
 from precise.skaters.covarianceutil.covfunctions import affine_shrink, nearest_pos_def
 from precise.skaters.portfolioutil.allstaticport import PRC_PORT, random_port
-from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS, random_cov_skater, cov_skater_manifest
-import random
+from precise.skaters.covariance.allcovskaters import random_cov_skater, cov_skater_manifest
+from precise.skatertools.m6.quintileprobabilities import m6_probabilities
 
 # Demonstrates the creation of an entry in the M6 contest
 #   1. Pick a cov estimator (i.e. a "cov skater")
@@ -39,56 +36,32 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
         pprint(cov_skater_manifest())
         f = random_cov_skater()
 
+    print('Computing rank probabilities')
     df_prob, df_cov = m6_probabilities(f=f, interval=interval, n_dim=n_dim, n_samples=n_samples, n_obs=n_obs)
     cov = df_cov.values
     if extra_shrink:
         cov = affine_shrink(cov, phi=phi, lmbd=lmbd)
         cov = nearest_pos_def(cov)
+    print('Computing portfolio')
     w = port(cov=cov)
-    w_rounded = [round(wi, 5) for wi in w]
+
+    # Normalize portfolio sum |w|=1
+    sum_abs = sum( [abs(wi) for wi in w] )
+    w_normalized = [ wi/sum_abs for wi in w]
+    w_rounded = [round(wi, 5) for wi in w_normalized]
+
     entry = df_prob.copy()
     entry['Decision'] = w_rounded
     entry.rename(inplace=True, columns={'0': 'Rank1', '1': 'Rank2', '2': 'Rank3', '3': 'Rank4', '4': 'Rank5'})
     return entry
 
 
-def what_pctl_number_of(x, a, pctls=[20,40,60,80]):
-    return np.argmax(np.sign(np.append(np.percentile(x, pctls), np.inf) - a))
-
-
-def mvn_quintile_probabilities(sgma, n_samples):
-    n_dim = np.shape(sgma)[0]
-    mu = np.zeros(n_dim)
-    x =  np.random.multivariate_normal(mu, sgma, size=n_samples, check_valid='warn', tol=1e-8)
-    y = scores_to_quintiles(x)
-    p = list()
-    for i in range(5):
-        pi = np.mean(y==i,axis=0)
-        p.append(pi)
-    return p
-
-
-def scores_to_quintiles(x):
-    ys = list()
-    for xi in x:
-        q = np.quantile(x,[0.2,0.4,0.6,0.8])
-        y = np.searchsorted(q, xi)
-        ys.append(y)
-    return np.array(ys)
-
-
-def m6_probabilities(f, interval='d',n_dim=100, n_samples=5000, n_obs=200):
-    covdf = m6_cov(f=f, interval=interval, n_dim=n_dim, n_obs=n_obs)
-    tickers = list(covdf.columns)
-    sgma = covdf.values
-    p = mvn_quintile_probabilities(sgma=sgma, n_samples=n_samples)
-    df = pd.DataFrame(columns=tickers, data=p).transpose()
-    df_cov = pd.DataFrame(columns=tickers, index=tickers, data=sgma)
-    return df, df_cov
-
 
 if __name__=='__main__':
-    df = m6_competition_entry(n_dim=5)
+    from precise.whereami import TOP
+    df = m6_competition_entry()
+    df.to_csv('m6_competition_entry.csv')
+
 
 
 

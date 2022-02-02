@@ -1,24 +1,25 @@
-from precise.whereami import SKATER_WIN_DATA
+from precise.whereami import BATTLE_RESULTS_DIR
 from glob import glob
 import json
 from collections import Counter
-from pprint import pprint
+import os
 
 # Retrieving collections of battles
 
-def win_data():
+
+def win_dirs(genre='likelihood'):
+    return [ d[:-1] for d in glob(BATTLE_RESULTS_DIR + os.path.sep + genre + "/*/", recursive = False)]
+
+
+def win_data(genre='likelihood'):
     """
     :return: [ ( category, counter ) ]
     """
-    return [ (category, load_win_data(cat_files)) for (category,cat_files) in win_files() ]
+    return [(category, load_win_data(cat_files)) for (category,cat_files) in win_files(genre=genre)]
 
 
-def win_dirs():
-    return [ d[:-1] for d in glob(SKATER_WIN_DATA+"/*/", recursive = False) ]
-
-
-def win_files():
-    return [ (wd.split('/')[-1], glob(wd+"/*.json")) for wd in win_dirs() ]
+def win_files(genre='likelihood'):
+    return [(wd.split('/')[-1], glob(wd+"/*.json")) for wd in win_dirs(genre=genre)]
 
 
 def load_win_data(cat_files):
@@ -32,6 +33,6 @@ def load_win_data(cat_files):
 
 
 if __name__=='__main__':
-    wd = win_data()
+    wd = win_data(genre='likelihood')
     print([c for c,_ in win_data()])
 

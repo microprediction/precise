@@ -8,12 +8,12 @@ import random
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
 
 
-def elo_from_win_files():
+def elo_from_win_files(genre='likelihood'):
     """
     :return:  Elo ratings for all categories
     """
     # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
-    the_lot = [ (cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data() ]
+    the_lot = [(cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data(genre=genre)]
     return the_lot
 
 
@@ -54,4 +54,4 @@ def elo_from_win_counts(ctn):
 
 
 if __name__=='__main__':
-   pprint(elo_from_win_files())
+   pprint(elo_from_win_files(genre='likelihood'))

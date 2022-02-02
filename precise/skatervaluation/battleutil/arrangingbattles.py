@@ -9,7 +9,7 @@ import traceback
 from collections import Counter
 from momentum.functions import rvar
 from precise.skatertools.data.equity import random_m6_returns
-from precise.whereami import SKATER_WIN_DATA
+from precise.whereami import BATTLE_RESULTS_DIR
 import numpy as np
 import time
 
@@ -72,7 +72,7 @@ def skater_battle(evaluator, evaluator_name:str, params:dict):
     pprint(ALL_D0_SKATERS)
 
     qn = str(uuid4())+'.json'
-    queue_dir = os.path.join(SKATER_WIN_DATA, evaluator_name, category)
+    queue_dir = os.path.join(BATTLE_RESULTS_DIR, evaluator_name, category)
     queue = os.path.join(queue_dir,qn)
     pathlib.Path(queue_dir).mkdir(parents=True, exist_ok=True)
     print(queue)

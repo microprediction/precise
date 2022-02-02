@@ -44,11 +44,11 @@ def _weak_optimal_b(cov, w0, a, with_neg_mass=False):
         v = portfolio_variance(cov, exclude_negative_weights(w1))/v0
         return v
 
-    v0 = portfolio_variance(cov,w0)
+    v0 = portfolio_variance(cov=cov,w=w0)
     res = scipy.optimize.minimize(fun=b_objective,x0=0.75, bounds=[(0,1)], args=(w0, a, v0))
     best_b = res.x[0]
-    best_w, augmented_cov = _weak_from_cov(cov, a=1.0, b=best_b, w=w0)
-    return exclude_negative_weights(best_w,with_neg_mass=with_neg_mass)
+    best_w, augmented_cov = _weak_from_cov(cov=cov, a=1.0, b=best_b, w=w0)
+    return exclude_negative_weights(w=best_w,with_neg_mass=with_neg_mass)
 
 
 def _weak_from_cov(cov, w, a=1.0, b=0.75, with_weak=False):

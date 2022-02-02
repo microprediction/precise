@@ -1,8 +1,11 @@
 import os
+from pathlib import Path
 from pprint import pprint
 TOP = os.path.dirname(os.path.abspath(__file__))
-SKATER_WIN_DATA = os.path.join(TOP, 'skatervaluation', 'queues')
+BATTLE_RESULTS_DIR = os.path.join(TOP, 'skatervaluation', 'battleresults')
 GITHUB_COV_SKATERS = 'https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/'
+ROOT = Path(TOP).parent.absolute()
+M6_EXAMPLES = os.path.join(ROOT,'examples_m6')
 
 
 def url_from_skater_name(name:str)->str:
@@ -17,3 +20,4 @@ def url_from_skater_name(name:str)->str:
 if __name__=='__main__':
     print(TOP)
     print(url_from_skater_name(name='buf_emp_pcov_d0_n100'))
+    print(M6_EXAMPLES)

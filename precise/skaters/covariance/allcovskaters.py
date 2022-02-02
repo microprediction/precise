@@ -6,7 +6,7 @@ from precise.skaters.covariance.bufhuber import BUF_HUBER_D0_COV_SKATERS, BUF_HU
 from precise.skaters.covariance.ewapm import EWA_PM_EMP_D0_COV_SKATERS
 from precise.skaters.covariance.ewalw import EWA_LW_D0_COV_SKATERS, EWA_LW_D1_COV_SKATERS
 from precise.skaters.covariance.ewalz import EWA_LZ_D0_COV_SKATERS
-
+import random
 
 # List of fully autonomous multivariate gaussian forecasters
 # Run this file to print a list of skaters and their code URLs
@@ -39,6 +39,12 @@ def cov_skater_from_name(name):
 def cov_skater_manifest():
     from precise.whereami import url_from_skater_name
     return dict([(f.__name__, url_from_skater_name(f.__name__)) for f in ALL_COV_SKATERS])
+
+
+def random_cov_skater():
+    return random.choice(ALL_D0_SKATERS)
+
+
 
 
 if __name__=='__main__':

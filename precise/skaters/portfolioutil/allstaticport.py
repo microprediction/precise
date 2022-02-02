@@ -19,9 +19,13 @@ from precise.skaters.portfolioutil.unitary import prc_unit_port
 from precise.skaters.portfolioutil.diagonal import prc_diag_port
 from precise.skaters.portfolioutil.parity import HRP_PORT
 
-PRC_PORT = [prc_weak_port, prc_diag_port, prc_unit_port ] + HRP_PORT
+PRC_PORT = [prc_weak_port, prc_diag_port, prc_unit_port ]
 PPO_PORT = [ppo_vol_port, ppo_sharpe_port, ppo_quad_port]
 
 PORT = PRC_PORT + PPO_PORT
 
+import random
 
+
+def random_port():
+    return random.choice(PRC_PORT)
