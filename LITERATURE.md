@@ -413,4 +413,7 @@ Spectrum correction approaches the problem of covariance estimation by improving
 
 In the last chapter, I conclude with a discussion of the advantages and disadvantages of all covariance estimators presented in this thesis and give situation-specific recommendations. In addition, the appendix contains a systematic analysis of Linear Discriminant Analysis as a model application, which sheds light on the interdependency between the generative model of the data and various covariance estimators.
 
+## Estimation of Theory-Implied Correlation Matrices [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID3484152_code434076.pdf?abstractid=3484152&mirid=1)
+Marcos Lopez de Prado
 
+This paper introduces a machine learning (ML) algorithm to estimate forward-looking correlation matrices implied by economic theory. Given a particular theoretical representation of the hierarchical structure that governs a universe of securities, the method fits the correlation matrix that complies with that theoretical representation of the future. This particular use case demonstrates how, contrary to popular perception, ML solutions are not black-boxes, and can be applied effectively to develop and test economic theories.
