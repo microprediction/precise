@@ -37,7 +37,7 @@ def m6_cov(f=None, interval='d', n_dim=100, n_obs=300):
 
 
 def m6_corr(f=None, n_dim=100, interval='d',n_obs=300):
-    from precise.skaters.covarianceutil.datacovfunctions import cov_to_corrcoef
+    from precise.skaters.covarianceutil.datafunctions import cov_to_corrcoef
     covdf = m6_cov(f=f, n_dim=n_dim, interval=interval, n_obs=n_obs)
     tickers = list(covdf.columns)
     corr = cov_to_corrcoef(covdf.values)

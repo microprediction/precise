@@ -1,7 +1,7 @@
 import numpy as np
 from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_data
 from precise.skaters.covariance.buffactory import buf_pcov_factory
-from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns
+from precise.skaters.covarianceutil.datafunctions import data_population_covariance
 import warnings
 
 
@@ -21,7 +21,7 @@ def buf_sk_factory(cls, y:X_TYPE=None, s:dict=None,  n_buffer:int=100, n_emp=5, 
 
         if len(xs) < n_emp:
             try:
-                _pcov = pcov_of_columns(xs)
+                _pcov = data_population_covariance(xs)
             except:
                 _pcov = np.eye(len(xs))
             try:

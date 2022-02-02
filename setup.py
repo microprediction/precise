@@ -41,7 +41,8 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp','pandas_datareader'],
+    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp',
+                      'pandas_datareader','seriate','pandas'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

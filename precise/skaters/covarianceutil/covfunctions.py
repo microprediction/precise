@@ -1,45 +1,68 @@
 import numpy as np
+import math
+import pandas as pd
+from precise.skaters.covarianceutil.pdutil import square_to_square_dataframe, square_to_column_series, square_to_index_series
 
 # Functions acting on cov, corrcoef matrices and other square matrices
+# If square pd.DataFrame are supplied instead, index and columns are preserved
 
 
 def cov_to_corrcoef(a):
-    variances = np.diagonal(a)
-    denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])
-    return a / denominator
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, cov_to_corrcoef)
+    else:
+        variances = np.diagonal(a)
+        denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])
+        return a / denominator
 
 
 def normalize(x):
-    try:
-        return x/sum(x)
-    except TypeError:
-        return [xi/sum(x) for xi in x]
+    if isinstance(x,dict):
+        return normalize_dict_values(x)
+    else:
+        try:
+            return x/sum(x)
+        except TypeError:
+            return [xi/sum(x) for xi in x]
+
+
+def normalize_dict_values(d):
+    return dict( zip(d.keys(), normalize(list(d.values())) ))
 
 
 def multiply_diag(a, phi, copy=True):
-    if copy:
-        b = np.copy(a)
-        return multiply_diag(b, phi=phi, copy=False)
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(df=a, cov_func=multiply_diag, phi=phi, copy=copy)
     else:
-        n = np.shape(a)[0]
-        for i in range(n):
-            a[i, i] = a[i, i] * phi
-        return a
+        if copy:
+            b = np.copy(a)
+            return multiply_diag(b, phi=phi, copy=False)
+        else:
+            n = np.shape(a)[0]
+            for i in range(n):
+                a[i, i] = a[i, i] * phi
+            return a
 
 
 def grand_mean(a):
     # np.trace(a)/n might be faster, haven't checked
-    return np.mean(a.diagonal())
+    if isinstance(a,pd.DataFrame):
+        return grand_mean(a.values)
+    else:
+        return np.mean(a.diagonal())
 
 
 def grand_shrink(a, lmbd, copy=True):
-    if copy:
-        B = np.copy(a)
-        return grand_shrink(B, lmbd=lmbd, copy=False)
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, grand_shrink, a=a, lmbd=lmbd)
     else:
-        n = np.shape(a)[0]
-        mu = grand_mean(a)
-        return (1-lmbd) * a + lmbd * mu * np.eye(n)
+        if copy:
+            B = np.copy(a)
+            return grand_shrink(B, lmbd=lmbd, copy=False)
+        else:
+            n = np.shape(a)[0]
+            mu = grand_mean(a)
+            return (1-lmbd) * a + lmbd * mu * np.eye(n)
 
 
 def affine_inversion(a, phi=1.01, lmbd=0.01, copy=True):
@@ -49,32 +72,52 @@ def affine_inversion(a, phi=1.01, lmbd=0.01, copy=True):
     :param lmbd:
     :return:
     """
-    shrunk_cov = affine_shrink(a=a, phi=phi, lmbd=lmbd)
-    try:
-        pre = np.linalg.inv(shrunk_cov)
-    except np.linalg.LinAlgError:
-        pre = np.linalg.pinv(shrunk_cov)
-    return pre
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, affine_inversion, phi=phi, lmbd=lmbd)
+    else:
+        shrunk_cov = affine_shrink(a=a, phi=phi, lmbd=lmbd)
+        try:
+            pre = np.linalg.inv(shrunk_cov)
+        except np.linalg.LinAlgError:
+            pre = np.linalg.pinv(shrunk_cov)
+        return pre
 
 
 def affine_shrink(a, phi=1.01, lmbd=0.01, copy=True):
-    ridge_cov = multiply_diag(a, phi=phi, copy=copy)
-    shrunk_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=copy)
-    return shrunk_cov
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, affine_shrink, phi=phi, lmbd=lmbd)
+    else:
+        ridge_cov = multiply_diag(a, phi=phi, copy=copy)
+        shrunk_cov = grand_shrink(ridge_cov, lmbd=lmbd, copy=copy)
+        return shrunk_cov
 
 
 def is_symmetric(a, rtol=1e-05, atol=1e-08):
-    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+    if isinstance(a, pd.DataFrame):
+        return is_symmetric(a.values, rtol=rtol, atol=atol)
+    else:
+        return np.allclose(a, a.T, rtol=rtol, atol=atol)
 
 
 def to_symmetric(a):
-    return (a + a.T) / 2.0
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, to_symmetric)
+    else:
+        return (a + a.T) / 2.0
 
 
 def dense_weights_from_dict(d:dict, shape=None, n_dim:int=None):
+    """ Convert {1:3.141,0:123} -> [ 123, 3.141 ]
+    :param d: Dictionary whose keys should be 0..n
+    :param shape:
+    :param n_dim:
+    :return:
+    """
     if shape is None:
-        assert n_dim is not None, 'Cannot infer dimension'
-        shape = (n_dim,)
+        if n_dim is not None:
+            shape = (n_dim,)
+        else:
+            n_dim = max(d.values())+1
     w = np.ndarray(shape=shape)
     for i in range(n_dim):
         w[i] = d[i]
@@ -92,54 +135,127 @@ def nearest_pos_def(a):
     [2] N.J. Higham, "Computing a nearest symmetric positive semidefinite
     matrix" (1988): https://doi.org/10.1016/0024-3795(88)90223-6
     """
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, nearest_pos_def)
+    else:
+        b = to_symmetric(a)
+        _, s, V = np.linalg.svd(b)
+        H = np.dot(V.T, np.dot(np.diag(s), V))
+        a2 = (b + H) / 2
+        a3 = (a2 + a2.T) / 2
 
-    B = (a + a.T) / 2
-    _, s, V = np.linalg.svd(B)
-    H = np.dot(V.T, np.dot(np.diag(s), V))
-    A2 = (B + H) / 2
-    A3 = (A2 + A2.T) / 2
+        if is_positive_def(a3):
+            return a3
 
-    if is_positive_def(A3):
-        return A3
+        spacing = np.spacing(np.linalg.norm(a))
+        # The above is different from [1]. It appears that MATLAB's `chol` Cholesky
+        # decomposition will accept matrixes with exactly 0-eigenvalue, whereas
+        # Numpy's will not. So where [1] uses `eps(mineig)` (where `eps` is Matlab
+        # for `np.spacing`), we use the above definition. CAVEAT: our `spacing`
+        # will be much larger than [1]'s `eps(mineig)`, since `mineig` is usually on
+        # the order of 1e-16, and `eps(1e-16)` is on the order of 1e-34, whereas
+        # `spacing` will, for Gaussian random matrixes of small dimension, be on
+        # othe order of 1e-16. In practice, both ways converge, as the unit test
+        # below suggests.
+        I = np.eye(a.shape[0])
+        k = 1
+        while not is_positive_def(a3):
+            mineig = np.min(np.real(np.linalg.eigvals(a3)))
+            a3 += I * (-mineig * k**2 + spacing)
+            k += 1
 
-    spacing = np.spacing(np.linalg.norm(a))
-    # The above is different from [1]. It appears that MATLAB's `chol` Cholesky
-    # decomposition will accept matrixes with exactly 0-eigenvalue, whereas
-    # Numpy's will not. So where [1] uses `eps(mineig)` (where `eps` is Matlab
-    # for `np.spacing`), we use the above definition. CAVEAT: our `spacing`
-    # will be much larger than [1]'s `eps(mineig)`, since `mineig` is usually on
-    # the order of 1e-16, and `eps(1e-16)` is on the order of 1e-34, whereas
-    # `spacing` will, for Gaussian random matrixes of small dimension, be on
-    # othe order of 1e-16. In practice, both ways converge, as the unit test
-    # below suggests.
-    I = np.eye(a.shape[0])
-    k = 1
-    while not is_positive_def(A3):
-        mineig = np.min(np.real(np.linalg.eigvals(A3)))
-        A3 += I * (-mineig * k**2 + spacing)
-        k += 1
-
-    return A3
+        return a3
 
 
 def is_positive_def(a):
     """Returns true when input is positive-definite, via Cholesky"""
-    try:
-        _ = np.linalg.cholesky(a)
-        return True
-    except np.linalg.LinAlgError:
-        return False
+    if isinstance(a,pd.DataFrame):
+        return is_positive_def(a.values)
+    else:
+        try:
+            _ = np.linalg.cholesky(a)
+            return True
+        except np.linalg.LinAlgError:
+            return False
 
 
 def make_diagonal(a):
-    return np.diag(np.diag(a))
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, make_diagonal)
+    else:
+        return np.diag(np.diag(a))
 
 
 def mean_off_diag(a):
-    n = np.shape(a)[0]
-    b = np.vectorize(int)(a)
-    b = b - np.eye(n)
-    the_sum = np.sum(a,axis=None)
-    return the_sum/(n*(n-1))
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, mean_off_diag)
+    else:
+        n = np.shape(a)[0]
+        b = np.vectorize(int)(a)
+        b = b - np.eye(n)
+        the_sum = np.sum(b,axis=None)
+        return the_sum/(n*(n-1))
 
 
+def corr_distance(corr, expon=0.5):
+    """
+        Convert correlations into a distance between variables
+    """
+    if isinstance(corr, pd.DataFrame):
+        return square_to_square_dataframe(corr, corr_distance, expon=expon)
+    else:
+        return ((1 - np.array(corr)) / 2.) ** expon
+
+
+def cov_distance(cov, expon=0.5):
+    """
+           Convert covariance into a distance between variables
+    """
+    if isinstance(cov, pd.DataFrame):
+        return square_to_square_dataframe(cov, cov_distance, expon=expon)
+    else:
+        corr = cov_to_corrcoef(cov)
+        return corr_distance(corr=corr, expon=expon)
+
+
+def try_invert(a, **affine_inversion_kwargs):
+    """
+       Attempt to invert a matrix by whatever means, falling back to ridge + shrinkage as required
+    """
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, try_invert, **affine_inversion_kwargs)
+    else:
+        try:
+            return np.linalg.inv(a)
+        except np.linalg.LinAlgError:
+            try:
+                return np.linalg.pinv(a)
+            except np.linalg.LinAlgError:
+                return affine_inversion(a, **affine_inversion_kwargs)
+
+
+def weaken_cov(cov, diag_multipliers:[float], off_diag_additional_factor=0.9):
+    """  Augment a covariance matrix
+    :param cov:
+    :param diag_multipliers:             Vector to multiply diagonals by
+    :param off_diag_additional_factor:   Additional multiplicative factor
+    :return:
+    """
+    if isinstance(cov, pd.DataFrame):
+        return square_to_square_dataframe(cov, weaken_cov, diag_multipliers=diag_multipliers, off_diag_additional_factor=off_diag_additional_factor)
+    else:
+        covs = np.copy(cov)
+        for i, di in enumerate(diag_multipliers):
+            covs[i, i] = covs[i, i] * di
+            for j, dj in enumerate(diag_multipliers):
+                if j != i:
+                    covs[i, j] = off_diag_additional_factor * math.sqrt(di * dj) * covs[i, j]
+        return covs
+
+
+def approx_diag_of_inv(a):
+    """
+        Approximate diagonal entries of the inverse of a matrix
+    """
+    # TODO: https://cholmod-extra.readthedocs.io/en/latest/functions.html#sparse-inverse
+    raise NotImplementedError

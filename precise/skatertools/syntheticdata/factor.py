@@ -24,10 +24,8 @@ def create_disjoint_factor_dataset(n, n_dims:[int]):
 
 
 
-
-
 def create_band_dataset(n, n_dim, n_bands=5):
-    z1 = create_factor_dataset(n,n_dim)
+    z1 = create_factor_dataset(n, n_dim)
     z2 = create_factor_dataset(n, n_dim)
     R = np.zeros(shape=(n_dim,n_dim))
     for i in range(n_dim):

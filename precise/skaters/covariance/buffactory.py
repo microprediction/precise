@@ -1,6 +1,6 @@
 import numpy as np
 from precise.skaters.covarianceutil.conventions import X_TYPE, X_DATA_TYPE, is_data
-from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns, np_pcorrcoef
+from precise.skaters.covarianceutil.datafunctions import data_population_covariance, data_population_correlation
 
 # State machines that track stats for finite buffers of vectors
 
@@ -23,7 +23,7 @@ def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
 
 def buf_cov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.nanstd(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
-    return _buf1(func=np_pcorrcoef, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)
+    return _buf1(func=data_population_correlation, func_name='corrcoef', s=s, x=x, n_buffer=n_buffer)
 
 
 def buf_std(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
@@ -51,7 +51,7 @@ def buf_mean_and_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
 
 def buf_mean_and_pcov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     # Equivalent to np.cov(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
-    return _buf(funcs=[np.nanmean, pcov_of_columns], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, n_buffer=n_buffer)
+    return _buf(funcs=[np.nanmean, data_population_covariance], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, n_buffer=n_buffer)
 
 
 def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:

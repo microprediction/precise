@@ -4,7 +4,7 @@ import numpy as np
 from precise.skaters.covariance.runempfactory import emp_pcov, merge_emp_scov
 from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
-from precise.skaters.covarianceutil.datacovfunctions import pcov_of_columns
+from precise.skaters.covarianceutil.datafunctions import data_population_covariance
 
 # Some cut and paste https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 # However I've removed the confusion between sample and population estimates, and taken the tolerance
@@ -23,7 +23,7 @@ def test_onlineempirical():
         if j>=1:
             np_mean = np.mean(data[:j+1,:],axis=0)
             np_pcov = np.cov(data[:j+1,:], rowvar=False, bias=True)
-            np_pcov2 = pcov_of_columns(data[:j + 1, :])
+            np_pcov2 = data_population_covariance(data[:j + 1, :])
             np_corrcoef = np.corrcoef(data[:j+1,:], rowvar=False)
             ocorr = cov_to_corrcoef(s['pcov'])
             assert np.isclose(np_pcov, s['pcov'], atol=TOL).all()
