@@ -64,7 +64,13 @@ def exclude_negative_weights(w, with_neg_mass=False):
         presumed_mass = pos_mass-neg_mass
         ratio = presumed_mass/pos_mass
         w_pos = [ wi*ratio if wi>0 else 0.0 for wi in w]
-        return w_pos, neg_mass if with_neg_mass else w_pos
+        return (w_pos, neg_mass) if with_neg_mass else w_pos
+
+
+def var_scaled_returns(cov, mu:float, r:float):
+    vars = np.diag(cov)
+    typical_var = np.mean(vars)
+    return r+(mu-r)*np.array([ v/typical_var for v in vars])
 
 
 

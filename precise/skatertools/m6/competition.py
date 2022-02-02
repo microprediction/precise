@@ -10,6 +10,12 @@ from precise.skatertools.m6.quintileprobabilities import m6_probabilities
 #   3. Pick extra shrinkage params if you wish
 
 
+def m6_dump(df,file_name):
+    """ Write to CSV with 'ID' in top corner """
+    df.columns = ['Rank'+str(i) for i in range(1,6)] + ['Decision']
+    df.reset_index().rename(columns={'index': 'ID'}).to_csv(file_name, index=False)
+
+
 def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5000, n_obs=200, extra_shrink=True, phi=1.1, lmbd=0.03, verbose=True):
     """
            Example of generating an M6 Entry
@@ -26,15 +32,18 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
 
     """
     if port is None:
+        port = random_port()
         if verbose:
             print('Choosing a cov estimator from the following list ')
             pprint([p.__name__ for p in PRC_PORT])
-        port = random_port()
+            print('Chose '+port.__name__)
+
 
     if f is None:
         print('Choosing a cov estimator from the following list ')
         pprint(cov_skater_manifest())
         f = random_cov_skater()
+        print('Choose '+f.__name__)
 
     print('Computing rank probabilities')
     df_prob, df_cov = m6_probabilities(f=f, interval=interval, n_dim=n_dim, n_samples=n_samples, n_obs=n_obs, verbose=verbose)
@@ -42,6 +51,7 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
     if extra_shrink:
         cov = affine_shrink(cov, phi=phi, lmbd=lmbd)
         cov = nearest_pos_def(cov)
+
     print('Computing portfolio')
     w = port(cov=cov)
 
@@ -60,7 +70,7 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
 if __name__=='__main__':
     from precise.whereami import TOP
     df = m6_competition_entry()
-    df.to_csv('m6_competition_entry.csv')
+    m6_dump(df=df,file_name='m6_competition_entry.csv')
 
 
 

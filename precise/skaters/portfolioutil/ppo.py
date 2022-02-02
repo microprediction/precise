@@ -7,6 +7,9 @@ from precise.skaters.portfolioutil.portfunctions import portfolio_variance
 from pypfopt import EfficientFrontier
 from typing import List
 from itertools import zip_longest
+from precise.skaters.portfolioutil.portfunctions import var_scaled_returns
+from pypfopt.exceptions import OptimizationError
+from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
 # Thin wrapper for some of the pyportfolio opt possibilities
 # For full flexibility refer to the package https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
@@ -14,20 +17,36 @@ from itertools import zip_longest
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
 
-
-def ppo_sharpe_port(cov=None, pre=None, as_dense=True, weight_bounds=None):
-    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=weight_bounds)
-
-
-def ppo_vol_port(cov=None, pre=None, as_dense=True, weight_bounds=None):
-    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=weight_bounds)
+long_bounds = (0,1)
+bounds = (-1,1)
 
 
-def ppo_quad_port(cov=None, pre=None, as_dense=True, weight_bounds=None):
-    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=weight_bounds)
+def ppo_sharpe_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
 
 
-def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None):
+def ppo_vol_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
+
+
+def ppo_quad_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
+
+
+def ppo_sharpe_ls_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+
+
+def ppo_vol_ls_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+
+
+def ppo_quad_ls_port(cov=None, pre=None, as_dense=True):
+    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+
+
+def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
+                   risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5):
     """
     :param method:
     :param cov:
@@ -37,8 +56,10 @@ def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds
     :return:  Can return a dictionary of variable names and weights
     """
 
+    expected_returns = var_scaled_returns(cov=cov,mu=mu,r=risk_free_rate)
+
     if weight_bounds is None:
-        weight_bounds = (0,1)
+        weight_bounds = long_bounds
 
     if cov is None:
         cov = try_invert(pre)
@@ -46,13 +67,36 @@ def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds
     # Set return style
     as_series = (not as_dense) and isinstance(cov,pd.DataFrame)
 
-    # Tidy up cov and send to optimizer
-    cov = to_symmetric(cov)
-    cov = nearest_pos_def(cov)
-    n_dim = np.shape(cov)[0]
-    ef = EfficientFrontier(None, cov, weight_bounds=weight_bounds)
-    port_method = getattr(ef, method)
-    port_method()
+    # Tidy up cov and send to optimizer ... repeatedly with more shrinkage as needed
+    shrunk_cov = nearest_pos_def( to_symmetric( np.copy(cov) ) )
+    converged = False
+    warned = False
+    for attempt_no in range(n_attempts):
+        n_dim = np.shape(cov)[0]
+        ef = EfficientFrontier(expected_returns=expected_returns, cov_matrix=shrunk_cov,
+                               weight_bounds=weight_bounds)
+        port_method = getattr(ef, method)
+        try:
+            if method=='max_sharpe':
+                port_method(risk_free_rate=risk_free_rate)
+            else:
+                port_method()
+            converged = True
+        except OptimizationError:
+            converged = False
+        if converged:
+            break
+        else:
+            warned = True
+            print('    warning: '+method+' did not converge on attempt '+str(attempt_no))
+            shrunk_cov = affine_shrink(a=shrunk_cov,phi=1.02, lmbd=0.01, copy=False)
+
+    if not converged:
+        raise NotImplementedError('pyportfolio opt failed even after shrinkage')
+
+    if converged and warned:
+        print('       ... but with shrinkage it converges okay.')
+
     weights = ef.clean_weights()
     weights = normalize_dict_values(weights)
 
