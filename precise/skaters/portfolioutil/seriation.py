@@ -1,10 +1,6 @@
 from precise.skaters.covarianceutil.covfunctions import try_invert, cov_distance
-from precise.skaters.portfolioutil.diagonal import prc_diag_alloc, prc_diag_port
 from seriate import seriate
 import numpy as np
-from functools import partial
-
-
 
 
 def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None, cov=None, pre=None):
@@ -28,7 +24,7 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
     if port_kwargs is None:
         port_kwargs = {}
 
-    # Establish ordering using seriator anc corr distances
+    # Establish ordering using seriator and corr distances
     cov_dist = cov_distance(cov)
     ndx = seriator(cov_dist)
     inv_ndx = np.argsort(ndx)
@@ -46,13 +42,5 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
 
 
 
-if __name__=='__main__':
-    from precise.skaters.covarianceutil.covrandom import random_band_cov
-    cov = random_band_cov()
-    print(np.shape(cov))
-    ordered_cov = corr_seriation_portfolio_factory(cov=cov, alloc=None)
-    from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
-    ordered_corrcoef = cov_to_corrcoef(ordered_cov)
-    pass
 
 

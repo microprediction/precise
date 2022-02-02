@@ -44,12 +44,14 @@ def diagonal_portfolio_variance(cov=None, pre=None):
     return portfolio_variance(cov=cov,w=w)
 
 
-def prc_diag_alloc(covs:List, pres:List)->[float]:
+def prc_diag_alloc(covs:List, pres:List=None)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
     :param covs:  List of covariance matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """
+    if pres is None:
+        pres = []
     # Remark: This was used in Marco Lopez de Prado's original HRP portfolio paper https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678
     return normalize([ 1/diagonal_portfolio_variance(cov=cov, pre=pre) for cov, pre in zip_longest(covs, pres, fillvalue=None) ])
 

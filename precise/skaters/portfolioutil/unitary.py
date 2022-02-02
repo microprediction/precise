@@ -13,7 +13,7 @@ def prc_unit_port(pre=None, cov=None):
     if pre is not None:
         return unitary_from_pre(pre=pre)
     else:
-        return weak_from_cov(cov=cov)
+        return unitary_from_cov(cov=cov)
 
 
 def unitary_from_pre(pre):
@@ -21,10 +21,11 @@ def unitary_from_pre(pre):
     # No optimization required
     n_dim = np.shape(pre)[1]
     wones = np.ones(shape=(n_dim, 1))
-    return normalize(np.squeeze(np.matmul(pre, wones)))
+    w = normalize(np.squeeze(np.matmul(pre, wones)))
+    return w
 
 
-def weak_from_cov(cov):
+def unitary_from_cov(cov):
     pre = try_invert(cov)
     return unitary_from_pre(pre=pre)
 
@@ -38,12 +39,14 @@ def unitary_portfolio_variance(cov=None, pre=None):
     return portfolio_variance(cov=cov,w=w)
 
 
-def prc_unit_alloc(covs:List, pres:List)->[float]:
+def prc_unit_alloc(covs:List, pres:List=None)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
     :param covs:  List of covariance matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """
+    if pres is None:
+        pres = []
     return normalize([ 1/unitary_portfolio_variance(cov=cov, pre=pre) for cov, pre in zip_longest(covs, pres, fillvalue=None) ])
 
 

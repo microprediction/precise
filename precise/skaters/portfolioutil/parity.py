@@ -67,7 +67,6 @@ def _risk_parity_portfolio(alloc, cov, port, splitter):
     """
         Assumes assets have been ordered
     """
-
     # https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678
     n1, n2 = splitter(cov)
     if n1==0 or n2==0:
@@ -78,5 +77,13 @@ def _risk_parity_portfolio(alloc, cov, port, splitter):
         wA = _risk_parity_portfolio(alloc=alloc, cov=A, port=port, splitter=splitter)
         wD = _risk_parity_portfolio(alloc=alloc, cov=D, port=port, splitter=splitter)
         aA, aD = alloc(covs=[A,D])
-        w = np.concatenate( aA*wA, aD*wD )
+        w = np.concatenate( [aA*wA, aD*wD] )
         return w
+
+
+if __name__=='__main__':
+    from precise.skaters.covarianceutil.covrandom import random_band_cov
+    cov = random_band_cov()
+    print(np.shape(cov))
+    w = prc_hrp_diag_5(cov=cov)
+    print(sum(w))
