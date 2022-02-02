@@ -39,7 +39,7 @@ setup(
               "precise.skatervaluation",
               "precise.skatervaluation.queues",
               "precise.skatervaluation.battleutil",
-              'precise.skatervaluation.battlescripts'],
+              'precise.skatervaluation.likelihoodbattles'],
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
