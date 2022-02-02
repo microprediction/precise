@@ -5,4 +5,8 @@ kmeans1d
 runthis
 scikit-learn
 pandas_datareader
+pandas
+pyportfolioopt
+seriate
+scipy
 
