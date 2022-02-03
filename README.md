@@ -6,6 +6,9 @@ A collection of autonomous incremental estimators for covariance, precision, cor
 The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. Or to look at Elo ratings,
 run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). 
 
+<img src="https://github.com/microprediction/precise/blob/main/images/incremental.png" width="500">
+
+
 ## Install 
 
     pip install precise 
@@ -23,12 +26,6 @@ You *could* use this library to enter the M6 Financial Forecasting competition:
    4. Pick love and hate ticker lists, if you wish
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below.  
-
-<img src="https://github.com/microprediction/precise/blob/main/images/incremental.png" width="200">
-
-###
-
-![](https://github.com/microprediction/precise/blob/main/images/incremental.png)
 
 ## Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
