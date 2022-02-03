@@ -24,6 +24,8 @@ You *could* use this library to enter the M6 Financial Forecasting competition:
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below.  
 
+![](https://github.com/microprediction/precise/blob/main/images/incremental.png)
+
 ## Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
 
