@@ -447,4 +447,12 @@ Section A.5.5) of Convex Optimization by Boyd and Vandenberghe.
 ## Fast and accurate techniques for computing schur complements and performing numerical coarse graining [slides](https://amath.colorado.edu/faculty/martinss/Talks/2009_banff.pdf)
 Gunnar Martinsson
 
+## A Closer look at the Minimum-Variance Portfolio Optimization Model [pdf](https://downloads.hindawi.com/journals/mpe/2019/1452762.pdf)
+Zhifeng Dai
 
+Recently, by imposing the regularization term to objective function or additional norm constraint to portfolio weights, a number
+of alternative portfolio strategies have been proposed to improve the empirical performance of the minimum-variance portfolio.
+In this paper, we firstly examine the relation between the weight norm-constrained method and the objective function regularization method in minimum-variance problems by analyzing the Karush–Kuhn–Tucker conditions of their Lagrangian
+functions. We give the range of parameters for the two models and the corresponding relationship of parameters. Given the range
+and manner of parameter selection, it will help researchers and practitioners better understand and apply the relevant portfolio
+models. We apply these models to construct optimal portfolios and test the proposed propositions by employing real market data
