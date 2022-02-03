@@ -13,8 +13,6 @@ run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/m
 ### Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
 
-This mildly unusual convention requires the caller to maintain state from one call to the next:  
-
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
     from precise.skaters.covariance.runemmp import run_emp_pcov_d0 # <-- Running empirical population covariance
     from pprint import pprint
@@ -26,9 +24,7 @@ This mildly unusual convention requires the caller to maintain state from one ca
             x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
         pprint(x_cov)
      
-See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). 
-     
-See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
      
 ### Skater Elo ratings 
 
