@@ -436,3 +436,9 @@ out-of-sample risk and return characteristics. In addition, a practical approach
 under box and group constraints is introduced. A comprehensive set of portfolio simulations over 6 equity
 universes demonstrates the appeal of the algorithm for portfolios consisting of 20 − 200 assets. HRP delivers
 highly diversified allocations with low volatility, low portfolio turnover and competitive performance metrics
+
+## Schur Complement and Symmetric Positive Semidefinite Matrices [pdf](https://www.cis.upenn.edu/~jean/schur-comp.pdf)
+Jean Gallier
+
+In this note, we provide some details and proofs of some results from Appendix A.5 (especially
+Section A.5.5) of Convex Optimization by Boyd and Vandenberghe. 
