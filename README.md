@@ -99,12 +99,12 @@ You can use this library to enter M6 as follows:
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6). 
 
-## Stand-alone utilities
+## Stand-alone covariance utilities
 
    1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
    2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
    3. Some [/covariance/datascatterfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datascatterfunctions.py)
-   4. The [/covariance/datacovfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datacovfunctions.py) take data and produce covariance functions. 
+   4. The [/covariance/datafunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datafunctions.py) take data and produce covariance functions. 
    5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
   
 
