@@ -84,7 +84,7 @@ Differencing hints:
      
 
 
-## Portfolio & mixture of experts
+## Portfolios, ensembles & mixture of experts
 
 See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). Work in progress. 
 
