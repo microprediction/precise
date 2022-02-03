@@ -15,14 +15,14 @@ or for latest:
     pip install git+https://github.com/microprediction/precise.git
 
 ## M6 Financial forecasting contest utilities
-You can use this library to enter the M6 Financial Forecasting competition as follows:
+You *could* use this library to enter the M6 Financial Forecasting competition:
 
    1. Pick a cov estimator (i.e. a "cov skater"), if you wish
    2. Pick a portfolio generator, if you wish
    3. Pick extra shrinkage params, if you wish
    4. Pick love and hate ticker lists, if you wish
 
-See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/).  
+See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below.  
 
 ## Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
@@ -107,7 +107,6 @@ Differencing hints:
 ## Portfolios, ensembles & mixture of experts
 Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). 
 
-
 ## Miscellaneous remarks
 
  - Here is some related, and potentially related, [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
@@ -115,4 +114,9 @@ Too fluid to document currently. See the portfolio directories in [skaters](http
  - If you just want univariate calculations, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). However if you want univariate forecasts of the variance of something, as distinct from mere online calculations of the same, I would suggest checking the [time-series elo ratings](https://microprediction.github.io/timeseries-elo-ratings/html_leaderboards/special-k_001.html) and the "special" category in particular. 
  - The name of this package refers to precision matrices, not numerical precision. This isn't a source of high precision covariance *calculations* per se. The intent is more in forecasting future realized covariance. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!
  - The intent is that methods are parameter free. However some not-quite autonomous methods admit a few parameters (the factories). A few might even use just one additional scalar parameter *r* with a space-filling curve convention - somewhat akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package).
+
+## Disclaimer 
+Not investment advice. 
+
+
 
