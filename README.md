@@ -1,6 +1,5 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-
 A collection of autonomous incremental estimators for covariance, precision, correlation and associated quantities.  
 
 ## TLDR: "Just a pile of functions that forecast covariance in online fashion"
@@ -93,6 +92,16 @@ Differencing hints:
 
 See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). Work in progress. 
 
+## M6 Financial forecasting contest utilities
+
+You can use this library to enter M6 as follows:
+
+   1. Pick a cov estimator (i.e. a "cov skater"), if you wish
+   2. Pick a portfolio generator, if you wish
+   3. Pick extra shrinkage params, if you wish
+   4. Pick love and hate ticker lists, if you wish
+
+See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6). 
 
 ## Stand-alone utilities
 
