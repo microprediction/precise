@@ -4,13 +4,27 @@ A collection of autonomous incremental estimators for covariance, precision, cor
 
 ## TLDR: "Just a pile of functions that forecast covariance in online fashion"
 The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. Or to look at Elo ratings,
-run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). Oh and if you are looking for M6 example entries, they are [here](https://github.com/microprediction/precise/tree/main/examples_m6/full). 
+run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). 
 
 ## Install 
 
     pip install precise 
+    
+or for latest:
 
-### Covariance skaters  
+    pip install git+https://github.com/microprediction/precise.git
+
+## M6 Financial forecasting contest utilities
+You can use this library to enter M6 as follows:
+
+   1. Pick a cov estimator (i.e. a "cov skater"), if you wish
+   2. Pick a portfolio generator, if you wish
+   3. Pick extra shrinkage params, if you wish
+   4. Pick love and hate ticker lists, if you wish
+
+See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6). 
+
+## Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
 
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
@@ -26,7 +40,7 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
      
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
      
-### Skater Elo ratings 
+### Elo ratings 
 
 As noted, see the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb).  
      
@@ -34,15 +48,14 @@ As noted, see the [elo_ratings_and_urls](https://github.com/microprediction/prec
      
 You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). There are some location utilities in [precise/whereami](https://github.com/microprediction/precise/blob/main/precise/whereami.py). 
 
-Examples of interpretation:
+### Interpreting skater names 
+Examples:
 
 | Skater name            | Location   | Meaning            |
 |------------------------|------------|--------------------|
 | buf_huber_pcov_d1_a1_b2_n50 | [skaters/covariance/bufhuber](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufhuber.py) | Applies an approach that exploits Huber pseudo-means to a buffer of data of length 50 in need of differencing once, with generalized Huber loss parameters a=1, b=2. | 
 | buf_sk_ld_pcov_d0_n100 | [skaters/covariance/bufsk](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py) | Applies sk-learn's implementation of Ledoit-Wolf to stationary buffered data of length 100 | 
 | ewa_pm_emp_scov_r01 | [skaters/covariance/ewapartial](https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/ewapartial.py) | Performs an incremental, recency-weighted sample covariance estimate that exploits partial moments. Uses a memory parameter r=0.01 | 
-
-### Reading skater names 
 
 Broad calculation style categories
 
@@ -83,32 +96,19 @@ Differencing hints:
 | d1        | For use on data that is iid after taking one difference | 
      
 
-
-## Portfolios, ensembles & mixture of experts
-
-See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). Work in progress. 
-
-## M6 Financial forecasting contest utilities
-
-You can use this library to enter M6 as follows:
-
-   1. Pick a cov estimator (i.e. a "cov skater"), if you wish
-   2. Pick a portfolio generator, if you wish
-   3. Pick extra shrinkage params, if you wish
-   4. Pick love and hate ticker lists, if you wish
-
-See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6). 
-
-## Stand-alone covariance utilities
+### Stand-alone covariance utilities
 
    1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
    2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
    3. Some [/covariance/datascatterfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datascatterfunctions.py)
    4. The [/covariance/datafunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datafunctions.py) take data and produce covariance functions. 
    5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
-  
 
-## Miscellaneous 
+## Portfolios, ensembles & mixture of experts
+Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). 
+
+
+## Miscellaneous remarks
 
  - Here is some related, and potentially related, [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
  - This is a piece of the microprediction project, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
