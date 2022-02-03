@@ -442,3 +442,9 @@ Jean Gallier
 
 In this note, we provide some details and proofs of some results from Appendix A.5 (especially
 Section A.5.5) of Convex Optimization by Boyd and Vandenberghe. 
+
+
+## Fast and accurate techniques for computing schur complements and performing numerical coarse graining [slides](https://amath.colorado.edu/faculty/martinss/Talks/2009_banff.pdf)
+Gunnar Martinsson
+
+
