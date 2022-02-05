@@ -33,7 +33,7 @@ def relative_negative_mass(w):
 
 def portfolio_variance(w, cov=None, pre=None):
     if cov is None:
-        cov = try_invert(pre=pre)
+        cov = try_invert(a=pre)
     if isinstance(cov,pd.DataFrame):
         return square_and_vector_to_scalar(a=cov, w=w, func=portfolio_variance)
     else:
@@ -63,7 +63,7 @@ def exclude_negative_weights(w, with_neg_mass=False):
         neg_mass = sum([-wi for wi in w if wi<0])
         presumed_mass = pos_mass-neg_mass
         ratio = presumed_mass/pos_mass
-        w_pos = [ wi*ratio if wi>0 else 0.0 for wi in w]
+        w_pos = np.array([ wi*ratio if wi>0 else 0.0 for wi in w])
         return (w_pos, neg_mass) if with_neg_mass else w_pos
 
 
@@ -71,7 +71,6 @@ def var_scaled_returns(cov, mu:float, r:float):
     vars = np.diag(cov)
     typical_var = np.mean(vars)
     return r+(mu-r)*np.array([ v/typical_var for v in vars])
-
 
 
 if __name__=='__main__':

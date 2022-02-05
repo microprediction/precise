@@ -1,7 +1,7 @@
 
 from precise.skaters.covarianceutil.covrandom import random_band_cov
 import numpy as np
-from precise.skaters.portfolioutil.allstaticport import PORT
+from precise.skaters.portfoliostatic.allstaticport import PORT
 from pypfopt.exceptions import OptimizationError
 
 

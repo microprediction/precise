@@ -1,5 +1,5 @@
 from precise.skaters.covarianceutil.covfunctions import try_invert, weaken_cov
-from precise.skaters.portfolioutil.unitary import unitary_from_cov
+from precise.skaters.portfoliostatic.unitportfactory import unitary_from_cov
 from precise.skaters.portfolioutil.portfunctions import exclude_negative_weights, portfolio_variance
 from precise.skaters.locationutil.vectorfunctions import normalize
 from itertools import zip_longest
@@ -9,7 +9,7 @@ from typing import List
 # Fast long-only approximately min-var portfolios where the only constraints are sum(w)=1, w>0
 
 
-def prc_weak_port(cov=None, pre=None, a=1.0, b=None, with_neg_mass=False):
+def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, with_neg_mass=False):
     """ Long only portfolio somewhat similar to unitary min-var portfolio
         Uses a "weakenned" cov matrix
 
@@ -65,22 +65,4 @@ def _weak_from_cov(cov, w, a=1.0, b=0.75, with_weak=False):
     return (w1, weak_cov) if with_weak else w1
 
 
-def weak_portfolio_variance(cov=None, pre=None, **kwargs):
-    """
-        Variance of the unit min-var portfolio
-        (Used in some hierarchical methods to allocate capital)
-    """
-    w = prc_weak_port(pre=pre, cov=cov, **kwargs)
-    return portfolio_variance(cov=cov,w=w)
-
-
-def prc_weak_alloc(covs:List, pres:List=None, **kwargs)->[float]:
-    """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
-    :param pres:  List of precision matrices
-    :return: Capital allocation vector
-    """
-    if pres is None:
-        pres = []
-    return normalize([ 1/weak_portfolio_variance(cov=cov, pre=pre, **kwargs) for cov, pre in zip_longest(covs, pres, fillvalue=None) ])
 

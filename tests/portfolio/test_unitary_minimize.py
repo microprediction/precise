@@ -1,6 +1,6 @@
 from precise.skatertools.m6.covarianceforecasting import m6_cov
-from precise.skaters.portfolioutil.weak import _weak_from_cov, _weak_optimal_b
-from precise.skaters.portfolioutil.ppo import long_from_cov
+from precise.skaters.portfoliostatic.weakportfactory import _weak_from_cov, _weak_optimal_b
+from precise.skaters.portfoliostatic.ppoportfactory import long_from_cov
 from precise.skaters.portfolioutil.portfunctions import portfolio_variance, exclude_negative_weights
 from pprint import pprint
 

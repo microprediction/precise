@@ -259,3 +259,81 @@ def approx_diag_of_inv(a):
     """
     # TODO: https://cholmod-extra.readthedocs.io/en/latest/functions.html#sparse-inverse
     raise NotImplementedError
+
+
+def top_schur_complement(A, B, C, D, gamma=1.0):
+    # A - gamma B D^{-1} C
+    return schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+
+
+def bottom_schur_complement(A, B, C, D, gamma=1.0):
+    # D - gamma C A^{-1} B
+    return schur_complement(A=D, B=C, C=B, D=A, gamma=gamma)
+
+
+def schur_complement(A,B,C,D, gamma=1.0):
+    # A - gamma B D^{-1} C
+    return _schur_complement_solve(A=A, B=B, C=C, D=D, gamma=gamma)
+
+
+def _schur_complement_solve(A, B, C, D, gamma, warn=False, throw=False):
+    # A - B D^{-1} C
+    DinvC = inverse_multiply(a=D, b=C, warn=warn, throw=throw)
+    M = A - gamma*np.dot( B, DinvC )
+
+    CAREFUL = warn or throw
+    if CAREFUL:
+        rankD = np.linalg.matrix_rank(D)
+        dimD = max(np.shape(D))
+        if rankD==dimD:
+            checkM = _schur_complement_pseudo(A=A,B=B,C=C,D=D, gamma=gamma)
+            if not np.allclose( M, checkM ):
+                print('schurly not')
+        elif warn:
+            print(' D is rank deficient, so schur complement is method dependent ')
+
+    return M
+
+
+def _schur_complement_pseudo(A, B, C, D, gamma):
+    return A - gamma*np.dot( np.dot(B, np.linalg.pinv(D)),C)
+
+
+def _schur_complement_direct(A, B, C, D, gamma):
+    return A - gamma*np.dot( np.dot(B, np.linalg.pinv(D)),C)
+
+
+def inverse_multiply(a, b, warn=False, throw=False):
+    # Want  x = a^{-1} b
+    #       a x = b
+    #       x = solve(a,b)
+    x = np.linalg.solve(a, b)
+    if (warn or throw):
+        if np.linalg.matrix_rank(x)<max(np.shape(a)):
+            print('a is rank deficient so result is method dependent ')
+        else:
+            x_ = np.dot(np.linalg.inv(a), b)
+            if not np.allclose(x_, x):
+                if warn:
+                    print('schurly not inverse multiply')
+                if throw:
+                    raise ValueError
+    return x
+
+
+def multiply_by_inverse(a, b):
+    #  Want x = a b^{-1}
+    #       xt = bt^{-1} at  = inverse_multiply(bt, at)
+    #       bt xt = at
+    #       xt = solve(bt, at)
+    if not np.allclose( np.shape(b)[1], np.shape(b)[0], np.shape(a)[1]):
+        raise ValueError('dims wrong')
+    bt = np.transpose(b)
+    at = np.transpose(a)
+    xt = np.linalg.solve(bt,at)
+    x  = np.transpose(xt)
+    x_check = np.dot(a, np.linalg.inv(b))
+    if not np.allclose(x, x_check ):
+        raise Exception('schurly not')
+    return x
+

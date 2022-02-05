@@ -1,6 +1,6 @@
 
 from precise.skaters.covarianceutil.covrandom import random_band_cov
-from precise.skaters.portfolioutil.ppo import ppo_sharpe_port, ppo_quad_port, ppo_vol_port
+from precise.skaters.portfoliostatic.ppoportfactory import ppo_sharpe_port, ppo_quad_port, ppo_vol_port
 import numpy as np
 
 

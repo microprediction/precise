@@ -1,7 +1,7 @@
 from precise.skatertools.m6.covarianceforecasting import m6_cov
-from precise.skaters.portfolioutil.unitary import unitary_from_cov
-from precise.skaters.portfolioutil.weak import _weak_known_params, _weak_from_cov
-from precise.skaters.portfolioutil.ppo import long_from_cov
+from precise.skaters.portfoliostatic.unitportfactory import unitary_from_cov
+from precise.skaters.portfoliostatic.weakportfactory import _weak_known_params
+from precise.skaters.portfoliostatic.ppoportfactory import long_from_cov
 from precise.skaters.portfolioutil.portfunctions import portfolio_variance, exclude_negative_weights
 from pprint import pprint
 from precise.skaters.covarianceutil.covrandom import random_band_cov

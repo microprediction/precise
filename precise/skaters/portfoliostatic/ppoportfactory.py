@@ -17,32 +17,32 @@ from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
 
-long_bounds = (0,1)
-bounds = (-1,1)
+PPO_LONG_BOUNDS = (0, 1)
+PPO_UNIT_BOUNDS = (-1, 1)
 
 
 def ppo_sharpe_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
+    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_vol_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
+    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_quad_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=long_bounds)
+    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_sharpe_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
 def ppo_vol_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
 def ppo_quad_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=bounds)
+    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
 def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
@@ -59,7 +59,7 @@ def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds
     expected_returns = var_scaled_returns(cov=cov,mu=mu,r=risk_free_rate)
 
     if weight_bounds is None:
-        weight_bounds = long_bounds
+        weight_bounds = PPO_LONG_BOUNDS
 
     if cov is None:
         cov = try_invert(pre)

@@ -1,6 +1,6 @@
 from pprint import pprint
 from precise.skaters.covarianceutil.covfunctions import affine_shrink, nearest_pos_def
-from precise.skaters.portfolioutil.allstaticport import PRC_PORT, random_port
+from precise.skaters.portfoliostatic.allstaticport import random_port, PORT
 from precise.skaters.covariance.allcovskaters import random_cov_skater, cov_skater_manifest
 from precise.skatertools.m6.quintileprobabilities import m6_probabilities
 from precise.skatertools.m6.tilting import affection_tilt
@@ -52,7 +52,7 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
         port = random_port()
         if verbose:
             print('Choosing a cov estimator from the following list ')
-            pprint([p.__name__ for p in PRC_PORT])
+            pprint([p.__name__ for p in PORT])
         print('Chose '+port.__name__)
 
 
@@ -90,7 +90,6 @@ def m6_competition_entry(interval='d', f=None, port=None, n_dim=100, n_samples=5
 
 
 if __name__=='__main__':
-    from precise.whereami import TOP
     df = m6_competition_entry()
     m6_dump(df=df,file_name='m6_competition_entry.csv')
 

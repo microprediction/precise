@@ -3,7 +3,7 @@ from seriate import seriate
 import numpy as np
 
 
-def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None, cov=None, pre=None):
+def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None, cov=None, pre=None)->np.ndarray:
     """
         A utility for portfolio methods that prefer to receive assets in some "seriated" ordering
         The seriator acts on distances implied by correlations
@@ -37,8 +37,12 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
     ordered_w = port(cov=ordered_cov, **port_kwargs)
 
     # Return to original ordering
-    w = ordered_w[inv_ndx]
-    return w
+    try:
+        w = ordered_w[inv_ndx]
+    except TypeError:
+        print('Warning: '+port.__name__+' returns list not array')
+        w = np.array(ordered_w)[inv_ndx]
+    return np.array(w)
 
 
 
