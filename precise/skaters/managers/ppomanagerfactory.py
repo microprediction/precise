@@ -5,6 +5,11 @@ from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from functools import partial
 
 
+def ppo_long_manager_factory(y,s,f, method):
+    port = partial(ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS)
+    return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s)
+
+
 def ppo_pm_long_manager_factory(y, s, method, target, n_emp, r):
     """
        PyPortfolioOpt portfolio construction using partial moments cov estimation
