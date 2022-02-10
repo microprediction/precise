@@ -23,10 +23,10 @@ def even_split(cov, n_split=5)->(float,float):
         return n1, n2
 
 
-def risk_parity_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=0.0):
+def hrp_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=0.0):
     """
         A class of algorithms that hierarchically allocate capital
-        By default this implements Lopez de Prado's 2016 paper (I think)
+        By default this implements Lopez de Prado's 2016 paper
 
     :param alloc:      Decides how much capital to split between portfolios  [covs] -> [ float ]
     :param port:       Computes a portfolio     cov -> [ float ]    (Used on the leaves only)

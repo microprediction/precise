@@ -61,9 +61,12 @@ def exclude_negative_weights(w, with_neg_mass=False):
     else:
         pos_mass = sum([wi for wi in w if wi>0])
         neg_mass = sum([-wi for wi in w if wi<0])
-        presumed_mass = pos_mass-neg_mass
-        ratio = presumed_mass/pos_mass
-        w_pos = np.array([ wi*ratio if wi>0 else 0.0 for wi in w])
+        if neg_mass>1e-10:
+            presumed_mass = pos_mass-neg_mass
+            ratio = presumed_mass/pos_mass
+            w_pos = np.array([ wi*ratio if wi>0 else 0.0 for wi in w])
+        else:
+            w_pos = [ wi/pos_mass for wi in w]
         return (w_pos, neg_mass) if with_neg_mass else w_pos
 
 

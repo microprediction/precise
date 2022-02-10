@@ -46,11 +46,16 @@ def vector_log_likelihood(pre, y, lb):
     return ll
 
 
+def cov_likelihood(contestant, xs, n_burn=10, lb=-1000, ub=1000):
+    # Used as evaluator
+    return cov_skater_loglikelihood(f=contestant, xs=xs, with_metrics=True, n_burn=n_burn, lb=lb, ub=ub)
+
+
 def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1000):
     """
         Gaussian likelihood of a cov skater applied to data xs
 
-    :param f:
+    :param f:  cov skater
     :param lb, ub  lower and upper bounds for ll of individual point
     :param xs:
     :return:
@@ -63,7 +68,7 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
     s = {}
 
     for y in xs[:n_burn]:
-        y_hat, y_cov, s = f(s=s,y=y,k=1)
+        y_hat, y_cov, s = f(s=s, y=y, k=1)
 
     ll = 0
     y_hat_prev = None

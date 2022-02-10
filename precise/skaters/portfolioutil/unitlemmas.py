@@ -12,9 +12,7 @@ def bAb(A,b):
 
 def quirky_solve(A, b):
     """
-
         Nuts alternative to np.linalg.solve(A,b)
-
     """
     v = np.ones(len(b))
     A_tilde = A / scatter(b)

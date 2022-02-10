@@ -9,6 +9,8 @@ from typing import List
 from itertools import zip_longest
 from precise.skaters.portfolioutil.portfunctions import var_scaled_returns
 from pypfopt.exceptions import OptimizationError
+from cvxpy.error import SolverError
+from scipy.sparse.linalg.eigen.arpack import ArpackNoConvergence
 from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
 # Thin wrapper for some of the pyportfolio opt possibilities
@@ -16,37 +18,36 @@ from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
-
 PPO_LONG_BOUNDS = (0, 1)
 PPO_UNIT_BOUNDS = (-1, 1)
 
 
 def ppo_sharpe_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
+    return ppo_portfolio_factory(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_vol_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
+    return ppo_portfolio_factory(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_quad_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
+    return ppo_portfolio_factory(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
 def ppo_sharpe_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
+    return ppo_portfolio_factory(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
 def ppo_vol_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
+    return ppo_portfolio_factory(method='min_volatility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
 def ppo_quad_ls_port(cov=None, pre=None, as_dense=True):
-    return _ppo_portfolio(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
+    return ppo_portfolio_factory(method='max_quadratic_utility', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_UNIT_BOUNDS)
 
 
-def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
-                   risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5):
+def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
+                          risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5, warn=False):
     """
     :param method:
     :param cov:
@@ -82,20 +83,22 @@ def _ppo_portfolio(method:str, cov=None, pre=None, as_dense=False, weight_bounds
             else:
                 port_method()
             converged = True
-        except OptimizationError:
+        except (OptimizationError, SolverError, ArpackNoConvergence):
             converged = False
         if converged:
             break
         else:
             warned = True
-            print('    warning: '+method+' did not converge on attempt '+str(attempt_no))
+            if warn:
+                print('    warning: '+method+' did not converge on attempt '+str(attempt_no))
             shrunk_cov = affine_shrink(a=shrunk_cov,phi=1.02, lmbd=0.01, copy=False)
 
     if not converged:
         raise NotImplementedError('pyportfolio opt failed even after shrinkage')
 
     if converged and warned:
-        print('       ... but with shrinkage it converges okay.')
+        if warn:
+            print('       ... but with shrinkage it converges okay.')
 
     weights = ef.clean_weights()
     weights = normalize_dict_values(weights)
@@ -121,7 +124,7 @@ def ppo_portfolio_variance(method:str, cov=None, pre=None):
         Variance of the unit min-var portfolio
         (Used in some hierarchical methods to allocate capital)
     """
-    w = _ppo_portfolio(method=method, pre=pre,cov=cov)
+    w = ppo_portfolio_factory(method=method, pre=pre, cov=cov)
     return portfolio_variance(cov=cov,w=w)
 
 

@@ -96,8 +96,8 @@ def _acca_dacca_portfolio(cov, port, splitter):
     if n1==0 or n2==0:
         return port(cov)
     else:
-        #           C   = [ [ A, B ]
-        #                   [ B, D ] ]
+        #           cov   = [ [ A, B ]
+        #                   [ C, D ] ]
         n = n1+n2
         A = cov[:n1,:n1]
         B = cov[:n1,n1:]

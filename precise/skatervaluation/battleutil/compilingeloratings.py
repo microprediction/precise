@@ -54,4 +54,4 @@ def elo_from_win_counts(ctn):
 
 
 if __name__=='__main__':
-   pprint(elo_from_win_files(genre='likelihood'))
+   pprint(elo_from_win_files(genre='manager_info'))

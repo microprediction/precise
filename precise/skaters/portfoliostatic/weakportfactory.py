@@ -1,10 +1,8 @@
 from precise.skaters.covarianceutil.covfunctions import try_invert, weaken_cov
 from precise.skaters.portfoliostatic.unitportfactory import unitary_from_cov
 from precise.skaters.portfolioutil.portfunctions import exclude_negative_weights, portfolio_variance
-from precise.skaters.locationutil.vectorfunctions import normalize
-from itertools import zip_longest
 import scipy
-from typing import List
+from numpy.linalg import LinAlgError
 
 # Fast long-only approximately min-var portfolios where the only constraints are sum(w)=1, w>0
 
@@ -40,9 +38,13 @@ def _weak_known_params(cov, a, b, w0, with_neg_mass=False):
 def _weak_optimal_b(cov, w0, a, with_neg_mass=False):
 
     def b_objective(u,w,a, v0):
-        w1 = _weak_from_cov(cov, a=a, b=u[0], w=w, with_weak=False)
-        v = portfolio_variance(cov=cov, w=exclude_negative_weights(w1))/v0
-        return v
+        try:
+            w1 = _weak_from_cov(cov, a=a, b=u[0], w=w, with_weak=False)
+            v = portfolio_variance(cov=cov, w=exclude_negative_weights(w1))/v0
+            return v
+        except LinAlgError:
+            bad_v = portfolio_variance(cov=cov, w=100*w)
+            return bad_v
 
     v0 = portfolio_variance(cov=cov,w=w0)
     res = scipy.optimize.minimize(fun=b_objective,x0=0.75, bounds=[(0,1)], args=(w0, a, v0))

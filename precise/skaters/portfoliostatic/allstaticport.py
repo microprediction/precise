@@ -17,5 +17,7 @@ def random_port():
 
 
 if __name__=='__main__':
-    from precise.skaters.portfoliostatic.porttesting import ports_test
-    ports_test(ports=PORT,n_dim=50)
+    from precise.skaters.portfolioutil.portcomparison import equity_portfolio_variance_rankings, equity_portfolio_correlation_points_race
+    report = equity_portfolio_correlation_points_race(n_iter=5000, ports=PORT, n_dim=45, n_obs=300, interval='d')
+    from pprint import pprint
+    pprint(report)

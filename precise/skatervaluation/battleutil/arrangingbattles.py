@@ -1,5 +1,7 @@
 from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
-from precise.skaters.covarianceutil.likelihood import cov_skater_loglikelihood
+from precise.skaters.managers.allmanagers import LONG_MANAGERS
+from precise.skaters.covarianceutil.likelihood import cov_likelihood
+from precise.skaters.managerutil.managerstats import manager_info, manager_var
 from uuid import uuid4
 import os
 import json
@@ -21,7 +23,7 @@ DEFAULT_M6_PARAMS = {'n_dim': 25,
                       'lb':-1000,
                       'ub':1000,
                       'interval':'d',
-                      'etfs':0}
+                      'etfs':1}
 
 
 def params_category_and_data(params:dict):
@@ -42,21 +44,26 @@ def params_category_and_data(params:dict):
         raise ValueError('m6 is only topic, for now')
 
 
-def skater_likelihood_battle(params:dict):
-    """
-    :param
-    :return:
-    """
-    return skater_battle(evaluator=cov_skater_loglikelihood, evaluator_name='likelihood', params=params)
+def manager_info_battle(params:dict):
+    return generic_battle(contestants=LONG_MANAGERS, evaluator=manager_info, params=params, atol=1e-8)
 
 
-def skater_battle(evaluator, evaluator_name:str, params:dict):
+def manager_var_battle(params:dict):
+    return generic_battle(contestants=LONG_MANAGERS, evaluator=manager_var, params=params, atol=1e-8)
+
+
+def cov_likelihood_battle(params:dict):
+    contestants = ALL_D0_SKATERS
+    return generic_battle(contestants=contestants, evaluator=cov_likelihood, params=params, atol=1.0)
+
+
+def generic_battle(contestants, evaluator, params:dict, atol=1.0):
     """
         Write results to a new queue.
-        evaluator(f=f, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
+        evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
     """
+    evaluator_name = evaluator.__name__
     n_per_battle = 3
-    atol = 1.0
     try:
         params, category, xs_test = params_category_and_data(params=params)
     except Exception as e:
@@ -68,8 +75,8 @@ def skater_battle(evaluator, evaluator_name:str, params:dict):
     print('Data retrieval test passed for category '+category)
     pprint(params)
     time.sleep(1)
-    print('Will test the following skaters')
-    pprint(ALL_D0_SKATERS)
+    print('Will test the following contestants')
+    pprint(contestants)
 
     qn = str(uuid4())+'.json'
     queue_dir = os.path.join(BATTLE_RESULTS_DIR, evaluator_name, category)
@@ -82,7 +89,7 @@ def skater_battle(evaluator, evaluator_name:str, params:dict):
     reliability = dict()
     failures = dict()
 
-    worst_ll_seen = 10000000
+    worst_assessment_seen = 10000000
     lb = params['lb']
     ub = params['ub']
 
@@ -91,20 +98,20 @@ def skater_battle(evaluator, evaluator_name:str, params:dict):
         params, category, xs = params_category_and_data(params=params)
         assert len(xs)==n_obs
         xs = np.array(xs)
-        np.random.shuffle(ALL_D0_SKATERS)
-        fs = ALL_D0_SKATERS[:n_per_battle]
+        np.random.shuffle(contestants)
+        some_contestants = contestants[:n_per_battle]
         stuff = list()
 
-        for f in fs:
+        for contestant in some_contestants:
             try:
-                ll, metrics = evaluator(f=f, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
-                metrics['name']=f.__name__
+                assessment, metrics = evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], lb=lb, ub=ub)
+                metrics['name']=contestant.__name__
                 metrics['traceback']=''
                 metrics['passing']=1
-                stuff.append( (ll,metrics) )
-                if ll<worst_ll_seen:
-                    worst_ll_seen = ll
-                    print({'worst_ll_seen':ll})
+                stuff.append( (assessment,metrics) )
+                if assessment<worst_assessment_seen:
+                    worst_assessment_seen = assessment
+                    print({'worst_assessment_yet':assessment})
                 name = metrics['name']
                 if name not in timing:
                     timing[name] = {}
@@ -113,17 +120,21 @@ def skater_battle(evaluator, evaluator_name:str, params:dict):
                     reliability[name] = {}
                 reliability[name] = rvar(reliability[name], x=1.0, rho=0.05)
             except Exception as e:
-                metrics = {'name':f.__name__,'passing':0,'traceback':traceback.format_exc(),'ll':-100000000}
-                if f.__name__ not in reliability:
-                    reliability[f.__name__] = {}
-                reliability[f.__name__] = rvar(reliability[f.__name__], x=0.0, rho=0.05)
-                failures[f.__name__] = traceback.format_exc()
-                ll = worst_ll_seen
-            stuff.append( (ll,metrics))
+                metrics = {'name':contestant.__name__,'passing':0,'traceback':traceback.format_exc(),'ll':-100000000}
+                if contestant.__name__ not in reliability:
+                    reliability[contestant.__name__] = {}
+                reliability[contestant.__name__] = rvar(reliability[contestant.__name__], x=0.0, rho=0.05)
+                failures[contestant.__name__] = traceback.format_exc()
+                assessment = worst_assessment_seen
+            stuff.append( (assessment,metrics))
         valid = [ s for s in stuff if s[1]['passing']>0.5 ]
 
         if len(valid)<=2:
-            print('urhg')
+            print('Less than 2 working contestants this time around: ')
+            pprint(some_contestants)
+            for contestant in some_contestants:
+                pprint(failures.get(contestant.__name__))
+            print('Urgh')
 
         for i, mi in enumerate(valid):
             for j, mj in enumerate(valid):
