@@ -12,5 +12,6 @@ def weak_long_port(cov=None, pre=None):
 
 
 WEAK_LONG_PORT = [weak_long_port]
-WEAK_PORT = WEAK_LONG_PORT
+WEAK_LS_PORT = []
+WEAK_PORT = WEAK_LONG_PORT + WEAK_LS_PORT
 

@@ -5,22 +5,22 @@ from collections import Counter
 from pprint import pprint
 
 
-def points_race( ranker, ranker_kwargs, n_iter=100):
+def points_race( ranker, ranker_kwargs, n_iter=100, n_top=20):
     c = Counter()
     for _ in range(n_iter):
         rankings = ranker(as_frame=False, **ranker_kwargs)
         points = [ (port_name, max(len(rankings)-k,0) ) for k,(port_name,_,_) in enumerate(rankings) ]
         c.update(dict(points))
-        pprint(c.most_common())
+        pprint(c.most_common(n=n_top))
     return c
 
 
-def equity_portfolio_variance_points_race(n_iter=100,**kwargs):
-    return points_race(n_iter=n_iter, ranker=equity_portfolio_variance_rankings,ranker_kwargs=kwargs)
+def equity_portfolio_variance_points_race(n_iter=100,n_top=50, **kwargs):
+    return points_race(n_iter=n_iter,n_top=n_top, ranker=equity_portfolio_variance_rankings,ranker_kwargs=kwargs)
 
 
-def equity_portfolio_correlation_points_race(n_iter=100,**kwargs):
-    return points_race(n_iter=n_iter, ranker=equity_portfolio_correlation_rankings,ranker_kwargs=kwargs)
+def equity_portfolio_correlation_points_race(n_iter=100,n_top=50, **kwargs):
+    return points_race(n_iter=n_iter, n_top=n_top, ranker=equity_portfolio_correlation_rankings,ranker_kwargs=kwargs)
 
 
 def equity_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, interval='d', etf=1, as_frame=True, n_iter=10):

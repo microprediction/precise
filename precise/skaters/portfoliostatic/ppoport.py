@@ -28,4 +28,5 @@ def ppo_quad_port(cov=None, pre=None, as_dense=True):
 
 
 PPO_LONG_PORT = [ ppo_sharpe_long_port, ppo_vol_long_port, ppo_quad_long_port ]
-PPO_PORT =  PPO_LONG_PORT + [ ppo_sharpe_port, ppo_vol_port, ppo_quad_port   ]
+PPO_LS_PORT = [ ppo_sharpe_port, ppo_vol_port, ppo_quad_port   ]
+PPO_PORT =  PPO_LONG_PORT + PPO_LS_PORT

@@ -7,10 +7,8 @@ from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from functools import partial
 
 
-# hierarchical_seriation_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=0.0)
 
-
-def hrp_weak_pm_manager_factory(y, s, target, n_emp, r, a=1.0, b=None, n_split=5, gamma=0.0, a_alloc=1.0, b_alloc=None):
+def schur_weak_pm_manager_factory(y, s, target, n_emp, r, a=1.0, b=None, n_split=5, gamma=0.0, a_alloc=1.0, b_alloc=None):
     """
        HRP weak portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
