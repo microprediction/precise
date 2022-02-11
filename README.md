@@ -1,4 +1,4 @@
-# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+# precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 A collection of incremental estimators for covariance, precision, correlation, portfolios and ensembles.   
 
