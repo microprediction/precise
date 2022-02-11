@@ -456,3 +456,9 @@ In this paper, we firstly examine the relation between the weight norm-constrain
 functions. We give the range of parameters for the two models and the corresponding relationship of parameters. Given the range
 and manner of parameter selection, it will help researchers and practitioners better understand and apply the relevant portfolio
 models. We apply these models to construct optimal portfolios and test the proposed propositions by employing real market data
+
+## Six Generalized Schur Complements [via](https://www.sciencedirect.com/science/article/pii/002437958890033X)
+Butler and Morlay
+
+We give a unified treatment of equivalence betwene some old and new generalizations of the Shcur complement of matrices
+
