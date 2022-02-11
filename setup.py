@@ -50,7 +50,7 @@ setup(
     tests_require=['pytest'],
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp',
-                      'pandas_datareader','seriate','pandas','scipy','pyportfolioopt'],
+                      'pandas_datareader','seriate','pandas','scipy>=1.8.0','pyportfolioopt'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

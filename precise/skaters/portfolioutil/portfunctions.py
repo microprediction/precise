@@ -71,9 +71,17 @@ def exclude_negative_weights(w, with_neg_mass=False):
 
 
 def var_scaled_returns(cov, mu:float, r:float):
+    import warnings
+    warnings.filterwarnings('error')
     vars = np.diag(cov)
     typical_var = np.mean(vars)
-    return r+(mu-r)*np.array([ v/typical_var for v in vars])
+    try:
+        result = r+(mu-r)*np.array([ v/typical_var for v in vars])
+    except RuntimeWarning as e:
+        print(e)
+        pass
+
+    return result
 
 
 if __name__=='__main__':

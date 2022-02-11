@@ -1,9 +1,7 @@
 import numpy as np
 from precise.skaters.covarianceutil.covfunctions import try_invert, approx_diag_of_inv
-from precise.skaters.portfolioutil.portfunctions import portfolio_variance
-from typing import List
-from itertools import zip_longest
 from precise.skaters.locationutil.vectorfunctions import normalize
+from precise.skaters.portfoliostatic.equalport import equal_long_port
 
 # Use only the diagonal elements of cov
 
@@ -32,8 +30,12 @@ def diagonal_from_pre(pre, sparse_approx=False, ridge=0.1):
 
 
 def diagonal_from_cov(cov, ridge=0.1):
-    mean_cov = np.mean(np.diag(cov))
-    return normalize( [ 1/(d+ridge*mean_cov) for d in np.diag(cov)] )
+    d = np.diag(cov)
+    if any([di<1e-6 for di in d]):
+        return equal_long_port(cov=cov)
+    else:
+        mean_cov = np.mean(d)
+        return normalize( [ 1/(d+ridge*mean_cov) for d in np.diag(cov)] )
 
 
 

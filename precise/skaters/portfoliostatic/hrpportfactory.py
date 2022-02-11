@@ -7,6 +7,7 @@ from pprint import pprint
 from functools import partial
 from precise.skaters.portfolioutil.seriation import corr_seriation_portfolio_factory
 from precise.skaters.covarianceutil.covfunctions import top_schur_complement, bottom_schur_complement, to_symmetric
+from precise.skaters.portfoliostatic.equalport import equal_long_port
 
 
 def even_split(cov, n_split=5)->(float,float):
