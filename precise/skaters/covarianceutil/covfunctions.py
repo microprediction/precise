@@ -276,7 +276,7 @@ def schur_complement(A,B,C,D, gamma=1.0):
     return _schur_complement_solve(A=A, B=B, C=C, D=D, gamma=gamma)
 
 
-def _schur_complement_solve(A, B, C, D, gamma, warn=False, throw=False):
+def _schur_complement_solve(A, B, C, D, gamma, warn=True, throw=False):
     # A - B D^{-1} C
     DinvC = inverse_multiply(a=D, b=C, warn=warn, throw=throw)
     M = A - gamma*np.dot( B, DinvC )

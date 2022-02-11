@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.4.1",
+    version="0.4.3",
     description="Online covariance and precision estimation",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -50,7 +50,7 @@ setup(
     tests_require=['pytest'],
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp',
-                      'pandas_datareader','seriate','pandas','scipy>=1.8.0','pyportfolioopt'],
+                      'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

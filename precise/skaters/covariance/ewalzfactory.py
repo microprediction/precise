@@ -178,7 +178,7 @@ def lz_factory(y, s:dict, n_epoch=DEFAULT_N_EPOCH,
     if s['warm']:
         if (e>=0):
                 # Reconstruct precision - see paper for explanation
-                omega = np.zeros(shape=(n_dim, n_dim))
+                omega = np.eye(n_dim)
                 for i,covi in enumerate(s['l']['covs']):
                     prei = local_pre_func(covi, **local_pre_func_kwargs)
                     ei = np.zeros(shape=(n_dim,1))

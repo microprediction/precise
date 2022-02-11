@@ -17,9 +17,8 @@ def data_population_covariance(xs):
     if isinstance(xs,pd.DataFrame):
         return data_to_square_dataframe(df=xs, data_func=data_population_covariance)
     else:
-        if any([dim == 1 for dim in np.shape(xs)]):
-            n_dim = max(np.shape(xs))
-            return np.eye(n_dim)
+        if np.shape(xs)[0]==1:
+            return np.var(np.array(xs).ravel())*np.eye(1)
         else:
             return np.cov(np.array(xs), rowvar=False, bias=True)
 

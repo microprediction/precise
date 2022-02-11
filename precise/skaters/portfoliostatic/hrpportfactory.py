@@ -69,8 +69,18 @@ def _risk_parity_portfolio(alloc, cov, port, splitter, gamma:float=0.0):
         if abs(gamma)>0.0:
             B = cov[:n1, n1:]
             C = cov[n1:, :n1]
-            Ac = to_symmetric(top_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma))
-            Dc = to_symmetric(bottom_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma))
+            rankD = np.linalg.matrix_rank(D)
+            if rankD==np.shape(D)[0]:
+                Ac_raw = top_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+                Ac = to_symmetric(Ac_raw)
+            else:
+                Ac = A
+            rankA = np.linalg.matrix_rank(A)
+            if rankA==np.shape(A)[0]:
+                Dc_raw = bottom_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+                Dc = to_symmetric(Dc_raw)
+            else:
+                Dc = D
         else:
             Ac = A
             Dc = D

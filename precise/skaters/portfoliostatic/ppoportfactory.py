@@ -10,7 +10,10 @@ from itertools import zip_longest
 from precise.skaters.portfolioutil.portfunctions import var_scaled_returns
 from pypfopt.exceptions import OptimizationError
 from cvxpy.error import SolverError
-from scipy.sparse.linalg.eigen import ArpackNoConvergence
+try:
+    from scipy.sparse.linalg.eigen import ArpackNoConvergence
+except ImportError:
+    from scipy.sparse.linalg.eigen.arpack import ArpackNoConvergence
 from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
 # Thin wrapper for some of the pyportfolio opt possibilities

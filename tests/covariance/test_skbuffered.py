@@ -10,6 +10,7 @@ def test_random_buffered_sk_d0():
         s = {}
         for j,y in enumerate(data[:105]):
             x, x_cov, s = f(s=s, y=y, k=1)
+            assert (np.diag(x_cov) >= 0).all()
 
 
 if __name__=='__main__':

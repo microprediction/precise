@@ -3,7 +3,7 @@ from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_facto
 from precise.skaters.portfolioutil.portfunctions import portfolio_variance
 from itertools import zip_longest
 from typing import List
-
+from precise.skaters.portfoliostatic.equalport import equal_long_port
 
 def weak_portfolio_variance(cov=None, pre=None, **kwargs):
     """
@@ -22,5 +22,9 @@ def weak_allocation_factory(covs:List, pres:List=None, **kwargs)->[float]:
     """
     if pres is None:
         pres = []
-    return normalize([ 1/weak_portfolio_variance(cov=cov, pre=pre, **kwargs) for cov, pre in zip_longest(covs, pres, fillvalue=None) ])
+    try:
+        w = normalize([ 1/weak_portfolio_variance(cov=cov, pre=pre, **kwargs) for cov, pre in zip_longest(covs, pres, fillvalue=None) ])
+    except RuntimeWarning:
+        w = normalize([ 1.0 for _ in zip_longest(covs,pres)] )
+    return w
 

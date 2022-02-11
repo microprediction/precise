@@ -11,6 +11,7 @@ def test_random_partial_moving():
     s = {}
     for j,y in enumerate(data):
         x, x_cov, s = f(s=s, y=y, k=1)
+        assert (np.diag(x_cov) >= 0).all()
 
 
 if __name__=='__main__':

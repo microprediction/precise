@@ -16,8 +16,8 @@ def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
     :return:
     """
     s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer)
-    x = s['mav']['loc']
-    x_cov = s['mav']['pcov']
+    x = np.array(s['mav']['loc'])
+    x_cov = np.array(s['mav']['pcov'])
     return x, x_cov, s
 
 
