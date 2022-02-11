@@ -1,56 +1,57 @@
 from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
-from precise.skaters.portfoliostatic.hrpportfactory import hrp_portfolio_factory
+from precise.skaters.portfoliostatic.schurportfactory import hierarchical_seriation_portfolio_factory
 from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from precise.skaters.portfoliostatic.unitalloc import unit_alloc
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
 
 # Schur complement portfolios 
 
-# A "Consistent"
+# Some that use the same portfolio constructor as allocation...
+
 
 def schur_unit_unit_s5_g100_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
+    return hierarchical_seriation_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
 
 def schur_weak_weak_s5_g100_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
+    return hierarchical_seriation_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
 
 def schur_diag_diag_s5_g100_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
+    return hierarchical_seriation_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
 
 def schur_unit_unit_s5_g050_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
+    return hierarchical_seriation_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
 def schur_weak_weak_s5_g050_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
+    return hierarchical_seriation_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
 def schur_diag_diag_s5_g050_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
+    return hierarchical_seriation_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
 # Using weak allocation..
 
 
 def schur_unit_weak_s5_g100_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
+    return hierarchical_seriation_portfolio_factory(port=unit_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
 
 def schur_diag_weak_s5_g100_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=diagonal_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
+    return hierarchical_seriation_portfolio_factory(port=diagonal_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
 
 def schur_unit_weak_s5_g050_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
+    return hierarchical_seriation_portfolio_factory(port=unit_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
 def schur_diag_weak_s5_g050_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=diagonal_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
+    return hierarchical_seriation_portfolio_factory(port=diagonal_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
 

@@ -184,7 +184,7 @@ if __name__=='__main__':
     corr = cov_to_corrcoef(cov)
 
     # Compare in-sample portfolio variance
-    from precise.skaters.portfoliostatic.hrpportfactory import prc_hrp_diag_n5_g0, prc_hrp_weak_n5_g0, prc_hrp_unit_n5_g0
+    from precise.skaters.portfoliostatic.schurportfactory import prc_hrp_diag_n5_g0, prc_hrp_weak_n5_g0, prc_hrp_unit_n5_g0
     from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
 
     uv = portfolio_variance(cov=cov, w=unit_portfolio_factory(cov=cov))

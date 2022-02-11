@@ -1,7 +1,7 @@
 from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
-from precise.skaters.portfoliostatic.hrpportfactory import hrp_portfolio_factory
+from precise.skaters.portfoliostatic.hrpportfactory import hierarchical_risk_parity_portfolio_factory
 from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from precise.skaters.portfoliostatic.unitalloc import unit_alloc
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
@@ -10,37 +10,38 @@ from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
 # Hierarchical Risk-Parity
 
 
+def hrp_diag_diag_s5_long_port(cov=None, pre=None):
+    # Lopez de Prado 2016
+    # Allocate using diagonal
+    return hierarchical_risk_parity_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5)
+
+
 def hrp_unit_unit_s5_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
 
 
 def hrp_weak_weak_s5_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
 
 
-def hrp_diag_diag_s5_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5)
-
-
-# Weak allocation with other portfolios
+# Weak allocation ...
 
 def hrp_unit_weak_s5_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
 
 
 def hrp_diag_weak_s5_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
 
 
-# Diag allocation with other portfolios?
-
+# Diag allocation, but different portfolios 
 
 def hrp_unit_diag_s5_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=unit_portfolio_factory, alloc=unit_alloc, cov=cov, pre=pre, n_split=5)
 
 
 def hrp_weak_diag_s5_long_port(cov=None, pre=None):
-    return hrp_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
 
 
 
