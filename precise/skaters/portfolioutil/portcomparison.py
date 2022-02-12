@@ -27,7 +27,7 @@ def equity_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, interval='d
     """
         Quick and dirty
     """
-    from precise.skatertools.data.equity import random_m6_returns
+    from precise.skatertools.data.equitylive import random_m6_returns
     data = random_m6_returns(n_dim=n_dim, n_obs=n_obs, verbose = False, interval = interval, etf = etf)
     t_obs = int(0.5*n_obs)
     test_cov = np.cov(data[:t_obs] ,rowvar=False)
@@ -39,7 +39,7 @@ def equity_portfolio_correlation_rankings(ports, n_dim=10, n_obs = 300, interval
     """
         Quick and dirty comparison using empirical corrcoef for cov
     """
-    from precise.skatertools.data.equity import random_m6_returns
+    from precise.skatertools.data.equitylive import random_m6_returns
     data = random_m6_returns(n_dim=n_dim, n_obs=n_obs, verbose = False, interval = interval, etf = etf)
     t_obs = int(0.666*n_obs)
 

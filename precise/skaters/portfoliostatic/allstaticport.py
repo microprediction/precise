@@ -20,6 +20,6 @@ def random_port():
 
 if __name__=='__main__':
     from precise.skaters.portfolioutil.portcomparison import equity_portfolio_variance_rankings, equity_portfolio_correlation_points_race
-    report = equity_portfolio_correlation_points_race(n_iter=5000, ports=LONG_PORT, n_dim=45, n_obs=300, interval='d', n_top=100)
+    report = equity_portfolio_correlation_points_race(n_iter=5000, ports=LONG_PORT, n_dim=45, n_obs=100, interval='d', n_top=100)
     from pprint import pprint
     pprint(report)

@@ -4,8 +4,10 @@ from precise.skatervaluation.battleutil.battleio import win_data
 from precise.skatervaluation.battleutil.eloformulas import elo_change
 from collections import Counter
 import random
-
+from precise.skatervaluation.battleutil.speed import TIMING
+from collections import OrderedDict
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
+
 
 
 def elo_from_win_files(genre='likelihood'):
@@ -13,11 +15,11 @@ def elo_from_win_files(genre='likelihood'):
     :return:  Elo ratings for all categories
     """
     # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
-    the_lot = [(cat, elo_from_win_counts(cat_data)) for cat, cat_data in win_data(genre=genre)]
+    the_lot = [(cat, elo_from_win_counts(cat_data, timing_genre=genre)) for cat, cat_data in win_data(genre=genre)]
     return the_lot
 
 
-def elo_from_win_counts(ctn):
+def elo_from_win_counts(ctn, timing_genre=None):
     """
         Elo ratings from a counter or dict of match results
 
@@ -49,6 +51,11 @@ def elo_from_win_counts(ctn):
             ctn[random_battle[0]] -= 1
             elo[winner] += winner_change
             elo[loser] += loser_change
+    if timing_genre is not None:
+        contestant_timing = TIMING.get(timing_genre)
+        if contestant_timing is not None:
+            with_timing = sorted( [ (contestant,(score,contestant_timing.get(contestant))) for contestant, score in elo.items()], key= lambda x: x[1][0], reverse=True)
+            elo = OrderedDict(with_timing)
     return elo
 
 

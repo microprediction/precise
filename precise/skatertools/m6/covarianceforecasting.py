@@ -1,5 +1,5 @@
 import numpy as np
-from precise.skatertools.data.equity import get_prices
+from precise.skatertools.data.equitylive import get_prices
 import pandas as pd
 from pprint import pprint
 from precise.skaters.covariance.runemp import run_emp_pcov_d0

@@ -10,7 +10,8 @@ from pprint import pprint
 import traceback
 from collections import Counter
 from momentum.functions import rvar
-from precise.skatertools.data.equity import random_m6_returns
+from precise.skatertools.data.equitylive import random_m6_returns
+from precise.skatertools.data.equityhistorical import get_random_dense_log_price_diff
 from precise.whereami import BATTLE_RESULTS_DIR
 import numpy as np
 import time
@@ -24,6 +25,15 @@ DEFAULT_M6_PARAMS = {'n_dim': 25,
                       'ub':1000,
                       'interval':'d',
                       'etfs':1}
+
+DEFAULT_STOCK_PARAMS = {'n_dim': 25,
+                       'n_obs': 356,
+                       'n_burn':300,
+                       'atol': 1,
+                       'lb':-1000,
+                       'ub':1000,
+                       'k':0}
+
 
 
 def params_category_and_data(params:dict):
@@ -39,6 +49,15 @@ def params_category_and_data(params:dict):
         combined_params['description'] = descriptions[combined_params['interval']]
         category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
         xs = random_m6_returns(verbose=False, **combined_params)
+        return combined_params, category, xs
+    elif params['topic']=='stocks':
+        combined_params = DEFAULT_STOCK_PARAMS
+        combined_params.update(params)
+        combined_params['description'] = 'stocks_'+str(combined_params['k'])+'_days'
+        category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
+        df = get_random_dense_log_price_diff(**combined_params)
+        df.drop(df.columns[0],inplace=True, axis=1)
+        xs = df.values
         return combined_params, category, xs
     else:
         raise ValueError('m6 is only topic, for now')
@@ -148,7 +167,7 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
         reliabilties = dict([(nm, reliab['mean']) for nm,reliab in reliability.items() ] )
         cpu_times = dict([(nm, tm['mean']) for nm, tm in timing.items()])
 
-        if np.random.rand()<0.01:
+        if np.random.rand()<1:
             with open(queue,'wt') as fh:
                 json.dump(battles,fh)
                 print('---')

@@ -3,11 +3,23 @@ import pandas as pd
 import time
 from functools import lru_cache
 import numpy as np
-
+import time
 
 @lru_cache(maxsize=500)
 def get_prices(ticker,n_obs,interval):
-    return web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
+    print('Getting '+ticker)
+    time.sleep(5)
+    success = False
+    while not success:
+        try:
+            data = web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
+            success = True
+        except Exception as e:
+            print(str(e))
+            print('backing off')
+            time.sleep(10)
+    return data
+
 
 
 def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0, **ignore):
