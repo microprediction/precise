@@ -316,7 +316,7 @@ def inverse_multiply(a, b, warn=False, throw=False):
     return x
 
 
-def multiply_by_inverse(a, b):
+def multiply_by_inverse(a, b, throw=True):
     #  Want x = a b^{-1}
     #       xt = bt^{-1} at  = inverse_multiply(bt, at)
     #       bt xt = at
@@ -328,7 +328,7 @@ def multiply_by_inverse(a, b):
     xt = np.linalg.solve(bt,at)
     x  = np.transpose(xt)
     x_check = np.dot(a, np.linalg.inv(b))
-    if not np.allclose(x, x_check ):
+    if not np.allclose(x, x_check ) and throw:
         raise Exception('schurly not')
     return x
 

@@ -184,22 +184,25 @@ def hierarchical_risk_parity(cov, n1, port, alloc, splitter):
 
 
 
-
-
-def pseudo_schur_complement(A, B, C, D, gamma):
+def pseudo_schur_complement(A, B, C, D, gamma, warn=False):
     """
        Augmented cov matrix for "A" inspired by the Schur complement
     """
-    Ac_raw = schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
-    nA = np.shape(A)[0]
-    nD = np.shape(D)[0]
-    Ac = to_symmetric(Ac_raw)
-    M = symmetric_step_up_matrix(n1=nA, n2=nD)
-    Mt = np.transpose(M)
-    BDinv = multiply_by_inverse(B, D)
-    BDinvMt = np.dot(BDinv, Mt)
-    Ra = np.eye(nA) - gamma * BDinvMt
-    Ag = inverse_multiply(Ra, Ac)
+    try:
+        Ac_raw = schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+        nA = np.shape(A)[0]
+        nD = np.shape(D)[0]
+        Ac = to_symmetric(Ac_raw)
+        M = symmetric_step_up_matrix(n1=nA, n2=nD)
+        Mt = np.transpose(M)
+        BDinv = multiply_by_inverse(B, D, throw=False)
+        BDinvMt = np.dot(BDinv, Mt)
+        Ra = np.eye(nA) - gamma * BDinvMt
+        Ag = inverse_multiply(Ra, Ac, throw=False, warn=False)
+    except np.linalg.LinAlgError:
+        if warn:
+            print('Pseudo-schur failed, falling back to A')
+        Ag = A
     return Ag
 
 
