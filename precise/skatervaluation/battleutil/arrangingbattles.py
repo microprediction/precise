@@ -56,7 +56,6 @@ def params_category_and_data(params:dict):
         combined_params['description'] = 'stocks_'+str(combined_params['k'])+'_days'
         category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
         df = get_random_dense_log_price_diff(**combined_params)
-        df.drop(df.columns[0],inplace=True, axis=1)
         xs = df.values
         return combined_params, category, xs
     else:
@@ -82,7 +81,7 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
         evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
     """
     evaluator_name = evaluator.__name__
-    n_per_battle = 3
+    n_per_battle = 5
     try:
         params, category, xs_test = params_category_and_data(params=params)
     except Exception as e:
@@ -123,13 +122,12 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
         stuff = list()
         for contestant in some_contestants:
             try:
-                if 'manager' in contestant.__name__:
+                if 'manager' in contestant.__name__ or True:
                     print('  '+contestant.__name__)
                 assessment, metrics = evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], lb=lb, ub=ub)
                 metrics['name']=contestant.__name__
                 metrics['traceback']=''
                 metrics['passing']=1
-                stuff.append( (assessment,metrics) )
                 if assessment<worst_assessment_seen:
                     worst_assessment_seen = assessment
                     print({'worst_assessment_yet':assessment})

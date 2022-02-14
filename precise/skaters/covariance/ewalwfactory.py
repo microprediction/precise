@@ -12,7 +12,7 @@ import numpy as np
 # estimate a "reasonable" linear shrinkage
 
 
-def ewa_lw_scov_factory(s, y, r):
+def ewa_lw_scov_factory(s, y, r, e=1):
     s = lw_ema_scov(s=s,x=y,r=r)
     x = np.copy(s['ema_scov']['mean'])
     x_cov = np.copy(s['scov'])

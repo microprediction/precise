@@ -7,6 +7,8 @@ GITHUB_COV_SKATERS = 'https://github.com/microprediction/precise/blob/main/preci
 ROOT = Path(TOP).parent.absolute()
 M6_EXAMPLES = os.path.join(ROOT,'examples_m6')
 
+TESTSERROR = os.path.join(ROOT,'testserrors')
+
 
 def url_from_skater_name(name:str)->str:
     """

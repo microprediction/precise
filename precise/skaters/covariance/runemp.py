@@ -3,7 +3,7 @@ import numpy as np
 
 # Running empirical covariance with infinite memory, equal weighting
 
-def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=None):
+def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=1):
     """
         Empirical covariance skater that assumes y's are iid
 

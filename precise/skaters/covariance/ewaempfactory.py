@@ -6,7 +6,7 @@ from typing import Union, List
 # Exponential weighted sample covariance
 
 
-def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025, n_emp=None):
+def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025, n_emp=None, e=1):
     assert k==1
     s = ema_scov(s=s,x=y,r=r, n_emp=n_emp)
     x = s['mean']

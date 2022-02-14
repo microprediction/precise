@@ -13,13 +13,12 @@ LS_PORT = PPO_LS_PORT + HRP_LS_PORT + WEAK_LS_PORT + SCHUR_LS_PORT + UNIT_LS_POR
 PORT = LONG_PORT + LS_PORT
 
 
-
 def random_port():
     return random.choice(PORT)
 
 
 if __name__=='__main__':
-    from precise.skaters.portfolioutil.portcomparison import equity_portfolio_variance_rankings, equity_portfolio_correlation_points_race
-    report = equity_portfolio_correlation_points_race(n_iter=5000, ports=LONG_PORT, n_dim=45, n_obs=100, interval='d', n_top=100)
+    from precise.skaters.portfolioutil.portcomparison import stock_portfolio_variance_points_race
+    report = stock_portfolio_variance_points_race(n_iter=5000, ports=LONG_PORT, n_dim=500, n_obs=100, k=5, n_top=100)
     from pprint import pprint
     pprint(report)

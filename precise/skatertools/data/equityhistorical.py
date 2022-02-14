@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 
 
@@ -13,7 +14,7 @@ def get_log_price_diff(k=1):
     return df_merged
 
 
-def get_random_dense_log_price_diff(k,n_obs,**ignore):
+def get_random_dense_log_price_diff(k,n_obs,n_dim=10,**ignore):
     pd.options.mode.chained_assignment = None
     df = get_log_price_diff(k=k)
     n_samples = len(df.index)
@@ -22,7 +23,11 @@ def get_random_dense_log_price_diff(k,n_obs,**ignore):
     n_end = n_start + n_obs
     df_sub = df[n_start:n_end]
     df_sub.dropna(how='any', inplace=True, axis=1)
-    return df_sub
+    df_sub.drop(df.columns[0], inplace=True, axis=1)
+    size = min(len(df_sub.columns),n_dim)
+    selected = np.random.choice(df_sub.columns, size=size, replace=False)
+    df_cols = df_sub[selected]
+    return df_cols
 
 
 if __name__=='__main__':

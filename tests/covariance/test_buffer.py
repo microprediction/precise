@@ -15,7 +15,7 @@ def test_empirical_buffer():
     for j ,y in enumerate(data[:5]):
         x, x_cov, s = buf_emp_pcov_d0_n20(s=s, y=y, k=1)
         assert (np.diag(x_cov)>=0).all()
-        if j>= 1:
+        if j>= 2:
             np_mean = np.mean(data[:j + 1, :], axis=0)
             np_pop_cov = np.cov(data[:j + 1, :], rowvar=False, bias=True)
             np_corrcoef = np.corrcoef(data[:j + 1, :], rowvar=False)

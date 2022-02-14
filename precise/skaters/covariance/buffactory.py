@@ -5,7 +5,7 @@ from precise.skaters.covarianceutil.datafunctions import data_population_covaria
 # State machines that track stats for finite buffers of vectors
 
 
-def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
+def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100, e=1):
     """
          Factory for building estimators from functions that return dicts with 'loc' and 'pcov' keys
 
@@ -15,9 +15,13 @@ def buf_pcov_factory(func, y:X_TYPE=None, s:dict=None, n_buffer:int=100):
     :param n_buffer:
     :return:
     """
-    s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer)
-    x = np.array(s['mav']['loc'])
-    x_cov = np.array(s['mav']['pcov'])
+    s = _buf(funcs=[func], func_names=['mav'], func_kwargs=[{}],s=s, x=y, n_buffer=n_buffer, e=e)
+    if s.get('mav') is not None:
+        x = np.array(s['mav']['loc'])
+        x_cov = np.array(s['mav']['pcov'])
+    else:
+        x = y
+        x_cov = np.eye(len(y))
     return x, x_cov, s
 
 
@@ -41,32 +45,33 @@ def buf_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
     return _buf1(func=np.nanmedian, func_name='median', s=s, x=x, n_buffer=n_buffer, axis=0)
 
 
-def _buf1(func, func_name, s:dict=None, x:X_TYPE=None, n_buffer:int=100, **func_kwarg)->dict:
-    return _buf(funcs=[func], func_names=[func_name], func_kwargs=[func_kwarg], s=s, x=x, n_buffer=n_buffer)
+def _buf1(func, func_name, s:dict=None, x:X_TYPE=None, n_buffer:int=100, e=1, **func_kwarg)->dict:
+    return _buf(funcs=[func], func_names=[func_name], func_kwargs=[func_kwarg], s=s, x=x, n_buffer=n_buffer,e=e)
 
 
-def buf_mean_and_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
-    return _buf(funcs=[np.nanmean, np.nanmedian], func_names=['mean','median'], func_kwargs=[{'axis':0},{'axis':0}], s=s, x=x, n_buffer=n_buffer)
+def buf_mean_and_median(s:dict=None, x:X_TYPE=None, n_buffer:int=100, e=1)->dict:
+    return _buf(funcs=[np.nanmean, np.nanmedian], func_names=['mean','median'], func_kwargs=[{'axis':0},{'axis':0}], s=s, x=x, n_buffer=n_buffer, e=e)
 
 
-def buf_mean_and_pcov(s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
+def buf_mean_and_pcov(s:dict=None, x:X_TYPE=None, n_buffer:int=100, e=1)->dict:
     # Equivalent to np.cov(xs[max(0, k - n_buffer + 1):k + 1], axis=0)
-    return _buf(funcs=[np.nanmean, data_population_covariance], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, n_buffer=n_buffer)
+    return _buf(funcs=[np.nanmean, data_population_covariance], func_names=['mean', 'pcov'], func_kwargs=[{'axis':0}, {}], s=s, x=x, e=e, n_buffer=n_buffer)
 
 
-def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None, n_buffer:int=100)->dict:
+def _buf(funcs, func_names:[str], func_kwargs:[dict], s:dict=None, x:X_TYPE=None, n_buffer:int=100, e=1)->dict:
     """
     :param funcs:            [func(xs, axis=0) -> 1d array]
     :param func_names:
     :param s:
     :param x:
     :param n_buffer:
+    :param e:             If e>1 calculation is performed
     :return:
     """
     if not s:
         s = _buf_init(s=s, n_buffer=n_buffer)
     if is_data(x):
-        s = _buf_update(funcs=funcs, func_names=func_names, func_kwargs=func_kwargs, s=s, x=x, n_buffer=n_buffer)
+        s = _buf_update(funcs=funcs, func_names=func_names, func_kwargs=func_kwargs, s=s, x=x, n_buffer=n_buffer, e=e)
     return s
 
 
@@ -77,7 +82,7 @@ def _buf_init(s:dict=None, n_buffer:int=None)->dict:
     return s
 
 
-def _buf_update(funcs, func_names, func_kwargs, s:dict, x:X_DATA_TYPE, n_buffer:int=None)->dict:
+def _buf_update(funcs, func_names, func_kwargs, s:dict, x:X_DATA_TYPE, n_buffer:int=None, e=1)->dict:
     if n_buffer is None:
         n_buffer = s['n_buffer']
     if len(s['buffer']):
@@ -86,7 +91,8 @@ def _buf_update(funcs, func_names, func_kwargs, s:dict, x:X_DATA_TYPE, n_buffer:
     if len(s['buffer'])>n_buffer:
         _ = s['buffer'].pop(0)
     for func, func_name, func_kwargs in zip(funcs, func_names, func_kwargs):
-        s[func_name] = func(s['buffer'],**func_kwargs)
+        if e>0:
+            s[func_name] = func(s['buffer'],**func_kwargs)
     return s
 
 

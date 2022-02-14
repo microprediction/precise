@@ -15,15 +15,31 @@ def points_race( ranker, ranker_kwargs, n_iter=100, n_top=20):
     return c
 
 
+def stock_portfolio_variance_points_race(n_iter=100,n_top=50, **kwargs):
+    return points_race(n_iter=n_iter, n_top=n_top, ranker=stock_portfolio_variance_rankings, ranker_kwargs=kwargs)
+
+
 def equity_portfolio_variance_points_race(n_iter=100,n_top=50, **kwargs):
-    return points_race(n_iter=n_iter,n_top=n_top, ranker=equity_portfolio_variance_rankings,ranker_kwargs=kwargs)
+    return points_race(n_iter=n_iter, n_top=n_top, ranker=m6_equity_portfolio_variance_rankings, ranker_kwargs=kwargs)
 
 
 def equity_portfolio_correlation_points_race(n_iter=100,n_top=50, **kwargs):
-    return points_race(n_iter=n_iter, n_top=n_top, ranker=equity_portfolio_correlation_rankings,ranker_kwargs=kwargs)
+    return points_race(n_iter=n_iter, n_top=n_top, ranker=m6_equity_portfolio_correlation_rankings, ranker_kwargs=kwargs)
 
 
-def equity_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, interval='d', etf=1, as_frame=True, n_iter=10):
+def stock_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_frame=True, n_iter=10):
+    """
+        Quick and dirty
+    """
+    from precise.skatertools.data.equityhistorical import get_random_dense_log_price_diff
+    data = get_random_dense_log_price_diff(n_dim=n_dim, n_obs=n_obs, verbose = False, k=k)
+    t_obs = int(0.75*n_obs)
+    test_cov = np.cov(data[:t_obs] ,rowvar=False)
+    train_cov = np.cov(data[t_obs:], rowvar=False)
+    return portfolio_variance_rankings(cov_test=test_cov, ports=ports, cov_train=train_cov, as_frame=as_frame, n_iter=n_iter )
+
+
+def m6_equity_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, interval='d', etf=1, as_frame=True, n_iter=10):
     """
         Quick and dirty
     """
@@ -35,14 +51,13 @@ def equity_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, interval='d
     return portfolio_variance_rankings(cov_test=test_cov, ports=ports, cov_train=train_cov, as_frame=as_frame, n_iter=n_iter )
 
 
-def equity_portfolio_correlation_rankings(ports, n_dim=10, n_obs = 300, interval='d', etf=1, as_frame=True):
+def m6_equity_portfolio_correlation_rankings(ports, n_dim=10, n_obs = 300, interval='d', etf=1, as_frame=True):
     """
         Quick and dirty comparison using empirical corrcoef for cov
     """
     from precise.skatertools.data.equitylive import random_m6_returns
     data = random_m6_returns(n_dim=n_dim, n_obs=n_obs, verbose = False, interval = interval, etf = etf)
     t_obs = int(0.666*n_obs)
-
     test_cov = np.corrcoef(data[:t_obs] ,rowvar=False)
     train_cov_gen = np.corrcoef(data[t_obs:], rowvar=False)
     n = np.shape(data)[1]

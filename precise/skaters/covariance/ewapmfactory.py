@@ -13,7 +13,7 @@ QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
              'cl':(1.0,-1,-1)}
 
 
-def ewa_pm_factory(s, y, k, r, target=0, n_emp=None):
+def ewa_pm_factory(s, y, k, r, target=0, n_emp=None, e=1):
     """ Skater """
     assert k==1
     s = partial_ema_scov(s=s,x=y,r=r,target=target)

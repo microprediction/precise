@@ -51,7 +51,7 @@ def cov_likelihood(contestant, xs, n_burn=10, lb=-1000, ub=1000):
     return cov_skater_loglikelihood(f=contestant, xs=xs, with_metrics=True, n_burn=n_burn, lb=lb, ub=ub)
 
 
-def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1000):
+def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1000, verbose=True):
     """
         Gaussian likelihood of a cov skater applied to data xs
 
@@ -67,8 +67,13 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
     assert n_obs>n_burn
     s = {}
 
+    if verbose:
+        print('   burn in for '+str(n_burn))
     for y in xs[:n_burn]:
-        y_hat, y_cov, s = f(s=s, y=y, k=1)
+        y_hat, y_cov, s = f(s=s, y=y, k=1, e=-1)
+
+    if verbose:
+        print('   evaluating  '+str(n_obs-n_burn))
 
     ll = 0
     y_hat_prev = None
@@ -94,7 +99,7 @@ def cov_skater_loglikelihood(f, xs, n_burn=10, with_metrics=True, lb=-1000, ub=1
         y_cov_prev = y_cov
 
         # Make next prediction
-        y_hat, y_cov, s = f(s=s, y=y, k=1)
+        y_hat, y_cov, s = f(s=s, y=y, k=1, e=1)
 
     total_time = time.time()-start_time
     metrics = {'total time':total_time,'inversion time':inv_time,'time':total_time-inv_time}

@@ -10,7 +10,9 @@ def test_random_buffered_huber_d0():
         s = {}
         for j,y in enumerate(data[:100]):
             x, x_cov, s = f(s=s, y=y, k=1)
-            assert (np.diag(x_cov) >= 0).all()
+            if not (np.diag(x_cov) >= 0).all():
+                print('Something wrong with '+str(f.__name__))
+                raise
 
 
 

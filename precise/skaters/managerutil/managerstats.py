@@ -18,6 +18,9 @@ def manager_var(contestant, xs, n_burn, **ignore):
 
 def manager_stats(mgr, xs, n_burn=10):
     """
+       Compute manager stats.
+       Sends e=-1 during burn-in, then e=1 during assessment period
+
        :returns  dict with  mean, var, kurtosis etc of portfolio returns
     """
     start_time = time.time()
@@ -26,11 +29,14 @@ def manager_stats(mgr, xs, n_burn=10):
 
     s = {}     # Manager state
 
+    print('     burning in')
     for y in xs[:n_burn]:
         w, s = mgr(s=s, y=y, k=1, e=-1)
 
+    print('     evaluating')
     metrics = var_init()
     w_prev = None
+    mrg_time = 0
     for m, y in enumerate(xs[n_burn:]):
         if w_prev is not None:
             x = sum( [ yi*wi for yi,wi in zip_longest( y,w_prev) ] )
@@ -40,12 +46,15 @@ def manager_stats(mgr, xs, n_burn=10):
         w_prev = w
 
         # Make next portfolio selection
+        st = time.time()
         w, s = mgr(s=s, y=y, k=1, e=1)
+        mrg_time += time.time()-st
 
     total_time = time.time() - start_time
-    metrics.update({'time':total_time})
+    metrics.update({'time':mrg_time,'total_time':total_time})
     metrics['info'] = metrics['mean']/metrics['std']
-
+    print('     info = '+str(metrics['info']))
+    print('     std  = ' + str(metrics['std']))
     return metrics
 
 

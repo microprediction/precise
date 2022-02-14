@@ -9,12 +9,12 @@ from precise.skaters.covarianceutil.differencing import d1_factory
 # estimate a "reasonable" linear shrinkage
 
 
-def ewa_lw_scov_d0_r01(y, s, k=1):
+def ewa_lw_scov_d0_r01(y, s, k=1, e=1):
     assert k==1
-    return ewa_lw_scov_factory(y=y, s=s, r=0.01)
+    return ewa_lw_scov_factory(y=y, s=s, r=0.01, e=e)
 
 
-def ewa_lw_scov_d0_r02(y, s, k=1):
+def ewa_lw_scov_d0_r02(y, s, k=1, e=1):
     assert k==1
     return ewa_lw_scov_factory(y=y, s=s, r=0.02)
 
@@ -22,12 +22,12 @@ def ewa_lw_scov_d0_r02(y, s, k=1):
 EWA_LW_D0_COV_SKATERS = [ewa_lw_scov_d0_r01, ewa_lw_scov_d0_r02 ]
 
 
-def ewa_lw_scov_d1_r01(y, s, k=1):
+def ewa_lw_scov_d1_r01(y, s, k=1, e=1):
     assert k == 1
     return d1_factory( f=ewa_lw_scov_factory, y=y, s=s, r=0.01)
 
 
-def ewa_lw_scov_d1_r02(y, s, k=1):
+def ewa_lw_scov_d1_r02(y, s, k=1, e=1):
     assert k == 1
     return d1_factory( f=ewa_lw_scov_factory, y=y, s=s, r=0.02)
 

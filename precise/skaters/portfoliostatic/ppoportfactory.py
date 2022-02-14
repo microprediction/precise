@@ -11,12 +11,13 @@ from precise.skaters.portfolioutil.portfunctions import var_scaled_returns
 from pypfopt.exceptions import OptimizationError
 from cvxpy.error import SolverError
 try:
-    from scipy.sparse.linalg.eigen import ArpackNoConvergence
+    from scipy.sparse.linalg import ArpackNoConvergence
 except ImportError:
-    from scipy.sparse.linalg.eigen.arpack import ArpackNoConvergence
+    from scipy.sparse.linalg.eigen import ArpackNoConvergence
+
 from precise.skaters.covarianceutil.covfunctions import affine_shrink
 
-# Thin wrapper for some of the pyportfolio opt possibilities
+# Thin wrapper for PyPortfolioOpt
 # For full flexibility refer to the package https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
 
 
@@ -26,6 +27,12 @@ PPO_UNIT_BOUNDS = (-1, 1)
 
 
 def ppo_sharpe_port(cov=None, pre=None, as_dense=True):
+    """ Max Sharpe ratio portfolio using cov-implied returns
+    :param cov:        Covariance matrix
+    :param pre:        Precision matrix
+    :param as_dense:   If false, will return weights in dict formet
+    :return: np.array of weights
+    """
     return ppo_portfolio_factory(method='max_sharpe', cov=cov, pre=pre, as_dense=as_dense, weight_bounds=PPO_LONG_BOUNDS)
 
 
@@ -50,7 +57,7 @@ def ppo_quad_ls_port(cov=None, pre=None, as_dense=True):
 
 
 def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
-                          risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5, warn=False):
+                          risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5, warn=False, throw=False):
     """
     :param method:
     :param cov:
@@ -86,7 +93,7 @@ def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight
             else:
                 port_method()
             converged = True
-        except (OptimizationError, SolverError, ArpackNoConvergence):
+        except (OptimizationError, SolverError, ArpackNoConvergence, UserWarning):
             converged = False
         if converged:
             break
@@ -97,7 +104,12 @@ def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight
             shrunk_cov = affine_shrink(a=shrunk_cov,phi=1.02, lmbd=0.01, copy=False)
 
     if not converged:
-        raise NotImplementedError('pyportfolio opt failed even after shrinkage')
+        if throw:
+            raise NotImplementedError('pyportfolio opt failed even after shrinkage')
+        else:
+            print('   PyPortfolioOpt failed ... falling back to minimum variance')
+            from precise.skaters.portfoliostatic.equalport import equal_long_port
+            return equal_long_port(cov=cov, as_dense=not as_series)
 
     if converged and warned:
         if warn:
