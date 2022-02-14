@@ -2,7 +2,7 @@
 
 ## TLDR: "Functions that forecast covariance in online fashion"
 ... or produce portfolios, mixtures of experts et cetera. This is a collection of incremental estimators
-for covariance, precision, correlation, portfolios and ensembles.  The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. Or to look at Elo ratings,
+for covariance, precision, correlation, portfolios and ensembles that have very simple signatures. The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the style. To see all the other online methods of covariance estimation supplied here, run the [cov skaters manifest](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/list_all_cov_methods.ipynb) notebook. Or to look at Elo ratings,
 run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb). 
 
 
