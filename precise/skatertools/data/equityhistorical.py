@@ -14,6 +14,7 @@ def get_log_price_diff(k=1):
 
 
 def get_random_dense_log_price_diff(k,n_obs,**ignore):
+    pd.options.mode.chained_assignment = None
     df = get_log_price_diff(k=k)
     n_samples = len(df.index)
     assert n_samples>n_obs

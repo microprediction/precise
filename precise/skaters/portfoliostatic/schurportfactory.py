@@ -216,7 +216,7 @@ def _maximal_gamma(A,B,C,D):
 
     try:
         sol = root_scalar(f=_gamma_objective, args=(A,B,C,D), method='bisect', x0=0.25,
-                          x1=0.5, xtol=0.01, bracket=(0,0.95), maxiter=10)
+                          x1=0.5, xtol=0.05, bracket=(0,0.95), maxiter=5)
         return min(max(sol.root - 0.1, 0), 1.0)
     except ValueError:
         return 0.0

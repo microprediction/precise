@@ -27,7 +27,7 @@ def manager_stats(mgr, xs, n_burn=10):
     s = {}     # Manager state
 
     for y in xs[:n_burn]:
-        w, s = mgr(s=s, y=y, k=1)
+        w, s = mgr(s=s, y=y, k=1, e=-1)
 
     metrics = var_init()
     w_prev = None
@@ -40,7 +40,7 @@ def manager_stats(mgr, xs, n_burn=10):
         w_prev = w
 
         # Make next portfolio selection
-        w, s = mgr(s=s, y=y, k=1)
+        w, s = mgr(s=s, y=y, k=1, e=1)
 
     total_time = time.time() - start_time
     metrics.update({'time':total_time})

@@ -119,10 +119,12 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
         xs = np.array(xs)
         np.random.shuffle(contestants)
         some_contestants = contestants[:n_per_battle]
-        stuff = list()
 
+        stuff = list()
         for contestant in some_contestants:
             try:
+                if 'manager' in contestant.__name__:
+                    print('  '+contestant.__name__)
                 assessment, metrics = evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], lb=lb, ub=ub)
                 metrics['name']=contestant.__name__
                 metrics['traceback']=''
@@ -169,15 +171,17 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
 
         if np.random.rand()<1:
             with open(queue,'wt') as fh:
+                print('Saving')
                 json.dump(battles,fh)
                 print('---')
                 pprint(reliabilties)
                 print('---')
-                pprint(cpu_times)
-                print('---')
                 pprint(battles)
                 print(' ')
                 pprint(failures)
+                print('---')
+                pprint(cpu_times)
+
 
 
 
