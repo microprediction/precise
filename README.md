@@ -105,7 +105,13 @@ Differencing hints:
    5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
 
 ## Portfolios, managers, ensembles & mixture of experts
-Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). 
+Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
+[managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
+
+        s = {}
+        for y in ys:
+            w, s = mgr(s=s, y=y)
+
 
 Manager hints:
 
