@@ -15,14 +15,14 @@ or for latest:
     pip install git+https://github.com/microprediction/precise.git
 
 ## M6 Financial forecasting contest utilities
-You *could* use this library to enter the M6 Financial Forecasting competition:
+You *could* use this library to enter the M6 Financial Forecasting competition, if you wish. 
 
    1. Pick a cov estimator (i.e. a "cov skater"), if you wish
    2. Pick a portfolio generator, if you wish
    3. Pick extra shrinkage params, if you wish
    4. Pick love and hate ticker lists, if you wish
 
-See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below.  
+See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below and note that ideally, it would be even better if you create new methods for step 1. above an make a pull request!    
 
 ## Covariance skaters  
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
