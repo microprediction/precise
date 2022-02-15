@@ -14,7 +14,7 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
 
-## M6 Financial forecasting contest utilities
+## M6 Financial forecasting contest
 You *could* use this library to enter the M6 Financial Forecasting competition, if you wish. 
 
    1. Pick a cov estimator (i.e. a "cov skater"), if you wish
