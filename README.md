@@ -24,7 +24,7 @@ You *could* use this library to enter the M6 Financial Forecasting competition, 
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below and note that ideally, it would be even better if you create new methods for step 1. above an make a pull request!    
 
-## Covariance skaters  
+## Covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
 
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
@@ -39,14 +39,11 @@ Similar in style to skaters used in the [timemachines](https://github.com/microp
         pprint(x_cov)
      
 See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
-     
-### Elo ratings 
-
-As noted, see the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb).  
-     
+          
 ### Browsing for skaters
      
-You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). There are some location utilities in [precise/whereami](https://github.com/microprediction/precise/blob/main/precise/whereami.py). 
+You can hunt for skaters other than *run_emp_pcov_d0* in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). There are some location utilities in [precise/whereami](https://github.com/microprediction/precise/blob/main/precise/whereami.py). As noted, see the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide you.  
+
 
 ### Interpreting skater names 
 Examples:
