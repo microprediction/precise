@@ -116,12 +116,22 @@ Most managers pair a cov skater with a "static" portfolio construction estimator
 
 Portfolio and manager hints:
 
-| Shorthand | Intent                                                  |
-|-----------|---------------------------------------------------------|
-| ppo       | Uses the PyPortfolioOpt package                         |
-| hrp       | Hierarchical Risk Parity - homespun                     | 
-| weak      | Homespun method that "weakens" some cov entries         | 
-| schur     | Homespun method that generalizes on top-down allocation |
+| Shorthand | Intent                                                           |
+|-----------|------------------------------------------------------------------|
+| ppo       | Uses the PyPortfolioOpt package                                  |
+| ppo_vol   |      ... and minimum volatility therein                          |
+| ppo_quad  |      ... and maximum quadratic utility therein                   |
+| ppo_sharpe|      ... and maximum Sharpe ratio therein                        |
+| diag      | Use only diagonal entries of cov                                 |
+| weak      | Homespun method that "weakens" some cov entries to make portfolio long only        | 
+| hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
+| hrp_diag_diag |   ... and uses "diag" allocation/portfolio, like Lopez de Prado's 2016 paper   | 
+| hrp_weak_weak |   ... and uses "weak" allocation and also "weak" portfolio construction.       | 
+| schur     | Homespun method that generalizes on HRP |
+| schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
+
+More to come. 
+
 
 ## Miscellaneous remarks
 
