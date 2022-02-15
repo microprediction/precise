@@ -104,8 +104,17 @@ Differencing hints:
    4. The [/covariance/datafunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datafunctions.py) take data and produce covariance functions. 
    5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
 
-## Portfolios, ensembles & mixture of experts
+## Portfolios, managers, ensembles & mixture of experts
 Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters). 
+
+Manager hints:
+
+| Shorthand | Intent                                                  |
+|-----------|---------------------------------------------------------|
+| ppo       | Uses the PyPortfolioOpt package                         |
+| hrp       | Hierarchical Risk Parity - homespun                     | 
+| weak      | Homespun method that "weakens" some cov entries         | 
+| schur     | Homespun method that generalizes on top-down allocation |
 
 ## Miscellaneous remarks
 
