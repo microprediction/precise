@@ -37,7 +37,7 @@ from precise.skaters.covariance.runemp import run_emp_pcov_d0
 from precise.skaters.covarianceutil.statefunctions import oas
 from pprint import pprint
 
-# Basic example of running OAS covariance
+# Basic show_em of running OAS covariance
 # (just a simple function of the running state)
 
 

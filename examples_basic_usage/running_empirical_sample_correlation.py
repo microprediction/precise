@@ -4,7 +4,7 @@ from pprint import pprint
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skaters.covarianceutil.statemutations import both_cov
 
-# Basic example of running empirical sample correlation
+# Basic show_em of running empirical sample correlation
 
 if __name__=='__main__':
     ys = create_correlated_dataset(n=500)

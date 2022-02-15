@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 
 
-def elo_from_win_files(genre='likelihood'):
+def elo_from_win_files(genre='cov_likelihood'):
     """
     :return:  Elo ratings for all categories
     """

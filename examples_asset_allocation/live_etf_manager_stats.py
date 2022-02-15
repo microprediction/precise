@@ -6,7 +6,7 @@ import numpy as np
 
 # Look at manager performance for about 40 ETFs
 # (Pulls data slowly so be patient!)
-# Not investment advice, just an example
+# Not investment advice, just an show_em
 
 
 if __name__=='__main__':
