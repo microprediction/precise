@@ -112,8 +112,9 @@ Too fluid to document currently. See the portfolio directories in [skaters](http
         for y in ys:
             w, s = mgr(s=s, y=y)
 
+Most managers pair a cov skater with a "static" portfolio construction estimator, although that may change. For provisional Elo ratings of managers see the [example script](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py) that collates manager Elo ratings. 
 
-Manager hints:
+Portfolio and manager hints:
 
 | Shorthand | Intent                                                  |
 |-----------|---------------------------------------------------------|
