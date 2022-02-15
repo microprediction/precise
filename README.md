@@ -24,7 +24,7 @@ You *could* use this library to enter the M6 Financial Forecasting competition, 
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below and note that ideally, it would be even better if you create new methods for step 1. above an make a pull request!    
 
-## Covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
+# Covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
 
     from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
@@ -94,14 +94,15 @@ Differencing hints:
      
 
 ### Stand-alone covariance utilities
+If you are hunting for useful functions for independent use (i.e. not "skating") then I suggest rummaging in 
 
-   1. The [covariance/statefunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statefunctions.py) are illustrated by the example [running_oas_covariance](https://github.com/microprediction/precise/blob/main/examples_basic_usage/running_oas_covariance.py). 
-   2. State [covariatnce/statemutations](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/statemutations.py) do things like ensuring both covariance and precision matrices exist in the state. Or for instance:  s = both_cov(s) ensures both sample and population covariances are present. 
-   3. Some [/covariance/datascatterfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datascatterfunctions.py)
-   4. The [/covariance/datafunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datafunctions.py) take data and produce covariance functions. 
-   5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
+   * [covarianceutil](https://github.com/microprediction/precise/tree/main/precise/skaters/covarianceutil) 
+   * [locationutil](https://github.com/microprediction/precise/tree/main/precise/skaters/locationutil) 
+   * [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
 
-## Portfolios, managers, ensembles & mixture of experts and [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+or the "factory" modules, perhaps. 
+
+# Portfolios, managers, ensembles & mixture of experts and [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 This part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
