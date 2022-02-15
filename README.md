@@ -127,10 +127,10 @@ Portfolio and manager hints:
 | hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
 | hrp_diag_diag |   ... and uses "diag" allocation/portfolio, like Lopez de Prado's 2016 paper   | 
 | hrp_weak_weak |   ... and uses "weak" allocation and also "weak" portfolio construction.       | 
-| schur     | Homespun method that generalizes on HRP |
+| schur     | Homespun method that generalizes on Hierarchical Risk Parity using Schur complements |
 | schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
 
-More to come. 
+At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. 
 
 
 ## Miscellaneous remarks
