@@ -6,10 +6,11 @@ import numpy as np
 import time
 
 @lru_cache(maxsize=500)
-def get_prices(ticker,n_obs,interval):
+def get_prices(ticker,n_obs,interval, max_attempts=10):
     print('Getting '+ticker)
     time.sleep(5)
     success = False
+    attempts = 0
     while not success:
         try:
             data = web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
@@ -18,7 +19,31 @@ def get_prices(ticker,n_obs,interval):
             print(str(e))
             print('backing off')
             time.sleep(10)
+            attempts += 1
+            if attempts>=max_attempts:
+                raise ValueError
     return data
+
+
+
+def live_equity_returns(tickers, n_obs=60, interval='m', k=1):
+    df = pd.DataFrame()
+    for ticker in tickers:
+        try:
+            data = get_prices(ticker=ticker, n_obs=n_obs, interval=interval)
+            assert len(data)==n_obs+1
+            values = list(np.diff(np.log(data),k))[::k]
+            df[ticker] = values
+        except:
+            pass
+    return df
+
+
+def live_veteran_etf_data(interval='d',k=1):
+    from precise.skatertools.data.etflists import VETERAN_NON_BOND_ETFS
+    n_obs = 60 if interval=='m' else 250
+    df = live_equity_returns(tickers=VETERAN_NON_BOND_ETFS, n_obs=n_obs, interval=interval, k=k)
+    return df
 
 
 
@@ -39,7 +64,7 @@ def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, int
     :param n_dim:            Number of assets
     :param n_obs:
     :param interval: 'd' or 'm'
-    :return:
+    :return: prices NOT necessarily corresponding to all_tickers
     """
     assert 2*n_dim<=len(all_tickers)
     if interval=='m':
@@ -59,6 +84,7 @@ def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, int
         except Exception as e:
             print('Failure getting '+ticker)
             time.sleep(1)
+
     prices_transposed = list(map(list, zip(*prices)))
     return prices_transposed
 
