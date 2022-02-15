@@ -104,17 +104,15 @@ Differencing hints:
    4. The [/covariance/datafunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/datafunctions.py) take data and produce covariance functions. 
    5. The  [/covariance/covfunctions](https://github.com/microprediction/precise/blob/main/precise/skaters/covarianceutil/covfunctions.pyy) manipulate 2d cov arrays. 
 
-## Portfolios, managers, ensembles & mixture of experts
-Too fluid to document currently. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
+## Portfolios, managers, ensembles & mixture of experts and [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+This part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
         s = {}
         for y in ys:
             w, s = mgr(s=s, y=y)
 
-Most managers pair a cov skater with a "static" portfolio construction estimator, although that may change. For provisional Elo ratings of managers see the [example script](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py) that collates manager Elo ratings. 
-
-Portfolio and manager hints:
+Most managers pair a cov skater with a "static" portfolio construction estimator, although that may change. For provisional Elo ratings of managers see the [example script](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py) that collates manager Elo ratings. Here are some portfolio and manager hints:
 
 | Shorthand | Intent                                                           |
 |-----------|------------------------------------------------------------------|
@@ -130,7 +128,7 @@ Portfolio and manager hints:
 | schur     | Homespun method that generalizes on Hierarchical Risk Parity using Schur complements |
 | schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
 
-At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. 
+At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
 
 
 ## Miscellaneous remarks
