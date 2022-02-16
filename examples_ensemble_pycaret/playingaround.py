@@ -5,19 +5,15 @@ if __name__=='__main__':
     try:
         import pycaret
         from pycaret.datasets import get_data
-        from pycaret.regression import setup, compare_models, create_model, tune_model
+        from pycaret.regression import setup, compare_models, create_model, tune_model, predict_model
     except ImportError:
         print('You gotta pip install pycaret, friend')
 
-    dataset = get_data('diamond', profile=False)
-    print(dataset)
+    all_data = get_data('diamond', profile=False)
 
-    data = dataset.sample(frac=0.9, random_state=786)
-    data_unseen = dataset.drop(data.index)
-    data.reset_index(drop=True, inplace=True)
-    data_unseen.reset_index(drop=True, inplace=True)
-    print('Data for Modeling: ' + str(data.shape))
-    print('Unseen Data For Predictions ' + str(data_unseen.shape))
+    holdout = all_data[-500:]
+
+    data = all_data[:-500]
 
     exp_reg102 = setup(data=data, target='Price', session_id=123,
                        normalize=True, transformation=True, transform_target=True,
@@ -30,18 +26,20 @@ if __name__=='__main__':
 
     shortlist = ['catboost','xgboost','lightgbm','rf']
     print('Creating')
+    workin = dict()
     for nm in shortlist:
         try:
             model = create_model(nm)
+            workin[nm]=model
         except Exception as e:
             print(str(e))
             print('sorry no dice for '+nm)
 
+    tuned = dict( [ (nm, tune_model(w)) for n,w in workin.items() ])
 
-    models = [ create_model(nm) for nm in shortlist ]
-    print('Tuning')
-    tuned = [ tune_model(m) for m in models ]
-    print('')
-
+    y_hats = list()
+    for nm, tuned_model in tuned:
+        y_hat = predict_model(estimator=tuned_model, data=holdout)
+        y_hats.append(y_hat)
 
 
