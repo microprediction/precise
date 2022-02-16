@@ -52,8 +52,14 @@ def manager_versus_best_model(mgr=None, verbose=True, n_train = 50, n_test = 50)
     y_train_and_test = y[:(n_train+n_test)]
 
     # Train on train, predict test
-    reg1 = LazyRegressor(verbose=0, ignore_warnings=False, custom_metric=None, predictions=True)
-    models1, predictions1 = reg1.fit(np.copy(X_train), np.copy(X_test), np.copy(y_train), np.copy(y_test))
+    reg1 = LazyRegressor(verbose=0,
+                         ignore_warnings=False,
+                         custom_metric=None,
+                         predictions=True)
+    models1, predictions1 = reg1.fit(np.copy(X_train),
+                                     np.copy(X_test),
+                                     np.copy(y_train),
+                                     np.copy(y_test))
     if verbose:
         print(models1[:5])
 
