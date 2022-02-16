@@ -14,7 +14,7 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
 
-## M6 Financial forecasting contest
+# M6 Financial forecasting contest
 You *could* use this library to enter the M6 Financial Forecasting competition, if you wish. 
 
    1. Pick a cov estimator (i.e. a "cov skater"), if you wish
@@ -127,6 +127,10 @@ Most managers pair a cov skater with a "static" portfolio construction estimator
 | schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
 
 At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
+
+
+# Model ensembles, stacking, mixtures of experts et cetera
+This package can be used to create combinations of models. See this [notebook example](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) or [these examples](https://github.com/microprediction/precise/tree/main/examples_ensembles_lazypredict).  
 
 
 ## Miscellaneous remarks
