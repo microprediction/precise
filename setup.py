@@ -47,7 +47,7 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp',
+    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp','latextable',
                       'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt'],
     entry_points={
         "console_scripts": [
