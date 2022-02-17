@@ -1,6 +1,6 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Online covariance forecasting, and portfolios, in a simple functional style. 
+Online covariance forecasting, portfolios, and model ensembles in a simple functional style. 
 
 ## Covariance TLDR: "Functions that forecast covariance in online fashion"
 Usage:
@@ -21,6 +21,12 @@ Usage:
             w, s = mgr(s=s, y=y)
 
 There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
+
+## Ensembles TLDR: "See above"
+Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) exploring the connection between portfolio theory and combining models. 
+
+<img src="https://github.com/microprediction/precise/blob/main/images/lb_hightlight2.png" alt="Model Leaderboard" style="width:500px">
+
 
 ## Install 
 
