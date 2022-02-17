@@ -120,6 +120,9 @@ Most managers pair a cov skater with a "static" portfolio construction estimator
 | ppo_vol   |      ... and minimum volatility therein                          |
 | ppo_quad  |      ... and maximum quadratic utility therein                   |
 | ppo_sharpe|      ... and maximum Sharpe ratio therein                        |
+| rpl       | Uses the RiskFolio-Lib package                                   |
+| rpl_hrp   |      ... and Hierarchical Risk Parity therein                    |
+| rlp_hrp_cdar |          ... and Conditional Drawdown at Risk of uncompounded cumulative returns | 
 | diag      | Use only diagonal entries of cov                                 |
 | weak      | Homespun method that "weakens" some cov entries to make portfolio long only        | 
 | hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
