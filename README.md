@@ -116,26 +116,30 @@ Hopefully it is clear that portfolio techniques map to other uses like smarter s
 
 Most managers pair a cov skater with a "static" portfolio construction estimator, although that may change. For provisional Elo ratings of managers see the [example script](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py) that collates manager Elo ratings. Here are some portfolio and manager hints:
 
-| Shorthand | Intent                                                           |
+| PyPortfolioOpt | Intent                                                           |
 |-----------|------------------------------------------------------------------|
 | ppo       | Uses the PyPortfolioOpt package                                  |
 | ppo_vol   |      ... and minimum volatility therein                          |
 | ppo_quad  |      ... and maximum quadratic utility therein                   |
 | ppo_sharpe|      ... and maximum Sharpe ratio therein                        |
-|           |                                                                  |
+
+| Riskfolio-Lib | Intent                                                           |
+|-----------|------------------------------------------------------------------|
 | rpl       | Uses the RiskFolio-Lib package                                   |
 | rpl_hrp   |      ... and Hierarchical Risk Parity therein                    |
 | rlp_hrp_cdar |          ... and Conditional Drawdown at Risk of uncompounded cumulative returns | 
 | rlp_hrp_flpm |          ... and First Lower Partial Moment therein            | 
 |           |          ... et cetera (see [the rest](https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rplmanagers.py))    |  
-|           |                                                                  |
+
+| Homespun  | Intent                                                           |
+|-----------|------------------------------------------------------------------|
 | diag      | Use only diagonal entries of cov                                 |
-| weak      | Homespun method that "weakens" some cov entries to make portfolio long only        | 
-| hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
+| weak      | Method that "weakens" some cov entries to make portfolio long only        | 
+| hrp       | Varieties of hierarchical allocation                             | 
 | hrp_diag_diag |   ... and uses "diag" allocation/portfolio, like Lopez de Prado's 2016 paper   | 
 | hrp_weak_weak |   ... and uses "weak" allocation and also "weak" portfolio construction.       | 
-| schur     | Homespun method that generalizes on Hierarchical Risk Parity using Schur complements |
-| schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
+| schur     | Homespun method that exploits Schur complements |
+| schur_weak_diag     |    ... and uses weak allocation and diag portfolio at the leaves  |
 
 At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
 
