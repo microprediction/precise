@@ -10,4 +10,4 @@ riskfolio-lib
 seriate
 scipy
 tomark
-
+collinearity
