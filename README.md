@@ -55,7 +55,7 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
 - Run the Elo ratings [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide your shortlisting.   
 
 
-### Interpreting skater names 
+### Interpreting covariance skater names 
 Examples:
 
 | Skater name            | Location   | Meaning            |
@@ -112,7 +112,7 @@ If you are hunting for useful functions for independent use (i.e. not "skating")
 
 or the "factory" modules, perhaps. 
 
-# More on Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+# More on portfolio managers and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 Hopefully it is clear that portfolio techniques map to other uses like smarter stacking of time-series forecasting methods. But this part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
