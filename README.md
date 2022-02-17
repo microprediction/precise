@@ -4,8 +4,9 @@
 Usage:
 
     from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
+    s = {}
     for y in ys:
-          x, x_cov, s = f(s=s, y=y)
+        x, x_cov, s = f(s=s, y=y)
 
 There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
 
