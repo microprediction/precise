@@ -3,7 +3,7 @@
 Online covariance and precision forecasting, portfolios, and model ensembles in a simple functional style. 
 
 ## Covariance TLDR: "Functions that forecast covariance in online fashion"
-Usage:
+Here y is a vector:
 
     from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
     s = {}
@@ -13,7 +13,7 @@ Usage:
 There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
 
 ## Portfolio TLDR: "Functions that update portfolio weights in online fashion"
-Usage: 
+Here y is a vector:
 
         from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager as mgr
         s = {}
@@ -36,8 +36,8 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
 
-# $$$$ M6 Financial forecasting contest example entries $$$$
-Yes you *can* use this library to enter the M6 Financial Forecasting competition, if you wish, and there's even utilities for that. 
+# $$$ M6 Contest example entries $$$
+This package includes scripts to create entries for the M6 Financial Forecasting competition.  
 
 1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
 2. Register at the [m6 competition](https://m6competition.com/). 
@@ -50,12 +50,12 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
           
 ### Cov skater listing and Elo ratings
     
-- Peruse the 
-- Hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
-- Run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide you.  
+- Peruse the [listing](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md)
+- Or hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
+- Run the Elo ratings [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide your shortlisting.   
 
 
-### Interpreting skater names 
+### Interpreting covariance skater names 
 Examples:
 
 | Skater name            | Location   | Meaning            |
@@ -112,7 +112,7 @@ If you are hunting for useful functions for independent use (i.e. not "skating")
 
 or the "factory" modules, perhaps. 
 
-# More on Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+# More on portfolio managers and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 Hopefully it is clear that portfolio techniques map to other uses like smarter stacking of time-series forecasting methods. But this part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
@@ -157,8 +157,8 @@ This package can be used to create combinations of models. See this [notebook ex
 ## Miscellaneous remarks
 
  - Here is some related, and potentially related, [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
- - This is a piece of the microprediction project, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
- - If you just want univariate calculations, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). However if you want univariate forecasts of the variance of something, as distinct from mere online calculations of the same, you might be better served by the timemachines package. I would suggest checking the [time-series elo ratings](https://microprediction.github.io/timeseries-elo-ratings/html_leaderboards/special-k_001.html) and the "special" category in particular, as various kinds of empirical moment time-series (volatility etc) are used to determine those ratings. 
+ - This is a piece of the microprediction project aimed at creating millions of autonomous critters to democratize AI, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
+ - If you just want univariate calculations, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). However if you want univariate forecasts of the variance of something, as distinct from mere online calculations of the same, you might be better served by the timemachines package. In particular I would suggest checking the [time-series elo ratings](https://microprediction.github.io/timeseries-elo-ratings/html_leaderboards/special-k_001.html) and the "special" category in particular, as various kinds of empirical moment time-series (volatility etc) are used to determine those ratings. 
  - The name of this package refers to precision matrices, not numerical precision. This isn't a source of high precision covariance *calculations* per se. The intent is more in forecasting future realized covariance. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!
  - The intent is that methods are parameter free. However some not-quite autonomous methods admit a few parameters (the factories). A few might even use just one additional scalar parameter *r* with a space-filling curve convention - somewhat akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package).
  - I use Elo ratings, despite the shortcomings, because comparisions are extremely time intensive. Match results are recorded in hashed files for easy parallelization and avoidance of git merging. You can run the battle scripts if you like. See [these examples](https://github.com/microprediction/precise/tree/main/precise/skatervaluation/battlescripts/manager_var) for instance. To make a different battle you modify the name of the script and nothing else. Pull requests for match results are welcome. 
