@@ -7,8 +7,8 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.4.18",
-    description="Online covariance and precision estimation",
+    version="0.5.0",
+    description="Online covariance, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/microprediction/precise",
@@ -47,8 +47,8 @@ setup(
     test_suite='pytest',
     tests_require=['pytest'],
     include_package_data=True,
-    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp','latextable',
-                      'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt'],
+    install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp','latextable','tomark',
+                      'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt','riskfolio-lib'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

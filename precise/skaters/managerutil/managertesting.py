@@ -8,6 +8,7 @@ from precise.whereami import TESTSERROR
 import pathlib
 
 
+
 def manager_test_run(mgr,n_obs=50,n_dim=7):
     """
        Test manager and log an error file as needed
@@ -32,5 +33,6 @@ def manager_test_run(mgr,n_obs=50,n_dim=7):
         pprint(error_data)
         with open(error_file, 'wt') as fh:
             json.dump(error_data,fh)
+    return w
 
 

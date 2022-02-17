@@ -16,6 +16,7 @@ import time
 # A weighted combination of models from step 4.
 
 
+
 def manager_versus_best_model_avg(mgr=None):
     """
          Example of comparing manager to best model on an sklearn dataset
