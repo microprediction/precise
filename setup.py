@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.5.1",
+    version="0.5.2",
     description="Online covariance, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -45,7 +45,7 @@ setup(
               'precise.skatervaluation.battlescripts.manager_var'
               ],
     test_suite='pytest',
-    tests_require=['pytest'],
+    tests_require=['pytest','timemachines'],
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.5','kmeans1d','runthis','scikit-learn','osqp','latextable','tomark',
                       'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt','riskfolio-lib'],
