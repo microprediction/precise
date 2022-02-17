@@ -10,7 +10,7 @@ Here y is a vector:
     for y in ys:
         x, x_cov, s = f(s=s, y=y)
 
-There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
+This package contains lots of different "f"s. There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
 
 ## Portfolio TLDR: "Functions that update portfolio weights in online fashion"
 Here y is a vector:
@@ -20,7 +20,7 @@ Here y is a vector:
         for y in ys:
             w, s = mgr(s=s, y=y)
 
-There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
+This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
 
 ## Ensembles, mixtures of experts TLDR: "They are just portfolios"
 Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) exploring the connection between portfolio theory and combining models, or the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
