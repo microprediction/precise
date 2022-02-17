@@ -150,11 +150,11 @@ Most managers pair a cov skater with a "static" portfolio construction estimator
 At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
 
 
-# Model ensembles, stacking, mixtures of experts et cetera
-This package can be used to create combinations of models. See this [notebook example](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) or [these examples](https://github.com/microprediction/precise/tree/main/examples_ensembles_lazypredict).  
+### Model ensembles, stacking, mixtures of experts et cetera
+Same thing, sort of. See this [notebook example](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) or [these examples](https://github.com/microprediction/precise/tree/main/examples_ensembles_lazypredict).  
 
 
-## Miscellaneous remarks
+# Miscellaneous remarks
 
  - Here is some related, and potentially related, [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
  - This is a piece of the microprediction project aimed at creating millions of autonomous critters to democratize AI, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
@@ -163,7 +163,7 @@ This package can be used to create combinations of models. See this [notebook ex
  - The intent is that methods are parameter free. However some not-quite autonomous methods admit a few parameters (the factories). A few might even use just one additional scalar parameter *r* with a space-filling curve convention - somewhat akin to the tuning of skaters explained [here](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools/tuning) in the timemachines package).
  - I use Elo ratings, despite the shortcomings, because comparisions are extremely time intensive. Match results are recorded in hashed files for easy parallelization and avoidance of git merging. You can run the battle scripts if you like. See [these examples](https://github.com/microprediction/precise/tree/main/precise/skatervaluation/battlescripts/manager_var) for instance. To make a different battle you modify the name of the script and nothing else. Pull requests for match results are welcome. 
 
-## Disclaimer 
+# Disclaimer 
 Not investment advice. Not M6 entry advice. Just a bunch of code subject to the MIT License disclaimers. 
 
 
