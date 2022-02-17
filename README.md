@@ -36,8 +36,8 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
 
-# $$$$ M6 Financial forecasting contest example entries $$$$
-Yes you *can* use this library to enter the M6 Financial Forecasting competition, if you wish, and there's even utilities for that. 
+# $$$ M6 Contest example entries $$$
+This package includes scripts to create entries for the M6 Financial Forecasting competition.  
 
 1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
 2. Register at the [m6 competition](https://m6competition.com/). 
