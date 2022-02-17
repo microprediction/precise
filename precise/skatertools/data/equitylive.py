@@ -46,7 +46,6 @@ def live_veteran_etf_data(interval='d',k=1):
     return df
 
 
-
 def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0, **ignore):
     """
         Use portfolio for M6 competition
@@ -86,7 +85,7 @@ def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, int
             time.sleep(1)
 
     prices_transposed = list(map(list, zip(*prices)))
-    return prices_transposed
+    return np.array(prices_transposed)
 
 
 

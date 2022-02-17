@@ -12,7 +12,7 @@ RPL_RISK_METRICS = ['vol', 'MV', 'MAD', 'MSV', 'FLPM', 'SLPM',
        'DaR_Rel', 'CDaR_Rel', 'EDaR_Rel', 'UCI_Rel']
 
 
-def rpl_hrp_factory(s, y, k=1, metric='MV', n_buffer:int=100, e=1):
+def rfl_hrp_factory(s, y, k=1, metric='MV', n_buffer:int=100, e=1):
     """
          Hierarchical Risk Parity
     """

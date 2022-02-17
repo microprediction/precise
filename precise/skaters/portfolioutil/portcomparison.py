@@ -31,8 +31,8 @@ def stock_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_fram
     """
         Quick and dirty
     """
-    from precise.skatertools.data.equityhistorical import get_random_dense_log_price_diff
-    data = get_random_dense_log_price_diff(n_dim=n_dim, n_obs=n_obs, verbose = False, k=k)
+    from precise.skatertools.data.equityhistorical import random_cached_equity_dense
+    data = random_cached_equity_dense(n_dim=n_dim, n_obs=n_obs, verbose = False, k=k)
     t_obs = int(0.75*n_obs)
     test_cov = np.cov(data[:t_obs] ,rowvar=False)
     train_cov = np.cov(data[t_obs:], rowvar=False)

@@ -15,7 +15,7 @@ def test_rp_hc_direct():
 
 def test_rp_hc():
     xs = create_factor_dataset(n=200, n_dim=25)
-    from precise.skaters.managers.rplmanagerfactory import _rpl_func
+    from precise.skaters.managers.rflmanagerfactory import _rpl_func
     w = _rpl_func(xs=xs, port_cls_name='HCPortfolio')
     assert len(w)==len(xs[0])
     assert np.allclose(sum(w),1.0)
