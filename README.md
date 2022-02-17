@@ -123,6 +123,8 @@ Most managers pair a cov skater with a "static" portfolio construction estimator
 | rpl       | Uses the RiskFolio-Lib package                                   |
 | rpl_hrp   |      ... and Hierarchical Risk Parity therein                    |
 | rlp_hrp_cdar |          ... and Conditional Drawdown at Risk of uncompounded cumulative returns | 
+| rlp_hrp_flpm |          ... and First Lower Partial Moment therein            | 
+| rlp_hrp_flpm |          ... et cetera (see [the rest](https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rplmanagers.py))    |       
 | diag      | Use only diagonal entries of cov                                 |
 | weak      | Homespun method that "weakens" some cov entries to make portfolio long only        | 
 | hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
