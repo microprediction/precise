@@ -1,9 +1,23 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## TLDR: "Functions that forecast covariance in online fashion"
-... and some that produce portfolios, either financial or just weights for mixtures of models. 
+## Covariance TLDR: "Functions that forecast covariance in online fashion"
+Usage:
 
-The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the simple usage pattern. 
+    from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
+    for y in ys:
+          x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
+
+There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
+
+## Portfolio TLDR: "Functions that update portfolio weights in online fashion"
+Usage: 
+
+        from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager as mgr
+        s = {}
+        for y in ys:
+            w, s = mgr(s=s, y=y)
+
+There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
 
 ## Install 
 
@@ -23,21 +37,10 @@ You *could* use this library to enter the M6 Financial Forecasting competition, 
 
 See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below and note that ideally, it would be even better if you create new methods for step 1. above an make a pull request!    
 
-# Covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
+# More about covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
-
-    from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
-    from precise.skaters.covariance.runemmp import run_emp_pcov_d0 # <-- Running empirical population covariance
-    from pprint import pprint
-
-    if __name__=='__main__':
-        ys = create_correlated_dataset(n=500)
-        s = {}
-        for y in ys:
-            x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
-        pprint(x_cov)
      
-See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook also illustrates the simple usage pattern. 
           
 ### Cov skater listing and Elo ratings
     
@@ -103,7 +106,7 @@ If you are hunting for useful functions for independent use (i.e. not "skating")
 
 or the "factory" modules, perhaps. 
 
-# Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+# More on Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 Hopefully it is clear that portfolio techniques map to other uses like smarter stacking of time-series forecasting methods. But this part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
