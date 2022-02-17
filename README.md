@@ -23,7 +23,7 @@ Usage:
 There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
 
 ## Ensembles, mixtures of experts TLDR: "They are just portfolios"
-Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) exploring the connection between portfolio theory and combining models. 
+Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) exploring the connection between portfolio theory and combining models, or the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
 
 <img src="https://github.com/microprediction/precise/blob/main/images/lb_hightlight2.png" alt="Model Leaderboard" style="width:500px">
 
