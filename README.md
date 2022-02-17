@@ -3,7 +3,7 @@
 Online covariance and precision forecasting, portfolios, and model ensembles in a simple functional style. 
 
 ## Covariance TLDR: "Functions that forecast covariance in online fashion"
-Usage:
+Here y is a vector:
 
     from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
     s = {}
@@ -13,7 +13,7 @@ Usage:
 There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
 
 ## Portfolio TLDR: "Functions that update portfolio weights in online fashion"
-Usage: 
+Here y is a vector:
 
         from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager as mgr
         s = {}
