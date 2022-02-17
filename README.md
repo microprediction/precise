@@ -50,9 +50,9 @@ See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main
           
 ### Cov skater listing and Elo ratings
     
-- Peruse the 
-- Hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
-- Run the [elo_ratings_and_urls](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide you.  
+- Peruse the [listing](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md)
+- Or hunt for skaters in [precise/skaters/covariance](https://github.com/microprediction/precise/tree/main/precise/skaters/covariance). 
+- Run the Elo ratings [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) which may, or may not, help guide your shortlisting.   
 
 
 ### Interpreting skater names 
