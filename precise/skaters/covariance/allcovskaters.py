@@ -7,6 +7,8 @@ from precise.skaters.covariance.ewapm import EWA_PM_EMP_D0_COV_SKATERS
 from precise.skaters.covariance.ewalw import EWA_LW_D0_COV_SKATERS, EWA_LW_D1_COV_SKATERS
 from precise.skaters.covariance.ewalz import EWA_LZ_D0_COV_SKATERS
 import random
+from precise.whereami import COV_SKATER_MANIFEST
+from tomark import Tomark
 
 # List of fully autonomous multivariate gaussian forecasters
 # Run this file to print a list of skaters and their code URLs
@@ -45,8 +47,20 @@ def random_cov_skater():
     return random.choice(ALL_D0_SKATERS)
 
 
+def cov_skater_manifest_markdown():
+    manifest = cov_skater_manifest()
+    data = [ {'covariance skater':mgr,'location':url} for mgr, url in manifest.items() ]
+    markdown = Tomark.table(data)
+    return markdown
+
+
+def write_cov_skater_manifest():
+    markdown = cov_skater_manifest_markdown()
+    with open(COV_SKATER_MANIFEST,'wt') as fh:
+        fh.write(markdown)
 
 
 if __name__=='__main__':
     from pprint import pprint
     pprint(cov_skater_manifest())
+    write_cov_skater_manifest()

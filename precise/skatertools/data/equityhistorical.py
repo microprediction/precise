@@ -3,20 +3,14 @@ import numpy as np
 import random
 
 
-def get_log_price_diff(k=1):
-    """ Daily or less frequent price changes
-    :param k:  difference measured in business days
-    :returns   pd.DataFrame with NaNs
+def random_cached_equity_dense(k, n_obs, n_dim=10, as_frame=False, **ignore):
     """
-    CSV ='https://raw.githubusercontent.com/microprediction/precisedata/main/stocks/log_price_diff_K_part_N.csv'
-    dfs = [ pd.read_csv(CSV.replace('K',str(k)).replace('N',str(part)) ) for part in list(range(1,4)) ]
-    df_merged = pd.concat(dfs,axis=1)
-    return df_merged
+         Log price differences without missing values
+         :param k - days
 
-
-def get_random_dense_log_price_diff(k,n_obs,n_dim=10,**ignore):
+    """
     pd.options.mode.chained_assignment = None
-    df = get_log_price_diff(k=k)
+    df = _sparse_cached_equity(k=k)
     n_samples = len(df.index)
     assert n_samples>n_obs
     n_start = random.choice(range(n_samples-n_obs))
@@ -26,12 +20,24 @@ def get_random_dense_log_price_diff(k,n_obs,n_dim=10,**ignore):
     df_sub.drop(df.columns[0], inplace=True, axis=1)
     size = min(len(df_sub.columns),n_dim)
     selected = np.random.choice(df_sub.columns, size=size, replace=False)
-    df_cols = df_sub[selected]
-    return df_cols
+    df_some = df_sub[selected]
+    return df_some if as_frame else df_some.values
+
+
+def _sparse_cached_equity(k=1):
+    """ Retrieve daily or less frequent price changes
+    :param k:  difference measured in business days
+    :returns   pd.DataFrame with NaNs
+    """
+    CSV ='https://raw.githubusercontent.com/microprediction/precisedata/main/stocks/log_price_diff_K_part_N.csv'
+    dfs = [ pd.read_csv(CSV.replace('K',str(k)).replace('N',str(part)) ) for part in list(range(1,4)) ]
+    df_merged = pd.concat(dfs,axis=1)
+    return df_merged
+
 
 
 if __name__=='__main__':
-    df = get_log_price_diff(k=1)
+    df = _sparse_cached_equity(k=1)
     print(df[:3])
-    dg = get_random_dense_log_price_diff(k=1,n_obs=50)
+    dg = random_cached_equity_dense(k=1, n_obs=50, as_frame=True)
     print(dg)

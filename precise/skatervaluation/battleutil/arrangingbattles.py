@@ -2,6 +2,7 @@ from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
 from precise.skaters.managers.allmanagers import LONG_MANAGERS
 from precise.skaters.covarianceutil.likelihood import cov_likelihood
 from precise.skaters.managerutil.managerstats import manager_info, manager_var
+from precise.skatervaluation.battledata.allsources import params_category_and_data
 from uuid import uuid4
 import os
 import json
@@ -10,56 +11,9 @@ from pprint import pprint
 import traceback
 from collections import Counter
 from momentum.functions import rvar
-from precise.skatertools.data.equitylive import random_m6_returns
-from precise.skatertools.data.equityhistorical import get_random_dense_log_price_diff
 from precise.whereami import BATTLE_RESULTS_DIR
 import numpy as np
 import time
-
-
-DEFAULT_M6_PARAMS = {'n_dim': 25,
-                      'n_obs': 356,
-                      'n_burn':300,
-                      'atol': 1,
-                      'lb':-1000,
-                      'ub':1000,
-                      'interval':'d',
-                      'etfs':1}
-
-DEFAULT_STOCK_PARAMS = {'n_dim': 25,
-                       'n_obs': 356,
-                       'n_burn':300,
-                       'atol': 1,
-                       'lb':-1000,
-                       'ub':1000,
-                       'k':0}
-
-
-
-def params_category_and_data(params:dict):
-    """
-         Supplement params (usually inferred from battle script file names) with defaults
-    """
-    if params['topic']== 'm6':
-        combined_params = DEFAULT_M6_PARAMS
-        combined_params.update(params)
-        descriptions = {'m': 'm6_stocks_monthly',
-                        'd': 'm6_stocks_daily'} if not params['etf'] else {'m': 'm6_monthly',
-                                                                           'd': 'm6_daily'}
-        combined_params['description'] = descriptions[combined_params['interval']]
-        category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
-        xs = random_m6_returns(verbose=False, **combined_params)
-        return combined_params, category, xs
-    elif params['topic']=='stocks':
-        combined_params = DEFAULT_STOCK_PARAMS
-        combined_params.update(params)
-        combined_params['description'] = 'stocks_'+str(combined_params['k'])+'_days'
-        category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(combined_params['n_burn'])
-        df = get_random_dense_log_price_diff(**combined_params)
-        xs = df.values
-        return combined_params, category, xs
-    else:
-        raise ValueError('m6 is only topic, for now')
 
 
 def manager_info_battle(params:dict):
@@ -179,7 +133,6 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
                 pprint(failures)
                 print('---')
                 pprint(cpu_times)
-
 
 
 

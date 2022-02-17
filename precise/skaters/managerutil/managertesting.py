@@ -1,4 +1,4 @@
-from precise.skatertools.data.equityhistorical import get_random_dense_log_price_diff
+from precise.skatertools.data.equityhistorical import random_cached_equity_dense
 import traceback
 import os
 from uuid import uuid4
@@ -10,10 +10,9 @@ import pathlib
 
 def manager_test_run(mgr,n_obs=50,n_dim=7):
     """
-       Test manager and log an error file as needed
+       Test manager and log traceback to /testserrors
     """
-    df = get_random_dense_log_price_diff(k=1, n_obs=n_obs, n_dim=n_dim)
-    xs = df.values
+    xs = random_cached_equity_dense(k=1, n_obs=n_obs, n_dim=n_dim, as_frame=False)
 
     try:
         s = {}
@@ -32,5 +31,6 @@ def manager_test_run(mgr,n_obs=50,n_dim=7):
         pprint(error_data)
         with open(error_file, 'wt') as fh:
             json.dump(error_data,fh)
+    return w
 
 
