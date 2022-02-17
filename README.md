@@ -1,9 +1,32 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## TLDR: "Functions that forecast covariance in online fashion"
-... and some that produce portfolios, either financial or just weights for mixtures of models. 
+Online covariance and precision forecasting, portfolios, and model ensembles in a simple functional style. 
 
-The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook illustrates the simple usage pattern. 
+## Covariance TLDR: "Functions that forecast covariance in online fashion"
+Usage:
+
+    from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
+    s = {}
+    for y in ys:
+        x, x_cov, s = f(s=s, y=y)
+
+There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. 
+
+## Portfolio TLDR: "Functions that update portfolio weights in online fashion"
+Usage: 
+
+        from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager as mgr
+        s = {}
+        for y in ys:
+            w, s = mgr(s=s, y=y)
+
+There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
+
+## Ensembles, mixtures of experts TLDR: "They are just portfolios"
+Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) exploring the connection between portfolio theory and combining models, or the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
+
+<img src="https://github.com/microprediction/precise/blob/main/images/lb_hightlight2.png" alt="Model Leaderboard" style="width:500px">
+
 
 ## Install 
 
@@ -13,31 +36,17 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
 
-# M6 Financial forecasting contest
-You *could* use this library to enter the M6 Financial Forecasting competition, if you wish. 
+# $$$$ M6 Financial forecasting contest example entries $$$$
+Yes you *can* use this library to enter the M6 Financial Forecasting competition, if you wish, and there's even utilities for that. 
 
-   1. Pick a cov estimator (i.e. a "cov skater"), if you wish
-   2. Pick a portfolio generator, if you wish
-   3. Pick extra shrinkage params, if you wish
-   4. Pick love and hate ticker lists, if you wish
+1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
+2. Register at the [m6 competition](https://m6competition.com/). 
+3. Buy me, or the authors of PyPortfolio-Lib and PyPortfolioOpt, lots of beers when you win.    
 
-See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6) and register at the [m6 competition](https://m6competition.com/). See disclaimer below and note that ideally, it would be even better if you create new methods for step 1. above an make a pull request!    
-
-# Covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
+# More about covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
-
-    from precise.skatertools.syntheticdata.miscellaneous import create_correlated_dataset
-    from precise.skaters.covariance.runemmp import run_emp_pcov_d0 # <-- Running empirical population covariance
-    from pprint import pprint
-
-    if __name__=='__main__':
-        ys = create_correlated_dataset(n=500)
-        s = {}
-        for y in ys:
-            x, x_cov, s = run_emp_pcov_d0(s=s, y=y)
-        pprint(x_cov)
      
-See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. 
+See [/examples_basic_usage](https://github.com/microprediction/precise/tree/main/examples_basic_usage). And yes, this mildly unusual convention requires the caller to maintain state from one call to the next:  See the timemachines [faq](https://github.com/microprediction/timemachines/blob/main/FAQ.md) for justification of this style. The [running_empirical_covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/running_empirical_population_covariance.ipynb) colab notebook also illustrates the simple usage pattern. 
           
 ### Cov skater listing and Elo ratings
     
@@ -103,7 +112,7 @@ If you are hunting for useful functions for independent use (i.e. not "skating")
 
 or the "factory" modules, perhaps. 
 
-# Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
+# More on Portfolio "managers" and their [Elos](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 Hopefully it is clear that portfolio techniques map to other uses like smarter stacking of time-series forecasting methods. But this part is too fluid to document thoroughly. See the portfolio directories in [skaters](https://github.com/microprediction/precise/tree/main/precise/skaters) and also the
 [managers](https://github.com/microprediction/precise/tree/main/precise/skaters/managers). Managers are just like cov skaterse except they emit portfolio holdings and state. 
 
@@ -113,19 +122,30 @@ Hopefully it is clear that portfolio techniques map to other uses like smarter s
 
 Most managers pair a cov skater with a "static" portfolio construction estimator, although that may change. For provisional Elo ratings of managers see the [example script](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py) that collates manager Elo ratings. Here are some portfolio and manager hints:
 
-| Shorthand | Intent                                                           |
+| PyPortfolioOpt | Intent                                                           |
 |-----------|------------------------------------------------------------------|
 | ppo       | Uses the PyPortfolioOpt package                                  |
 | ppo_vol   |      ... and minimum volatility therein                          |
 | ppo_quad  |      ... and maximum quadratic utility therein                   |
 | ppo_sharpe|      ... and maximum Sharpe ratio therein                        |
+
+| Riskfolio-Lib | Intent                                                           |
+|-----------|------------------------------------------------------------------|
+| rpl       | Uses the RiskFolio-Lib package                                   |
+| rpl_hrp   |      ... and Hierarchical Risk Parity therein                    |
+| rlp_hrp_cdar |          ... and Conditional Drawdown at Risk of uncompounded cumulative returns | 
+| rlp_hrp_flpm |          ... and First Lower Partial Moment therein            | 
+|           |          ... et cetera (see [the rest](https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rplmanagers.py))    |  
+
+| Homespun  | Intent                                                           |
+|-----------|------------------------------------------------------------------|
 | diag      | Use only diagonal entries of cov                                 |
-| weak      | Homespun method that "weakens" some cov entries to make portfolio long only        | 
-| hrp       | Hierarchical Risk Parity, or generalization of the same                            | 
+| weak      | Method that "weakens" some cov entries to make portfolio long only        | 
+| hrp       | Varieties of hierarchical allocation                             | 
 | hrp_diag_diag |   ... and uses "diag" allocation/portfolio, like Lopez de Prado's 2016 paper   | 
 | hrp_weak_weak |   ... and uses "weak" allocation and also "weak" portfolio construction.       | 
-| schur     | Homespun method that generalizes on Hierarchical Risk Parity using Schur complements |
-| schur_weak_diag     |    ... and uses weak allocation and diag portfolio  |
+| schur     | Homespun method that exploits Schur complements |
+| schur_weak_diag     |    ... and uses weak allocation and diag portfolio at the leaves  |
 
 At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
 
