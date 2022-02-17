@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.5.2",
+    version="0.5.3",
     description="Online covariance, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -40,6 +40,7 @@ setup(
               "precise.skatervaluation.queues",
               "precise.skatervaluation.battleutil",
               'precise.skatervaluation.battlescripts',
+              "precise.skatervaluation.battlelatex",
               'precise.skatervaluation.battlescripts.cov_likelihood',
               'precise.skatervaluation.battlescripts.manager_info',
               'precise.skatervaluation.battlescripts.manager_var'
