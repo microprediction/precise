@@ -3,11 +3,12 @@ from precise.skaters.covariance.ewapm import ewa_pm_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_allocation_factory
+from precise.skaters.portfoliostatic.diagalloc import diagonal_allocation_factory
 from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from functools import partial
 
 
-def schur_weak_pm_manager_factory(y, s, target, n_emp, e, r, a=1.0, b=None, n_split=5, gamma=0.0, delta =0.0, a_alloc=1.0, b_alloc=None):
+def schur_weak_weak_pm_manager_factory(y, s, target, n_emp, e, r, a=1.0, b=None, n_split=5, gamma=0.0, delta =0.0, a_alloc=1.0, b_alloc=None):
     """
        HRP weak portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
@@ -20,7 +21,19 @@ def schur_weak_pm_manager_factory(y, s, target, n_emp, e, r, a=1.0, b=None, n_sp
     return static_cov_manager_factory_d0(f=f, port=hrp_port, y=y, s=s, e=e)
 
 
-def schur_weak_ewa_manager_factory(y, s, n_emp, e, r, a=1.0, b=None, n_split=5, gamma=0.0, delta=0.0, a_alloc=1.0, b_alloc=None):
+def schur_diag_weak_pm_manager_factory(y, s, target, n_emp, e, r, a=1.0, b=None, n_split=5, gamma=0.0, delta =0.0):
+    """
+       Schur with diag allocation and weak portfolio construction using partial moments cov estimation
+           a, b             - weak coefs used at leaf
+    """
+    f = partial( ewa_pm_factory, k=1, r=r,target=target, n_emp=n_emp )
+    alloc = partial( diagonal_allocation_factory )
+    leaf_port = partial( weak_portfolio_factory, a=a, b=b )
+    hrp_port = partial(schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
+    return static_cov_manager_factory_d0(f=f, port=hrp_port, y=y, s=s, e=e)
+
+
+def schur_weak_weak_ewa_manager_factory(y, s, n_emp, e, r, a=1.0, b=None, n_split=5, gamma=0.0, delta=0.0, a_alloc=1.0, b_alloc=None):
     """
        HRP weak portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
@@ -31,5 +44,6 @@ def schur_weak_ewa_manager_factory(y, s, n_emp, e, r, a=1.0, b=None, n_split=5, 
     leaf_port = partial( weak_portfolio_factory, a=a, b=b )
     hrp_port = partial(schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
     return static_cov_manager_factory_d0(f=f, port=hrp_port, s=s, y=y, e=e)
+
 
 

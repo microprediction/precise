@@ -38,6 +38,10 @@
 | schur_weak_pm_t0_d0_r050_n25_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_weak_emp_d0_r025_n50_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_weak_emp_d0_r050_n25_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_weak_pm_t0_d0_r050_n25_g025_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_weak_emp_d0_r025_n50_g025_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_diag_weak_pm_d0_r025_n50_g025_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_diag_weak_pm_d0_r025_n50_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | rfl_hrp_var_long_manager_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rflmanagers.py |
 | rfl_hrp_vol_long_manager_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rflmanagers.py |
 | rfl_hrp_mad_long_manager_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rflmanagers.py |
