@@ -475,3 +475,20 @@ Eric Polley and Mark J. van der Laan
 Super learning is a general loss based learning method that has been proposed and analyzed theoretically in van der Laan et al. (2007). In this article we consider super learning for prediction. The super learner is a prediction method designed to find the optimal combination of a collection of prediction algorithms. The super learner algorithm finds the combination of algorithms minimizing the cross-validated risk. The super learner framework is built on the theory of cross-validation and allows for a general class of prediction algorithms to be considered for the ensemble. Due to the previously established oracle results for the cross-validation selector, the super learner has been proven to represent an asymptotically optimal system for learning. In this article we demonstrate the practical implementation and finite sample performance of super learning in prediction.
 
 
+### Ensemble Selection from Libraries of Models [pdf](https://www.cs.cornell.edu/~alexn/papers/shotgun.icml04.revised.rev2.pdf)
+Caruna, Niculescu-Mizil, Crew and Ksikes
+
+We present a method for constructing ensembles from libraries of thousands of models.
+Model libraries are generated using different
+learning algorithms and parameter settings.
+Forward stepwise selection is used to add to
+the ensemble the models that maximize its
+performance. Ensemble selection allows ensembles to be optimized to performance metric such as accuracy, cross entropy, mean
+precision, or ROC Area. Experiments with
+seven test problems and ten metrics demonstrate the benefit of ensemble selection.
+
+
+
+
+
+
