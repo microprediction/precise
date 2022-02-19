@@ -5,11 +5,13 @@ from latextable import draw_latex
 
 
 def leaderboard_to_latex(leaderboard, caption, label):
+     # Oh so ugly :)
      MANAGER_REPLACEMENTS = {'_t0':' target=0',
                      '_pm':' partial moments  ',
                      '_emp':' empirical ',
                      '_ppo':' ',
                      '_r':' r=0.',
+                     '_g025': ' \gamma=0.5',
                      '_g050':' \gamma=0.5',
                      '_g100': ' \gamma=1',
                      '_n':' window=',
