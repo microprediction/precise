@@ -32,6 +32,7 @@ def manager_stats(mgr, xs, n_burn=10):
     print('     burning in')
     for y in xs[:n_burn]:
         w, s = mgr(s=s, y=y, k=1, e=-1)
+    print('        burn in complete', flush=True)
 
     print('     evaluating')
     metrics = var_init()
