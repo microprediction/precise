@@ -133,6 +133,7 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
                 pprint(failures)
                 print('---')
                 pprint(cpu_times)
+            time.sleep(10)
 
 
 

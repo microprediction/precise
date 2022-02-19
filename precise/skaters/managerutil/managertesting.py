@@ -8,7 +8,7 @@ from precise.whereami import TESTSERROR
 import pathlib
 
 
-def manager_test_run(mgr,n_obs=50,n_dim=7):
+def manager_test_run(mgr,n_obs=50,n_dim=7, verbose=False):
     """
        Test manager and log traceback to /testserrors
     """
@@ -16,9 +16,13 @@ def manager_test_run(mgr,n_obs=50,n_dim=7):
 
     try:
         s = {}
+        if verbose:
+            print('Manager test run burn-in phase starting ')
         for y in xs[:n_obs - 5]:
             w, s = mgr(y=y, s=s, e=-1)
 
+        if verbose:
+            print('Manager test run usage phase starting ')
         for y in xs[-5:]:
             w, s = mgr(y=y, s=s, e=1)
     except Exception as e:

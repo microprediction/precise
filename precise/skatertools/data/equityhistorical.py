@@ -29,6 +29,16 @@ def _sparse_cached_equity(k=1):
     :param k:  difference measured in business days
     :returns   pd.DataFrame with NaNs
     """
+    import ssl
+
+    # creates an unverified certificate with ssl even without certificate
+    try:
+        _create_unverified_https_context = ssl._create_unverified_context
+    except AttributeError:
+        pass
+    else:
+        ssl._create_default_https_context = _create_unverified_https_context
+
     CSV ='https://raw.githubusercontent.com/microprediction/precisedata/main/stocks/log_price_diff_K_part_N.csv'
     dfs = [ pd.read_csv(CSV.replace('K',str(k)).replace('N',str(part)) ) for part in list(range(1,4)) ]
     df_merged = pd.concat(dfs,axis=1)

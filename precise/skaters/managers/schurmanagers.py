@@ -60,14 +60,14 @@ def schur_weak_emp_d0_r025_n50_g025_long_manager(y, s, k=1,e=1):
 # diagonal allocation
 
 
-def schur_diag_weak_pm_d0_r025_n50_g050_long_manager(y, s, k=1,e=1):
+def schur_diag_weak_pm_t0_d0_r025_n50_g050_long_manager(y, s, k=1, e=1):
     assert k==1
-    return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.025, n_emp=50, gamma=0.50)
+    return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.025,  target=0,n_emp=50, gamma=0.50)
 
 
-def schur_diag_weak_pm_d0_r025_n50_g025_long_manager(y, s, k=1,e=1):
+def schur_diag_weak_pm_t0_d0_r025_n50_g025_long_manager(y, s, k=1, e=1):
     assert k==1
-    return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.025, n_emp=50, gamma=0.25)
+    return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.025,  target=0, n_emp=50, gamma=0.25)
 
 
 SCHUR_WEAK_WEAK_100_LONG_MANAGERS = [schur_weak_pm_t0_d0_r025_n50_g100_long_manager,
@@ -85,9 +85,9 @@ SCHUR_WEAK_WEAK_25_LONG_MANAGERS = [schur_weak_pm_t0_d0_r050_n25_g025_long_manag
                                     schur_weak_emp_d0_r025_n50_g025_long_manager
                                     ]
 
-SCHUR_DIAG_WEAK_LONG_MANAGERS = [schur_diag_weak_pm_d0_r025_n50_g025_long_manager,
-                                 schur_diag_weak_pm_d0_r025_n50_g050_long_manager
-                                    ]
+SCHUR_DIAG_WEAK_LONG_MANAGERS = [schur_diag_weak_pm_t0_d0_r025_n50_g025_long_manager,
+                                 schur_diag_weak_pm_t0_d0_r025_n50_g050_long_manager
+                                 ]
 
 
 

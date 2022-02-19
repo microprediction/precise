@@ -487,8 +487,15 @@ performance. Ensemble selection allows ensembles to be optimized to performance 
 precision, or ROC Area. Experiments with
 seven test problems and ten metrics demonstrate the benefit of ensemble selection.
 
+## Copula Based Portfolio Optimization [pdf](http://www.diva-portal.org/smash/get/diva2:1588992/FULLTEXT01.pdf)
+Maziar Sahamkhadam
 
-
+This thesis studies and develops copula-based portfolio optimization. The overall
+purpose is to clarify the effects of copula modeling for portfolio allocation and
+suggest novel approaches for copula-based optimization. The thesis is a compilation
+of five papers. The first and second papers study and introduce copula-based
+methods; the third, fourth, and fifth papers extend their applications to the BlackLitterman (BL) approach, expectile Value-at-Risk (EVaR), and multicriteria
+optimization, respectively.
 
 
 

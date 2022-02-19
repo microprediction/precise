@@ -27,7 +27,7 @@ def elo_from_win_counts(ctn, timing_genre=None):
 
               someone>someoneelse
 
-        indicating a win of someone over someonelese. Values are the number of occasions on
+        indicating a win of someone over someone else. Values are the number of occasions on
         which the result eventuated.
 
         Matches are sampled in random ordering, so the Elo ratings will be different each
