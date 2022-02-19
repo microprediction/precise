@@ -498,4 +498,18 @@ methods; the third, fourth, and fifth papers extend their applications to the Bl
 optimization, respectively.
 
 
+## Combining Portfolio Models [pdf](http://aeconf.com/Articles/Nov2014/aef150208.pdf)
+Peter Schanbacher
+
+The best asset allocation model is searched for. In this paper, we argue that
+it is unlikely to find an individual model which continuously outperforms its
+competitors. Rather one should consider a combined model out of a given set
+of asset allocation models. In a large empirical study using various standard
+asset allocation models, we find that (i) the best model depends strongly on
+the chosen data set, (ii) it is difficult to ex-ante select the best model, and
+(iii) the combination of models performs exceptionally well. Frequently, the
+combination even outperforms the ex-post best asset allocation model. The
+promising results are obtained by a simple combination method based on a
+bootstrap procedure. More advanced combination approaches are likely to
+achieve even better results.
 
