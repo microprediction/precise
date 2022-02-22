@@ -513,3 +513,17 @@ promising results are obtained by a simple combination method based on a
 bootstrap procedure. More advanced combination approaches are likely to
 achieve even better results.
 
+## A Nested Factor Model for non-linear dependencies in stock returns [pdf](https://arxiv.org/pdf/1309.3102.pdf)
+REMY CHICHEPORTICHE AND JEAN-PHILIPPE BOUCHAUD
+
+The aim of our work is to propose a natural framework to account for all the empirically
+known properties of the multivariate distribution of stock returns. We define and study a “nested factor
+model”, where the linear factors part is standard, but where the log-volatility of the linear factors and
+of the residuals are themselves endowed with a factor structure and residuals. We propose a calibration
+procedure to estimate these log-vol factors and the residuals. We find that whereas the number of
+relevant linear factors is relatively large (10 or more), only two or three log-vol factors emerge in our
+analysis of the data. In fact, a minimal model where only one log-vol factor is considered is already very
+satisfactory, as it accurately reproduces the properties of bivariate copulas, in particular the dependence
+of the medial-point on the linear correlation coefficient, as reported in Chicheportiche and Bouchaud
+(2012). We have tested the ability of the model to predict Out-of-Sample the risk of non-linear portfolios,
+and found that it performs significantly better than other schemes.
