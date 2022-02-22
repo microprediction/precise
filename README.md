@@ -28,6 +28,13 @@ Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-o
 <img src="https://github.com/microprediction/precise/blob/main/images/lb_hightlight2.png" alt="Model Leaderboard" style="width:500px">
 
 
+# $$ M6 Contest example entries $$
+This package includes scripts to create entries for the lucrative M6 Financial Forecasting competition.  
+
+1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
+2. Register at the [m6 competition](https://m6competition.com/). 
+3. Buy me, or the authors of PyPortfolio-Lib and PyPortfolioOpt, lots of beers when you win.   
+
 ## Install 
 
     pip install precise 
@@ -35,13 +42,7 @@ Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-o
 or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
-
-# $$$ M6 Contest example entries $$$
-This package includes scripts to create entries for the M6 Financial Forecasting competition.  
-
-1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
-2. Register at the [m6 competition](https://m6competition.com/). 
-3. Buy me, or the authors of PyPortfolio-Lib and PyPortfolioOpt, lots of beers when you win.    
+ 
 
 # More about covariance skaters and their [Elos](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb)
 Similar in style to skaters used in the [timemachines](https://github.com/microprediction/timemachines) package, this package may be thought of as a collection of covariance prediction functions taking one vector at a time, and also the prior state, and spitting out a prediction mean vector *x*, a prediction covariance *x_cov*, and a posterior state whose interpretation is the responsibility of the skater, not the caller. 
