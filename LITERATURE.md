@@ -527,3 +527,9 @@ satisfactory, as it accurately reproduces the properties of bivariate copulas, i
 of the medial-point on the linear correlation coefficient, as reported in Chicheportiche and Bouchaud
 (2012). We have tested the ability of the model to predict Out-of-Sample the risk of non-linear portfolios,
 and found that it performs significantly better than other schemes.
+
+## A Forecast Comparison of Volatility Models [pdf](http://faculty.washington.edu/ezivot/econ589/DoesAnythingBeatGarch11.pdf)
+Hansen and Lunde
+
+By using intra-day returns to calculate a measure for the time-varying volatility, Andersen and Bollerslev (1998a) established that volatility models do provide good forecasts of the conditional variance. In this paper, we take the same approach and use intra-day estimated measures of volatility to compare volatility models. Our objective is to evaluate whether the evolution of volatility models has led to better forecasts of volatility when compared to the first “species” of volatility models. We make an out-of-sample comparison of 330 different volatility models using daily exchange rate data (DM/$) and IBM stock prices. Our analysis does not point to a single winner amongst the different volatility models, as it is different models that are best at forecasting the volatility of the two types of assets. Interestingly, the best models do not provide a significantly better forecast than the GARCH(1,1) model.
+
