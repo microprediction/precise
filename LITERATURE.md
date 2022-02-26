@@ -533,3 +533,19 @@ Hansen and Lunde
 
 By using intra-day returns to calculate a measure for the time-varying volatility, Andersen and Bollerslev (1998a) established that volatility models do provide good forecasts of the conditional variance. In this paper, we take the same approach and use intra-day estimated measures of volatility to compare volatility models. Our objective is to evaluate whether the evolution of volatility models has led to better forecasts of volatility when compared to the first “species” of volatility models. We make an out-of-sample comparison of 330 different volatility models using daily exchange rate data (DM/$) and IBM stock prices. Our analysis does not point to a single winner amongst the different volatility models, as it is different models that are best at forecasting the volatility of the two types of assets. Interestingly, the best models do not provide a significantly better forecast than the GARCH(1,1) model.
 
+
+## Bayesian Inference for Correlations in the Presence of Measurement Error and Estimation Uncertainty [pdf](http://www.alexander-ly.com/wp-content/uploads/2014/09/MatzkeEtAl2016NoisyCorrelations.pdf)
+Dora Matzke1, Alexander Ly1, Ravi Selker , Wouter D. Weeda, Benjamin Scheibehenne, Michael D. Lee, and Eric-Jan Wagenmakers
+
+Whenever parameter estimates are uncertain or observations are contaminated by measurement error, the Pearson correlation coefficient can severely underestimate the true
+strength of an association. Various approaches exist for inferring the correlation in the
+presence of estimation uncertainty and measurement error, but none are routinely applied
+in psychological research. Here we focus on a Bayesian hierarchical model proposed by
+Behseta, Berdyyeva, Olson, and Kass (2009) that allows researchers to infer the underlying
+correlation between error-contaminated observations. We show that this approach may be
+also applied to obtain the underlying correlation between uncertain parameter estimates
+as well as the correlation between uncertain parameter estimates and noisy observations.
+We illustrate the Bayesian modeling of correlations with two empirical data sets; in each
+data set, we first infer the posterior distribution of the underlying correlation and then
+compute Bayes factors to quantify the evidence that the data provide for the presence of
+an association
