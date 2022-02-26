@@ -534,7 +534,7 @@ Hansen and Lunde
 By using intra-day returns to calculate a measure for the time-varying volatility, Andersen and Bollerslev (1998a) established that volatility models do provide good forecasts of the conditional variance. In this paper, we take the same approach and use intra-day estimated measures of volatility to compare volatility models. Our objective is to evaluate whether the evolution of volatility models has led to better forecasts of volatility when compared to the first “species” of volatility models. We make an out-of-sample comparison of 330 different volatility models using daily exchange rate data (DM/$) and IBM stock prices. Our analysis does not point to a single winner amongst the different volatility models, as it is different models that are best at forecasting the volatility of the two types of assets. Interestingly, the best models do not provide a significantly better forecast than the GARCH(1,1) model.
 
 
-## Bayesian Inference for Correlations in the Presence of Measurement Error and Estimation Uncertainty [pdf](http://www.alexander-ly.com/wp-content/uploads/2014/09/MatzkeEtAl2016NoisyCorrelations.pdf)
+## Bayesian Inference for Correlations in the Presence of Measurement Error and Estimation Uncertainty [pdf](http://www.alexander-ly.com/wp-content/uploads/2014/09/MatzkeEtAl2016NoisyCorrelations.pdf) also [pdf](https://arxiv.org/pdf/1510.01188.pdf)
 Dora Matzke1, Alexander Ly1, Ravi Selker , Wouter D. Weeda, Benjamin Scheibehenne, Michael D. Lee, and Eric-Jan Wagenmakers
 
 Whenever parameter estimates are uncertain or observations are contaminated by measurement error, the Pearson correlation coefficient can severely underestimate the true
