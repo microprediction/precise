@@ -498,4 +498,54 @@ methods; the third, fourth, and fifth papers extend their applications to the Bl
 optimization, respectively.
 
 
+## Combining Portfolio Models [pdf](http://aeconf.com/Articles/Nov2014/aef150208.pdf)
+Peter Schanbacher
 
+The best asset allocation model is searched for. In this paper, we argue that
+it is unlikely to find an individual model which continuously outperforms its
+competitors. Rather one should consider a combined model out of a given set
+of asset allocation models. In a large empirical study using various standard
+asset allocation models, we find that (i) the best model depends strongly on
+the chosen data set, (ii) it is difficult to ex-ante select the best model, and
+(iii) the combination of models performs exceptionally well. Frequently, the
+combination even outperforms the ex-post best asset allocation model. The
+promising results are obtained by a simple combination method based on a
+bootstrap procedure. More advanced combination approaches are likely to
+achieve even better results.
+
+## A Nested Factor Model for non-linear dependencies in stock returns [pdf](https://arxiv.org/pdf/1309.3102.pdf)
+REMY CHICHEPORTICHE AND JEAN-PHILIPPE BOUCHAUD
+
+The aim of our work is to propose a natural framework to account for all the empirically
+known properties of the multivariate distribution of stock returns. We define and study a “nested factor
+model”, where the linear factors part is standard, but where the log-volatility of the linear factors and
+of the residuals are themselves endowed with a factor structure and residuals. We propose a calibration
+procedure to estimate these log-vol factors and the residuals. We find that whereas the number of
+relevant linear factors is relatively large (10 or more), only two or three log-vol factors emerge in our
+analysis of the data. In fact, a minimal model where only one log-vol factor is considered is already very
+satisfactory, as it accurately reproduces the properties of bivariate copulas, in particular the dependence
+of the medial-point on the linear correlation coefficient, as reported in Chicheportiche and Bouchaud
+(2012). We have tested the ability of the model to predict Out-of-Sample the risk of non-linear portfolios,
+and found that it performs significantly better than other schemes.
+
+## A Forecast Comparison of Volatility Models [pdf](http://faculty.washington.edu/ezivot/econ589/DoesAnythingBeatGarch11.pdf)
+Hansen and Lunde
+
+By using intra-day returns to calculate a measure for the time-varying volatility, Andersen and Bollerslev (1998a) established that volatility models do provide good forecasts of the conditional variance. In this paper, we take the same approach and use intra-day estimated measures of volatility to compare volatility models. Our objective is to evaluate whether the evolution of volatility models has led to better forecasts of volatility when compared to the first “species” of volatility models. We make an out-of-sample comparison of 330 different volatility models using daily exchange rate data (DM/$) and IBM stock prices. Our analysis does not point to a single winner amongst the different volatility models, as it is different models that are best at forecasting the volatility of the two types of assets. Interestingly, the best models do not provide a significantly better forecast than the GARCH(1,1) model.
+
+
+## Bayesian Inference for Correlations in the Presence of Measurement Error and Estimation Uncertainty [pdf](http://www.alexander-ly.com/wp-content/uploads/2014/09/MatzkeEtAl2016NoisyCorrelations.pdf) also [pdf](https://arxiv.org/pdf/1510.01188.pdf)
+Dora Matzke1, Alexander Ly1, Ravi Selker , Wouter D. Weeda, Benjamin Scheibehenne, Michael D. Lee, and Eric-Jan Wagenmakers
+
+Whenever parameter estimates are uncertain or observations are contaminated by measurement error, the Pearson correlation coefficient can severely underestimate the true
+strength of an association. Various approaches exist for inferring the correlation in the
+presence of estimation uncertainty and measurement error, but none are routinely applied
+in psychological research. Here we focus on a Bayesian hierarchical model proposed by
+Behseta, Berdyyeva, Olson, and Kass (2009) that allows researchers to infer the underlying
+correlation between error-contaminated observations. We show that this approach may be
+also applied to obtain the underlying correlation between uncertain parameter estimates
+as well as the correlation between uncertain parameter estimates and noisy observations.
+We illustrate the Bayesian modeling of correlations with two empirical data sets; in each
+data set, we first infer the posterior distribution of the underlying correlation and then
+compute Bayes factors to quantify the evidence that the data provide for the presence of
+an association
