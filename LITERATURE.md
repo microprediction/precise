@@ -559,3 +559,8 @@ compute the maximum Omega Ratio as a linear program is derived. While the Omega 
 a non-convex function, we show an exact formulation in terms of a convex optimization problem, and transform
 it as a linear program. The convex reformulation for the Omega Ratio maximization is a direct analogue to
 mean-variance framework and the Sharpe Ratio maximization.
+
+## Out of sample performance of Asset Allocation Strategies [pdf](https://peeps.unet.brandeis.edu/~danielak/Out%20of%20sample%20performance%20of%20asset%20allocation%20strategies.pdf
+Daniela Kolusheva
+
+
