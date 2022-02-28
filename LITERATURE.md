@@ -563,4 +563,14 @@ mean-variance framework and the Sharpe Ratio maximization.
 ## Out of sample performance of Asset Allocation Strategies [pdf](https://peeps.unet.brandeis.edu/~danielak/Out%20of%20sample%20performance%20of%20asset%20allocation%20strategies.pdf
 Daniela Kolusheva
 
+## Using out-of-sample errors in portfolio optimization [pdf](https://www.clsbe.lisboa.ucp.pt/system/files/assets/files/2016-paper-pedro-barroso.pdf)
+Pedro Barroso
+
+Portfolio optimization usually struggles in realistic out of sample contexts. I deconstruct this stylized fact comparing historical estimates of the inputs of portfolio
+optimization with their subsequent out of sample counterparts. I confirm that historical estimates are often very imprecise guides of subsequent values but also
+find this lack of persistence varies significantly across inputs and sets of assets.
+Strikingly, the resulting estimation errors are not entirely random. They have predictable patterns and can be partially reduced using their own previous history. A
+plain Markowitz optimization using corrected inputs performs quite well, out of
+sample, namely outperforming the 1/N rule. Also the corrected covariance matrix
+captures the risk of optimal portfolios much better than the historical one
 
