@@ -549,3 +549,13 @@ We illustrate the Bayesian modeling of correlations with two empirical data sets
 data set, we first infer the posterior distribution of the underlying correlation and then
 compute Bayes factors to quantify the evidence that the data provide for the presence of
 an association
+
+## Optimizing the Omega Ratio using Linear Programming [pdf](https://cs.uwaterloo.ca/~yuying/Courses/CS870_2012/Omega_paper_Short_Cm.pdf)
+Kapsos et al
+
+The Omega Ratio is a recent performance measure. It captures both, the downside and upside potential of
+the constructed portfolio, while remaining consistent with utility maximization. In this paper, a new approach to
+compute the maximum Omega Ratio as a linear program is derived. While the Omega ratio is considered to be
+a non-convex function, we show an exact formulation in terms of a convex optimization problem, and transform
+it as a linear program. The convex reformulation for the Omega Ratio maximization is a direct analogue to
+mean-variance framework and the Sharpe Ratio maximization.
