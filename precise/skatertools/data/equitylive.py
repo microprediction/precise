@@ -51,11 +51,58 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0,
         Use portfolio for M6 competition
     """
     constituents = pd.read_csv('https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
-    if etf:
+    if etf==0:
+        tickers = constituents['symbol'][:50]
+    elif etf>0:
         tickers = constituents['symbol']
     else:
         tickers = constituents['symbol'][50:]
     return random_equity_returns(all_tickers=tickers, n_dim=n_dim, n_obs=n_obs, verbose=verbose, interval=interval)
+
+
+def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, **ignore):
+    n_buffer = np.random.choice([20,40,60,80,100,120,140])
+    constituents = pd.read_csv(
+        'https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
+    if etf == 0:
+        tickers = constituents['symbol'][:50]
+    elif etf > 0:
+        tickers = constituents['symbol']
+    else:
+        tickers = constituents['symbol'][50:]
+    xs = get_equity_returns(tickers=tickers, n_obs=n_obs+n_buffer, verbose=verbose, interval=interval)
+    return xs[:-n_buffer]
+
+
+def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', **ignore):
+    """ Get return series for those of minimum length desired
+    :param n_dim:            Number of assets
+    :param n_obs:
+    :param interval: 'd' or 'm'
+    :return: prices NOT necessarily corresponding to all_tickers
+    """
+    if interval=='m':
+        assert n_obs<=60,'too many observations for monthly'
+
+    prices = list()
+    for ticker in tickers:
+        data = []
+        try:
+            data = get_prices(ticker=ticker,n_obs=n_obs, interval=interval)
+            if len(data)==n_obs+1:
+                prices.append(np.diff(np.log(data)))
+                if verbose:
+                    print('Got '+ticker+' len '+str(len(data)))
+            else:
+                if verbose:
+                    print('Skipping '+ticker+' len '+str(len(data)))
+        except Exception as e:
+            print('Failure getting '+ticker)
+            time.sleep(1)
+
+    prices_transposed = list(map(list, zip(*prices)))
+    return np.array(prices_transposed)
+
 
 
 def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, interval='m', **ignore):

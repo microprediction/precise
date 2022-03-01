@@ -35,7 +35,7 @@ def generic_battle(contestants, evaluator, params:dict, atol=1.0):
         evaluator(contestant=contestant, xs=xs, n_burn=params['n_burn'], with_metrics=True, lb=lb, ub=ub)
     """
     evaluator_name = evaluator.__name__
-    n_per_battle = 5
+    n_per_battle = 15
     try:
         params, category, xs_test = params_category_and_data(params=params)
     except Exception as e:
