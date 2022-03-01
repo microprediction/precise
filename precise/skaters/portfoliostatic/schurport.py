@@ -35,7 +35,6 @@ def schur_diag_diag_s5_g050_long_port(cov=None, pre=None):
     return schur_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
-# Using weak allocation..
 
 
 def schur_unit_weak_s5_g100_port(cov=None, pre=None):
