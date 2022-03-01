@@ -574,3 +574,27 @@ plain Markowitz optimization using corrected inputs performs quite well, out of
 sample, namely outperforming the 1/N rule. Also the corrected covariance matrix
 captures the risk of optimal portfolios much better than the historical one
 
+## Risk Parity, Maximum Diversification, and Minimum Variance: An Analytic Perspective [pdf](https://www.hillsdaleinv.com/uploads/Risk_Parity%2C_Maximum_Diversification%2C_and_Minimum_Variance-_An_Analytic_Perspective.pdf)
+Roger Clark, Harindra de Silva, Steven Thorley
+
+In any event, the primary purpose of this study
+is to provide general analytic solutions to risk-based
+portfolios, not just another empirical back test. Further examination of the historical data in regards to
+transaction costs and turnover, for example in Li, Sullivan, and Garcia-Feijoo [2013], may shed more light
+on the exploitability of the low-risk anomaly.
+
+
+## Risk Parity: Silver Bullet or a Bridge Too Far? [pdf](https://www.callan.com/uploads/2020/05/91d4bcabd3f4e687695022501ac62030/chapter-4-from-managing-multiasset-strategies-2018.pdf)
+Gregory C. Allen
+
+In this chapter, I evaluate the risk parity argument from a theoretical
+standpoint using the modern portfolio theory (MPT) framework of
+Markowitz (1952) and Tobin (1958). I then examine the historical
+performance (both simulated and actual) of risk parity portfolios relative to traditional portfolios used by institutional investors. Finally,
+I discuss the evolution of risk parity strategies and the prevalence of
+their use by institutional investors
+
+## The Risk in Risk Parity: A Factor Based Analysis of Asset-Based Risk Parity [via](https://www.researchgate.net/publication/256038119_The_Risk_in_Risk_Parity_A_Factor_Based_Analysis_of_Asset_Based_Risk_Parity)
+Bhansali, David, Rennison et al
+
+The risks embedded in asset-based risk parity portfolios are explored using a simple, economically motivated factor approach. We show that such an approach can substantially demystify and make explicit the drivers of returns for asset-based risk parity portfolios. The proposed framework can be used to assess the “true” parity in the underlying risk factor exposures for a given portfolio; it also allows investors to understand the active risks that a manager might be taking against his default risk parity position. Using a number of commercial risk parity portfolio returns, we find that traditional asset-based risk strategies, which are diversified in the asset space, can often be dominated by only one or two risk factors (equity and bond factors). In addition, these risk parity portfolios often exhibit very aggressive tactical allocations to the underlying factors, suggesting that active views on asset and/or factor are being expressed in many risk parity portfolios.
