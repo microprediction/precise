@@ -61,4 +61,6 @@ def elo_from_win_counts(ctn, timing_genre=None):
 
 
 if __name__=='__main__':
-   pprint(elo_from_win_files(genre='manager_var'))
+    category_sub_string = 'stocks' # e.g. m6_daily_p100
+    ratings = elo_from_win_files(genre='manager_var')
+    pprint([ r for r in ratings if category_sub_string in r[0]])
