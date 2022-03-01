@@ -560,7 +560,7 @@ a non-convex function, we show an exact formulation in terms of a convex optimiz
 it as a linear program. The convex reformulation for the Omega Ratio maximization is a direct analogue to
 mean-variance framework and the Sharpe Ratio maximization.
 
-## Out of sample performance of Asset Allocation Strategies [pdf](https://peeps.unet.brandeis.edu/~danielak/Out%20of%20sample%20performance%20of%20asset%20allocation%20strategies.pdf
+## Out of sample performance of Asset Allocation Strategies
 Daniela Kolusheva
 
 ## Using out-of-sample errors in portfolio optimization [pdf](https://www.clsbe.lisboa.ucp.pt/system/files/assets/files/2016-paper-pedro-barroso.pdf)
