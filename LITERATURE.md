@@ -598,3 +598,17 @@ their use by institutional investors
 Bhansali, David, Rennison et al
 
 The risks embedded in asset-based risk parity portfolios are explored using a simple, economically motivated factor approach. We show that such an approach can substantially demystify and make explicit the drivers of returns for asset-based risk parity portfolios. The proposed framework can be used to assess the “true” parity in the underlying risk factor exposures for a given portfolio; it also allows investors to understand the active risks that a manager might be taking against his default risk parity position. Using a number of commercial risk parity portfolio returns, we find that traditional asset-based risk strategies, which are diversified in the asset space, can often be dominated by only one or two risk factors (equity and bond factors). In addition, these risk parity portfolios often exhibit very aggressive tactical allocations to the underlying factors, suggesting that active views on asset and/or factor are being expressed in many risk parity portfolios.
+
+## Online Portfolio Selection: A Survey [pdf](https://arxiv.org/pdf/1212.2129)
+Bin LI, Steven C. H. Hoi
+
+Online portfolio selection is a fundamental problem in computational finance, which has been extensively studied across several research communities, including finance, statistics, artificial intelligence, machine learning, and data mining, etc. This article aims to provide a comprehensive survey and a structural understanding of published online portfolio selection techniques. From an online machine learning perspective, we first formulate online portfolio selection as a sequential decision problem, and then survey a variety of state-of-the-art approaches, which are grouped into several major categories, including benchmarks, "Follow-the-Winner" approaches, "Follow-the-Loser" approaches, "Pattern-Matching" based approaches, and "Meta-Learning Algorithms". In addition to the problem formulation and related algorithms, we also discuss the relationship of these algorithms with the Capital Growth theory in order to better understand the similarities and differences of their underlying trading ideas. This article aims to provide a timely and comprehensive survey for both machine learning and data mining researchers in academia and quantitative portfolio managers in the financial industry to help them understand the state-of-the-art and facilitate their research and practical applications. We also discuss some open issues and evaluate some emerging new trends for future research directions.
+
+## What's the big deal about risk parity? [pdf](https://www.researchgate.net/profile/Robert-Ferguson-14/publication/312284109_What%27s_the_big_deal_about_Risk_Parity/links/5a8049d7aca272a73769d1c0/Whats-the-big-deal-about-Risk-Parity.pdf)
+Anna Agapova, Robert Ferguson, Dean Leistikow, Danny Meidan
+
+It is often argued in defense of Risk Parity portfolios that they maximize the
+Sharpe ratio if their securities have identical Sharpe ratios and identical correlations. However, securities have neither identical Sharpe ratios nor this correlation structure. In realistic
+markets, Risk Parity portfolios do not maximize the Sharpe ratio, do not minimize variance,
+do not maximize the Information ratio, and do not have any other commonly sought optimal
+property. So, what’s the big deal about Risk Parity?
