@@ -618,3 +618,19 @@ property. So, what’s the big deal about Risk Parity?
 Alejandro Rodriguez
 
 n this work we present a new framework for modelling portfolio dynamics and how to incorporate this information in the portfolio selection process. We define drivers for asset and portfolio dynamics, and their optimal selection. We introduce the new Commonality Principle, which gives a solution for the optimal selection of portfolio drivers as being the common drivers. Asset dynamics are modelled by PDEs and approximated with Neural Networks, and sensitivities of portfolio constituents with respect to portfolio common drivers are obtained via Automatic Adjoint Differentiation (AAD). Information of asset dynamics is incorporated via sensitivities into the portfolio selection process. Portfolio constituents are projected into a hypersurface, from a vector space formed by the returns of common drivers of the portfolio. The commonality principle allows for the necessary geometric link between the hyperplane formed by portfolio constituents in a traditional setup with no exogenous information, and the hypersurface formed by the vector space of common portfolio drivers, so that when portfolio constituents are projected into this hypersurface, the representations of idiosyncratic risks from the hyperplane are kept at most in this new subspace, while systematic risks representations are added via exogenous information as part of this common drivers vector space. We build a sensitivity matrix, which is a similarity matrix of the projections in this hypersurface, and can be used to optimize for diversification on both, idiosyncratic and systematic risks, which is not contemplated on the literature. Finally, we solve the convex optimization problem for optimal diversification by applying a hierarchical clustering to the sensitivity matrix, avoiding quadratic optimizers for the matrix properties, and we reach over-performance in all experiments with respect to all other out-of-sample methods.
+
+
+## On the properties of equally-weighted risk contributions portfolios
+Maillard, Roncalli and Teiletche
+
+Minimum variance and equally-weighted portfolios have recently prompted
+great interest both from academic researchers and market practitioners, as their
+construction does not rely on expected average returns and is therefore assumed to be robust. In this paper, we consider a related approach, where the
+risk contribution from each portfolio components is made equal, which maximizes diversication of risk (at least on an ex-ante basis). Roughly speaking,
+the resulting portfolio is similar to a minimum variance portfolio subject to
+a diversication constraint on the weights of its components. We derive the
+theoretical properties of such a portfolio and show that its volatility is located
+between those of minimum variance and equally-weighted portfolios. Empirical
+applications conrm that ranking. All in all, equally-weighted risk contributions portfolios appear to be an attractive alternative to minimum variance
+and equally-weighted portfolios and might be considered a good trade-o between those two approaches in terms of absolute level of risk, risk budgeting
+and diversication.
