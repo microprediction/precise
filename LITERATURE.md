@@ -583,3 +583,13 @@ portfolios, not just another empirical back test. Further examination of the his
 transaction costs and turnover, for example in Li, Sullivan, and Garcia-Feijoo [2013], may shed more light
 on the exploitability of the low-risk anomaly.
 
+
+## Risk Parity: Silver Bullet or a Bridge Too Far? [pdf](https://www.callan.com/uploads/2020/05/91d4bcabd3f4e687695022501ac62030/chapter-4-from-managing-multiasset-strategies-2018.pdf)
+Gregory C. Allen
+
+In this chapter, I evaluate the risk parity argument from a theoretical
+standpoint using the modern portfolio theory (MPT) framework of
+Markowitz (1952) and Tobin (1958). I then examine the historical
+performance (both simulated and actual) of risk parity portfolios relative to traditional portfolios used by institutional investors. Finally,
+I discuss the evolution of risk parity strategies and the prevalence of
+their use by institutional investors
