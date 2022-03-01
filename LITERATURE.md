@@ -574,3 +574,12 @@ plain Markowitz optimization using corrected inputs performs quite well, out of
 sample, namely outperforming the 1/N rule. Also the corrected covariance matrix
 captures the risk of optimal portfolios much better than the historical one
 
+## Risk Parity, Maximum Diversification, and Minimum Variance: An Analytic Perspective [pdf](https://www.hillsdaleinv.com/uploads/Risk_Parity%2C_Maximum_Diversification%2C_and_Minimum_Variance-_An_Analytic_Perspective.pdf)
+Roger Clark, Harindra de Silva, Steven Thorley
+
+In any event, the primary purpose of this study
+is to provide general analytic solutions to risk-based
+portfolios, not just another empirical back test. Further examination of the historical data in regards to
+transaction costs and turnover, for example in Li, Sullivan, and Garcia-Feijoo [2013], may shed more light
+on the exploitability of the low-risk anomaly.
+
