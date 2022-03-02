@@ -634,3 +634,16 @@ between those of minimum variance and equally-weighted portfolios. Empirical
 applications conrm that ranking. All in all, equally-weighted risk contributions portfolios appear to be an attractive alternative to minimum variance
 and equally-weighted portfolios and might be considered a good trade-o between those two approaches in terms of absolute level of risk, risk budgeting
 and diversication.
+
+
+## Improved iterative methods for solving risk parity portfolio [pdf](https://www.emerald.com/insight/content/doi/10.1108/JDQS-12-2021-0031/full/pdf?title=improved-iterative-methods-for-solving-risk-parity-portfolio)
+Jaehyuk Choi and Rong Chen
+
+Risk parity, also known as equal risk contribution, has recently gained increasing attention as a portfolio
+allocation method. However, solving portfolio weights must resort to numerical methods as the analytic
+solution is not available. This study improves two existing iterative methods: the cyclical coordinate descent
+(CCD) and Newton methods. The authors enhance the CCD method by simplifying the formulation using a
+correlation matrix and imposing an additional rescaling step. The authors also suggest an improved initial
+guess inspired by the CCD method for the Newton method. Numerical experiments show that the improved
+CCD method performs the best and is approximately three times faster than the original CCD method, saving
+more than 40% of the iterations
