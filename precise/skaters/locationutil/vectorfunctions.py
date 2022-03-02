@@ -4,7 +4,7 @@ def normalize(x):
     ### See also portfolioutil.portfunctions.normalize_portfolio
     try:
         return x/sum(x)
-    except (TypeError, ArithmeticError):
+    except (TypeError, ArithmeticError, RuntimeWarning):
         try:
             return [xi/sum(x) for xi in x]
         except (TypeError, ArithmeticError):

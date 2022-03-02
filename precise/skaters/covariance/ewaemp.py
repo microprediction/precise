@@ -33,7 +33,7 @@ def ewa_emp_pcov_d1_r02(y:Y_DATA_TYPE, s:dict, k=1, e=1):
     return d1_factory(f = ewa_emp_pcov_d0_r02, y=y, s=s, k=k)
 
 
-def ewa_emp_pcov_d1_r05(y:Y_DATA_TYPE, s:dict, k=1):
+def ewa_emp_pcov_d1_r05(y:Y_DATA_TYPE, s:dict, k=1, e=1):
     return d1_factory(f = ewa_emp_pcov_d0_r05, y=y, s=s, k=k)
 
 

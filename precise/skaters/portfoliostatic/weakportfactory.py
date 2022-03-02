@@ -35,20 +35,24 @@ def _weak_known_params(cov, a, b, w0, with_neg_mass=False):
     return exclude_negative_weights(w1, with_neg_mass=with_neg_mass)
 
 
-def _weak_optimal_b(cov, w0, a, with_neg_mass=False):
-
-    def b_objective(u,w,a, v0):
+def optimal_b(cov, w0, a=1.0):
+    def b_objective(u, w, a, v0):
         try:
             w1 = _weak_from_cov(cov, a=a, b=u[0], w=w, with_weak=False)
-            v = portfolio_variance(cov=cov, w=exclude_negative_weights(w1))/v0
+            v = portfolio_variance(cov=cov, w=exclude_negative_weights(w1)) / v0
             return v
         except LinAlgError:
-            bad_v = portfolio_variance(cov=cov, w=100*w)
+            bad_v = portfolio_variance(cov=cov, w=100 * w)
             return bad_v
 
-    v0 = portfolio_variance(cov=cov,w=w0)
-    res = scipy.optimize.minimize(fun=b_objective,x0=0.75, bounds=[(0,1)], args=(w0, a, v0))
+    v0 = portfolio_variance(cov=cov, w=w0)
+    res = scipy.optimize.minimize(fun=b_objective, x0=0.75, bounds=[(0, 1)], args=(w0, a, v0))
     best_b = res.x[0]
+    return best_b
+
+
+def _weak_optimal_b(cov, w0, a, with_neg_mass=False):
+    best_b = optimal_b(cov=cov, w0=w0, a=a)
     best_w = _weak_from_cov(cov=cov, a=1.0, b=best_b, w=w0, with_weak=False)
     return exclude_negative_weights(w=best_w,with_neg_mass=with_neg_mass)
 

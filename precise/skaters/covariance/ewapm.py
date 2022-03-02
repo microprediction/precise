@@ -81,5 +81,8 @@ EWA_PM_EMP_D0_COV_SKATERS_T0 = [ewa_pm_emp_scov_r01_n100_t0, ewa_pm_emp_scov_r01
                              ewa_pm_emp_scov_r05_n50_t0, ewa_pm_emp_scov_r05_n25_t0 ]
 
 
+# some weak versions
+
+
 EWA_PM_EMP_D0_COV_SKATERS = EWA_PM_EMP_D0_COV_SKATERS_TM + EWA_PM_EMP_D0_COV_SKATERS_T0
 
