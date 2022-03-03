@@ -14,6 +14,9 @@ def leaderboard_to_latex(leaderboard, caption, label):
                      '_g025': ' \gamma=0.5',
                      '_g050':' \gamma=0.5',
                      '_g100': ' \gamma=1',
+                      '_l010': ' r_l=0.01',
+                      '_l020': ' r_l=0.02',
+                     '_l050': ' r_l=0.05',
                      '_n':' window=',
                      '_long_manager':'',
                      '_vol':' (min-vol)',
@@ -23,15 +26,31 @@ def leaderboard_to_latex(leaderboard, caption, label):
                     '_schur':' (Schur)',
                     '_hrp':' (HRP)',
                     '_pcov':'',
-                    '_ld':' Ledoit Wolf',
+                    '_lw':' Ledoit Wolf',
+                    'lw_':'Ledoit Wolf ',
+                             '_ld': ' Ledoit Wolf',
+                             'ld_': 'Ledoit Wolf ',
+                             '_oas':' Oracle Approximating',
+                    'buf':'Buffered ',
+                    'huber':'Huber',
                     '_glcv':' Graphical lasso w/ cv',
                     '_gl':' Graphical lasso',
                     '_mcd':' min-cov-det',
                     '_d0':'',
                     '_ewa':' expon weighted ',
+                    'ewa_':'Expon weighted ',
                     '_d1':'',
                     '_sk':'',
+                    'scov':' ',
+                    'pcov':' ',
+                    'weak':'Weak ',
+                    'a1':'a=1','a05':'a=0.5',
+                     'b1':'b=1',
+                             '_b2': 'b=2','_b5': 'b=5',
+                             'lz':'Lee Zhong',
                     'hrp':'HRP',
+                    'ewa_':'Expon weighted ',
+                    'run_':'running ',
                     'schur':'Schur',
                     'ppo':''}
 
@@ -68,8 +87,9 @@ def elo_latex_table(genre, category):
                               '_n':' using historical data length '}
 
      description = category
-     for k,v in CATEGORY_REPLACEMENTS.items():
-          description = description.replace(k,v)
+     for _ in range(3):
+         for k,v in CATEGORY_REPLACEMENTS.items():
+              description = description.replace(k,v)
      description = genre.replace('_',' ') + ' for ' + description.replace('_',' ') + '.'
      description = description[0].upper()+description[1:]
      label='tab:'+genre+'_'+category
@@ -77,7 +97,7 @@ def elo_latex_table(genre, category):
 
 
 if __name__=='__main__':
-     ltx = elo_latex_table(genre='manager_var',category='stocks_1_days_p200_n200')
+     ltx = elo_latex_table(genre='manager_var',category='stocks_5_days_p50_n150')
      print(ltx)
 
 

@@ -2,7 +2,6 @@ from precise.skaters.managers.covmanagerfactory import static_cov_manager_factor
 from precise.skaters.covariance.ewapm import ewa_pm_factory, ewa_pm_emp_scov_r01_n100
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
-from precise.skaters.covariance.bufsk import buf_sk_glcv_pcov_d0_n100, buf_sk_ld_pcov_d0_n100
 from functools import partial
 
 
