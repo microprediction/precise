@@ -39,7 +39,7 @@ def leaderboard_to_latex(leaderboard, caption, label):
      tbl.set_cols_align(["l", "l", "c"])
      tbl.set_cols_valign(["t", "m", "b"])
      rows = [['Elo', 'Approach', 'CPU']]
-     for name, res in leaderboard.items():
+     for name, res in leaderboard.most_common():
           for _ in range(2):
                for k,v in MANAGER_REPLACEMENTS.items():
                     name = name.replace(k,v)
