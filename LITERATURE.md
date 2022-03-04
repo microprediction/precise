@@ -513,3 +513,137 @@ promising results are obtained by a simple combination method based on a
 bootstrap procedure. More advanced combination approaches are likely to
 achieve even better results.
 
+## A Nested Factor Model for non-linear dependencies in stock returns [pdf](https://arxiv.org/pdf/1309.3102.pdf)
+REMY CHICHEPORTICHE AND JEAN-PHILIPPE BOUCHAUD
+
+The aim of our work is to propose a natural framework to account for all the empirically
+known properties of the multivariate distribution of stock returns. We define and study a “nested factor
+model”, where the linear factors part is standard, but where the log-volatility of the linear factors and
+of the residuals are themselves endowed with a factor structure and residuals. We propose a calibration
+procedure to estimate these log-vol factors and the residuals. We find that whereas the number of
+relevant linear factors is relatively large (10 or more), only two or three log-vol factors emerge in our
+analysis of the data. In fact, a minimal model where only one log-vol factor is considered is already very
+satisfactory, as it accurately reproduces the properties of bivariate copulas, in particular the dependence
+of the medial-point on the linear correlation coefficient, as reported in Chicheportiche and Bouchaud
+(2012). We have tested the ability of the model to predict Out-of-Sample the risk of non-linear portfolios,
+and found that it performs significantly better than other schemes.
+
+## A Forecast Comparison of Volatility Models [pdf](http://faculty.washington.edu/ezivot/econ589/DoesAnythingBeatGarch11.pdf)
+Hansen and Lunde
+
+By using intra-day returns to calculate a measure for the time-varying volatility, Andersen and Bollerslev (1998a) established that volatility models do provide good forecasts of the conditional variance. In this paper, we take the same approach and use intra-day estimated measures of volatility to compare volatility models. Our objective is to evaluate whether the evolution of volatility models has led to better forecasts of volatility when compared to the first “species” of volatility models. We make an out-of-sample comparison of 330 different volatility models using daily exchange rate data (DM/$) and IBM stock prices. Our analysis does not point to a single winner amongst the different volatility models, as it is different models that are best at forecasting the volatility of the two types of assets. Interestingly, the best models do not provide a significantly better forecast than the GARCH(1,1) model.
+
+
+## Bayesian Inference for Correlations in the Presence of Measurement Error and Estimation Uncertainty [pdf](http://www.alexander-ly.com/wp-content/uploads/2014/09/MatzkeEtAl2016NoisyCorrelations.pdf) also [pdf](https://arxiv.org/pdf/1510.01188.pdf)
+Dora Matzke1, Alexander Ly1, Ravi Selker , Wouter D. Weeda, Benjamin Scheibehenne, Michael D. Lee, and Eric-Jan Wagenmakers
+
+Whenever parameter estimates are uncertain or observations are contaminated by measurement error, the Pearson correlation coefficient can severely underestimate the true
+strength of an association. Various approaches exist for inferring the correlation in the
+presence of estimation uncertainty and measurement error, but none are routinely applied
+in psychological research. Here we focus on a Bayesian hierarchical model proposed by
+Behseta, Berdyyeva, Olson, and Kass (2009) that allows researchers to infer the underlying
+correlation between error-contaminated observations. We show that this approach may be
+also applied to obtain the underlying correlation between uncertain parameter estimates
+as well as the correlation between uncertain parameter estimates and noisy observations.
+We illustrate the Bayesian modeling of correlations with two empirical data sets; in each
+data set, we first infer the posterior distribution of the underlying correlation and then
+compute Bayes factors to quantify the evidence that the data provide for the presence of
+an association
+
+## Optimizing the Omega Ratio using Linear Programming [pdf](https://cs.uwaterloo.ca/~yuying/Courses/CS870_2012/Omega_paper_Short_Cm.pdf)
+Kapsos et al
+
+The Omega Ratio is a recent performance measure. It captures both, the downside and upside potential of
+the constructed portfolio, while remaining consistent with utility maximization. In this paper, a new approach to
+compute the maximum Omega Ratio as a linear program is derived. While the Omega ratio is considered to be
+a non-convex function, we show an exact formulation in terms of a convex optimization problem, and transform
+it as a linear program. The convex reformulation for the Omega Ratio maximization is a direct analogue to
+mean-variance framework and the Sharpe Ratio maximization.
+
+## Out of sample performance of Asset Allocation Strategies
+Daniela Kolusheva
+
+## Using out-of-sample errors in portfolio optimization [pdf](https://www.clsbe.lisboa.ucp.pt/system/files/assets/files/2016-paper-pedro-barroso.pdf)
+Pedro Barroso
+
+Portfolio optimization usually struggles in realistic out of sample contexts. I deconstruct this stylized fact comparing historical estimates of the inputs of portfolio
+optimization with their subsequent out of sample counterparts. I confirm that historical estimates are often very imprecise guides of subsequent values but also
+find this lack of persistence varies significantly across inputs and sets of assets.
+Strikingly, the resulting estimation errors are not entirely random. They have predictable patterns and can be partially reduced using their own previous history. A
+plain Markowitz optimization using corrected inputs performs quite well, out of
+sample, namely outperforming the 1/N rule. Also the corrected covariance matrix
+captures the risk of optimal portfolios much better than the historical one
+
+## Risk Parity, Maximum Diversification, and Minimum Variance: An Analytic Perspective [pdf](https://www.hillsdaleinv.com/uploads/Risk_Parity%2C_Maximum_Diversification%2C_and_Minimum_Variance-_An_Analytic_Perspective.pdf)
+Roger Clark, Harindra de Silva, Steven Thorley
+
+In any event, the primary purpose of this study
+is to provide general analytic solutions to risk-based
+portfolios, not just another empirical back test. Further examination of the historical data in regards to
+transaction costs and turnover, for example in Li, Sullivan, and Garcia-Feijoo [2013], may shed more light
+on the exploitability of the low-risk anomaly.
+
+
+## Risk Parity: Silver Bullet or a Bridge Too Far? [pdf](https://www.callan.com/uploads/2020/05/91d4bcabd3f4e687695022501ac62030/chapter-4-from-managing-multiasset-strategies-2018.pdf)
+Gregory C. Allen
+
+In this chapter, I evaluate the risk parity argument from a theoretical
+standpoint using the modern portfolio theory (MPT) framework of
+Markowitz (1952) and Tobin (1958). I then examine the historical
+performance (both simulated and actual) of risk parity portfolios relative to traditional portfolios used by institutional investors. Finally,
+I discuss the evolution of risk parity strategies and the prevalence of
+their use by institutional investors
+
+## The Risk in Risk Parity: A Factor Based Analysis of Asset-Based Risk Parity [via](https://www.researchgate.net/publication/256038119_The_Risk_in_Risk_Parity_A_Factor_Based_Analysis_of_Asset_Based_Risk_Parity)
+Bhansali, David, Rennison et al
+
+The risks embedded in asset-based risk parity portfolios are explored using a simple, economically motivated factor approach. We show that such an approach can substantially demystify and make explicit the drivers of returns for asset-based risk parity portfolios. The proposed framework can be used to assess the “true” parity in the underlying risk factor exposures for a given portfolio; it also allows investors to understand the active risks that a manager might be taking against his default risk parity position. Using a number of commercial risk parity portfolio returns, we find that traditional asset-based risk strategies, which are diversified in the asset space, can often be dominated by only one or two risk factors (equity and bond factors). In addition, these risk parity portfolios often exhibit very aggressive tactical allocations to the underlying factors, suggesting that active views on asset and/or factor are being expressed in many risk parity portfolios.
+
+## Online Portfolio Selection: A Survey [pdf](https://arxiv.org/pdf/1212.2129)
+Bin LI, Steven C. H. Hoi
+
+Online portfolio selection is a fundamental problem in computational finance, which has been extensively studied across several research communities, including finance, statistics, artificial intelligence, machine learning, and data mining, etc. This article aims to provide a comprehensive survey and a structural understanding of published online portfolio selection techniques. From an online machine learning perspective, we first formulate online portfolio selection as a sequential decision problem, and then survey a variety of state-of-the-art approaches, which are grouped into several major categories, including benchmarks, "Follow-the-Winner" approaches, "Follow-the-Loser" approaches, "Pattern-Matching" based approaches, and "Meta-Learning Algorithms". In addition to the problem formulation and related algorithms, we also discuss the relationship of these algorithms with the Capital Growth theory in order to better understand the similarities and differences of their underlying trading ideas. This article aims to provide a timely and comprehensive survey for both machine learning and data mining researchers in academia and quantitative portfolio managers in the financial industry to help them understand the state-of-the-art and facilitate their research and practical applications. We also discuss some open issues and evaluate some emerging new trends for future research directions.
+
+## What's the big deal about risk parity? [pdf](https://www.researchgate.net/profile/Robert-Ferguson-14/publication/312284109_What%27s_the_big_deal_about_Risk_Parity/links/5a8049d7aca272a73769d1c0/Whats-the-big-deal-about-Risk-Parity.pdf)
+Anna Agapova, Robert Ferguson, Dean Leistikow, Danny Meidan
+
+It is often argued in defense of Risk Parity portfolios that they maximize the
+Sharpe ratio if their securities have identical Sharpe ratios and identical correlations. However, securities have neither identical Sharpe ratios nor this correlation structure. In realistic
+markets, Risk Parity portfolios do not maximize the Sharpe ratio, do not minimize variance,
+do not maximize the Information ratio, and do not have any other commonly sought optimal
+property. So, what’s the big deal about Risk Parity?
+
+
+## Hierarchical Sensitivity Parity [pdf](https://arxiv.org/pdf/2202.08921)
+Alejandro Rodriguez
+
+n this work we present a new framework for modelling portfolio dynamics and how to incorporate this information in the portfolio selection process. We define drivers for asset and portfolio dynamics, and their optimal selection. We introduce the new Commonality Principle, which gives a solution for the optimal selection of portfolio drivers as being the common drivers. Asset dynamics are modelled by PDEs and approximated with Neural Networks, and sensitivities of portfolio constituents with respect to portfolio common drivers are obtained via Automatic Adjoint Differentiation (AAD). Information of asset dynamics is incorporated via sensitivities into the portfolio selection process. Portfolio constituents are projected into a hypersurface, from a vector space formed by the returns of common drivers of the portfolio. The commonality principle allows for the necessary geometric link between the hyperplane formed by portfolio constituents in a traditional setup with no exogenous information, and the hypersurface formed by the vector space of common portfolio drivers, so that when portfolio constituents are projected into this hypersurface, the representations of idiosyncratic risks from the hyperplane are kept at most in this new subspace, while systematic risks representations are added via exogenous information as part of this common drivers vector space. We build a sensitivity matrix, which is a similarity matrix of the projections in this hypersurface, and can be used to optimize for diversification on both, idiosyncratic and systematic risks, which is not contemplated on the literature. Finally, we solve the convex optimization problem for optimal diversification by applying a hierarchical clustering to the sensitivity matrix, avoiding quadratic optimizers for the matrix properties, and we reach over-performance in all experiments with respect to all other out-of-sample methods.
+
+
+## On the properties of equally-weighted risk contributions portfolios
+Maillard, Roncalli and Teiletche
+
+Minimum variance and equally-weighted portfolios have recently prompted
+great interest both from academic researchers and market practitioners, as their
+construction does not rely on expected average returns and is therefore assumed to be robust. In this paper, we consider a related approach, where the
+risk contribution from each portfolio components is made equal, which maximizes diversication of risk (at least on an ex-ante basis). Roughly speaking,
+the resulting portfolio is similar to a minimum variance portfolio subject to
+a diversication constraint on the weights of its components. We derive the
+theoretical properties of such a portfolio and show that its volatility is located
+between those of minimum variance and equally-weighted portfolios. Empirical
+applications conrm that ranking. All in all, equally-weighted risk contributions portfolios appear to be an attractive alternative to minimum variance
+and equally-weighted portfolios and might be considered a good trade-o between those two approaches in terms of absolute level of risk, risk budgeting
+and diversication.
+
+
+## Improved iterative methods for solving risk parity portfolio [pdf](https://www.emerald.com/insight/content/doi/10.1108/JDQS-12-2021-0031/full/pdf?title=improved-iterative-methods-for-solving-risk-parity-portfolio)
+Jaehyuk Choi and Rong Chen
+
+Risk parity, also known as equal risk contribution, has recently gained increasing attention as a portfolio
+allocation method. However, solving portfolio weights must resort to numerical methods as the analytic
+solution is not available. This study improves two existing iterative methods: the cyclical coordinate descent
+(CCD) and Newton methods. The authors enhance the CCD method by simplifying the formulation using a
+correlation matrix and imposing an additional rescaling step. The authors also suggest an improved initial
+guess inspired by the CCD method for the Newton method. Numerical experiments show that the improved
+CCD method performs the best and is approximately three times faster than the original CCD method, saving
+more than 40% of the iterations

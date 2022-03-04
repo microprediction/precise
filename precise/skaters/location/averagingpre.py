@@ -16,7 +16,7 @@ def sma(s:dict=None, x:X_TYPE=None, r:float=0.025, n_dim:int=None):
 
 
 def averager(s:dict=None, x:X_TYPE=None, r:float=0.025, method:str= 'switch', n_dim:int=None):
-    """ Stands for "switching moving average"
+    """ "Switching moving average
           method:   'switch', 'ma' or 'emp'
     """
     if not s:

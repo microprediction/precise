@@ -11,12 +11,12 @@ import numpy as np
 
 if __name__=='__main__':
     # Select some managers
-    from precise.skaters.managers.weakmanagers import weak_sk_ld_pcov_d0_n100_long_manager, weak_pm_t0_d0_r050_n50_long_manager
-    from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager
-    from precise.skaters.managers.hrpmanagers import hrp_weak_emp_d0_r025_n50_long_manager
+    from precise.skaters.managers.weakmanagers import weak_sk_lw_pcov_d0_n100_long_manager, weak_pm_t0_d0_r050_n50_long_manager
+    from precise.skaters.managers.schurmanagers import schur_weak_vol_ewa_r050_n25_s5_g000_long_manager
+    from precise.skaters.managers.hrpmanagers import hrp_weak_weak_pm_t0_d0_r025_n50_s5_long_manager
     from precise.skaters.managers.ppomanagers import ppo_ewa_d0_r025_n50_vol_long_manager, ppo_sk_glcv_pcov_d0_n100_t0_vol_long_manager
-    managers = [weak_sk_ld_pcov_d0_n100_long_manager, weak_pm_t0_d0_r050_n50_long_manager, schur_weak_pm_t0_d0_r025_n50_g100_long_manager,
-                hrp_weak_emp_d0_r025_n50_long_manager, ppo_ewa_d0_r025_n50_vol_long_manager, ppo_sk_glcv_pcov_d0_n100_t0_vol_long_manager]
+    managers = [weak_sk_lw_pcov_d0_n100_long_manager, weak_pm_t0_d0_r050_n50_long_manager, schur_weak_vol_ewa_r050_n25_s5_g000_long_manager,
+                hrp_weak_weak_pm_t0_d0_r025_n50_s5_long_manager, ppo_ewa_d0_r025_n50_vol_long_manager, ppo_sk_glcv_pcov_d0_n100_t0_vol_long_manager]
 
     # Get some ETF returns from those that have been around for a while
     print('Be patient ...')

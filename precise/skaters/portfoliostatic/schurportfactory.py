@@ -117,7 +117,7 @@ def hierarchical_seriated_portfolio_factory(alloc, cov, port, splitter, gamma:fl
         return w
 
 
-def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, delta=0.0, gamma=0.5):
+def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, delta=0.0, gamma=1.0):
     """
         An experimental way to split allocation
     """

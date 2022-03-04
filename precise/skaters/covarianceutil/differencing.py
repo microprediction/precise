@@ -17,6 +17,6 @@ def d1_factory( f, y, s, k=1, **kwargs ):
     else:
         dy = y - s['prev_y']
         dy_hat, dy_cov, s['dy'] = f(y=dy, s=s['dy'], k=k, **kwargs)
-        y['prev_y'] = y
+        s['prev_y'] = y
         x = s['prev_y'] + dy_hat
         return x, dy_cov, s
