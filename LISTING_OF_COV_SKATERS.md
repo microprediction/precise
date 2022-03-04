@@ -5,9 +5,9 @@
 | buf_emp_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py |
 | run_emp_pcov_d0 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/runemp.py |
 | buf_sk_emp_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
-| buf_sk_ld_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
-| buf_sk_ld_pcov_d0_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
-| buf_sk_ld_pcov_d0_n300 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
+| buf_sk_lw_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
+| buf_sk_lw_pcov_d0_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
+| buf_sk_lw_pcov_d0_n300 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_gl_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_gl_pcov_d0_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_glcv_pcov_d0_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
@@ -64,7 +64,7 @@
 | buf_emp_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufemp.py |
 | run_emp_pcov_d1 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/runemp.py |
 | buf_sk_ec_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
-| buf_sk_ld_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
+| buf_sk_lw_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_gl_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_glcv_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
 | buf_sk_mcd_pcov_d1_n100 | https://github.com/microprediction/precise/blob/main/precise/skaters/covariance/bufsk.py |
