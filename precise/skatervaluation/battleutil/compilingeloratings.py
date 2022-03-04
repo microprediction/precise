@@ -10,13 +10,13 @@ from collections import OrderedDict
 
 
 
-def elo_from_win_files(genre='cov_likelihood'):
+def elo_from_win_files(genre='cov_likelihood', category=None):
     """
     :return:  Elo ratings for all categories
     """
     # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
-    the_lot = [(cat, elo_from_win_counts(cat_data, timing_genre=genre)) for cat, cat_data in win_data(genre=genre)]
-    return the_lot
+    return [(cat, elo_from_win_counts(cat_data, timing_genre=genre)) for cat, cat_data in win_data(genre=genre, category=category)]
+
 
 
 def elo_from_win_counts(ctn, timing_genre=None):
@@ -39,18 +39,27 @@ def elo_from_win_counts(ctn, timing_genre=None):
     contestants = list(set( [ k.split('>')[0] for k in ctn.keys() ] + [ k.split('>')[1] for k in ctn.keys() ]))
     elo = Counter( dict([ (c,1500) for c in contestants ]))
     finished = False
+    import time
+    st = time.time()
+    ct = 0
     while not finished:
         remaining_counts = [ c for b,c in ctn.items() if c>=1 ]
         remaining_battles = [ (b,c) for b,c in ctn.items() if c>=1 ]
         weights = [ c/sum(remaining_counts) for c in remaining_counts ]
         finished = not remaining_battles
         if not finished:
+            n_remaining = sum(remaining_counts)
+            if n_remaining % 100 ==0:
+                print('  '+str(n_remaining)+' remaining')
+            cts = time.time()
             random_battle = random.choices(population=remaining_battles, weights=weights,k=1)[0]
+            ct += time.time()-cts
             winner, loser = random_battle[0].split('>')
             winner_change, loser_change = elo_change(elo[winner],elo[loser],points=1.0, k=10)
             ctn[random_battle[0]] -= 1
             elo[winner] += winner_change
             elo[loser] += loser_change
+    pprint({'total time':time.time()-st,'choice time':ct})
     if timing_genre is not None:
         contestant_timing = TIMING.get(timing_genre)
         if contestant_timing is not None:
@@ -59,8 +68,7 @@ def elo_from_win_counts(ctn, timing_genre=None):
     return elo
 
 
-
 if __name__=='__main__':
     category_sub_string = 'stocks' # e.g. m6_daily_p100
-    ratings = elo_from_win_files(genre='manager_var')
-    pprint([ r for r in ratings if category_sub_string in r[0]])
+    ratings = elo_from_win_files(genre='manager_var', category=category_sub_string)
+    pprint(ratings)

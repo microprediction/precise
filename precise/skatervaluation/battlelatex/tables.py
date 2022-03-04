@@ -75,7 +75,7 @@ def leaderboard_to_latex(leaderboard, caption, label, max_rows=42):
 
 
 def elo_latex_table(genre, category, max_rows=42):
-     elo_results = dict( elo_from_win_files(genre=genre) )
+     elo_results = dict( elo_from_win_files(genre=genre, category=category) )
      try:
           leaderboard = elo_results[category]
      except KeyError:

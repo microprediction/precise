@@ -3,7 +3,7 @@ from pprint import pprint
 
 
 if __name__=='__main__':
-    category_sub_string = 'm6'  # e.g. m6_daily, p100, whatever, 'stocks_5_days'
+    category_sub_string = 'm6_daily_p100_n200'  # e.g. m6_daily, p100, whatever, 'stocks_5_days'
     ratings = elo_from_win_files(genre='cov_likelihood',category=category_sub_string)
     pprint(ratings)
 
