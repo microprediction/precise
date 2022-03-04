@@ -4,7 +4,7 @@ from texttable import Texttable
 from latextable import draw_latex
 
 
-def leaderboard_to_latex(leaderboard, caption, label):
+def leaderboard_to_latex(leaderboard, caption, label, max_rows=42):
      # Oh so ugly :)
      MANAGER_REPLACEMENTS = {'_t0':' target=0',
                      '_pm':' partial moments  ',
@@ -70,11 +70,11 @@ def leaderboard_to_latex(leaderboard, caption, label):
                elo_rating = round(res,ndigits=0)
                cpu = 'N/A'
           rows.append([elo_rating,name,cpu])
-     tbl.add_rows(rows=rows)
+     tbl.add_rows(rows=rows[:max_rows])
      return draw_latex(tbl, caption=caption, label=label)
 
 
-def elo_latex_table(genre, category):
+def elo_latex_table(genre, category, max_rows=42):
      elo_results = dict( elo_from_win_files(genre=genre) )
      try:
           leaderboard = elo_results[category]
@@ -93,7 +93,7 @@ def elo_latex_table(genre, category):
      description = genre.replace('_',' ') + ' for ' + description.replace('_',' ') + '.'
      description = description[0].upper()+description[1:]
      label='tab:'+genre+'_'+category
-     return leaderboard_to_latex(leaderboard=leaderboard, caption=description, label=label )
+     return leaderboard_to_latex(leaderboard=leaderboard, caption=description, label=label, max_rows=max_rows )
 
 
 if __name__=='__main__':
