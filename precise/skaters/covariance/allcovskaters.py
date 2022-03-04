@@ -10,6 +10,8 @@ from precise.skaters.covariance.weakewa import WEAK_EWA_DO_COV_SKATERS
 from precise.skaters.covariance.weakpm import WEAK_PM_DO_COV_SKATERS
 from precise.skaters.covariance.weaklz import WEAK_LZ_DO_COV_SKATERS
 from precise.skaters.covariance.weaksk import WEAK_SK_DO_COV_SKATERS
+from precise.skaters.covariance.avgtop import AVG_TOP_COV_D0_SKATERS
+from precise.skaters.covariance.weakboot import WEAK_BOOT_D0_COV_SKATERS
 
 import random
 from precise.whereami import COV_SKATER_MANIFEST
@@ -29,7 +31,9 @@ ALL_D0_SKATERS = BUF_EMP_D0_SKATERS + \
                  WEAK_EWA_DO_COV_SKATERS+\
                  WEAK_PM_DO_COV_SKATERS+\
                  WEAK_LZ_DO_COV_SKATERS+\
-                 WEAK_SK_DO_COV_SKATERS
+                 WEAK_SK_DO_COV_SKATERS+\
+                 AVG_TOP_COV_D0_SKATERS+\
+                 WEAK_BOOT_D0_COV_SKATERS
 
 
 ALL_D1_SKATERS = BUF_EMP_D1_SKATERS + \
