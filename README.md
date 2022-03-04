@@ -91,6 +91,7 @@ Methodology hints (can be combined)
 | oas       | Oracle approximating shrinkage.        |
 | gl        | Graphical Lasso                        |
 | mcd       | Minimum covariance determinant         |
+| weak      | Novel shrinkage method by yours truly  |
 
 Intended main target (more than one may be produced in the state)
 
