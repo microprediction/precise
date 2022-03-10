@@ -11,3 +11,9 @@ def random_factor_cov(n=500, n_dim=100):
 def random_band_cov(n=250, n_dim=20, n_bands=5):
     xs = create_band_dataset(n=250, n_dim=20, n_bands=5)
     return np.cov(xs, rowvar=False)
+
+
+def random_known_cov(cov, n_samples=60):
+    n_dim = np.shape(cov)[0]
+    xs = np.random.multivariate_normal(mean=np.zeros(n_dim), cov=cov, size=n_samples)
+    return np.cov(xs,rowvar=False)

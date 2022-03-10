@@ -16,7 +16,11 @@ def manager_var(contestant, xs, n_burn, **ignore):
     return -metrics['var'], metrics
 
 
-def manager_stats(mgr, xs, n_burn=10):
+def var_metric(y,w_prev):
+    return sum([yi * wi for yi, wi in zip_longest(y, w_prev)])
+
+
+def manager_stats(mgr, xs, n_burn=10, metric=var_metric):
     """
        Compute manager stats.
        Sends e=-1 during burn-in, then e=1 during assessment period
@@ -40,7 +44,7 @@ def manager_stats(mgr, xs, n_burn=10):
     mrg_time = 0
     for m, y in enumerate(xs[n_burn:]):
         if w_prev is not None:
-            x = sum( [ yi*wi for yi,wi in zip_longest( y,w_prev) ] )
+            x = metric(y=y,w_prev=w_prev)
             metrics = var_update(metrics, x=x)
 
         # Store portfolio for assessment against next data point

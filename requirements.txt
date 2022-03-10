@@ -1,5 +1,5 @@
 numpy
-momentum>=0.2.5
+momentum>=0.2.7
 kmeans1d
 runthis
 scikit-learn

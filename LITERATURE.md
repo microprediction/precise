@@ -647,3 +647,11 @@ correlation matrix and imposing an additional rescaling step. The authors also s
 guess inspired by the CCD method for the Newton method. Numerical experiments show that the improved
 CCD method performs the best and is approximately three times faster than the original CCD method, saving
 more than 40% of the iterations
+
+## On the Risk of Out-of-Smaple Portfolio Performance [pdf](https://www.researchgate.net/publication/351942213_On_the_Risk_of_Out-of-Sample_Portfolio_Performance)
+Nathan Lassance, Alterto Martin-Utrera, Majeed Simaan
+
+We show that estimated mean-variance portfolios bear substantial out-of-sample utility risk in high-dimensional settings or when these portfolios exploit near-arbitrage opportunities. We propose a robustness measure that balances out-of-sample utility mean and volatility using our novel analytical characterization of out-of-sample utility risk. While individual portfolios do not offer maximal robust performance, portfolio combinations achieve the optimal tradeoff between out-of-sample utility mean and volatility and are more resilient to estimation errors. Our analysis of out-of-sample performance risk has implications for constructing and evaluating quantitative investment strategies and models of the stochastic discount factor.
+
+
+
