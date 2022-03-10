@@ -12,6 +12,7 @@ MISC_ETFS = ['RSP', 'NOBL', 'PGX', 'BKNL', 'FNDE', 'CWB', 'RPG', 'GNR', 'SGOL', 
 ETFS = list(set(SOFI_ETFS + VANGUARD_ETFS + SCHWAB_ETFS + INVESCO_ETFS + FACTOR_ETFS + MISC_ETFS))
 
 # A few with decent history via yahoo datareader:
+
 VETERAN_NON_BOND_ETFS = ['RPG', 'SCHC', 'SCHV', 'VUG', 'SDOG', 'VOO', 'DGRW', 'CWB', 'CWI', 'SCHA', 'VTV', 'VIG',
                 'NOBL', 'SCHG', 'SCHX', 'SPLV', 'VO', 'VTI', 'FNDE', 'SCHM', 'VV', 'XLG', 'GXC',
                 'PDP', 'GNR', 'SPYG', 'RSP', 'RPV',  'SCHE', 'SCHF', 'SCHB', 'VB']

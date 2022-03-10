@@ -38,9 +38,24 @@ if __name__=='__main__':
         pprint(brief_portfolio)
         portfolios[mgr.__name__] = brief_portfolio
 
+
+    # So let's pick a manager
+    fav_manager = 'weak_sk_lw_pcov_d0_n100_long_manager'
     import json
     with open('etf_allocation.json', 'wt') as fh:
-        json.dump(portfolios,fh)
+        json.dump(portfolios[fav_manager],fh)
+
+    # Actual shares
+    total_notional = 700000
+    fav_weights = portfolios[fav_manager]
+    last_prices = xs[-1]
+    from precise.skatertools.data.equitylive import get_prices
+    last_prices = [ get_prices(ticker=ticker,n_obs=2, interval='d')[-1] for (wi,ticker) in fav_weights ]
+
+    to_buy = dict( [ (ticker,wi*total_notional/last_price ) for (wi, ticker), last_price in zip(fav_weights, last_prices) ] )
+    with open('etf_shares.json', 'wt') as fh:
+        json.dump(to_buy, fh)
+
 
 
 
