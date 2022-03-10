@@ -31,7 +31,7 @@ def hrp_unit_weak_s5_port(cov=None, pre=None):
 
 
 def hrp_diag_weak_s5_long_port(cov=None, pre=None):
-    return hierarchical_risk_parity_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5)
+    return hierarchical_risk_parity_portfolio_factory(port=weak_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5)
 
 
 # Diag allocation, but different portfolios

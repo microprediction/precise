@@ -10,7 +10,8 @@ DEFAULT_M6_PARAMS = {'n_dim': 25,
                       'lb':-1000,
                       'ub':1000,
                       'interval':'d',
-                      'etf':1}
+                      'etf':1,
+                      'implied':0}
 
 
 def m6_source(params)->(dict, str, np.ndarray):
@@ -30,6 +31,8 @@ def m6_source(params)->(dict, str, np.ndarray):
     combined_params['description'] = descriptions[combined_params['interval']]
     category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str(
         combined_params['n_burn'])
+    if params.get('implied'):
+        category = category+'_implied'
 
     if combined_params['n_dim']<50:
         xs = random_m6_returns(verbose=False, **combined_params)
@@ -37,4 +40,5 @@ def m6_source(params)->(dict, str, np.ndarray):
     else:
         xs = all_m6_returns(verbose=False, **combined_params)
     return combined_params, category, xs
+
 
