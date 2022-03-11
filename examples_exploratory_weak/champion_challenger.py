@@ -12,15 +12,16 @@ from precise.skaters.portfolioutil.portfunctions import negative_mass
 from precise.skaters.covarianceutil.covdecomposition import random_portfolio_features
 
 # A study to try to determine when and why one portfolio has better out of sample performance than another
+import random
 
 
 if __name__=='__main__':
     Ys = list()  # <-- realized portfolio variance
     Xs = list()  # <-- regressors
-    n_dim = 50
     for iter in range(500):
+        n_dim = random.choice([25,50,100,200])
         print('Iteration '+str(iter))
-        ys = random_cached_equity_dense(n_obs=100, n_dim=n_dim, k=1)
+        ys = random_cached_equity_dense(n_obs=n_dim*2, n_dim=n_dim, k=1)
         s = {}
         w = np.ones(len(ys[0]))/len(ys[0])
         for ndx, y in enumerate(ys):
@@ -28,8 +29,14 @@ if __name__=='__main__':
                 champY = np.dot(w_champion, y) ** 2        # Realized portfolio variance
                 challengeY = np.dot(w_challenger, y) ** 2  # Realized portfolio variance
                 from precise.skaters.covarianceutil.covdecomposition import RANDOM_PORTFOLIO_FEATURE_NAMES
-                Xnames = ['rel_norm','negative mass challenger','negative mass champion','negative mass unit'] + RANDOM_PORTFOLIO_FEATURE_NAMES
-                Xn = [rel_norm, n_mass_challenger, n_mass_champion, n_mass_unit ] + list(rpf)
+                include_neg_mass = False
+                if include_neg_mass:
+                    Xnames = ['rel_norm','negative mass challenger','negative mass champion','negative mass unit'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+                    Xn = [rel_norm, n_mass_challenger, n_mass_champion, n_mass_unit ] + list(rpf)
+                else:
+                    Xnames = ['rel_norm'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+                    Xn = [n_mass_unit] + list(rpf)
+
                 Yn = 1.0 if challengeY<champY else 0.0
                 Ys.append(Yn)
                 Xs.append(Xn)

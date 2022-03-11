@@ -40,6 +40,11 @@ def random_portfolio_vars(cov, n_obs)->[float]:
 
 
 def random_portfolio_features(cov, n_obs):
+    """ Quantities that may or may not help delineate relative success
+    :param cov:
+    :param n_obs:
+    :return:
+    """
     vs = random_portfolio_vars(cov=cov, n_obs=n_obs)
     f0 = np.quantile(vs,0.001) / min(vs)
     f1 = np.quantile(vs,0.01) / np.quantile(vs,0.001)
@@ -69,19 +74,3 @@ if __name__=='__main__':
 
 
 
-
-if __name__=='__main__':
-    cov1 = np.array([[1.09948514, -1.02926114, 0.22402055, 0.10727343],
-                    [-1.02926114, 2.54302628, 1.05338531, -0.12481515],
-                    [0.22402055, 1.05338531, 1.79162765, -0.78962956],
-                    [0.10727343, -0.12481515, -0.78962956, 0.86316527]])
-    cov2 = np.array([[1.19948514, -1.02926114, 0.22402055, 0.10727343],
-                    [-1.02926114, 2.64302628, 1.05338531, -0.12481515],
-                    [0.22402055, 1.05338531, 2.162765, -0.78962956],
-                    [0.10727343, -0.12481515, -0.78962956, 0.96316527]])
-    vv1 = diffraction(cov1, n_obs=551)
-    vv2 = diffraction(cov2, n_obs=551)
-    r = vv1 /vv2
-    print({'var1':vv1,
-           'var2':vv2,
-           'ratio':r})
