@@ -34,6 +34,10 @@ if __name__=='__main__':
         s = {}
 
         w = np.ones(len(ys[0]))/len(ys[0])
+        w_champion = np.copy(w)  # Keep lint happy
+        w_challenger = np.copy(w)
+        w_unit = np.copy(w)
+
         for ndx, y in enumerate(ys):
             if ndx>n_dim/2:
                 champY = np.dot(w_champion, y) ** 2        # Realized portfolio variance
