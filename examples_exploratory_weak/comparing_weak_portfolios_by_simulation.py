@@ -10,25 +10,35 @@ from momentum.functions import var_init, var_update, kurtosis_init, kurtosis_upd
 from pprint import pprint
 from precise.skaters.portfolioutil.portcomparison import port_kurtosis
 from precise.skaters.portfoliostatic.allstaticport import LONG_PORT
+from functools import partial, update_wrapper
 
-cov = np.array([[ 1.09948514, -1.02926114,  0.22402055,  0.10727343],
-       [-1.02926114,  2.54302628,  1.05338531, -0.12481515],
-       [ 0.22402055,  1.05338531,  1.79162765, -0.78962956],
-       [ 0.10727343, -0.12481515, -0.78962956,  0.86316527]])
+# A small example intended to illustrate why cov weakening can sometimes serve
+# one well out of sample
+
+
 
 
 def weaker_port(cov, b=0.976):
     dcov = np.diag(np.diag(cov))
     off_diag_cov = cov - dcov
-    weak_cov = 0.9 * off_diag_cov + dcov
+    weak_cov = b * off_diag_cov + dcov
     return unit_port(weak_cov)
 
 
 if __name__=='__main__':
-    ports = LONG_PORT
-    anchor_cov = np.eye(40)
-    moments = port_kurtosis(ports=ports, cov=anchor_cov, n_draws=50, n_true=50, metric='mean')
-    pprint(moments)
+    # Make some weak ports
+    bs = np.linspace(0.0,1.0,21)
+    ports = []
+    for b in bs:
+        port = partial(weaker_port, b=b)
+        setattr(port, '__name__', 'weak_'+str(b))
+        ports.append(port)
+
+    # Test them out of sample
+    n_dim = 10
+    anchor_cov = np.eye(n_dim)
+    moments = port_kurtosis(ports=ports, cov=anchor_cov, n_draws=50000, n_true=50, n_anchor=50, n_observed=50, metric='mean')
+
 
 
 

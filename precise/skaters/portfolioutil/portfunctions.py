@@ -84,6 +84,35 @@ def var_scaled_returns(cov, mu:float, r:float):
     return result
 
 
+# Some portfolio features
+
+
+def herfandahl(w):
+    # There's a name for everything!
+    # Related to https://en.wikipedia.org/wiki/Herfindahl%E2%80%93Hirschman_index
+    return np.linalg.norm(w)
+
+
+def relative_herfandahl(w):
+    n = len(w)
+    if n==1:
+        return 1
+    else:
+        H = np.linalg.norm(w)
+        return (H-1/n)/(1-1/n)
+
+
+def std_herfandal(w):
+    from scipy.stats import invgauss
+    r = relative_herfandahl(w)
+    if r > (1-1e-8):
+        return 10.
+    if r < 1e-8:
+        return -10.0
+    return invgauss(r)
+
+
+
 if __name__=='__main__':
     sgma = np.array([[1,4],[4,20]])
     w = [0.3,0.4]
