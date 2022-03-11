@@ -13,30 +13,31 @@ from precise.skaters.covarianceutil.covdecomposition import random_portfolio_fea
 
 # A study to try to determine when and why one portfolio has better out of sample performance than another
 import random
+from precise.skaters.covarianceutil.covdecomposition import RANDOM_PORTFOLIO_FEATURE_NAMES
 
 
 if __name__=='__main__':
     Ys = list()  # <-- realized portfolio variance
     Xs = list()  # <-- regressors
+    include_neg_mass = False
+    if include_neg_mass:
+        Xnames = ['rel_norm', 'negative mass challenger', 'negative mass champion',
+                  'negative mass unit'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+    else:
+        Xnames = ['rel_norm'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+    Xn = [0 for n in Xnames]
+
     for iter in range(500):
         n_dim = random.choice([25,50,100,200])
         print('Iteration '+str(iter))
         ys = random_cached_equity_dense(n_obs=n_dim*2, n_dim=n_dim, k=1)
         s = {}
+
         w = np.ones(len(ys[0]))/len(ys[0])
         for ndx, y in enumerate(ys):
             if ndx>n_dim/2:
                 champY = np.dot(w_champion, y) ** 2        # Realized portfolio variance
                 challengeY = np.dot(w_challenger, y) ** 2  # Realized portfolio variance
-                from precise.skaters.covarianceutil.covdecomposition import RANDOM_PORTFOLIO_FEATURE_NAMES
-                include_neg_mass = False
-                if include_neg_mass:
-                    Xnames = ['rel_norm','negative mass challenger','negative mass champion','negative mass unit'] + RANDOM_PORTFOLIO_FEATURE_NAMES
-                    Xn = [rel_norm, n_mass_challenger, n_mass_champion, n_mass_unit ] + list(rpf)
-                else:
-                    Xnames = ['rel_norm'] + RANDOM_PORTFOLIO_FEATURE_NAMES
-                    Xn = [n_mass_unit] + list(rpf)
-
                 Yn = 1.0 if challengeY<champY else 0.0
                 Ys.append(Yn)
                 Xs.append(Xn)
@@ -53,6 +54,13 @@ if __name__=='__main__':
             n_mass_unit = negative_mass(w_unit)
             rpf = random_portfolio_features(cov=x_cov, n_obs=11115)
             rel_norm = np.linalg.norm(w_champion) / np.linalg.norm(w_challenger)
+            if include_neg_mass:
+                Xnames = ['rel_norm', 'negative mass challenger', 'negative mass champion',
+                          'negative mass unit'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+                Xn = [rel_norm, n_mass_challenger, n_mass_champion, n_mass_unit] + list(rpf)
+            else:
+                Xnames = ['rel_norm'] + RANDOM_PORTFOLIO_FEATURE_NAMES
+                Xn = [n_mass_unit] + list(rpf)
 
         if len(Xs):
             from sklearn.preprocessing import StandardScaler
