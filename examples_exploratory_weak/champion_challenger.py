@@ -28,7 +28,7 @@ if __name__=='__main__':
     Xn = [0 for n in Xnames]
 
     for iter in range(500):
-        n_dim = random.choice([25,50,100,200])
+        n_dim = random.choice([10, 25,40, 60,100,150, 200, 250])
         print('Iteration '+str(iter))
         ys = random_cached_equity_dense(n_obs=n_dim*2, n_dim=n_dim, k=1)
         s = {}
@@ -52,11 +52,17 @@ if __name__=='__main__':
 
             # Some features
             d_mean = np.mean(np.diag(x_cov))
-            n_mass_champion = negative_mass(w_champion)
+            try:
+                n_mass_champion = negative_mass(w_champion)
+            except np.linalg.LinAlgError:
+                n_mass_champion = 0
             n_mass_challenger = negative_mass(w_challenger)
             w_unit = unit_port(x_cov)
             n_mass_unit = negative_mass(w_unit)
-            rpf = random_portfolio_features(cov=x_cov, n_obs=11115)
+            try:
+              rpf = random_portfolio_features(cov=x_cov, n_obs=11115)
+            except:
+              rpf = [ 0 for _ in RANDOM_PORTFOLIO_FEATURE_NAMES ]
             rel_norm = np.linalg.norm(w_champion) / np.linalg.norm(w_challenger)
             if include_neg_mass:
                 Xnames = ['rel_norm', 'negative mass challenger', 'negative mass champion',
@@ -98,5 +104,19 @@ if __name__=='__main__':
 
 
 
+
+and_the_results_are = {'champion better': 0.7318986918436386,
+ 'importance': [(0.033607355306393916, 'f2'),
+                (-0.023353417369391703, 'f4'),
+                (-0.013084663700970615, 'f3'),
+                (0.007834184792080662, 'rel_norm'),
+                (0.007210930958856752, 'f1'),
+                (0.003323817072284449, 'f0'),
+                (0.0027214866650434482, 'f6'),
+                (0.0008564840210561352, 'f5')],
+ 'model coef': array([ 3.96006948e-06,  3.02359895e-02,  9.61353812e-02,  3.43625656e-01,
+       -8.97719935e-02, -6.28447456e-02,  1.15690034e-02,  2.32852942e-02]),
+ 'regressor std': array([1.97829478e+03, 1.09929165e-01, 7.50080862e-02, 9.78022297e-02,
+       1.45754407e-01, 3.71604931e-01, 7.40326539e-02, 1.16875769e-01])}
 
 
