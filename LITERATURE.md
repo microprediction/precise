@@ -67,6 +67,12 @@ role of covariance matrices in the theory of portfolio optimization as well as i
 industry-wide risk management practices, we analyze the possible implications
 of this effect.
 
+
+### Continuous Time Mean-Variance Portfolio Selection: A Reinforcement Learning Framework [pdf](https://arxiv.org/pdf/1904.11392)
+Haoran Wang, Xun Yu Zhou
+
+We approach the continuous-time mean-variance (MV) portfolio selection with reinforcement learning (RL). The problem is to achieve the best tradeoff between exploration and exploitation, and is formulated as an entropy-regularized, relaxed stochastic control problem. We prove that the optimal feedback policy for this problem must be Gaussian, with time-decaying variance. We then establish connections between the entropy-regularized MV and the classical MV, including the solvability equivalence and the convergence as exploration weighting parameter decays to zero. Finally, we prove a policy improvement theorem, based on which we devise an implementable RL algorithm. We find that our algorithm outperforms both an adaptive control based method and a deep neural networks based algorithm by a large margin in our simulations.
+
 ### Shrinkage Algorithms for MMSE Covariance Estimation [pdf](https://webee.technion.ac.il/Sites/People/YoninaEldar/104.pdf)
 Chen, Wiesel, Eldar, Hero
 
