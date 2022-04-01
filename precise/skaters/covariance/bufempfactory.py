@@ -2,7 +2,7 @@ from precise.skaters.covariance.buffactory import buf_mean_and_pcov
 from precise.skaters.covarianceutil.conventions import Y_DATA_TYPE
 import numpy as np
 
-def buf_emp_pcov_d0_factory(y:Y_DATA_TYPE, s:dict, n_buffer:int=100, e=1):
+def buf_emp_pcov_d0_factory(y:Y_DATA_TYPE, s:dict, k=1, n_buffer:int=100, e=1):
     """
         Empirical covariance skater that assumes y's are iid
 
