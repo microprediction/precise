@@ -1,5 +1,19 @@
 
 
+## Covariance matrix testing in high dimensions using random projections
+Ayyala, Ghosh and Linder
+
+Estimation and hypothesis tests for the covariance matrix in high dimensions is a challenging problem
+as the traditional multivariate asymptotic theory is no longer valid. When the dimension is larger than
+or increasing with the sample size, standard likelihood based tests for the covariance matrix have poor
+performance. Existing high dimensional tests are either computationally expensive or have very weak
+control of type I error. In this paper, we propose a test procedure, CRAMP, for testing hypotheses
+involving one or more covariance matrices using random projections. Projecting the high dimensional
+data randomly into lower dimensional subspaces alleviates of the curse of dimensionality, allowing for the
+use of traditional multivariate tests. An extensive simulation study is performed to compare CRAMP
+against asymptotics-based high dimensional test procedures. An application of the proposed method to
+two gene expression data sets is presented
+
 
 ### Numerically Stable Parallel Computation of (Co-)Variance [pdf](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf)
 Erich Shubert and Michael Gertz
