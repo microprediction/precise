@@ -1,6 +1,6 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Online covariance and precision forecasting, portfolios, and model ensembles in a simple functional style. 
+Online covariance and precision forecasting, portfolios, and model ensembles with ongoing benchmarking. 
 
 ## Covariance TLDR: "Functions that forecast covariance in online fashion"
 Here y is a vector:
