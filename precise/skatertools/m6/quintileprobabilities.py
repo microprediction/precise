@@ -25,8 +25,8 @@ def mvn_quintile_probabilities(sgma, n_samples, mu=None):
 
 def scores_to_quintiles(x):
     ys = list()
+    q = np.quantile(x,[0.2,0.4,0.6,0.8])
     for xi in x:
-        q = np.quantile(x,[0.2,0.4,0.6,0.8])
         y = np.searchsorted(q, xi)
         ys.append(y)
     return np.array(ys)
