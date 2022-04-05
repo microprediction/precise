@@ -83,7 +83,7 @@ def schur_diag_diag_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, gam
     return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta)
 
 
-def schur_diag_diag_buf_emp_manager_factory(y, s, target, n_buffer, e, r, n_split=5, gamma=0.0, delta=0, zeta=0):
+def schur_diag_diag_buf_emp_manager_factory(y, s, n_buffer, e, r=0.025 n_split=5, gamma=0.0, delta=0, zeta=0):
     """
        Schur with diag allocation and diag portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
