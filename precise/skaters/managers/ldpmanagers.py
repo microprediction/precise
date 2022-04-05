@@ -1,6 +1,6 @@
 from precise.skaters.managers.schurmanagerfactory import schur_vol_vol_ewa_manager_factory,schur_diag_diag_buf_emp_manager_factory
 
-
+# Stands for Lopez de Prado
 # Some Hierarchical Risk-Parity managers very loosely based on some literature
 
 
