@@ -121,7 +121,7 @@ Differencing hints:
 | d1        | For use on data that is iid after taking one difference | 
      
 
-### Stand-alone covariance utilities
+### Stand-alone covariance and portfolio utilities
 If you are hunting for useful functions for independent use (i.e. not "skating") then I suggest rummaging in 
 
    * [covarianceutil](https://github.com/microprediction/precise/tree/main/precise/skaters/covarianceutil) 
