@@ -96,7 +96,7 @@ def optimal_b(cov, w0, a=1.0, h=BIG_H):
 def _weak_optimal_b(cov, w0, a, h=BIG_H, with_neg_mass=False):
     best_b = optimal_b(cov=cov, w0=w0, a=a)
     best_w = _weak_from_cov(cov=cov, a=1.0, b=best_b, w=w0, with_weak=False)
-    return exclude_negative_weights(w=ensure_rel_entropish(exbest_w, h), with_neg_mass=with_neg_mass)
+    return exclude_negative_weights(w=ensure_rel_entropish(best_w, h), with_neg_mass=with_neg_mass)
 
 
 def _weak_from_cov(cov, w, a=1.0, b=0.75, with_weak=False):
