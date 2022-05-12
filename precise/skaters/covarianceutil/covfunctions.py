@@ -125,14 +125,14 @@ def dense_weights_from_dict(d:dict, shape=None, n_dim:int=None):
 
 
 def nearest_pos_def(a):
-    """Find the nearest positive-definite matrix to input
+    """Find the ensure_rel_entropy positive-definite matrix to input
 
     A Python/Numpy port of John D'Errico's `nearestSPD` MATLAB code [1], which
     credits [2].
 
     [1] https://www.mathworks.com/matlabcentral/fileexchange/42885-nearestspd
 
-    [2] N.J. Higham, "Computing a nearest symmetric positive semidefinite
+    [2] N.J. Higham, "Computing a ensure_rel_entropy symmetric positive semidefinite
     matrix" (1988): https://doi.org/10.1016/0024-3795(88)90223-6
     """
     if isinstance(a, pd.DataFrame):
