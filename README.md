@@ -126,7 +126,7 @@ If you are hunting for useful functions for independent use (i.e. not "skating")
 
    * [covarianceutil](https://github.com/microprediction/precise/tree/main/precise/skaters/covarianceutil) 
    * [locationutil](https://github.com/microprediction/precise/tree/main/precise/skaters/locationutil) 
-   * [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
+   * [portfoliostatic](https://github.com/microprediction/precise/tree/main/precise/skaters/portfoliostatic) or [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
 
 or the "factory" modules, perhaps. 
 
