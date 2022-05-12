@@ -60,7 +60,7 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0,
     return random_equity_returns(all_tickers=tickers, n_dim=n_dim, n_obs=n_obs, verbose=verbose, interval=interval)
 
 
-def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, **ignore):
+def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, implied=0, **ignore):
     n_buffer = np.random.choice([20,40,60,80,100,120,140])
     constituents = pd.read_csv(
         'https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
@@ -70,11 +70,12 @@ def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, **ignore):
         tickers = constituents['symbol']
     else:
         tickers = constituents['symbol'][50:]
-    xs = get_equity_returns(tickers=tickers, n_obs=n_obs+n_buffer, verbose=verbose, interval=interval)
+    xs = get_equity_returns(tickers=tickers, n_obs=n_obs+n_buffer, verbose=verbose, interval=interval, implied=implied)
+
     return xs[:-n_buffer]
 
 
-def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', **ignore):
+def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', implied=0, **ignore):
     """ Get return series for those of minimum length desired
     :param n_dim:            Number of assets
     :param n_obs:
@@ -89,6 +90,14 @@ def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', **igno
         data = []
         try:
             data = get_prices(ticker=ticker,n_obs=n_obs, interval=interval)
+            if implied:
+                from precise.skatervaluation.battledata.m6implied import all_vols
+                vol = all_vols.get(ticker)
+                if vol is None:
+                    data = []
+                else:
+                    data = np.array(data)/vol
+
             if len(data)==n_obs+1:
                 prices.append(np.diff(np.log(data)))
                 if verbose:

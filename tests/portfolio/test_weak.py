@@ -12,5 +12,11 @@ def test_weak():
     assert len(w)==np.shape(cov)[0],' dim mismatch '
 
 
+def test_weak_entropish():
+    cov = random_band_cov()
+    print(np.shape(cov))
+    w = weak_portfolio_factory(cov=cov, h=2)
+
+
 if __name__=='__main__':
-    test_weak()
+    test_weak_entropish()

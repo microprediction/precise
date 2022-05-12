@@ -1,6 +1,6 @@
 # precise ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Online covariance and precision forecasting, portfolios, and model ensembles in a simple functional style. 
+Online covariance and precision forecasting, portfolios, and model ensembles with ongoing benchmarking. 
 
 ## Covariance TLDR: "Functions that forecast covariance in online fashion"
 Here y is a vector:
@@ -27,7 +27,18 @@ Read this [article](https://medium.com/@microprediction/optimizing-a-portfolio-o
 
 <img src="https://github.com/microprediction/precise/blob/main/images/lb_hightlight2.png" alt="Model Leaderboard" style="width:500px">
 
+## Wanna donate some compute?  
+Sorry this isn't too streamlined, but if you'd like to perform some Elo calculations...
 
+    mkdir charity
+    cd charity
+    python3 -m venv charity
+    source charity/bin/activate
+    git clone https://github.com/microprediction/precise.git
+    cd precise
+    pip install -e . 
+    python3 create_more_elo_ratings_thanks.py
+    
 # $$ M6 Contest example entries $$
 This package includes scripts to create entries for the lucrative M6 Financial Forecasting competition.  
 
@@ -91,6 +102,7 @@ Methodology hints (can be combined)
 | oas       | Oracle approximating shrinkage.        |
 | gl        | Graphical Lasso                        |
 | mcd       | Minimum covariance determinant         |
+| weak      | Novel shrinkage method by yours truly  |
 
 Intended main target (more than one may be produced in the state)
 

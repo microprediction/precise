@@ -1,5 +1,19 @@
 
 
+## Covariance matrix testing in high dimensions using random projections
+Ayyala, Ghosh and Linder
+
+Estimation and hypothesis tests for the covariance matrix in high dimensions is a challenging problem
+as the traditional multivariate asymptotic theory is no longer valid. When the dimension is larger than
+or increasing with the sample size, standard likelihood based tests for the covariance matrix have poor
+performance. Existing high dimensional tests are either computationally expensive or have very weak
+control of type I error. In this paper, we propose a test procedure, CRAMP, for testing hypotheses
+involving one or more covariance matrices using random projections. Projecting the high dimensional
+data randomly into lower dimensional subspaces alleviates of the curse of dimensionality, allowing for the
+use of traditional multivariate tests. An extensive simulation study is performed to compare CRAMP
+against asymptotics-based high dimensional test procedures. An application of the proposed method to
+two gene expression data sets is presented
+
 
 ### Numerically Stable Parallel Computation of (Co-)Variance [pdf](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf)
 Erich Shubert and Michael Gertz
@@ -66,6 +80,12 @@ drawn from an appropriately chosen ensemble. In view of the fundamental
 role of covariance matrices in the theory of portfolio optimization as well as in
 industry-wide risk management practices, we analyze the possible implications
 of this effect.
+
+
+### Continuous Time Mean-Variance Portfolio Selection: A Reinforcement Learning Framework [pdf](https://arxiv.org/pdf/1904.11392)
+Haoran Wang, Xun Yu Zhou
+
+We approach the continuous-time mean-variance (MV) portfolio selection with reinforcement learning (RL). The problem is to achieve the best tradeoff between exploration and exploitation, and is formulated as an entropy-regularized, relaxed stochastic control problem. We prove that the optimal feedback policy for this problem must be Gaussian, with time-decaying variance. We then establish connections between the entropy-regularized MV and the classical MV, including the solvability equivalence and the convergence as exploration weighting parameter decays to zero. Finally, we prove a policy improvement theorem, based on which we devise an implementable RL algorithm. We find that our algorithm outperforms both an adaptive control based method and a deep neural networks based algorithm by a large margin in our simulations.
 
 ### Shrinkage Algorithms for MMSE Covariance Estimation [pdf](https://webee.technion.ac.il/Sites/People/YoninaEldar/104.pdf)
 Chen, Wiesel, Eldar, Hero
@@ -647,3 +667,15 @@ correlation matrix and imposing an additional rescaling step. The authors also s
 guess inspired by the CCD method for the Newton method. Numerical experiments show that the improved
 CCD method performs the best and is approximately three times faster than the original CCD method, saving
 more than 40% of the iterations
+
+## On the Risk of Out-of-Smaple Portfolio Performance [pdf](https://www.researchgate.net/publication/351942213_On_the_Risk_of_Out-of-Sample_Portfolio_Performance)
+Nathan Lassance, Alterto Martin-Utrera, Majeed Simaan
+
+We show that estimated mean-variance portfolios bear substantial out-of-sample utility risk in high-dimensional settings or when these portfolios exploit near-arbitrage opportunities. We propose a robustness measure that balances out-of-sample utility mean and volatility using our novel analytical characterization of out-of-sample utility risk. While individual portfolios do not offer maximal robust performance, portfolio combinations achieve the optimal tradeoff between out-of-sample utility mean and volatility and are more resilient to estimation errors. Our analysis of out-of-sample performance risk has implications for constructing and evaluating quantitative investment strategies and models of the stochastic discount factor.
+
+
+## Fat Tailed Factors [pdf](https://arxiv.org/pdf/2011.13637)
+Jan Rosenzweig
+
+Standard, PCA-based factor analysis suffers from a number of well known problems due to the random nature of pairwise correlations of asset returns. We analyse an alternative based on ICA, where factors are identified based on their non-Gaussianity, instead of their variance. Generalizations of portfolio construction to the ICA framework leads to two semi-optimal portfolio construction methods: a fat-tailed portfolio, which maximises return per unit of non-Gaussianity, and the hybrid portfolio, which asymptotically reduces variance and non-Gaussianity in parallel. For fat-tailed portfolios, the portfolio weights scale like performance to the power of 1/3, as opposed to linear scaling of Kelly portfolios; such portfolio construction significantly reduces portfolio concentration, and the winner-takes-all problem inherent in Kelly portfolios. For hybrid portfolios, the variance is diversified at the same rate as Kelly PCA-based portfolios, but excess kurtosis is diversified much faster than in Kelly, at the rate of n−2 compared to Kelly portfolios' n−1 for increasing number of components n.
+

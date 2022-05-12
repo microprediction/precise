@@ -58,7 +58,7 @@ def schur_diag_equal_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, ga
     return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta)
 
 
-def schur_diag_vol_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, gamma=0.0, delta=0, zeta=0):
+def schur_diag_vol_pm_manager_factory(y, s, target, n_emp, e, r, k=1,n_split=5, gamma=0.0, delta=0, zeta=0):
     """
        Schur with diag allocation and min-vol portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
@@ -71,7 +71,7 @@ def schur_diag_vol_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, gamm
 
 
 
-def schur_diag_diag_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, gamma=0.0, delta=0, zeta=0):
+def schur_diag_diag_pm_manager_factory(y, s, target, n_emp, e, r, k=1,n_split=5, gamma=0.0, delta=0, zeta=0):
     """
        Schur with diag allocation and diag portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
@@ -83,12 +83,12 @@ def schur_diag_diag_pm_manager_factory(y, s, target, n_emp, e, r, n_split=5, gam
     return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta)
 
 
-def schur_diag_diag_buf_emp_manager_factory(y, s, target, n_buffer, e, r, n_split=5, gamma=0.0, delta=0, zeta=0):
+def schur_diag_diag_buf_emp_manager_factory(y, s, n_buffer, e,  k=1,n_split=5, gamma=0.0, delta=0, zeta=0):
     """
        Schur with diag allocation and diag portfolio construction using partial moments cov estimation
            a, b             - weak coefs used at leaf
     """
-    f = partial( buf_emp_pcov_d0_factory, k=1, r=r,target=target, n_buffer=n_buffer )
+    f = partial( buf_emp_pcov_d0_factory, k=1, n_buffer=n_buffer )
     alloc = partial( diagonal_allocation_factory )
     leaf_port = partial( diagonal_portfolio_factory )
     sch_port = partial(schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)

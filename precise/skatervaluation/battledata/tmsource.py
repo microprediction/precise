@@ -7,7 +7,7 @@ DEFAULT_TM_PARAMS = {'n_dim': 25,
                       'n_obs': 356,
                       'n_burn':300,
                       'atol': 1,
-                      'collinear':True,
+                      'raw':1,
                       'lb':-1000,
                       'ub':1000}
 
@@ -21,9 +21,9 @@ def tm_source(params)->(dict, str, np.ndarray):
     """
     combined_params = DEFAULT_TM_PARAMS
     combined_params.update(params)
-    combined_params['description'] = 'tm_residuals' if combined_params['collinear'] else 'tm_noncollinear_residuals'
+    combined_params['description'] = 'tm_residuals' if combined_params['raw'] else 'tm_noncollinear'
     category = combined_params['description'] + '_p' + str(combined_params['n_dim']) + '_n' + str( combined_params['n_burn'])
-    if combined_params['collinear']:
+    if combined_params['raw']:
         xs = random_multivariate_residual(n_obs=combined_params['n_obs'], as_dataframe=False, random_start=True)
     else:
         xs = random_noncollinear_residual(n_obs=combined_params['n_obs'], random_start=True)

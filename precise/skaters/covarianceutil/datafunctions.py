@@ -12,13 +12,13 @@ from precise.skaters.covarianceutil.pdutil import data_to_square_dataframe
 def data_population_covariance(xs):
     """
         xs:  (n_samples, n_vars)
-        Like np.cov but works if there is only one row
+        Like np.cov but tries if there is only one row
     """
     if isinstance(xs,pd.DataFrame):
         return data_to_square_dataframe(df=xs, data_func=data_population_covariance)
     else:
         if np.shape(xs)[0]==1:
-            return np.var(np.array(xs).ravel())*np.eye(1)
+            return np.var(np.array(xs).ravel())*np.eye(np.shape(xs)[1])
         else:
             return np.cov(np.array(xs), rowvar=False, bias=True)
 

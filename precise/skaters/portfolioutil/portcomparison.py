@@ -3,6 +3,11 @@ import numpy as np
 import pandas as pd
 from collections import Counter
 from pprint import pprint
+from precise.skaters.covarianceutil.covrandom import random_known_cov
+from momentum import kurtosis_init, kurtosis_update
+import time
+
+from precise.skaters.covarianceutil.covrandom import random_factor_cov
 
 
 def points_race( ranker, ranker_kwargs, n_iter=100, n_top=20):
@@ -101,3 +106,52 @@ def portfolio_variance_rankings(cov_train, ports, cov_test=None, as_frame=True, 
         return leaderboard
 
 
+def port_sample_var(ports, cov, n_draws, n_anchor, n_observed, n_true, show_progress=True):
+    """ Judge and rank by simulated portfolio variance when ...
+            anchor is samples from cov
+                 true is samples from anchor
+                      observed is samples from true
+    :param ports:
+    :param cov:
+    :param n_draws:
+    :param n_true:
+    :return:
+    """
+    cov = random_factor_cov(n_dim=np.shape(cov)[0])
+    moments = port_kurtosis(ports=ports, cov=cov, n_draws=n_draws, n_anchor=n_anchor, n_observed=n_observed,
+                            n_true=n_true, metric='mean', show_progress=show_progress)
+    return sorted( moments.items(), key=lambda x: x[1], reverse=False)
+
+
+def port_kurtosis(ports, cov, n_draws, n_anchor, n_observed, n_true, metric=None, show_progress=True):
+    """
+         Sample true and observed cov matrices, and compute out of sample portfolio var
+
+    :param ports:     List of port functions
+    :param cov:       Covariance used to generate both true and observed cov
+    :param n_draws:   Number of outer iterations
+    :param n_true:    Number of samples used to generate random true and observed cov from anchor
+    :param n_anchor:  Number of samples used to generate random anchor from cov
+    :param metric:    If supplied, will return
+    :return:
+    """
+    last_update_time = time.time()-60
+    moments = dict([(port.__name__, kurtosis_init()) for port in ports])
+    for _ in range(n_draws):
+        anchor_cov = random_known_cov(cov=cov, n_samples=n_anchor)
+        true_cov = random_known_cov(cov=anchor_cov, n_samples=n_true)
+        obs_cov = random_known_cov(cov=true_cov, n_samples=n_observed)
+        for port in ports:
+            w = port(np.copy(obs_cov))
+            pv = portfolio_variance(w=w, cov=true_cov)
+            moments[port.__name__] = kurtosis_update(moments[port.__name__], pv )
+        if show_progress:
+            if time.time()-last_update_time>60:
+                the_means = [(pn, m.get('mean')) for pn, m in moments.items()]
+                pprint(sorted(the_means, key=lambda x: x[1]))
+                last_update_time = time.time()
+
+    if metric is not None:
+        return dict([ (pn,m.get(metric)) for pn,m in moments.items() ])
+    else:
+        return moments

@@ -21,19 +21,19 @@ def buf_sk_emp_pcov_d0_n200(y: X_TYPE = None, s: dict = None, k=1, e=1):
 
 # Ledoit-Wolf
 
-def buf_sk_ld_pcov_d0_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
+def buf_sk_lw_pcov_d0_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ Ledoit-Wolf covariance based estimator for IID observations """
     assert k == 1
     return buf_sk_factory(cls=LedoitWolf, y=y, s=s, n_buffer=100, n_emp=5, e=e)
 
 
-def buf_sk_ld_pcov_d0_n200(y: X_TYPE = None, s: dict = None, k=1, e=1):
+def buf_sk_lw_pcov_d0_n200(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ Ledoit-Wolf covariance based estimator for IID observations """
     assert k == 1
     return buf_sk_factory(cls=LedoitWolf, y=y, s=s, n_buffer=200, n_emp=5, e=e)
 
 
-def buf_sk_ld_pcov_d0_n300(y: X_TYPE = None, s: dict = None, k=1, e=1):
+def buf_sk_lw_pcov_d0_n300(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ Ledoit-Wolf covariance based estimator for IID observations """
     assert k == 1
     return buf_sk_factory(cls=LedoitWolf, y=y, s=s, n_buffer=300, n_emp=5, e=e)
@@ -152,33 +152,33 @@ def buf_sk_oas_pcov_d0_n300(y: X_TYPE = None, s: dict = None, k=1, e=1):
 # Differenced versions to be applied to time-series with independent increments
 # -----------------------------------------------------------------------------
 
-def buf_sk_ec_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_ec_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     assert k == 1
-    return d1_factory(f=buf_sk_emp_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, e=e)
+    return d1_factory(f=buf_sk_emp_pcov_d0_n100, y=y, s=s, e=e)
 
 
-def buf_sk_ld_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_lw_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ Ledoit-Wolf covariance based estimator for IID changes """
     assert k == 1
-    return d1_factory(f=buf_sk_ld_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, k=1, e=e)
+    return d1_factory(f=buf_sk_lw_pcov_d0_n100, y=y, s=s, k=1, e=e)
 
 
-def buf_sk_oas_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_oas_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ OAS based estimator for IID changes  """
     assert k == 1
-    return d1_factory(f=buf_sk_oas_pcov_d0_n100, y=y, s=s, n_buffer=100, k=1, e=e)
+    return d1_factory(f=buf_sk_oas_pcov_d0_n100, y=y, s=s, k=1, e=e)
 
 
 def buf_sk_oas_pcov_d1_n200(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ OAS based estimator for IID changes  """
     assert k == 1
-    return d1_factory(f=buf_sk_oas_pcov_d0_n100, y=y, s=s, n_buffer=200, k=1, e=e)
+    return d1_factory(f=buf_sk_oas_pcov_d0_n200, y=y, s=s,  k=1, e=e)
 
 
 def buf_sk_oas_pcov_d1_n300(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ OAS based estimator for IID changes  """
     assert k == 1
-    return d1_factory(f=buf_sk_oas_pcov_d0_n100, y=y, s=s, n_buffer=300, k=1, e=e)
+    return d1_factory(f=buf_sk_oas_pcov_d0_n300, y=y, s=s, k=1, e=e)
 
 
 def buf_sk_gl_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
@@ -201,7 +201,7 @@ def buf_sk_mcd_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 10
 
 
 BUF_SK_D0_SKATERS = [buf_sk_emp_pcov_d0_n100, buf_sk_emp_pcov_d0_n100,
-                     buf_sk_ld_pcov_d0_n100, buf_sk_ld_pcov_d0_n200, buf_sk_ld_pcov_d0_n300,
+                     buf_sk_lw_pcov_d0_n100, buf_sk_lw_pcov_d0_n200, buf_sk_lw_pcov_d0_n300,
                      buf_sk_gl_pcov_d0_n100, buf_sk_gl_pcov_d0_n200,
                      buf_sk_glcv_pcov_d0_n100, buf_sk_glcv_pcov_d0_n200, buf_sk_glcv_pcov_d0_n300,
                      buf_sk_glcv_pcov_d0_n100_t0, buf_sk_glcv_pcov_d0_n200_t0, buf_sk_glcv_pcov_d0_n300,
@@ -209,7 +209,7 @@ BUF_SK_D0_SKATERS = [buf_sk_emp_pcov_d0_n100, buf_sk_emp_pcov_d0_n100,
                      buf_sk_mcd_pcov_d0_n100,
                      buf_sk_oas_pcov_d0_n100, buf_sk_oas_pcov_d0_n200, buf_sk_oas_pcov_d0_n300]
 
-BUF_SK_D1_SKATERS = [buf_sk_ec_pcov_d1_n100, buf_sk_ld_pcov_d1_n100, buf_sk_gl_pcov_d1_n100, buf_sk_glcv_pcov_d1_n100,
+BUF_SK_D1_SKATERS = [buf_sk_ec_pcov_d1_n100, buf_sk_lw_pcov_d1_n100, buf_sk_gl_pcov_d1_n100, buf_sk_glcv_pcov_d1_n100,
                      buf_sk_mcd_pcov_d1_n100,
                      buf_sk_oas_pcov_d1_n100]
 

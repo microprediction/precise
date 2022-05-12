@@ -51,3 +51,6 @@ def weak_pcov_factory(y, f, s:dict, k=1, e=1, max_neg_mass=0.01, **f_kwargs):
              s['w'] = w
     return x_mean, weak_cov, s
 
+
+
+
