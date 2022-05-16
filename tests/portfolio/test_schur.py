@@ -8,6 +8,7 @@ def test_schur():
     cov = random_band_cov(n=1000)
     cov = random_factor_cov(n=1000, n_dim=64)
     print(np.shape(cov))
+    print(len(SCHUR_PORT))
     for port in SCHUR_PORT:
         print(port)
         w = port(cov=cov)

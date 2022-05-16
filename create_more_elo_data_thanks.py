@@ -1,5 +1,5 @@
 from runthis import parse_kwargs
-from precise.skatervaluation.battleutil.arrangingbattles import manager_var_battle
+from precise.skatervaluation.battleutil.arrangingbattles import manager_var_battle, manager_info_battle
 import os
 
 
@@ -11,6 +11,6 @@ SCRIPT = 'stocks?topic=stocks&n_dim=int:500&n_obs=int:225&n_burn=int:200&k=int:5
 
 if __name__=='__main__':
     params = parse_kwargs(SCRIPT.split(os.path.sep)[-1])
-    manager_var_battle(params=params)
+    manager_info_battle(params=params)
 
 
