@@ -39,12 +39,13 @@ Sorry this isn't too streamlined, but if you'd like to perform some Elo calculat
     pip install -e . 
     python3 create_more_elo_ratings_thanks.py
     
-# $$ M6 Contest example entries $$
+## M6 Contest example entries 
 This package includes scripts to create entries for the lucrative M6 Financial Forecasting competition.  
 
 1. See [precise/examples_m6](https://github.com/microprediction/precise/tree/main/examples_m6)
 2. Register at the [m6 competition](https://m6competition.com/). 
-3. Buy me, or the authors of PyPortfolio-Lib and PyPortfolioOpt, lots of beers when you win.   
+3. Read the [license](https://github.com/microprediction/precise/blob/main/license.pdf) carefully. 
+
 
 ## Install 
 
@@ -121,12 +122,12 @@ Differencing hints:
 | d1        | For use on data that is iid after taking one difference | 
      
 
-### Stand-alone covariance utilities
+### Stand-alone covariance and portfolio utilities
 If you are hunting for useful functions for independent use (i.e. not "skating") then I suggest rummaging in 
 
    * [covarianceutil](https://github.com/microprediction/precise/tree/main/precise/skaters/covarianceutil) 
    * [locationutil](https://github.com/microprediction/precise/tree/main/precise/skaters/locationutil) 
-   * [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
+   * [portfoliostatic](https://github.com/microprediction/precise/tree/main/precise/skaters/portfoliostatic) or [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
 
 or the "factory" modules, perhaps. 
 
