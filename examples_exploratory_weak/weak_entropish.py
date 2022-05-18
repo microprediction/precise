@@ -26,15 +26,17 @@ if __name__=='__main__':
     for y in X[n_burn:]:
         if w is not None:
             z = w*(np.dot( scatter(y), w ))
-            z_mean, z_cov, s_parity = run_emp_pcov_d0(z,k=1,s=s_parity)
+            w_eq = np.ones_like(w)
+            z_eq = w_eq*(np.dot( scatter(y), w_eq ))
+            z_std = [np.std(z), np.std(z_eq)]
+            z_mean, z_cov, s_parity = run_emp_pcov_d0(z_std,k=1,s=s_parity)
 
         x_mean, x_cov, s_cov = f(y=y, s=s_cov, k=1)
         w, s_mgr = mgr(s=s_mgr, y=y)
         rele.append(rel_entropy(w))
 
-    z_diag = np.diag(z_cov)
-    z_rel = z_diag / np.mean(z_diag)
-    print(z_rel)
+
+    print(np.diag(z_cov))
     pass
 
 
