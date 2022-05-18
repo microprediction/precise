@@ -1,4 +1,16 @@
 
+## A Fast Algorithm for Computing High-dimensional Risk Parity Portfolios [pdf](https://arxiv.org/pdf/1311.4057)
+Théophile Griveau-Billion, Jean-Charles Richard, Thierry Roncalli
+
+In this paper we propose a cyclical coordinate descent (CCD) algorithm for solving high dimensional risk parity problems. We show that this algorithm converges and is very fast even with large covariance matrices (n > 500). Comparison with existing algorithms also shows that it is one of the most efficient algorithms.
+
+
+
+## Improved iterative methods for solving risk parity portfolio [paper](https://www.emerald.com/insight/content/doi/10.1108/JDQS-12-2021-0031/full/html)
+Jaehyuk Choi, Rong Chen 
+
+Risk parity, also known as equal risk contribution, has recently gained increasing attention as a portfolio allocation method. However, solving portfolio weights must resort to numerical methods as the analytic solution is not available. This study improves two existing iterative methods: the cyclical coordinate descent (CCD) and Newton methods. The authors enhance the CCD method by simplifying the formulation using a correlation matrix and imposing an additional rescaling step. The authors also suggest an improved initial guess inspired by the CCD method for the Newton method. Numerical experiments show that the improved CCD method performs the best and is approximately three times faster than the original CCD method, saving more than 40% of the iterations.
+
 
 ## Covariance matrix testing in high dimensions using random projections
 Ayyala, Ghosh and Linder
