@@ -9,14 +9,15 @@ import math
 # Fast long-only approximately min-var portfolios where the constraints are:
 #       sum(w)=1,
 #       w>0,
-#       rel_entropish(w)<e
+#       rel_entropy(w)<e
 
 BIG_H = 1e10 # Relative entropish
 
 
 def entropish(w):
+    """ Etropish is a silly name for sum of log weights """
     if any([wi < 1e-8 for wi in w]):
-        return 1.0e-10*max_entropish(w)
+        return -1.0e10
     else:
         return float(np.sum(np.log(w)))
 
@@ -25,29 +26,27 @@ def max_entropish(w):
     return entropish(np.ones_like(w)/len(w))
 
 
-def rel_entropish(w):
-    """ Etropish is a silly name for sum of log weights """
-    return entropish(w) / max_entropish(w)
+def rel_entropy(w):
+    """ Always non-positive """
+    return entropish(w) - max_entropish(w)
 
 
 def ensure_rel_entropish(w, h:float):
-    """ Crudely force portfolio to almost have rel_entropish > 1/h
+    """ Crudely force portfolio to almost have rel_entropy > 1/h
     :param w:
     :param h:  h > 1
     :return:
     """
-    if rel_entropish(w)>=1/h:
+    assert(h > 1)
+    if rel_entropy(w)>=-1/h:
         return w
     else:
-        assert(h > 1)
-        if rel_entropish(w)>=1/h:
-            return w
-        else:
-            v = np.ones_like(w) / len(w)
-            while rel_entropish(v)>1/h:
-                v_prior = np.copy(v)
-                v = 0.99*v + 0.01*np.array(w)
-            return v_prior
+        v = np.ones_like(w) / len(w)
+        w_pos = exclude_negative_weights(w)
+        while rel_entropy(v)>-1/h:
+            v_prior = np.copy(v)
+            v = 0.99*v + 0.01*np.array(w_pos)
+        return v_prior
 
 
 
@@ -96,15 +95,19 @@ def optimal_b(cov, w0, a=1.0, h=BIG_H):
     vd = portfolio_variance(cov=np.diag(np.diag(cov)), w=np.ones_like(w0)/len(w0))
     initial_ratio = v0/vd
     if initial_ratio<1e-6:
-        return 0.9
+        return 0.1
     else:
-        res = scipy.optimize.minimize_scalar(fun=b_objective, bracket=(0.5,0.9), bounds=[(0, 1)], args=(w0, a, v0, h))
+        res = scipy.optimize.minimize_scalar(fun=b_objective, bracket=(0.1,0.9), bounds=[(0, 1)], args=(w0, a, v0, h))
         best_b = res.x
+        if best_b<0:
+            # Shouldn't happen but it does
+            best_b = 0
         return best_b
 
 
 def _weak_optimal_b(cov, w0, a, h=BIG_H, with_neg_mass=False):
     best_b = optimal_b(cov=cov, w0=w0, a=a, h=h)
+    print({'best_b':best_b})
     best_w = _weak_from_cov(cov=cov, a=1.0, b=best_b, w=w0, with_weak=False)
     return exclude_negative_weights(w=ensure_rel_entropish(best_w, h), with_neg_mass=with_neg_mass)
 
