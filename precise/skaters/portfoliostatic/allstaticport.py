@@ -5,10 +5,12 @@ from precise.skaters.portfoliostatic.hrpport import HRP_LONG_PORT, HRP_LS_PORT
 from precise.skaters.portfoliostatic.schurport import SCHUR_LONG_PORT, SCHUR_LS_PORT
 from precise.skaters.portfoliostatic.unitport import UNIT_LS_PORT, UNIT_LONG_PORT
 from precise.skaters.portfoliostatic.equalport import EQUAL_LONG_PORT, EQUAL_LS_PORT
+from precise.skaters.portfoliostatic.rpport import RP_LONG_PORT
 
 import random
 
-LONG_PORT = PPO_LONG_PORT + WEAK_LONG_PORT + DIAG_LONG_PORT + HRP_LONG_PORT + UNIT_LONG_PORT + SCHUR_LONG_PORT + EQUAL_LONG_PORT
+LONG_PORT = PPO_LONG_PORT + WEAK_LONG_PORT + DIAG_LONG_PORT + HRP_LONG_PORT + UNIT_LONG_PORT +\
+            SCHUR_LONG_PORT + EQUAL_LONG_PORT + RP_LONG_PORT
 LS_PORT = PPO_LS_PORT + HRP_LS_PORT + WEAK_LS_PORT + SCHUR_LS_PORT + UNIT_LS_PORT + EQUAL_LS_PORT
 PORT = LONG_PORT + LS_PORT
 

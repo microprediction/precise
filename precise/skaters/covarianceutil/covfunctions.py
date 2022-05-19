@@ -44,6 +44,22 @@ def multiply_diag(a, phi, copy=True):
             return a
 
 
+def multiply_off_diag(a, phi, copy=True):
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(df=a, cov_func=multiply_off_diag, phi=phi, copy=copy)
+    else:
+        if copy:
+            b = np.copy(a)
+            return multiply_off_diag(b, phi=phi, copy=False)
+        else:
+            n = np.shape(a)[0]
+            d = np.diag(a)
+            a = phi*a
+            for i in range(n):
+                a[i, i] = d[i] # restore diag
+            return a
+
+
 def grand_mean(a):
     # np.trace(a)/n might be faster, haven't checked
     if isinstance(a,pd.DataFrame):
@@ -334,7 +350,9 @@ def multiply_by_inverse(a, b, throw=True):
 
 
 
+def parity(cov,w):
 
+    np.dot(cov,w)
 
 
 

@@ -1,28 +1,27 @@
-from precise.skatertools.syntheticdata.factor import create_factor_dataset
+
+from precise.skaters.covarianceutil.covrandom import random_band_cov
+from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
 import numpy as np
-import pandas as pd
+from precise.skaters.locationutil.vectorfunctions import scatter
 
 
-def test_rp_hc_direct():
-    import riskfolio as rp
-    xs = create_factor_dataset(n=200,n_dim=25)
-    returns = pd.DataFrame(data=xs)
-    port = rp.HCPortfolio(returns=returns)
-    w = port.optimization(model='HRP')
-    assert len(w)==len(xs[0])
-    assert np.allclose(np.sum(w.values),1.0)
+def test_rp():
+    cov = random_band_cov(n_dim=5)
+    print(np.shape(cov))
+    w = rp_portfolio_factory(cov=cov)
+    assert len(w)==np.shape(cov)[0],' dim mismatch '
+    contrib = w*np.dot( cov, w)
+    print(contrib)
 
 
-def test_rp_hc():
-    xs = create_factor_dataset(n=200, n_dim=25)
-    from precise.skaters.managers.rflmanagerfactory import _rpl_func
-    w = _rpl_func(xs=xs, port_cls_name='HCPortfolio')
-    assert len(w)==len(xs[0])
-    assert np.allclose(sum(w),1.0)
+def test_rp_diag():
+    cov = np.diag(list(np.ones(5))+list(2*np.ones(5)))
+    print(np.shape(cov))
+    w = rp_portfolio_factory(cov=cov, mu=0.02, risk_free_rate=0.02)
+    assert len(w)==np.shape(cov)[0],' dim mismatch '
+    contrib = w*np.dot( cov, w)
+    print(contrib)
 
 
 if __name__=='__main__':
-    test_rp_hc_direct()
-    test_rp_hc
-
-
+   test_rp()
