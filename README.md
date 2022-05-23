@@ -49,6 +49,8 @@ This package includes scripts to create entries for the lucrative M6 Financial F
 
 ## Install 
 
+    pip install --upgrade pip
+    pip install --upgrade setuptools 
     pip install precise 
     
 or for latest:
