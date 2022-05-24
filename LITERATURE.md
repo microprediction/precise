@@ -1,3 +1,8 @@
+## Beyond Risk-Based Portfolios: Balancing Performance and Risk Contributions in Asset Allocation [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID2867936_code886365.pdf?abstractid=2819789&mirid=1&type=2)
+Ardia, Boudt, Nguyen
+
+In a risk-based portfolio, there is no explicit control for the performance per unit of risk taken. We propose a framework to evaluate the balance between risk and performance at both the portfolio and component level, and to tilt the risk-based portfolio weights towards a state in which the performance and risk contributions are aligned. The key innovation is the Performance/Risk Contribution Concentration (PRCC) measure, which is designed to be minimal when, for all portfolio components, the performance and risk contributions are perfectly aligned. We investigate the theoretical properties of this measure and show its usefulness to obtain the PRCC modified risk-based portfolio weights, that avoid excesses in terms of deviations between the performance and risk contributions of the portfolio components, while still being close to the benchmark risk-based portfolio in terms of weights and relative performance.
+
 
 ## A Fast Algorithm for Computing High-dimensional Risk Parity Portfolios [pdf](https://arxiv.org/pdf/1311.4057)
 Théophile Griveau-Billion, Jean-Charles Richard, Thierry Roncalli
