@@ -58,6 +58,7 @@ or for latest:
 Trouble? 
 
     pip install --upgrade pip
+    pip install --upgrade setuptools 
     pip install --upgrade scipy
     pip insatll --upgrade precise 
         

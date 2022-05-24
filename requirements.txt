@@ -11,3 +11,4 @@ seriate
 scipy
 tomark
 collinearity
+riskparityportfolio
