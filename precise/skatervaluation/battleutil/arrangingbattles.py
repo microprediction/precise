@@ -1,5 +1,5 @@
 from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
-from precise.skaters.managers.allmanagers import LONG_MANAGERS
+from precise.skaters.managers.allmanagers import RELIABLE_LONG_MANAGERS
 from precise.skaters.covarianceutil.likelihood import cov_likelihood
 from precise.skaters.managerutil.managerstats import manager_info, manager_var
 from precise.skatervaluation.battledata.allsources import params_category_and_data
@@ -17,11 +17,11 @@ import time
 
 
 def manager_info_battle(params:dict):
-    return generic_battle(contestants=LONG_MANAGERS, evaluator=manager_info, params=params, atol=1e-8)
+    return generic_battle(contestants=RELIABLE_LONG_MANAGERS, evaluator=manager_info, params=params, atol=1e-8)
 
 
 def manager_var_battle(params:dict):
-    return generic_battle(contestants=LONG_MANAGERS, evaluator=manager_var, params=params, atol=1e-8)
+    return generic_battle(contestants=RELIABLE_LONG_MANAGERS, evaluator=manager_var, params=params, atol=1e-8)
 
 
 def cov_likelihood_battle(params:dict):
