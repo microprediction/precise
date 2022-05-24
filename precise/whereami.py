@@ -10,7 +10,7 @@ M6_EXAMPLES = os.path.join(ROOT,'examples_m6')
 MANAGER_MANIFEST = os.path.join(ROOT,'LISTING_OF_MANAGERS.md')
 COV_SKATER_MANIFEST = os.path.join(ROOT,'LISTING_OF_COV_SKATERS.md')
 TESTSERROR = os.path.join(ROOT,'testserrors')
-
+ELO_CSV = os.path.join(TOP,'skatervaluation','battleresults','elo.csv')
 
 def url_from_skater_name(name:str)->str:
     """

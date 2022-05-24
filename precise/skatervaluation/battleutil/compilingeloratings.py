@@ -6,7 +6,52 @@ from collections import Counter
 import random
 from precise.skatervaluation.battleutil.speed import TIMING
 from collections import OrderedDict
+import pandas as pd
+from precise.whereami import ELO_CSV
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
+
+GENRES = ['manager_var','cov_likelihood','manager_info']
+ELO_URL = 'https://raw.githubusercontent.com/microprediction/precise/main/precise/skatervaluation/elo.csv'
+
+
+def get_elo(genre):
+    """ Retrieve cached Elo ratings """
+    url = ELO_URL.replace('elo','elo_'+genre)
+    df = pd.read_csv(url)
+    return df
+
+
+def create_elo_csvs():
+    """ Clobber the elo_***.csv files """
+    print(ELO_CSV)
+    for genre in GENRES:
+        fn = ELO_CSV.replace('elo', 'elo_' + genre)
+        print(fn)
+        df = elo_df(genre=genre, category=None)
+        df.to_csv(fn, index=False)
+
+
+def elo_df(genre='manager_info', category='stocks'):
+    """ Elo ratings in a dataframe
+    :param genre:      'cov_likelihood'
+    :param category:
+    :return:
+    """
+    ratings = elo_from_win_files(genre=genre, category=category)
+    elo_tuples = list()
+    for r in ratings:
+        cat = r[0]
+        for strat, strat_stats in r[1].items():
+            elo_ = strat_stats[0]
+            try:
+                cpu_ = round(float(strat_stats[1]),1)
+            except:
+                cpu_ = -1
+            _tup = (genre,cat,strat, elo_, cpu_)
+            elo_tuples.append(_tup)
+    df = pd.DataFrame(columns=['genre','category','strategy','elo','cpu'], data=elo_tuples)
+    return df
+
 
 
 
@@ -69,6 +114,6 @@ def elo_from_win_counts(ctn, timing_genre=None):
 
 
 if __name__=='__main__':
-    category_sub_string = 'stocks' # e.g. m6_daily_p100
-    ratings = elo_from_win_files(genre='manager_var', category=category_sub_string)
+    category_sub_string = 'stocks_20_days' # e.g. m6_daily_p100
+    ratings = elo_df(genre='manager_var', category=category_sub_string)
     pprint(ratings)
