@@ -6,7 +6,26 @@ from collections import Counter
 import random
 from precise.skatervaluation.battleutil.speed import TIMING
 from collections import OrderedDict
+import pandas as pd
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
+
+
+def elo_df(genre='cov_likelihood', category=None):
+    """ Elo ratings in a dataframe
+    :param genre:      'cov_likelihood'
+    :param category:
+    :return:
+    """
+    ratings = elo_from_win_files(genre=genre, category=category)
+    elo_tuples = list()
+    for r in ratings:
+        cat = r[0]
+        for strat, strat_stats in r[1]:
+            _tup = (cat,strat, strat_stats[0])
+            elo_tuples.append(_tup)
+    df = pd.DataFrame(columns=['genre','strategy','elo'], data=elo_tuples)
+    return df
+
 
 
 
@@ -70,5 +89,5 @@ def elo_from_win_counts(ctn, timing_genre=None):
 
 if __name__=='__main__':
     category_sub_string = 'stocks' # e.g. m6_daily_p100
-    ratings = elo_from_win_files(genre='manager_var', category=category_sub_string)
+    ratings = elo_df(genre='manager_var', category=category_sub_string)
     pprint(ratings)

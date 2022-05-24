@@ -31,8 +31,13 @@ def load_win_data(cat_files):
     data = Counter()
     for fn in cat_files:
         with open(fn,'rt') as fh:
-            new_data = Counter(json.load(fh))
-            data.update(new_data)
+            try:
+                new_data = Counter(json.load(fh))
+                data.update(new_data)
+            except json.decoder.JSONDecodeError:
+                print('Issue with '+fn)
+                print('huh')
+
     return data
 
 
