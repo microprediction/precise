@@ -7,7 +7,28 @@ import random
 from precise.skatervaluation.battleutil.speed import TIMING
 from collections import OrderedDict
 import pandas as pd
+from precise.whereami import ELO_CSV
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
+
+GENRES = ['manager_var','cov_likelihood','manager_info']
+ELO_URL = 'https://raw.githubusercontent.com/microprediction/precise/main/precise/skatervaluation/elo.csv'
+
+
+def get_elo(genre):
+    """ Retrieve cached Elo ratings """
+    url = ELO_URL.replace('elo','elo_'+genre)
+    df = pd.read_csv(url)
+    return df
+
+
+def create_elo_csvs():
+    """ Clobber the elo_***.csv files """
+    print(ELO_CSV)
+    for genre in GENRES:
+        fn = ELO_CSV.replace('elo', 'elo_' + genre)
+        print(fn)
+        df = elo_df(genre=genre, category=None)
+        df.to_csv(fn, index=False)
 
 
 def elo_df(genre='manager_info', category='stocks'):
