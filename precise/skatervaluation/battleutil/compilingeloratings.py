@@ -10,8 +10,8 @@ import pandas as pd
 from precise.whereami import ELO_CSV
 # Creating Elo ratings from collections of wins and losses stored in hashed files /battleresults
 
-GENRES = ['manager_var','cov_likelihood','manager_info']
-ELO_URL = 'https://raw.githubusercontent.com/microprediction/precise/main/precise/skatervaluation/elo.csv'
+GENRES = ['manager_var','manager_info','cov_likelihood']
+ELO_URL = 'https://raw.githubusercontent.com/microprediction/precise/main/precise/skatervaluation/battleresults/elo.csv'
 
 
 def get_elo(genre):
@@ -42,13 +42,25 @@ def elo_df(genre='manager_info', category='stocks'):
     for r in ratings:
         cat = r[0]
         for strat, strat_stats in r[1].items():
-            elo_ = strat_stats[0]
+            got_it = False
             try:
-                cpu_ = round(float(strat_stats[1]),1)
+                elo_ = strat_stats[0]
+                try:
+                    cpu_ = round(float(strat_stats[1]),1)
+                except:
+                    cpu_ = -1
+                got_it=True
             except:
-                cpu_ = -1
-            _tup = (genre,cat,strat, elo_, cpu_)
-            elo_tuples.append(_tup)
+                try:
+                    elo_ = float(strat_stats)
+                    cpu_ = -1
+                    got_it = True
+                except:
+                    got_it = False
+            if got_it:
+                _tup = (genre,cat,strat, elo_, cpu_)
+                elo_tuples.append(_tup)
+
     df = pd.DataFrame(columns=['genre','category','strategy','elo','cpu'], data=elo_tuples)
     return df
 
@@ -87,11 +99,15 @@ def elo_from_win_counts(ctn, timing_genre=None):
     import time
     st = time.time()
     ct = 0
+    n_limit = 5000
+    n_count = 0
     while not finished:
+        n_count += 1
+
         remaining_counts = [ c for b,c in ctn.items() if c>=1 ]
         remaining_battles = [ (b,c) for b,c in ctn.items() if c>=1 ]
         weights = [ c/sum(remaining_counts) for c in remaining_counts ]
-        finished = not remaining_battles
+        finished = (not remaining_battles) or (n_count>n_limit)
         if not finished:
             n_remaining = sum(remaining_counts)
             if n_remaining % 100 ==0:
