@@ -187,17 +187,17 @@ def buf_sk_gl_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100
     return d1_factory(f=buf_sk_gl_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, e=e)
 
 
-def buf_sk_glcv_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_glcv_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ GL CV based estimator for IID changes  """
     assert k == 1
-    return d1_factory(f=buf_sk_glcv_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, k=1, e=e)
+    return d1_factory(f=buf_sk_glcv_pcov_d0_n100, y=y, s=s, k=1, e=e)
 
 
-def buf_sk_mcd_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_mcd_pcov_d1_n100(y: X_TYPE = None, s: dict = None,  k=1, e=1):
     """ Minimumn covariance based estimator for IID changes """
     assert k == 1
     # https://scikit-learn.org/stable/modules/generated/sklearn.covariance.MinCovDet.html#sklearn.covariance.MinCovDet
-    return d1_factory(f=buf_sk_mcd_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, k=1, e=e)
+    return d1_factory(f=buf_sk_mcd_pcov_d0_n100, y=y, s=s, k=1, e=e)
 
 
 BUF_SK_D0_SKATERS = [buf_sk_emp_pcov_d0_n100, buf_sk_emp_pcov_d0_n100,
