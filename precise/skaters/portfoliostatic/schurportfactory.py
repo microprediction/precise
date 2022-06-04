@@ -138,19 +138,38 @@ def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, d
             max_gamma = _maximal_gamma(A=A, B=B, C=C, D=D)
             augA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
             augD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
+
+            augmentation_fail = False
             if not is_positive_def(augA):
-                Ag = nearest_pos_def(augA)
+                try:
+                    Ag = nearest_pos_def(augA)
+                except np.linalg.LinAlgError:
+                    augmentation_fail=True
             else:
                 Ag = augA
             if not is_positive_def(augD):
-                Dg = nearest_pos_def(augD)
+                try:
+                    Dg = nearest_pos_def(augD)
+                except np.linalg.LinAlgError:
+                    augmentation_fail=True
             else:
                 Dg = augD
-            reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
-            reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
-            reductionRatioA = reductionA/reductionD
+
+            if augmentation_fail:
+                print('Warning: augmentation failed')
+                augA = np.copy(A)
+                augD = np.copy(D)
+                reductionA = 1.0
+                reductionD = 1.0
+                reductionRatioA = 1.0
+            else:
+                reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
+                reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
+                reductionRatioA = reductionA/reductionD
         else:
             reductionRatioA = 1.0
+            reductionA = 1.0
+            reductionD = 1.0
             Ag = A
             Dg = D
         wA = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Ag, port=port, splitter=splitter, gamma=gamma)
