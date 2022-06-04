@@ -157,11 +157,11 @@ def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, d
 
             if augmentation_fail:
                 print('Warning: augmentation failed')
-                augA = np.copy(A)
-                augD = np.copy(D)
                 reductionA = 1.0
                 reductionD = 1.0
                 reductionRatioA = 1.0
+                Ag = A
+                Dg = D
             else:
                 reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
                 reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
@@ -172,6 +172,7 @@ def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, d
             reductionD = 1.0
             Ag = A
             Dg = D
+
         wA = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Ag, port=port, splitter=splitter, gamma=gamma)
         wD = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Dg, port=port, splitter=splitter, gamma=gamma)
         aA, aD = alloc(covs=[Ag, Dg])

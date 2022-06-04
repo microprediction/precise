@@ -13,6 +13,8 @@ from precise.whereami import ELO_CSV
 GENRES = ['manager_var','manager_info','cov_likelihood']
 ELO_URL = 'https://raw.githubusercontent.com/microprediction/precise/main/precise/skatervaluation/battleresults/elo.csv'
 
+ELO_LIMIT = 50000
+
 
 def get_elo(genre):
     """ Retrieve cached Elo ratings """
@@ -99,7 +101,7 @@ def elo_from_win_counts(ctn, timing_genre=None):
     import time
     st = time.time()
     ct = 0
-    n_limit = 5000
+    n_limit = ELO_LIMIT
     n_count = 0
     while not finished:
         n_count += 1
