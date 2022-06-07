@@ -11,3 +11,4 @@ scipy
 tomark
 collinearity
 riskparityportfolio
+protobuf<=3.20.1

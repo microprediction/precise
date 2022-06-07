@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.6.11",
+    version="0.7.0",
     description="Online covariance, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -50,7 +50,7 @@ setup(
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.7','kmeans1d','runthis','scikit-learn','latextable','tomark',
                       'pandas_datareader','seriate','pandas','scipy>=1.7.3','pyportfolioopt','collinearity',
-                      'riskparityportfolio'],
+                      'riskparityportfolio','protobuf>=3.12.2,<=3.20.1'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",
