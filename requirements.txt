@@ -6,7 +6,6 @@ scikit-learn
 pandas_datareader
 pandas
 pyportfolioopt
-riskfolio-lib
 seriate
 scipy
 tomark
