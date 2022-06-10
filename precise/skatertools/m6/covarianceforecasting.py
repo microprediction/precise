@@ -7,7 +7,7 @@ from precise.skaters.covariance.runemp import run_emp_pcov_d0
 
 def m6_data(interval='d', n_dim=100, n_obs=300):
     constituents = pd.read_csv(
-        'https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')[:n_dim]
+        'https://raw.githubusercontent.com/Mcompetitions/M6-methods/main/assets_m6.csv')[:n_dim]
     tickers = constituents['symbol'].values
     if (interval=='m') and (n_obs>60):
         print('Too many obs, switching to daily ')
