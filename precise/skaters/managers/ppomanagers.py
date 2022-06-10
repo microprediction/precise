@@ -108,3 +108,9 @@ PPO_LONG_MANGERS = [ppo_pm_t0_d0_r025_n50_vol_long_manager,
                     ppo_sk_glcv_pcov_d0_n100_sharpe_long_manager,
                     ppo_sk_glcv_pcov_d0_n100_t0_sharpe_long_manager,
                     ppo_sk_mcd_pcov_d0_n100_sharpe_long_manager]
+
+
+if __name__=='__main__':
+    mgr = ppo_pm_t0_d0_r025_n50_sharpe_long_manager
+    from precise.skaters.managerutil.managertesting import manager_test_run
+    manager_test_run(mgr=mgr,n_dim=5, n_obs=50)

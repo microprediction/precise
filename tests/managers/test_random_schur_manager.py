@@ -6,7 +6,7 @@ def test_random_manager():
     from precise.skaters.managers.schurmanagers import SCHUR_MANAGERS
     mgr = random.choice(SCHUR_MANAGERS)
     manager_test_run(mgr=mgr)
-    print(mgr)
+    print(mgr.__name__+' ran  okay')
 
 
 if __name__=='__main__':
