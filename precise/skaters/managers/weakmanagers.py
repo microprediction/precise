@@ -3,6 +3,7 @@ from precise.skaters.covariance.bufsk import buf_sk_glcv_pcov_d0_n100, buf_sk_gl
 from precise.skaters.portfoliostatic.weakportfactory import BIG_H
 from precise.skaters.managers.buyandholdfactory import buy_and_hold
 
+USE_JS = False
 
 def weak_pm_t0_d0_r025_n50_long_manager(y, s, k=1, e=1):
     assert k==1
@@ -107,7 +108,11 @@ WEAK_J1_LONG_MANAGERS = [weak_pm_t0_d0_r025_n50_long_manager,
                       weak_sk_mcd_pcov_d0_n100_long_manager
                       ]
 
-WEAK_J5_LONG_MANAGERS = [ buy_and_hold(mgr,j=5) for mgr in WEAK_J1_LONG_MANAGERS ]
-WEAK_J20_LONG_MANAGERS = [ buy_and_hold(mgr,j=20) for mgr in WEAK_J1_LONG_MANAGERS ]
+if USE_JS:
+    WEAK_J5_LONG_MANAGERS = [ buy_and_hold(mgr,j=5) for mgr in WEAK_J1_LONG_MANAGERS ]
+    WEAK_J20_LONG_MANAGERS = [ buy_and_hold(mgr,j=20) for mgr in WEAK_J1_LONG_MANAGERS ]
+else:
+    WEAK_J5_LONG_MANAGERS = []
+    WEAK_J20_LONG_MANAGERS = []
 
 WEAK_LONG_MANAGERS = WEAK_J1_LONG_MANAGERS+WEAK_J5_LONG_MANAGERS+WEAK_J20_LONG_MANAGERS
