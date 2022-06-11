@@ -5,6 +5,7 @@ import math
 from precise.skaters.locationutil.vectorfunctions import normalize
 
 
+
 def _buy_and_hold_port(port, j:int, y, s:dict, cov, port_kwargs):
     """
 
@@ -20,24 +21,27 @@ def _buy_and_hold_port(port, j:int, y, s:dict, cov, port_kwargs):
     :return:  w   Portfolio weights
     """
     if j==1:
-        return port(cov=cov, **port_kwargs)
+        w = port(cov=cov, **port_kwargs)
+        s = {}
+        return w, s
     else:
         n_dim = len(y)
         if s.get('w') is None:
             s['multiplier']=[1 for _ in range(n_dim)]
             s['count']=0
             s['w'] = port(cov=cov, **port_kwargs)
-            return s['w']
+            w = s['w']
+            return w, s
         else:
             s['count'] = s['count']+1
             if s['count'] % j == 0:
                 s['multiplier'] = [1 for _ in range(n_dim)]
                 s['w'] = port(cov=cov, **port_kwargs)
-                return s['w']
+                return s['w'], s
             else:
                 s['multiplier'] = [ mi*math.exp(yi) for mi,yi in zip(s['multiplier'],y)]
                 w = normalize( [ wi*mi for wi,mi in zip(s['w'],s['multiplier']) ] )
-                return w
+                return w, s
 
 
 def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, zeta=0.0, j=1):
@@ -64,14 +68,15 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
         s = {'f_state':{},
              'port_state':{},
              'count':0,
-             'hodl_state':{}}
+             'account_state':{}}
 
 
     x_mean, x_cov, s['f_state'] = f(y=y,s=s['f_state'], k=1, e=e, **f_kwargs)
     s['count']+=1
     if s['count']>=n_cold and (e>0):
-        s_hodl = s['hodl_state']
-        w = _buy_and_hold_port(port=port, y=y, j=j, s=s_hodl, cov=x_cov, port_kwargs=port_kwargs)
+        s_account = s['account_state']
+        w, s_account = _buy_and_hold_port(port=port, y=y, j=j, s=s_account, cov=x_cov, port_kwargs=port_kwargs)
+        s['account_state'] = s_account
         if zeta is not None and (zeta>0):
             x_diag = np.diag(x_cov)
             x_corr = cov_to_corrcoef(x_cov)

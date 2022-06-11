@@ -9,4 +9,5 @@ def test_random_manager():
 
 
 if __name__=='__main__':
-    test_random_manager()
+    for _ in range(20):
+        test_random_manager()

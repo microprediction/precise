@@ -19,9 +19,10 @@ def test_random_manager():
     mgr = random.choice(LONG_MANAGERS)
     print('Testing '+mgr.__name__)
     assert_manager_does_not_alter_y(mgr=mgr)
-    manager_test_run(mgr=mgr)
+    j = random.choice([1,5,20])
+    manager_test_run(mgr=mgr,j=j)
 
 
 if __name__=='__main__':
-    for _ in range(50):
+    for _ in range(250):
         test_random_manager()
