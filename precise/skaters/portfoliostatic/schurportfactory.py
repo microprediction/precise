@@ -7,9 +7,12 @@ from precise.skaters.covarianceutil.covfunctions import schur_complement, \
 from scipy.optimize import root_scalar
 from precise.skaters.portfoliostatic.schurportutil import symmetric_step_up_matrix, even_split
 from precise.skaters.covarianceutil.covfunctions import try_invert, cov_distance
-from seriate import seriate
 import numpy as np
 from precise.skaters.portfoliostatic.equalport import equal_long_port
+
+
+# from seriate import seriate
+
 
 
 def schur_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=1.0, delta=0.0):
@@ -63,7 +66,8 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
         cov = try_invert(pre)
 
     if seriator is None:
-        seriator = seriate
+        from precise.skaters.covarianceutil.covfunctions import seriation
+        seriator = seriation
 
     if port_kwargs is None:
         port_kwargs = {}
@@ -72,17 +76,13 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
         return equal_long_port(cov=cov)
     else:
         # Establish ordering using seriator and corr distances
-        try:
-            cov_dist = cov_distance(cov)
-            ndx = seriator(cov_dist)
-            inv_ndx = np.argsort(ndx)
-            cov_cols = cov[:,ndx]
-            cov_back = cov_cols[:,inv_ndx]
-            assert np.allclose(cov,cov_back)
-            ordered_cov = cov_cols[ndx,:]
-        except Exception as e:
-            print('warning: Seriation failed ')
-            return equal_long_port(cov=cov)
+        cov_dist = cov_distance(cov)
+        ndx = seriator(cov_dist)
+        inv_ndx = np.argsort(ndx)
+        cov_cols = cov[:,ndx]
+        cov_back = cov_cols[:,inv_ndx]
+        assert np.allclose(cov,cov_back)
+        ordered_cov = cov_cols[ndx,:]
 
         # Allocate capital to ordered assets
         ordered_w = port(cov=ordered_cov, **port_kwargs)

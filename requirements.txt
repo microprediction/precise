@@ -6,9 +6,7 @@ scikit-learn
 pandas_datareader
 pandas
 pyportfolioopt
-seriate
 scipy
 tomark
 collinearity
 riskparityportfolio
-protobuf<=3.20.1
