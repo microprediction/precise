@@ -35,5 +35,6 @@ def assert_equal_managing(mgr1,mgr2):
 
 
 if __name__=='__main__':
-    test_daily_equal()
-    test_weekly_equal()
+    for _ in range(100):
+        test_daily_equal()
+        test_weekly_equal()

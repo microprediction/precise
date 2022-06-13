@@ -70,7 +70,7 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
              'count':0,
              'account_state':{}}
 
-
+    
     x_mean, x_cov, s['f_state'] = f(y=y,s=s['f_state'], k=1, e=e, **f_kwargs)
     s['count']+=1
     if s['count']>=n_cold and (e>0):
