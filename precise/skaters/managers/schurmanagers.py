@@ -1,6 +1,8 @@
 from precise.skaters.managers.schurmanagerfactory import schur_weak_weak_pm_manager_factory, schur_weak_weak_ewa_manager_factory, \
     schur_diag_weak_pm_manager_factory, schur_vol_vol_ewa_manager_factory, schur_weak_vol_ewa_manager_factory, schur_diag_diag_ewa_manager_factory
 from precise.skaters.managers.buyandholdfactory import buy_and_hold
+from precise.skaters.managers.schurmanagerfactory import schur_vol_vol_pm_manager_factory
+
 
 
 USE_JS = False
@@ -159,6 +161,27 @@ def schur_diag_weak_pm_t0_r050_n25_s5_g100_long_manager(y, s, k=1,e=1, j=1):
     return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.05, target=0, n_emp=25, n_split=5, gamma=1.0, delta=0.0, j=j)
 
 
+
+def schur_vol_vol_pm_t0_d0_r025_n50_s5_g100_long_manager(y, s, k=1, e=1, j=1, zeta=0):
+    assert k==1
+    return schur_vol_vol_pm_manager_factory(y=y, s=s, n_emp=50, e=e, r=0.025, target=0, n_split=5, gamma=1.0, delta=0, zeta=zeta, j=j)
+
+
+def schur_vol_vol_pm_t0_d0_r025_n50_s25_g100_long_manager(y, s, k=1, e=1, j=1, zeta=0):
+    assert k==1
+    return schur_vol_vol_pm_manager_factory(y=y, s=s, n_emp=50, e=e, r=0.025, target=0, n_split=25, gamma=1.0, delta=0, zeta=zeta, j=j)
+
+
+def schur_vol_vol_pm_t0_d0_r025_n50_s50_g100_long_manager(y, s, k=1, e=1, j=1, zeta=0):
+    assert k==1
+    return schur_vol_vol_pm_manager_factory(y=y, s=s, n_emp=50, e=e, r=0.025, target=0, n_split=25, gamma=1.0, delta=0, zeta=zeta, j=j)
+
+
+SCHUR_GAMMA_100_VOL_VOL_LONG_MANAGERS = [schur_vol_vol_pm_t0_d0_r025_n50_s5_g100_long_manager,schur_vol_vol_pm_t0_d0_r025_n50_s25_g100_long_manager,
+                                         schur_vol_vol_pm_t0_d0_r025_n50_s25_g100_long_manager,schur_vol_vol_pm_t0_d0_r025_n50_s50_g100_long_manager]
+
+
+
 SCHUR_GAMMA_100_ENTROPISH_LONG_MANAGERS = SCHUR_GAMMA_100_H125_LONG_MANAGERS + \
                                           SCHUR_GAMMA_100_H150_LONG_MANAGERS + \
                                           SCHUR_GAMMA_100_S25_H500_LONG_MANAGERS + SCHUR_GAMMA_100_S100_H500_LONG_MANAGERS
@@ -173,7 +196,7 @@ SCHUR_GAMMA_100_NON_ENTROPOSH_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5
                                  schur_diag_diag_ewa_r050_n25_s5_g100_long_manager,
                                  schur_diag_weak_pm_t0_r050_n25_s5_g100_long_manager]
 
-SCHUR_GAMMA_100_LONG_MANAGERS = SCHUR_GAMMA_100_ENTROPISH_LONG_MANAGERS + SCHUR_GAMMA_100_NON_ENTROPOSH_LONG_MANAGERS
+SCHUR_GAMMA_100_LONG_MANAGERS = SCHUR_GAMMA_100_ENTROPISH_LONG_MANAGERS + SCHUR_GAMMA_100_NON_ENTROPOSH_LONG_MANAGERS + SCHUR_GAMMA_100_VOL_VOL_LONG_MANAGERS
 
 
 # r=0.025...
@@ -338,6 +361,8 @@ SCHUR_GAMMA_000_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g000_long_man
                                schur_vol_vol_ewa_r050_n25_s5_g000_long_manager,
                                schur_diag_diag_ewa_r050_n25_s5_g000_long_manager,
                                schur_diag_weak_pm_t0_r050_n25_s5_g000_long_manager]
+
+
 
 
 
