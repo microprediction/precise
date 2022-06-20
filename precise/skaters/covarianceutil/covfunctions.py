@@ -236,7 +236,11 @@ def corr_distance(corr, expon=0.5):
     if isinstance(corr, pd.DataFrame):
         return square_to_square_dataframe(corr, corr_distance, expon=expon)
     else:
-        return ((1 - np.array(corr)) / 2.) ** expon
+        with np.errstate(divide='raise'):
+            try:
+                return ((1 - np.array(corr)) / 2.) ** expon
+            except RuntimeWarning:
+                return ((1 - 0.99*np.array(corr)) / 2.) ** expon
 
 
 def cov_distance(cov, expon=0.5):
