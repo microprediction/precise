@@ -239,8 +239,13 @@ def corr_distance(corr, expon=0.5):
         with np.errstate(divide='raise'):
             try:
                 return ((1 - np.array(corr)) / 2.) ** expon
-            except RuntimeWarning:
-                return ((1 - 0.99*np.array(corr)) / 2.) ** expon
+            except (RuntimeWarning, RuntimeError):
+                try:
+                    return ((1 - 0.95*np.array(corr)) / 2.) ** expon
+                except (RuntimeWarning, RuntimeError):
+                    print('Failed to compute corr distance')
+                    return np.ones_like(corr)
+
 
 
 def cov_distance(cov, expon=0.5):
