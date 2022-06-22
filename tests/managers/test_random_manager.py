@@ -8,9 +8,11 @@ import numpy as np
 def assert_manager_does_not_alter_y(mgr):
     ys = random_cached_equity_dense(k=1, n_obs=50, n_dim=5, as_frame=False)
     s = {}
+    j = random.choice([1, 5, 20])
+    q = random.choice([1.0, 0.1])
     for y in ys:
         y_prev = [ yi for yi in y ]
-        w, s = mgr(y=y, s=s)
+        w, s = mgr(y=y, s=s, j=j, q=q)
         assert_array_almost_equal(np.array(y_prev), np.array(y), err_msg='manager '+str(mgr.__name__)+' alters y')
 
 
