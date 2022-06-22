@@ -89,7 +89,7 @@
 | schur_diag_diag_ewa_r050_n25_s5_g000_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_diag_weak_pm_t0_r050_n25_s5_g000_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | equal_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/equalmanagers.py |
-| equality_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/equalitymanagers.py |
+| equal_check_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/equalmanagers.py |
 | ldp_s5_n50_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
 | ldp_s25_n50_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
 | ldp_s5_n100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
