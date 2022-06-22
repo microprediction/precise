@@ -236,15 +236,19 @@ def corr_distance(corr, expon=0.5):
     if isinstance(corr, pd.DataFrame):
         return square_to_square_dataframe(corr, corr_distance, expon=expon)
     else:
-        with np.errstate(divide='raise'):
-            try:
-                return ((1 - np.array(corr)) / 2.) ** expon
-            except (RuntimeWarning, RuntimeError):
+        if np.shape(corr)[0]==1:
+            return np.zeros_like(corr)
+        else:
+            with np.errstate(divide='raise'):
                 try:
-                    return ((1 - 0.95*np.array(corr)) / 2.) ** expon
+                    return ((1 - np.array(corr)) / 2.) ** expon
                 except (RuntimeWarning, RuntimeError):
-                    print('Failed to compute corr distance')
-                    return np.ones_like(corr)
+                    try:
+                        return ((1 - 0.5*np.array(corr)) / 2.) ** expon
+                    except (RuntimeWarning, RuntimeError):
+                        print('Failed to compute corr distance')
+                        donut = np.ones_like(corr)-np.eye(np.shape(corr)[0])
+                        return donut
 
 
 
