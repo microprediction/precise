@@ -6,7 +6,7 @@ from precise.skaters.locationutil.vectorfunctions import normalize
 
 
 
-def _buy_and_hold_port(port, j:int, y, s:dict, cov, port_kwargs):
+def _buy_and_hold_port(port, j:int, q:float, y, s:dict, cov, port_kwargs):
     """
 
          Sporadically calls port() but uses buy and hold in between.
@@ -26,25 +26,27 @@ def _buy_and_hold_port(port, j:int, y, s:dict, cov, port_kwargs):
         return w, s
     else:
         n_dim = len(y)
-        if s.get('w') is None:
+        if s.get('w_prev') is None:
             s['multiplier']=[1 for _ in range(n_dim)]
             s['count']=0
-            s['w'] = port(cov=cov, **port_kwargs)
-            w = s['w']
+            w = port(cov=cov, **port_kwargs)
+            s['w'] = w
             return w, s
         else:
             s['count'] = s['count']+1
             if s['count'] % j == 0:
                 s['multiplier'] = [1 for _ in range(n_dim)]
-                s['w'] = port(cov=cov, **port_kwargs)
-                return s['w'], s
+                w_port = port(cov=cov, **port_kwargs)
+                w = [ q*wi + (1-q)*wpi for wi, wpi in zip(w_port, s['w']) ]
+                s['w'] = w
+                return w, s
             else:
                 s['multiplier'] = [ mi*math.exp(yi) for mi,yi in zip(s['multiplier'],y)]
                 w = normalize( [ wi*mi for wi,mi in zip(s['w'],s['multiplier']) ] )
                 return w, s
 
 
-def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, zeta=0.0, j=1):
+def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, zeta=0.0, j=1,q=1.0):
     """
        Basic manager pattern ignoring mean.
        Expects to receive changes in log(price).
@@ -75,9 +77,11 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
     s['count']+=1
     if s['count']>=n_cold and (e>0):
         s_account = s['account_state']
-        w, s_account = _buy_and_hold_port(port=port, y=y, j=j, s=s_account, cov=x_cov, port_kwargs=port_kwargs)
+        w, s_account = _buy_and_hold_port(port=port, y=y, j=j, q=q, s=s_account, cov=x_cov, port_kwargs=port_kwargs)
         s['account_state'] = s_account
         if zeta is not None and (zeta>0):
+            # Drags towards the portfolio determined by cov
+            # FIXME: This should be moved inside _buy_and_hold_port
             x_diag = np.diag(x_cov)
             x_corr = cov_to_corrcoef(x_cov)
             w_corr_raw = port(cov=x_corr, **port_kwargs)

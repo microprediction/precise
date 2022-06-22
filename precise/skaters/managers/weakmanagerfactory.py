@@ -5,7 +5,7 @@ from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from functools import partial
 
 
-def weak_pm_manager_factory(y, s, target, n_emp,r, e=1, a=1.0, b=None, h=BIG_H, zeta=0,j=1):
+def weak_pm_manager_factory(y, s, target, n_emp,r, e=1, a=1.0, b=None, h=BIG_H, zeta=0,j=1,q=1.0):
     """
        Weak portfolio construction using partial moments cov estimation
     """
@@ -14,7 +14,7 @@ def weak_pm_manager_factory(y, s, target, n_emp,r, e=1, a=1.0, b=None, h=BIG_H, 
     return static_cov_manager_factory_d0(f=f, port=port, y=y, e=e, s=s, zeta=zeta,j=j)
 
 
-def weak_ewa_manager_factory(y, s, n_emp, r , e=1, a=1.0, b=None, h=BIG_H, zeta=0,j=1):
+def weak_ewa_manager_factory(y, s, n_emp, r , e=1, a=1.0, b=None, h=BIG_H, zeta=0,j=1,q=1.0):
     """
        Weak portfolio construction using partial moments cov estimation
     """
@@ -23,7 +23,7 @@ def weak_ewa_manager_factory(y, s, n_emp, r , e=1, a=1.0, b=None, h=BIG_H, zeta=
     return static_cov_manager_factory_d0(f=f, port=port, y=y, e=e, s=s, zeta=zeta,j=j)
 
 
-def weak_manager_factory(y, s, f, a=1.0, e=1, b=None,  h=BIG_H, zeta=0,j=1):
+def weak_manager_factory(y, s, f, a=1.0, e=1, b=None,  h=BIG_H, zeta=0,j=1,q=1.0):
     """
        Weak portfolio construction using any f
     """

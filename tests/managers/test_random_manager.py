@@ -20,7 +20,8 @@ def test_random_manager():
     print('Testing '+mgr.__name__)
     assert_manager_does_not_alter_y(mgr=mgr)
     j = random.choice([1,5,20])
-    manager_test_run(mgr=mgr,j=j)
+    q = random.choice([1.0, 0.1])
+    manager_test_run(mgr=mgr,j=j,q=q)
 
 
 if __name__=='__main__':

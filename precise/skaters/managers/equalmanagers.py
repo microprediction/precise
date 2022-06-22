@@ -12,24 +12,24 @@ def equal_daily_long_manager(y, s, k=1, e=1, zeta=None, j=None):
     return w, {}
 
 
-def equal_long_manager(y, s, k=1, e=1, zeta=None, j=1):
+def equal_long_manager(y, s, k=1, e=1, zeta=None, j=1,q=1.0):
     """ Rebalance every j observations """
-    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=j)
+    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=j, q=1.0)
 
 
-def equal_weekly_long_manager(y, s, k=1, e=1, zeta=None, j=None):
+def equal_weekly_long_manager(y, s, k=1, e=1, zeta=None, j=None, q=1.0):
     """ Rebalance every 5 observations, ignoring supplied j """
-    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=5)
+    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=5, q=1.0)
 
 
-def equal_weekly_buy_and_hold_long_manager(y, s, k=1, e=1, zeta=None, j=None):
+def equal_weekly_buy_and_hold_long_manager(y, s, k=1, e=1, zeta=None, j=None, q=1.0):
     """ Rebalance every 5 observations, implemented a different way as a check for tests """
-    return buy_and_hold_manager_factory(mgr=equal_daily_long_manager, j=5, y=y, s=s)
+    return buy_and_hold_manager_factory(mgr=equal_daily_long_manager, j=5, q=q, y=y, s=s)
 
 
-def equal_monthly_long_manager(y, s, k=1, e=1, zeta=None, j=None):
+def equal_monthly_long_manager(y, s, k=1, e=1, zeta=None, j=None, q=1.0):
     """ Rebalance every 20 observations, ignoring supplied j """
-    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=20)
+    return static_cov_manager_factory_d0(y=y, s=s, f=identity_scov, port=equal_long_port, e=e, n_cold=0, zeta=zeta, j=20, q=1.0)
 
 
 
