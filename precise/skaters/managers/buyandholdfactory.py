@@ -32,41 +32,35 @@ def buy_and_hold_manager_factory(mgr, j:int, y, s:dict, e=1000, q=1.0):
     :param mgr_kwargs:
     :return:  w   Portfolio weights
     """
-    if j==1:
-        # Special case: just use the manager
-        # This is the only time the user's e parameter is passed on.
-        s_mgr = s['s_mgr']
-        w, s_mgr = mgr(y=y,s=s_mgr, e=e)
+    if s.get('w') is None:
+        # Initialization
+        s['count'] = 0
+        s_mgr = {}
+        w, s_mgr = mgr(y=y, s=s_mgr, e=1000)
         s['s_mgr'] = s_mgr
+        s['w'] = w
         return w, s
     else:
-        if s.get('w') is None:
-            # Initialization
-            s['count']=0
-            s_mgr = {}
-            w, s_mgr = mgr(y=y,s=s_mgr, e=1000)
+        s['count'] = s['count']+1
+        if s['count'] % j == 0:
+            # Sporadically use the manager
+            s_mgr = s['s_mgr']
+            w_mgr, s_mgr = mgr(y=y, s=s_mgr, e=1000)
             s['s_mgr'] = s_mgr
-            s['w'] = w
+            w_prev = s['w']
+            w_roll = normalize([wi * math.exp(yi) for wi, yi in zip(w_prev, y)])
+            w = [ wi*q + (1-q)*wpi for wi, wpi in zip(w_mgr, w_roll) ]
+            s['w'] = [wi for wi in w]
             return w, s
         else:
-            s['count'] = s['count']+1
-            if s['count'] % j == 0:
-                # Sporadically use the manager
-                s_mgr = s['s_mgr']
-                w_mgr, s_mgr = mgr(y=y, s=s_mgr, e=1000)
-                s['s_mgr'] = s_mgr
-                w = [ wi*q + (1-q)*wpi for wi, wpi in zip(w_mgr, s['w']) ]
-                s['w'] = w
-                return w, s
-            else:
-                # Tell the manager not to worry too much about this data point, as the weights won't be used ...
-                s_mgr = s['s_mgr']
-                _ignore_w, s_mgr = mgr(y=y, s=s_mgr, e=-1)
-                s['s_mgr'] = s_mgr
-                # ... instead we let it ride
-                w_prev = s['w']
-                w = normalize( [ wi*math.exp(yi) for wi,yi in zip(w_prev,y)] )
-                s['w'] = w
-                return w, s
+            # Tell the manager not to worry too much about this data point, as the weights won't be used ...
+            s_mgr = s['s_mgr']
+            _ignore_w, s_mgr = mgr(y=y, s=s_mgr, e=-1)
+            s['s_mgr'] = s_mgr
+            # ... instead we let it ride
+            w_prev = s['w']
+            w = normalize( [ wi*math.exp(yi) for wi,yi in zip(w_prev,y)] )
+            s['w'] = [wi for wi in w]
+            return w, s
 
 

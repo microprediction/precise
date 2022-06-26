@@ -20,30 +20,29 @@ def _buy_and_hold_port(port, j:int, q:float, y, s:dict, cov, port_kwargs):
     :param port_kwargs:
     :return:  w   Portfolio weights
     """
-    if j==1:
+    n_dim = len(y)
+    if s.get('w') is None:
+        s['multiplier'] = [1 for _ in range(n_dim)]
+        s['count'] = 0
         w = port(cov=cov, **port_kwargs)
-        s = {}
+        s['w'] = [ wi for wi in w ]
         return w, s
     else:
-        n_dim = len(y)
-        if s.get('w_prev') is None:
-            s['multiplier']=[1 for _ in range(n_dim)]
-            s['count']=0
-            w = port(cov=cov, **port_kwargs)
-            s['w'] = w
+        s['count'] = s['count']+1
+        if s['count'] % j == 0:
+            # Create a compromise between the roll forward portfolio and what the optimizer wants
+            s['multiplier'] = [mi * math.exp(yi) for mi, yi in zip(s['multiplier'], y)]
+            w_roll = normalize([wi * mi for wi, mi in zip(s['w'], s['multiplier'])])
+            w_port = port(cov=cov, **port_kwargs)
+            w = [q * wi + (1 - q) * wpi for wi, wpi in zip(w_port, w_roll)]
+            s['w'] = [wi for wi in w]
+            s['multiplier'] = [1 for _ in range(n_dim)]
             return w, s
         else:
-            s['count'] = s['count']+1
-            if s['count'] % j == 0:
-                s['multiplier'] = [1 for _ in range(n_dim)]
-                w_port = port(cov=cov, **port_kwargs)
-                w = [ q*wi + (1-q)*wpi for wi, wpi in zip(w_port, s['w']) ]
-                s['w'] = w
-                return w, s
-            else:
-                s['multiplier'] = [ mi*math.exp(yi) for mi,yi in zip(s['multiplier'],y)]
-                w = normalize( [ wi*mi for wi,mi in zip(s['w'],s['multiplier']) ] )
-                return w, s
+            # Let it ride
+            s['multiplier'] = [ mi*math.exp(yi) for mi,yi in zip(s['multiplier'],y)]
+            w = normalize( [ wi*mi for wi,mi in zip(s['w'],s['multiplier']) ] )
+            return w, s
 
 
 def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, zeta=0.0, j=1,q=1.0):
