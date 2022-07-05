@@ -6,6 +6,7 @@ import json
 from pprint import pprint
 from precise.whereami import TESTSERROR
 import pathlib
+import time
 
 
 def manager_test_run(mgr,n_obs=50,n_dim=7, j=1, q=1.0, verbose=False):
@@ -38,3 +39,28 @@ def manager_test_run(mgr,n_obs=50,n_dim=7, j=1, q=1.0, verbose=False):
     return w
 
 
+def manager_profile(mgr,n_obs=500,n_dim=50, j=1, q=1.0, verbose=False):
+    """
+       Test manager and log traceback to /testserrors
+    """
+    xs = random_cached_equity_dense(k=1, n_obs=n_obs, n_dim=n_dim, as_frame=False)
+
+    cpu = {-1:0,0:0,1:0}
+
+    s = {}
+
+    for e in [-1,0,1]:
+        print(e)
+        st = time.time()
+        for y in xs[:25]:
+            w, s = mgr(y=y, s=s, e=e, j=j, q=q)
+        cpu[e]+= time.time()-st
+
+    return cpu
+
+
+
+if __name__=='__main__':
+    from precise.skaters.managers.schurmanagers import schur_weak_weak_pm_t0_r025_n50_s25_g100_h125_long_manager as mgr
+    cpu = manager_profile(mgr=mgr)
+    pprint(cpu)

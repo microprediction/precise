@@ -1,6 +1,7 @@
 from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
 from precise.skaters.covarianceutil.statemutations import both_cov
 
+
 def test_manifesto():
     from precise.skaters.covariance.allcovskaters import cov_skater_manifest
     stuff = cov_skater_manifest()
