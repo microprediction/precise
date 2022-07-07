@@ -2,7 +2,7 @@ from precise.skaters.managers.weakmanagers import WEAK_LONG_MANAGERS
 from precise.skaters.managers.ppomanagers import PPO_LONG_MANGERS
 from precise.skaters.managers.hrpmanagers import HRP_LONG_MANAGERS
 from precise.skaters.managers.schurmanagers import SCHUR_LONG_MANAGERS
-from precise.skaters.managers.rflmanagers import RFL_HRP_LONG_MANAGERS
+#from precise.skaters.managers.rflmanagers import RFL_HRP_LONG_MANAGERS
 from precise.skaters.managers.equalmanagers import EQUAL_LONG_MANAGERS
 from precise.skaters.managers.ldpmanagers import LDP_LONG_MANAGERS
 from precise.skaters.managers.molybogamanagers import MOLYBOGA_LONG_MANAGERS
@@ -12,9 +12,9 @@ import random
 
 # d0 managers unless otherwise stated
 
-LONG_MANAGERS = WEAK_LONG_MANAGERS + PPO_LONG_MANGERS + HRP_LONG_MANAGERS + SCHUR_LONG_MANAGERS + RFL_HRP_LONG_MANAGERS
+LONG_MANAGERS = WEAK_LONG_MANAGERS + PPO_LONG_MANGERS + HRP_LONG_MANAGERS + SCHUR_LONG_MANAGERS
 LONG_MANAGERS = WEAK_LONG_MANAGERS + PPO_LONG_MANGERS[:100] + HRP_LONG_MANAGERS +\
-SCHUR_LONG_MANAGERS + RFL_HRP_LONG_MANAGERS[:2] + EQUAL_LONG_MANAGERS + LDP_LONG_MANAGERS + MOLYBOGA_LONG_MANAGERS + RP_LONG_MANAGERS
+SCHUR_LONG_MANAGERS + EQUAL_LONG_MANAGERS + LDP_LONG_MANAGERS + MOLYBOGA_LONG_MANAGERS + RP_LONG_MANAGERS
 
 RELIABLE_LONG_MANAGERS = [ m for m in LONG_MANAGERS if not 'ppo' in m.__name__]
 

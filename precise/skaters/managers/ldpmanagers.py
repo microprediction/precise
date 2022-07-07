@@ -8,20 +8,20 @@ from precise.skaters.managers.schurmanagerfactory import schur_vol_vol_ewa_manag
 # (Note that seriation may be different so this is not supposed to be a replica)
 
 
-def ldp_s5_n50_long_manager(y, s, k=1, e=1):
-    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=50, e=e, gamma=0, delta=0)
+def ldp_s5_n50_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=50, e=e, gamma=0, delta=0,j=j,q=q)
 
 
-def ldp_s25_n50_long_manager(y, s, k=1, e=1):
-    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=50, e=e, gamma=0, delta=0)
+def ldp_s25_n50_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=50, e=e, gamma=0, delta=0,j=j,q=q)
 
 
-def ldp_s5_n100_long_manager(y, s, k=1, e=1):
-    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0)
+def ldp_s5_n100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0,j=j,q=q)
 
 
-def ldp_s25_n100_long_manager(y, s, k=1, e=1):
-    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0)
+def ldp_s25_n100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0,j=j,q=q)
 
 
 

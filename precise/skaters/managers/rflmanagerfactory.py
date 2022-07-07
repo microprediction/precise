@@ -4,6 +4,7 @@ import numpy as np
 
 # Thin wrapper for some Riskfolio-Lib methods
 # For full flexibility refer to the package https://github.com/dcajasn/Riskfolio-Lib/blob/master/examples
+# You'll need to import riskfolio-lib as this isn't in by default
 
 
 RPL_RISK_METRICS = ['vol', 'MV', 'MAD', 'MSV', 'FLPM', 'SLPM',

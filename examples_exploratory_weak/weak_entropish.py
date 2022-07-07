@@ -8,8 +8,8 @@ from precise.skaters.covariance.runemp import run_emp_pcov_d0
 from precise.skaters.locationutil.vectorfunctions import scatter
 
 if __name__=='__main__':
-    k = 1  # Business days
-    n_dim = 100
+    k = 1  #
+    n_dim = 50
     n_burn = 100
     rele = list()
     s_parity = {}

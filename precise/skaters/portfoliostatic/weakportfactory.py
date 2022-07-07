@@ -37,7 +37,10 @@ def ensure_rel_entropish(w, h:float):
     :param h:  h > 1
     :return:
     """
-    assert(h > 1)
+    if h<1:
+        print(h)
+        raise ValueError('Expecting h<1 got h='+str(h))
+
     if rel_entropish(w)>=-1/h:
         return w
     else:

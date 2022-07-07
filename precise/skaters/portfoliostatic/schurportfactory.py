@@ -7,9 +7,12 @@ from precise.skaters.covarianceutil.covfunctions import schur_complement, \
 from scipy.optimize import root_scalar
 from precise.skaters.portfoliostatic.schurportutil import symmetric_step_up_matrix, even_split
 from precise.skaters.covarianceutil.covfunctions import try_invert, cov_distance
-from seriate import seriate
 import numpy as np
 from precise.skaters.portfoliostatic.equalport import equal_long_port
+
+
+# from seriate import seriate
+
 
 
 def schur_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=1.0, delta=0.0):
@@ -63,7 +66,8 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
         cov = try_invert(pre)
 
     if seriator is None:
-        seriator = seriate
+        from precise.skaters.covarianceutil.covfunctions import seriation
+        seriator = seriation
 
     if port_kwargs is None:
         port_kwargs = {}
@@ -72,17 +76,13 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
         return equal_long_port(cov=cov)
     else:
         # Establish ordering using seriator and corr distances
-        try:
-            cov_dist = cov_distance(cov)
-            ndx = seriator(cov_dist)
-            inv_ndx = np.argsort(ndx)
-            cov_cols = cov[:,ndx]
-            cov_back = cov_cols[:,inv_ndx]
-            assert np.allclose(cov,cov_back)
-            ordered_cov = cov_cols[ndx,:]
-        except Exception as e:
-            print('warning: Seriation failed ')
-            return equal_long_port(cov=cov)
+        cov_dist = cov_distance(cov)
+        ndx = seriator(cov_dist)
+        inv_ndx = np.argsort(ndx)
+        cov_cols = cov[:,ndx]
+        cov_back = cov_cols[:,inv_ndx]
+        assert np.allclose(cov,cov_back)
+        ordered_cov = cov_cols[ndx,:]
 
         # Allocate capital to ordered assets
         ordered_w = port(cov=ordered_cov, **port_kwargs)
@@ -138,21 +138,41 @@ def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, d
             max_gamma = _maximal_gamma(A=A, B=B, C=C, D=D)
             augA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
             augD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
+
+            augmentation_fail = False
             if not is_positive_def(augA):
-                Ag = nearest_pos_def(augA)
+                try:
+                    Ag = nearest_pos_def(augA)
+                except np.linalg.LinAlgError:
+                    augmentation_fail=True
             else:
                 Ag = augA
             if not is_positive_def(augD):
-                Dg = nearest_pos_def(augD)
+                try:
+                    Dg = nearest_pos_def(augD)
+                except np.linalg.LinAlgError:
+                    augmentation_fail=True
             else:
                 Dg = augD
-            reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
-            reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
-            reductionRatioA = reductionA/reductionD
+
+            if augmentation_fail:
+                print('Warning: augmentation failed')
+                reductionA = 1.0
+                reductionD = 1.0
+                reductionRatioA = 1.0
+                Ag = A
+                Dg = D
+            else:
+                reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
+                reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
+                reductionRatioA = reductionA/reductionD
         else:
             reductionRatioA = 1.0
+            reductionA = 1.0
+            reductionD = 1.0
             Ag = A
             Dg = D
+
         wA = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Ag, port=port, splitter=splitter, gamma=gamma)
         wD = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Dg, port=port, splitter=splitter, gamma=gamma)
         aA, aD = alloc(covs=[Ag, Dg])

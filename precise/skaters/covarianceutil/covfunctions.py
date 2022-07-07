@@ -2,9 +2,19 @@ import numpy as np
 import math
 import pandas as pd
 from precise.skaters.covarianceutil.pdutil import square_to_square_dataframe, square_to_column_series, square_to_index_series
+from scipy.cluster.hierarchy import linkage, leaves_list
+from scipy.spatial.distance import squareform
 
 # Functions acting on cov, corrcoef matrices and other square matrices
 # If square pd.DataFrame are supplied instead, index and columns are preserved
+
+
+def seriation(cov, d=None):
+    if d is None:
+        d = cov_distance(cov=cov)
+    d_square = squareform(d)
+    clusters = linkage(d_square, method='single',optimal_ordering=True)
+    return leaves_list(clusters)
 
 
 def cov_to_corrcoef(a):
@@ -13,7 +23,13 @@ def cov_to_corrcoef(a):
     else:
         variances = np.diagonal(a)
         denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])
-        return a / denominator
+        with np.errstate(divide='raise'):
+            try:
+                corr = a / denominator
+                return corr
+            except (FloatingPointError, ZeroDivisionError):
+                sub_cov = np.diag(variances) + 1e-6
+                return cov_to_corrcoef(sub_cov)
 
 
 def normalize(x):
@@ -220,7 +236,20 @@ def corr_distance(corr, expon=0.5):
     if isinstance(corr, pd.DataFrame):
         return square_to_square_dataframe(corr, corr_distance, expon=expon)
     else:
-        return ((1 - np.array(corr)) / 2.) ** expon
+        if np.shape(corr)[0]==1:
+            return np.zeros_like(corr)
+        else:
+            with np.errstate(divide='raise'):
+                try:
+                    return ((1 - np.array(corr)) / 2.) ** expon
+                except (RuntimeWarning, RuntimeError):
+                    try:
+                        return ((1 - 0.5*np.array(corr)) / 2.) ** expon
+                    except (RuntimeWarning, RuntimeError):
+                        print('Failed to compute corr distance')
+                        donut = np.ones_like(corr)-np.eye(np.shape(corr)[0])
+                        return donut
+
 
 
 def cov_distance(cov, expon=0.5):
@@ -232,6 +261,7 @@ def cov_distance(cov, expon=0.5):
     else:
         corr = cov_to_corrcoef(cov)
         return corr_distance(corr=corr, expon=expon)
+
 
 
 def try_invert(a, **affine_inversion_kwargs):
@@ -353,6 +383,5 @@ def multiply_by_inverse(a, b, throw=True):
 def parity(cov,w):
 
     np.dot(cov,w)
-
 
 

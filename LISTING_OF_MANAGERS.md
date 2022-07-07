@@ -61,6 +61,9 @@
 | schur_vol_vol_ewa_r050_n25_s5_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_diag_diag_ewa_r050_n25_s5_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_diag_weak_pm_t0_r050_n25_s5_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_vol_vol_pm_t0_d0_r025_n50_s5_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_vol_vol_pm_t0_d0_r025_n50_s25_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
+| schur_vol_vol_pm_t0_d0_r025_n50_s50_g100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_weak_weak_pm_t0_r025_n50_s5_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_weak_weak_pm_t0_r050_n25_s5_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_weak_weak_ewa_r025_n50_s5_g050_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
@@ -85,9 +88,8 @@
 | schur_vol_vol_ewa_r050_n25_s5_g000_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_diag_diag_ewa_r050_n25_s5_g000_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
 | schur_diag_weak_pm_t0_r050_n25_s5_g000_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/schurmanagers.py |
-| rfl_hrp_var_long_manager_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rflmanagers.py |
-| rfl_hrp_vol_long_manager_n200 | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/rflmanagers.py |
 | equal_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/equalmanagers.py |
+| equal_check_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/equalmanagers.py |
 | ldp_s5_n50_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
 | ldp_s25_n50_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
 | ldp_s5_n100_long_manager | https://github.com/microprediction/precise/blob/main/precise/skaters/managers/ldpmanagers.py |
