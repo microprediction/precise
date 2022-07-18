@@ -1,6 +1,7 @@
 from precise.skaters.managers.covmanagerfactory import static_cov_manager_factory_d0
 from precise.skaters.covariance.ewapm import ewa_pm_factory
 from precise.skaters.covariance.bufempfactory import buf_emp_pcov_d0_factory
+from precise.skaters.covariance.ewalwfactory import ewa_lw_scov_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_allocation_factory
@@ -8,6 +9,7 @@ from precise.skaters.portfoliostatic.diagalloc import diagonal_allocation_factor
 from precise.skaters.portfoliostatic.diagport import diagonal_portfolio_factory
 from precise.skaters.portfoliostatic.volalloc import vol_allocation_factory
 from precise.skaters.portfoliostatic.ppoportfactory import ppo_vol_port
+from precise.skaters.portfoliostatic.rpport import rp_port_p20
 from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from precise.skaters.portfoliostatic.equalport import equal_long_port
 from functools import partial
