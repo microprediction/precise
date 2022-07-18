@@ -8,11 +8,24 @@ from scipy.spatial.distance import squareform
 # Functions acting on cov, corrcoef matrices and other square matrices
 # If square pd.DataFrame are supplied instead, index and columns are preserved
 
+def is_symmetric(a, rtol=1e-05, atol=1e-08):
+    if isinstance(a, pd.DataFrame):
+        return is_symmetric(a.values, rtol=rtol, atol=atol)
+    else:
+        return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+
+def to_symmetric(a):
+    if isinstance(a, pd.DataFrame):
+        return square_to_square_dataframe(a, to_symmetric)
+    else:
+        return (a + a.T) / 2.0
+
 
 def seriation(cov, d=None):
     if d is None:
         d = cov_distance(cov=cov)
-    d_square = squareform(d)
+    d_square = to_symmetric( squareform(d) )
     clusters = linkage(d_square, method='single',optimal_ordering=True)
     return leaves_list(clusters)
 
@@ -124,18 +137,7 @@ def affine_shrink(a, phi=1.01, lmbd=0.01, copy=True):
         return shrunk_cov
 
 
-def is_symmetric(a, rtol=1e-05, atol=1e-08):
-    if isinstance(a, pd.DataFrame):
-        return is_symmetric(a.values, rtol=rtol, atol=atol)
-    else:
-        return np.allclose(a, a.T, rtol=rtol, atol=atol)
 
-
-def to_symmetric(a):
-    if isinstance(a, pd.DataFrame):
-        return square_to_square_dataframe(a, to_symmetric)
-    else:
-        return (a + a.T) / 2.0
 
 
 def dense_weights_from_dict(d:dict, shape=None, n_dim:int=None):
