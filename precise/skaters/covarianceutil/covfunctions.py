@@ -25,9 +25,15 @@ def to_symmetric(a):
 def seriation(cov, d=None):
     if d is None:
         d = cov_distance(cov=cov)
-    d_square = to_symmetric( squareform(d) )
-    clusters = linkage(d_square, method='single',optimal_ordering=True)
-    return leaves_list(clusters)
+    try:
+        d_square = squareform( to_symmetric(d) )
+        clusters = linkage(d_square, method='single',optimal_ordering=True)
+        return leaves_list(clusters)
+    except Exception as e:
+        print('Strange error in seriation ')
+        print(e)
+        n = np.shape(cov)[0]
+        return [i for i in range(n)]
 
 
 def cov_to_corrcoef(a):
