@@ -31,12 +31,18 @@ def hrp_weak_vol_ewa_r025_n50_s50_l10_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.025, n_emp=50, n_split=50, e=e, gamma=0, delta=0,j=j,q=q,l=10)
 
 
+def hrp_weak_vol_ewa_r001_n200_s50_l20_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    assert k==1
+    return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.001, n_emp=200, n_split=50, e=e, gamma=0, delta=0,j=j,q=q,l=20)
+
+
 
 HRP_LONG_MANAGERS = [ hrp_weak_weak_pm_t0_d0_r025_n50_s5_long_manager,
                       hrp_vol_vol_pm_t0_d0_r025_n50_s5_long_manager,
                       hrp_vol_vol_pm_t0_d0_r025_n50_s50_long_manager,
                       hrp_weak_vol_ewa_r025_n50_s50_long_manager,
-                      hrp_weak_vol_ewa_r025_n50_s50_l10_long_manager
+                      hrp_weak_vol_ewa_r025_n50_s50_l10_long_manager,
+                      hrp_weak_vol_ewa_r001_n200_s50_l20_long_manager
                       ]
 HRP_LS_MANAGERS = []
 HRP_MANAGERS = HRP_LONG_MANAGERS + HRP_LS_MANAGERS

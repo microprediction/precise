@@ -70,7 +70,7 @@ def exclude_negative_weights(w, with_neg_mass=False):
         return (w_pos, neg_mass) if with_neg_mass else w_pos
 
 
-def var_scaled_returns(cov, mu:float, r:float, noise=0.01):
+def var_scaled_returns(cov, mu:float, r:float, noise=0):
     """ Set returns as function of variance.
         Plenty of quibbles here.
     :param cov:

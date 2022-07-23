@@ -20,6 +20,10 @@ from precise.skaters.covarianceutil.covfunctions import affine_shrink
 # Thin wrapper for PyPortfolioOpt
 # For full flexibility refer to the package https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
 
+COV_NOISE = 0.2
+VAR_NOISE = 0.2
+
+
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
 PPO_LONG_BOUNDS = (0, 1)
@@ -67,7 +71,7 @@ def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight
     :return:  Can return a dictionary of variable names and weights
     """
 
-    expected_returns = var_scaled_returns(cov=cov,mu=mu,r=risk_free_rate)
+    expected_returns = var_scaled_returns(cov=cov,mu=mu,r=risk_free_rate, noise=VAR_NOISE)
 
     if weight_bounds is None:
         weight_bounds = PPO_LONG_BOUNDS
@@ -78,8 +82,14 @@ def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight
     # Set return style
     as_series = (not as_dense) and isinstance(cov,pd.DataFrame)
 
+    # Jiggle cov
+    n_assets = np.shape(cov)[0]
+    x_rand = np.atleast_2d(np.random.randn(n_assets)*np.sqrt(np.diag(cov)+0.000001))
+    cov_jiggle = np.dot(np.transpose(x_rand),x_rand)
+    jiggled_cov = cov + COV_NOISE*cov_jiggle
+
     # Tidy up cov and send to optimizer ... repeatedly with more shrinkage as needed
-    shrunk_cov = nearest_pos_def( to_symmetric( np.copy(cov) ) )
+    shrunk_cov = nearest_pos_def( to_symmetric( jiggled_cov) )
     converged = False
     warned = False
     for attempt_no in range(n_attempts):

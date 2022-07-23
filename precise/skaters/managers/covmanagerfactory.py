@@ -5,9 +5,10 @@ import math
 from precise.skaters.locationutil.vectorfunctions import normalize
 
 
-
 def index_of_closest(w, ws):
     l1s = [ sum(abs(np.array(w)-np.array(wsi))) for wsi in ws ]
+    if min(l1s)>0:
+        print({'mean':50*np.mean(l1s),'min':np.min(l1s),'max':np.max(l1s)})
     return l1s.index(min(l1s))
 
 
@@ -43,7 +44,10 @@ def _buy_and_hold_and_choose_port(port, j:int, q:float, l:int, y, s:dict, cov, p
             if l is None:
                 w_port = port(cov=cov, **port_kwargs)
             else:
-                w_ports = [ port(cov=cov, **port_kwargs) for _ in range(l) ]
+                w_ports = list()
+                for _ in range(l):
+                    w_ = port(cov=cov,**port_kwargs)
+                    w_ports.append(w_)
                 choice = index_of_closest(w_roll, w_ports)
                 w_port = list(w_ports[choice])
 
