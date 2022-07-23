@@ -1,7 +1,7 @@
 from precise.skaters.managers.weakmanagerfactory import weak_pm_manager_factory, weak_ewa_manager_factory, weak_manager_factory
 from precise.skaters.covariance.bufsk import buf_sk_glcv_pcov_d0_n100, buf_sk_glcv_pcov_d0_n100_t0, buf_sk_lw_pcov_d0_n100, buf_sk_mcd_pcov_d0_n100, buf_sk_lw_pcov_d1_n100
 from precise.skaters.portfoliostatic.weakportfactory import BIG_H
-from precise.skaters.managers.buyandholdfactory import buy_and_hold
+from precise.skaters.managerutil.buyandhold import buy_and_hold
 
 USE_JS = False
 

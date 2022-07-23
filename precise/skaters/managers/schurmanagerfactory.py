@@ -214,7 +214,7 @@ def schur_vol_vol_pm_manager_factory(y, s, n_emp, e, r, target=0, n_split=5, gam
 
 
 
-def schur_weak_vol_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, a=1.0, b=None, gamma=0.0, delta=0, zeta=0,j=1,q=1.0):
+def schur_weak_vol_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, a=1.0, b=None, gamma=0.0, delta=0, zeta=0,j=1,q=1.0,l=None):
     """
        Schur with weak allocation and min-vol portfolio construction  using expon weighted cov estimation
            a, b             - weak coefs used at leaf
@@ -223,5 +223,5 @@ def schur_weak_vol_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, a=1.0, b=No
     alloc = partial( weak_allocation_factory,a=a, b=b )
     leaf_port = partial( ppo_vol_port )
     sch_port = partial( schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
-    return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
+    return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta,j=j,q=q,l=l)
 

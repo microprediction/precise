@@ -1,11 +1,7 @@
 from precise.skaters.managers.schurmanagerfactory import schur_weak_weak_pm_manager_factory, schur_weak_weak_ewa_manager_factory, \
     schur_diag_weak_pm_manager_factory, schur_vol_vol_ewa_manager_factory, schur_weak_vol_ewa_manager_factory, schur_diag_diag_ewa_manager_factory
-from precise.skaters.managers.buyandholdfactory import buy_and_hold
 from precise.skaters.managers.schurmanagerfactory import schur_vol_vol_pm_manager_factory
 
-
-
-USE_JS = False
 
 # gamma = 1.0
 # r=0.025...
@@ -369,14 +365,6 @@ SCHUR_GAMMA_000_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g000_long_man
 SCHUR_J1_LONG_MANAGERS = SCHUR_GAMMA_100_LONG_MANAGERS + SCHUR_GAMMA_050_LONG_MANAGERS + SCHUR_GAMMA_010_LONG_MANAGERS + SCHUR_GAMMA_000_LONG_MANAGERS
 SCHUR_LS_MANAGERS = []
 
-# Remark: Functions not defined at top level don't always play nice with multiprocessing
-if USE_JS:
-    SCHUR_J5_LONG_MANAGERS = [ buy_and_hold(mgr,j=5) for mgr in SCHUR_J1_LONG_MANAGERS ]
-    SCHUR_J20_LONG_MANAGERS = [ buy_and_hold(mgr,j=20) for mgr in SCHUR_J1_LONG_MANAGERS ]
-else:
-    SCHUR_J5_LONG_MANAGERS = []
-    SCHUR_J20_LONG_MANAGERS = []
-
-SCHUR_LONG_MANAGERS = SCHUR_J1_LONG_MANAGERS + SCHUR_J5_LONG_MANAGERS + SCHUR_J20_LONG_MANAGERS
+SCHUR_LONG_MANAGERS = SCHUR_J1_LONG_MANAGERS
 
 SCHUR_MANAGERS = SCHUR_LONG_MANAGERS + SCHUR_LS_MANAGERS
