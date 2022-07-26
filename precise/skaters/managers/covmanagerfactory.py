@@ -17,7 +17,7 @@ from precise.skaters.portfolioutil.portgeometry import closest_weak_l1, closest_
 # See examples in precise.managers.ppomanagers, rpmanagers, weakmanagers etc
 
 
-def closest_random_nudge(port, cov, l, q, w, port_kwargs, zeta=None):
+def closest_random_nudge(port, cov, q, l, w, port_kwargs, zeta=None):
     """ Apply portfolio method l times, then choose the closest to w or some convex combo
 
         :param l:      Number of times to apply port, (presumably port is stochastic)
@@ -37,18 +37,18 @@ def closest_random_nudge(port, cov, l, q, w, port_kwargs, zeta=None):
     if l is None:
         w_target = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs) # <-- just port(cov,**port_kwargs) usually
     else:
+        # Run port several times
         w_ports = list()
         for _ in range(l):
             w_ = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs)
             w_ports.append(w_)
 
-        if is_odd(l):
+        # Find a portfolio near to w
+        if (l is not None) and (l>=3) and is_odd(l):
             w_target = closest_weak_l1(origin=w, xs=w_ports)
         else:
             w_target = closest_point_l1(origin=w, xs=w_ports)
 
-    # Move q towards the target
-    # TODO: Include thresholding
     w = [q * wi + (1 - q) * wpi for wi, wpi in zip(w_target, w)]
     return w
 
@@ -140,6 +140,8 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
     if nudger is None:
         nudger = closest_random_nudge
         assert 'q' in nudger_kwargs, 'You probably forgot to supply q '
+        if not 'l' in nudger_kwargs:
+            nudger_kwargs['l'] = None
 
     if not s:
         s = {'f_state':{},

@@ -10,6 +10,6 @@ def test_random_manager():
     manager_test_run(mgr=mgr, j=j, q=q)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     for _ in range(20):
         test_random_manager()
