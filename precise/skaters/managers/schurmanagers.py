@@ -142,6 +142,18 @@ def schur_weak_vol_ewa_r050_n25_s5_g100_long_manager(y, s, k=1,e=1, j=1,q=1.0):
     return schur_weak_vol_ewa_manager_factory(y=y, s=s, e=e, r=0.05, n_emp=25, n_split=5, gamma=1.0, delta=0.0, j=j,q=q)
 
 
+# Some close to HRP..
+
+def schur_weak_vol_ewa_r001_n200_s50_g100_l20_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    assert k==1
+    return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.001, n_emp=200, n_split=50, e=e, gamma=100, delta=0,j=j,q=q,l=20)
+
+
+def schur_weak_vol_ewa_r001_n200_s50_g100_l21_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    assert k==1
+    return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.001, n_emp=200, n_split=50, e=e, gamma=100, delta=0,j=j,q=q,l=21)
+
+
 def schur_vol_vol_ewa_r050_n25_s5_g100_long_manager(y, s, k=1,e=1, j=1,q=1.0):
     assert k==1
     return schur_vol_vol_ewa_manager_factory(y=y, s=s, e=e, r=0.05, n_emp=25, n_split=5, gamma=1.0, delta=0.0, j=j,q=q)
@@ -188,6 +200,8 @@ SCHUR_GAMMA_100_NON_ENTROPOSH_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5
                                  schur_weak_weak_ewa_r025_n50_s5_g100_long_manager,
                                  schur_weak_weak_ewa_r050_n25_s5_g100_long_manager,
                                  schur_weak_vol_ewa_r050_n25_s5_g100_long_manager,
+                                 schur_weak_vol_ewa_r001_n200_s50_g100_l20_long_manager,
+                                 schur_weak_vol_ewa_r001_n200_s50_g100_l21_long_manager,
                                  schur_vol_vol_ewa_r050_n25_s5_g100_long_manager,
                                  schur_diag_diag_ewa_r050_n25_s5_g100_long_manager,
                                  schur_diag_weak_pm_t0_r050_n25_s5_g100_long_manager]
