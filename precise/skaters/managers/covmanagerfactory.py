@@ -1,31 +1,73 @@
 from precise.skaters.portfoliostatic.equalport import equal_long_port
-from precise.skaters.covarianceutil.covfunctions import cov_to_corrcoef
-import numpy as np
 import math
 from precise.skaters.locationutil.vectorfunctions import normalize
+from precise.skaters.portfolioutil.zetaport import zeta_port
+from precise.skaters.portfolioutil.portgeometry import closest_weak_l1, closest_point_l1
+
+# A family of managers characterized as follows:
+#
+#    1. They maintain online estimates of covariance
+#    2. Periodic application of a static portfolio method (or multiple, or repeated).
+#    3. An ad-hoc compromise between adjusting to new weights versus trading cost.
+#
+# In this context one can employ:
+#     - Any skater in precise.skaters.covariance
+#     - Any portfolio methods in precise.skaters.portfoliostatic
+#
+# See examples in precise.managers.ppomanagers, rpmanagers, weakmanagers etc
 
 
-def index_of_closest(w, ws):
-    l1s = [ sum(abs(np.array(w)-np.array(wsi))) for wsi in ws ]
-    if min(l1s)>0:
-        print({'mean':50*np.mean(l1s),'min':np.min(l1s),'max':np.max(l1s)})
-    return l1s.index(min(l1s))
+def closest_random_nudge(port, cov, l, q, w, port_kwargs, zeta=None):
+    """ Apply portfolio method l times, then choose the closest to w or some convex combo
 
+        :param l:      Number of times to apply port, (presumably port is stochastic)
+                       We allow l=None to treat the case l=1 separately, just as a little check
+                       Also: if l is odd --> use convex hull
+                             if l is even --> just use closest point
 
-def _buy_and_hold_and_choose_port(port, j:int, q:float, l:int, y, s:dict, cov, port_kwargs):
+        :param q:      How far to move towards target
+        :param zeta:   Just here for the heck of it. Set to anything other than None or zero at your peril.
+
+        :param cov:
+        :param port:   Function taking cov, ***port_kwargs -> w
+        :param w:      Previous portfolio
+
     """
 
-         Sporadically calls port() but uses buy and hold in between.
-         For this to work, 'y' must be changes in log prices.
+    if l is None:
+        w_target = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs) # <-- just port(cov,**port_kwargs) usually
+    else:
+        w_ports = list()
+        for _ in range(l):
+            w_ = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs)
+            w_ports.append(w_)
 
-    :param port:
-    :param j:
-    :param y:
-    :param s:
-    :param cov:
-    :param port_kwargs:
-    :return:  w   Portfolio weights
+        if is_odd(l):
+            w_target = closest_weak_l1(origin=w, xs=w_ports)
+        else:
+            w_target = closest_point_l1(origin=w, xs=w_ports)
+
+    # Move q towards the target
+    # TODO: Include thresholding
+    w = [q * wi + (1 - q) * wpi for wi, wpi in zip(w_target, w)]
+    return w
+
+
+def is_odd(l):
+    return (l % 2) == 1
+
+
+def _periodic_nudge(port, j:int, y, s:dict, cov, port_kwargs, nudger, **nudger_kwargs):
     """
+    :param nudger: A method of producing a portfolio using the prior one
+                   See closest_random_nudge above for example
+
+          nudger_kwargs: For the default nudger,
+                     l - Number of times to call port
+                     q - Distance to move towards target
+                     zeta - Optional compromise with corr versus cov
+    """
+
     n_dim = len(y)
     if s.get('w') is None:
         s['multiplier'] = [1 for _ in range(n_dim)]
@@ -40,19 +82,10 @@ def _buy_and_hold_and_choose_port(port, j:int, q:float, l:int, y, s:dict, cov, p
             s['multiplier'] = [mi * math.exp(yi) for mi, yi in zip(s['multiplier'], y)]
             w_roll = normalize([wi * mi for wi, mi in zip(s['w'], s['multiplier'])])
 
-            # Run the portfolio optimizer a few times and pick portfolio closest to prior
-            if l is None:
-                w_port = port(cov=cov, **port_kwargs)
-            else:
-                w_ports = list()
-                for _ in range(l):
-                    w_ = port(cov=cov,**port_kwargs)
-                    w_ports.append(w_)
-                choice = index_of_closest(w_roll, w_ports)
-                w_port = list(w_ports[choice])
+            # Move towards new target, informed by port
+            w = nudger(port=port, cov=cov, w=w_roll, port_kwargs=port_kwargs, **nudger_kwargs)
 
-            # Create a compromise between the roll forward portfolio and what the optimizer wants
-            w = [q * wi + (1 - q) * wpi for wi, wpi in zip(w_port, w_roll)]
+            # Save state needed
             s['w'] = [wi for wi in w]
             s['multiplier'] = [1 for _ in range(n_dim)]
             return w, s
@@ -63,19 +96,39 @@ def _buy_and_hold_and_choose_port(port, j:int, q:float, l:int, y, s:dict, cov, p
             return w, s
 
 
-def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, zeta=0.0, j=1,q=1.0, l=None):
+def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, j=1, nudger=None, **nudger_kwargs):
     """
-       Basic manager pattern ignoring mean.
-       Expects to receive changes in log(price).
-       If you have opinions on means, you'll have to incorporate them into variance somehow
-       via the covariance skater. 
+     A family of managers characterized as follows:
 
-          :param f     cov skater ("d0")
+    1. They maintain online estimates of covariance
+    2. Periodic application of a static portfolio method (or multiple, or repeated) to determine a new target composition
+    3. An ad-hoc compromise between the new target and trading cost, here refered to as "nudging"
+
+    In this context one can employ:
+     - Any skater in precise.skaters.covariance
+     - Any portfolio methods in precise.skaters.portfoliostatic
+     - Any nudging method
+
+     Typical usage with default nudger:
+
+         static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs, port_kwargs, n_cold=5, j=1, q=0.1, l=5)
+                                        l: how many times to repeatedly run the static portfolio construction
+                                        q: how far to move towards the target
+
+    See examples in precise.managers.ppomanagers, rpmanagers, weakmanagers etc
+
+    Financial remark: This is at the moment a basic manager pattern ignoring mean.
+    If you have opinions on means, you'll have to incorporate them into variance somehow via a covariance skater you modify.
+
+          :param f     cov skater ("d0" hints that it expects to receive *changes* in log(price) so won't do any differencing itself)
           :param port  portfolio constructor
-          :param zeta  Compromise between cov and corr portfolio (zeta=0, use cov only)
           :param j     How often to run the static portfolio construction.
-                       (Warning: if j>1 this will be nonsense unless 'y' represents changes in log prices)
-          :param l     How many times to run the static portfolio construction
+                           (Remark: if j>1 this will be nonsense unless 'y' represents changes in log prices)
+          :param nudger Any method of producing a portfolio using the prior one. See closest_random_nudge above for an example
+          :params **nudger_kwargs  For the default stochastic nudger we use
+                                        l: how many times to repeatedly run the static portfolio construction
+                                        q: how far to move towards the target
+                                        zeta: how far to shrink towards corr port (default 0)
 
        :returns w, s
     """
@@ -84,27 +137,23 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
         f_kwargs = {}
     if port_kwargs is None:
         port_kwargs = {}
+    if nudger is None:
+        nudger = closest_random_nudge
+        assert 'q' in nudger_kwargs, 'You probably forgot to supply q '
+
     if not s:
         s = {'f_state':{},
              'port_state':{},
              'count':0,
              'account_state':{}}
 
-    
     x_mean, x_cov, s['f_state'] = f(y=y,s=s['f_state'], k=1, e=e, **f_kwargs)
     s['count']+=1
     if s['count']>=n_cold and (e>0):
         s_account = s['account_state']
-        w, s_account = _buy_and_hold_and_choose_port(port=port, y=y, j=j, q=q, l=l, s=s_account, cov=x_cov, port_kwargs=port_kwargs)
+        w, s_account = _periodic_nudge(port=port, y=y, j=j, s=s_account, cov=x_cov, port_kwargs=port_kwargs, nudger=nudger, **nudger_kwargs)
         s['account_state'] = s_account
-        if zeta is not None and (zeta>0):
-            # Drags towards the portfolio determined by cov
-            # FIXME: This should be moved inside _buy_and_hold_and_choose_port
-            x_diag = np.diag(x_cov)
-            x_corr = cov_to_corrcoef(x_cov)
-            w_corr_raw = port(cov=x_corr, **port_kwargs)
-            w_corr = normalize(w_corr_raw/x_diag)
-            w = (1-zeta)*w + zeta*w_corr
+
     else:
         w = equal_long_port(cov=x_cov)
     return w, s
