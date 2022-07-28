@@ -1,6 +1,7 @@
 import random
 from precise.skaters.managerutil.managertesting import manager_debug_run
 
+
 def test_randomized_manager():
     from precise.skaters.managers.schurmanagers import schur_weak_vol_ewa_r001_n200_s50_g100_l20_long_manager as mgr
     j = 3

@@ -10,6 +10,8 @@ from itertools import zip_longest
 from precise.skaters.portfolioutil.portfunctions import var_scaled_returns
 from pypfopt.exceptions import OptimizationError
 from cvxpy.error import SolverError
+from precise.skaters.covarianceutil.covrandom import jiggle_cov
+
 try:
     from scipy.sparse.linalg import ArpackNoConvergence
 except ImportError:
@@ -83,10 +85,7 @@ def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight
     as_series = (not as_dense) and isinstance(cov,pd.DataFrame)
 
     # Jiggle cov
-    n_assets = np.shape(cov)[0]
-    x_rand = np.atleast_2d(np.random.randn(n_assets)*np.sqrt(np.diag(cov)+0.000001))
-    cov_jiggle = np.dot(np.transpose(x_rand),x_rand)
-    jiggled_cov = cov + COV_NOISE*cov_jiggle
+    jiggled_cov = jiggle_cov(cov=cov)
 
     # Tidy up cov and send to optimizer ... repeatedly with more shrinkage as needed
     shrunk_cov = nearest_pos_def( to_symmetric( jiggled_cov) )
