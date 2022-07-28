@@ -82,7 +82,7 @@ def rp_ewa_r01_p40_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0):
 
 
 def rp_ewa_r01_p40_l21_long_manager(y, s, k=1,e=1,j=1,q=1.0):
-    return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=20, port=rp_port_p40, e=e,j=j,q=q)
+    return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=21, port=rp_port_p40, e=e,j=j,q=q)
 
 
 def rp_weak_pm_t0_r01_p40_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0):

@@ -1,6 +1,6 @@
 import random
 from precise.skaters.managerutil.managertesting import manager_test_run, manager_debug_run
-from precise.skaters.managers.rpmanagers import rp_weak_pm_t0_p40_l21_long_manager as troublesome_mgr
+from precise.skaters.managers.rpmanagers import rp_ewa_r01_p40_l21_long_manager as troublesome_mgr
 
 
 def test_random_manager():
