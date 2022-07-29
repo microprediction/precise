@@ -76,7 +76,6 @@ RP_EWA_LONG_MANAGERS = [rp_ewa_r01_p0_long_manager, rp_ewa_r02_p0_long_manager,r
 
 # Some more close to p40_r01 but using convex hull
 
-
 def rp_ewa_r01_p40_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0):
     return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=20, port=rp_port_p40, e=e,j=j,q=q)
 
@@ -85,15 +84,25 @@ def rp_ewa_r01_p40_l21_long_manager(y, s, k=1,e=1,j=1,q=1.0):
     return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=21, port=rp_port_p40, e=e,j=j,q=q)
 
 
-def rp_weak_pm_t0_r01_p40_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0):
+def rp_ewa_r01_p20_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0):
+    return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=20, port=rp_port_p20, e=e,j=j,q=q)
+
+
+def rp_ewa_r01_p20_l21_long_manager(y, s, k=1,e=1,j=1,q=1.0):
+    return static_cov_manager_factory_d0(y=y, s=s, f=ewa_emp_pcov_d0_r01, l=21, port=rp_port_p20, e=e,j=j,q=q)
+
+
+def rp_weak_pm_t0_r01_p40_l20_long_manager(y, s, k=1,e=1,j=1,q=1.0): # A tad slow
     return static_cov_manager_factory_d0(y=y, s=s, f=weak_pm_ewa_scov_r01_n100_t0, l=20, port=rp_port_p40, e=e,j=j,q=q)
 
 
-def rp_weak_pm_t0_p40_l21_long_manager(y, s, k=1,e=1,j=1,q=1.0):
+def rp_weak_pm_t0_p40_l21_long_manager(y, s, k=1,e=1,j=1,q=1.0): # A tad slow
     return static_cov_manager_factory_d0(y=y, s=s, f=weak_pm_ewa_scov_r01_n100_t0, l=21, port=rp_port_p40, e=e,j=j,q=q)
 
 
-RP_STOCHASTIC_LONG_MANAGERS = [rp_ewa_r01_p40_l20_long_manager, rp_ewa_r01_p40_l21_long_manager, rp_weak_pm_t0_r01_p40_l20_long_manager, rp_weak_pm_t0_p40_l21_long_manager ]
+RP_STOCHASTIC_LONG_MANAGERS = [rp_ewa_r01_p40_l20_long_manager, rp_ewa_r01_p40_l21_long_manager,
+                               rp_weak_pm_t0_r01_p40_l20_long_manager, rp_weak_pm_t0_p40_l21_long_manager,
+                               rp_ewa_r01_p20_l20_long_manager, rp_ewa_r01_p20_l21_long_manager]
 
 
 
