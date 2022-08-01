@@ -1,4 +1,10 @@
 
+## The Locally Gaussian Partial Correlation [pdf](https://arxiv.org/pdf/1909.09681)
+Håkon Otneim, Dag Tjøstheim
+
+It is well known that the dependence structure for jointly Gaussian variables can be fully captured using correlations, and that the conditional dependence structure in the same way can be described using partial correlations. The partial orrelation does not, however, characterize conditional dependence in many non-Gaussian populations. This paper introduces the local Gaussian partial correlation (LGPC), a new measure of conditional dependence. It is a local version of the partial correlation coefficient that characterizes conditional dependence in a large class of populations. It has some useful and novel properties besides: The LGPC reduces to the ordinary partial correlation for jointly normal variables, and it distinguishes between positive and negative conditional dependence. Furthermore, the LGPC can be used to study departures from conditional independence in specific parts of the distribution. We provide several examples of this, both simulated and real, and derive estimation theory under a local likelihood framework. Finally, we indicate how the LGPC can be used to construct a powerful test for conditional independence, which, again, can be used to detect Granger causality in time series.
+
+
 ## Measuring asymmetries in financial returns : an empirical investigation using local gaussian correlation [pdf](https://openaccess.nhh.no/nhh-xmlui/bitstream/handle/11250/166806/A12_13.pdf?sequence=1&isAllowed=y)
 Støve, Bård; Tjøstheim, Dag
 
