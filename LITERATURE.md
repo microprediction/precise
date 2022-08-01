@@ -1,4 +1,9 @@
 
+## Measuring asymmetries in financial returns : an empirical investigation using local gaussian correlation [pdf](https://openaccess.nhh.no/nhh-xmlui/bitstream/handle/11250/166806/A12_13.pdf?sequence=1&isAllowed=y)
+Støve, Bård; Tjøstheim, Dag
+
+A number of studies have provided evidence that financial returns exhibit asymmetric dependence, such as increased dependence during bear markets, but there seems to be no agreement as to how such asymmetries should be measured. We introduce the use of a new measure of local dependence to study this asymmetry. The central idea of the new approach is to approximate an arbitrary bivariate return distribution by a family of Gaussian bivariate distributions. At each point of the return distribution there is a Gaussian distribution that gives a good approximation at that point. The correlation of the approximating Gaussian distribution is taken as the local correlation in that neighbourhood. The new measure does not suffer from the selection bias of the conditional correlation for Gaussian data, and is able to capture nonlinear dependence. Analyzing several financial returns from the US, UK, German and French markets, we confirm and are able to explicitly quantify the asymmetry. Finally, we discuss a risk management application, and point out a number of possible extensions.
+
 ## Portfolio Allocation under Asymmetric Dependence in Asset Returns using Local Gaussian Correlations [pdf](https://arxiv.org/pdf/2106.12425)
 Sleire et al
 
