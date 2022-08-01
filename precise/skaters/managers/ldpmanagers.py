@@ -24,6 +24,11 @@ def ldp_s25_n100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0,j=j,q=q)
 
 
+def ldp_s100_n200_l21_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+    assert k==1
+    return schur_diag_diag_buf_emp_manager_factory(y=y, s=s, n_buffer=100, e=e, gamma=0, delta=0,j=j,q=q,l=21)
+
+
 
 
 
