@@ -1,3 +1,9 @@
+
+## Portfolio Allocation under Asymmetric Dependence in Asset Returns using Local Gaussian Correlations [pdf](https://arxiv.org/pdf/2106.12425)
+Sleire et al
+
+It is well known that there are asymmetric dependence structures between financial returns. In this paper we use a new nonparametric measure of local dependence, the local Gaussian correlation, to improve portfolio allocation. We extend the classical mean-variance framework, and show that the portfolio optimization is straightforward using our new approach, only relying on a tuning parameter (the bandwidth). The new method is shown to outperform the equally weighted (1/N) portfolio and the classical Markowitz portfolio for monthly asset returns data.
+
 ## Beyond Risk-Based Portfolios: Balancing Performance and Risk Contributions in Asset Allocation [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID2867936_code886365.pdf?abstractid=2819789&mirid=1&type=2)
 Ardia, Boudt, Nguyen
 
