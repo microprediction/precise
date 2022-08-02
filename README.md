@@ -59,6 +59,10 @@ Trouble?
 
     pip install --upgrade pip
     pip install --upgrade setuptools 
+    pip install --upgrade wheel
+    pip install --upgrade osqp   # <-- Can be tricky on some systems see https://github.com/cvxpy/cvxpy/issues/1190#issuecomment-994613793
+    pip install --upgrade pyportfolioopt
+    pip install --upgrade riskparityportfolio
     pip install --upgrade scipy
     pip insatll --upgrade precise 
         
