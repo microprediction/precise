@@ -1,7 +1,6 @@
 from precise.skaters.managers.covmanagerfactory import static_cov_manager_factory_d0
 from precise.skaters.covariance.ewapm import ewa_pm_factory
 from precise.skaters.covariance.bufempfactory import buf_emp_pcov_d0_factory
-from precise.skaters.covariance.ewalwfactory import ewa_lw_scov_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_allocation_factory
@@ -225,7 +224,7 @@ def schur_weak_vol_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, a=1.0, b=No
     return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta,j=j,q=q,l=l)
 
 
-def schur_vol_weak_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, gamma=0.0, delta=0, zeta=0,j=1,q=1.0,l=None):
+def schur_vol_weak_ewa_manager_factory(y, s, n_emp, e, r, n_split=5, a=1.0, b=None, gamma=0.0, delta=0, zeta=0,j=1,q=1.0,l=None):
     """
        Schur with weak allocation and min-vol portfolio construction  using expon weighted cov estimation
            a, b             - weak coefs used at leaf
