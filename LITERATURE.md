@@ -1,3 +1,20 @@
+
+## The Locally Gaussian Partial Correlation [pdf](https://arxiv.org/pdf/1909.09681)
+Håkon Otneim, Dag Tjøstheim
+
+It is well known that the dependence structure for jointly Gaussian variables can be fully captured using correlations, and that the conditional dependence structure in the same way can be described using partial correlations. The partial orrelation does not, however, characterize conditional dependence in many non-Gaussian populations. This paper introduces the local Gaussian partial correlation (LGPC), a new measure of conditional dependence. It is a local version of the partial correlation coefficient that characterizes conditional dependence in a large class of populations. It has some useful and novel properties besides: The LGPC reduces to the ordinary partial correlation for jointly normal variables, and it distinguishes between positive and negative conditional dependence. Furthermore, the LGPC can be used to study departures from conditional independence in specific parts of the distribution. We provide several examples of this, both simulated and real, and derive estimation theory under a local likelihood framework. Finally, we indicate how the LGPC can be used to construct a powerful test for conditional independence, which, again, can be used to detect Granger causality in time series.
+
+
+## Measuring asymmetries in financial returns : an empirical investigation using local gaussian correlation [pdf](https://openaccess.nhh.no/nhh-xmlui/bitstream/handle/11250/166806/A12_13.pdf?sequence=1&isAllowed=y)
+Støve, Bård; Tjøstheim, Dag
+
+A number of studies have provided evidence that financial returns exhibit asymmetric dependence, such as increased dependence during bear markets, but there seems to be no agreement as to how such asymmetries should be measured. We introduce the use of a new measure of local dependence to study this asymmetry. The central idea of the new approach is to approximate an arbitrary bivariate return distribution by a family of Gaussian bivariate distributions. At each point of the return distribution there is a Gaussian distribution that gives a good approximation at that point. The correlation of the approximating Gaussian distribution is taken as the local correlation in that neighbourhood. The new measure does not suffer from the selection bias of the conditional correlation for Gaussian data, and is able to capture nonlinear dependence. Analyzing several financial returns from the US, UK, German and French markets, we confirm and are able to explicitly quantify the asymmetry. Finally, we discuss a risk management application, and point out a number of possible extensions.
+
+## Portfolio Allocation under Asymmetric Dependence in Asset Returns using Local Gaussian Correlations [pdf](https://arxiv.org/pdf/2106.12425)
+Sleire et al
+
+It is well known that there are asymmetric dependence structures between financial returns. In this paper we use a new nonparametric measure of local dependence, the local Gaussian correlation, to improve portfolio allocation. We extend the classical mean-variance framework, and show that the portfolio optimization is straightforward using our new approach, only relying on a tuning parameter (the bandwidth). The new method is shown to outperform the equally weighted (1/N) portfolio and the classical Markowitz portfolio for monthly asset returns data.
+
 ## Beyond Risk-Based Portfolios: Balancing Performance and Risk Contributions in Asset Allocation [pdf](https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID2867936_code886365.pdf?abstractid=2819789&mirid=1&type=2)
 Ardia, Boudt, Nguyen
 
