@@ -100,8 +100,9 @@ def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=True)->[
 
 
 if __name__=='__main__':
+    import random
     n_dim = 500
-    n_port = 25
+    n_port = random.choice([1,2,25])
     x1 = np.random.randn(n_dim)
     xs = [ xi+x1 for xi in np.random.randn(n_port,n_dim) ]
     x  = verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=True)
