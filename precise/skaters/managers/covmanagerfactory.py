@@ -4,6 +4,7 @@ from precise.skaters.locationutil.vectorfunctions import normalize
 from precise.skaters.portfolioutil.zetaport import zeta_port
 from precise.skaters.portfolioutil.portgeometry import closest_weak_l1, closest_point_l1
 
+
 # A family of managers characterized as follows:
 #
 #    1. They maintain online estimates of covariance
@@ -30,21 +31,22 @@ def closest_random_nudge(port, cov, q, l, w, port_kwargs, zeta=None):
 
         :param cov:
         :param port:   Function taking cov, ***port_kwargs -> w
+        :param port_kwargs: Additional params to port
         :param w:      Previous portfolio
 
     """
 
     if l is None:
-        w_target = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs) # <-- just port(cov,**port_kwargs) usually
+        w_target = zeta_port(port=port, cov=cov, zeta=zeta, **port_kwargs)  # <-- just port(cov,**port_kwargs) usually
     else:
         # Run port several times
         w_ports = list()
         for _ in range(l):
-            w_ = zeta_port( port=port, cov=cov, zeta=zeta, **port_kwargs)
+            w_ = zeta_port(port=port, cov=cov, zeta=zeta, **port_kwargs)
             w_ports.append(w_)
 
         # Find a portfolio near to w
-        if (l is not None) and (l>=3) and is_odd(l):
+        if (l is not None) and (l >= 3) and is_odd(l):
             w_target = closest_weak_l1(origin=w, xs=w_ports, verbose=True)
         else:
             w_target = closest_point_l1(origin=w, xs=w_ports)
@@ -57,7 +59,7 @@ def is_odd(l):
     return (l % 2) == 1
 
 
-def _periodic_nudge(port, j:int, y, s:dict, cov, port_kwargs, nudger, **nudger_kwargs):
+def _periodic_nudge(port, j: int, y, s: dict, cov, port_kwargs, nudger, **nudger_kwargs):
     """
     :param nudger: A method of producing a portfolio using the prior one
                    See closest_random_nudge above for example
@@ -73,10 +75,10 @@ def _periodic_nudge(port, j:int, y, s:dict, cov, port_kwargs, nudger, **nudger_k
         s['multiplier'] = [1 for _ in range(n_dim)]
         s['count'] = 0
         w = port(cov=cov, **port_kwargs)
-        s['w'] = [ wi for wi in w ]
+        s['w'] = [wi for wi in w]
         return w, s
     else:
-        s['count'] = s['count']+1
+        s['count'] = s['count'] + 1
         if s['count'] % j == 0:
             # Compute roll forward weights
             s['multiplier'] = [mi * math.exp(yi) for mi, yi in zip(s['multiplier'], y)]
@@ -91,12 +93,13 @@ def _periodic_nudge(port, j:int, y, s:dict, cov, port_kwargs, nudger, **nudger_k
             return w, s
         else:
             # Let it ride
-            s['multiplier'] = [ mi*math.exp(yi) for mi,yi in zip(s['multiplier'],y)]
-            w = normalize( [ wi*mi for wi,mi in zip(s['w'],s['multiplier']) ] )
+            s['multiplier'] = [mi * math.exp(yi) for mi, yi in zip(s['multiplier'], y)]
+            w = normalize([wi * mi for wi, mi in zip(s['w'], s['multiplier'])])
             return w, s
 
 
-def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_kwargs:dict=None, n_cold=5, j=1, nudger=None, **nudger_kwargs):
+def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs: dict = None, port_kwargs: dict = None, n_cold=5, j=1,
+                                  nudger=None, **nudger_kwargs):
     """
      A family of managers characterized as follows:
 
@@ -144,21 +147,19 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs:dict=None, port_k
             nudger_kwargs['l'] = None
 
     if not s:
-        s = {'f_state':{},
-             'port_state':{},
-             'count':0,
-             'account_state':{}}
+        s = {'f_state': {},
+             'port_state': {},
+             'count': 0,
+             'account_state': {}}
 
-    x_mean, x_cov, s['f_state'] = f(y=y,s=s['f_state'], k=1, e=e, **f_kwargs)
-    s['count']+=1
-    if s['count']>=n_cold and (e>0):
+    x_mean, x_cov, s['f_state'] = f(y=y, s=s['f_state'], k=1, e=e, **f_kwargs)
+    s['count'] += 1
+    if s['count'] >= n_cold and (e > 0):
         s_account = s['account_state']
-        w, s_account = _periodic_nudge(port=port, y=y, j=j, s=s_account, cov=x_cov, port_kwargs=port_kwargs, nudger=nudger, **nudger_kwargs)
+        w, s_account = _periodic_nudge(port=port, y=y, j=j, s=s_account, cov=x_cov, port_kwargs=port_kwargs,
+                                       nudger=nudger, **nudger_kwargs)
         s['account_state'] = s_account
 
     else:
         w = equal_long_port(cov=x_cov)
     return w, s
-
-
-
