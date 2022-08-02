@@ -59,6 +59,9 @@ def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=True)->[
     """
     l1s = np_linalg_norms(xs=xs, ord=1)
     d_upper = min(l1s)
+    if d_upper<1e-4:
+        return closest_point_l1(xs=xs)
+
     best_x = closest_point_l1(xs=xs)
     best_ratio = np.linalg.norm(best_x, ord=1) / d_upper
     best_discount = -1
