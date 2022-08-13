@@ -43,6 +43,11 @@ def hrp_weak_vol_ewa_r001_n200_s50_l100_long_manager(y, s, k=1, e=1, j=1, q=1.0)
 # Some l=21 managers
 
 
+def hrp_weak_vol_ewa_r001_n200_s5_l21_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.001, n_emp=200, n_split=5, e=e, gamma=0, delta=0, j=j, q=q,
+                                              l=21)
+
 def hrp_weak_vol_ewa_r001_n200_s50_l21_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_vol_ewa_manager_factory(y=y, s=s, r=0.001, n_emp=200, n_split=50, e=e, gamma=0, delta=0, j=j, q=q,
