@@ -5,6 +5,7 @@ import scipy
 from numpy.linalg import LinAlgError
 import numpy as np
 import math
+from precise.skaters.covarianceutil.covrandom import jiggle_cov
 
 # Fast long-only approximately min-var portfolios where the constraints are:
 #       sum(w)=1,
@@ -70,11 +71,14 @@ def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_
     """
     if cov is None:
         cov = try_invert(pre)
-    w0 = unitary_from_cov(cov=cov)
+
+    jiggled_cov = jiggle_cov(cov=cov)
+
+    w0 = unitary_from_cov(cov=jiggled_cov)
     if b is not None:
-        return _weak_known_params(cov=cov, a=a, b=b, w0=w0, with_neg_mass=with_neg_mass)
+        return _weak_known_params(cov=jiggled_cov, a=a, b=b, w0=w0, with_neg_mass=with_neg_mass)
     else:
-        return _weak_optimal_b(cov=cov, w0=w0, a=a, h=h, with_neg_mass=with_neg_mass)
+        return _weak_optimal_b(cov=jiggled_cov, w0=w0, a=a, h=h, with_neg_mass=with_neg_mass)
 
 
 def _weak_known_params(cov, a, b, w0, with_neg_mass=False):

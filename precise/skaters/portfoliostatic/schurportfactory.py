@@ -9,7 +9,7 @@ from precise.skaters.portfoliostatic.schurportutil import symmetric_step_up_matr
 from precise.skaters.covarianceutil.covfunctions import try_invert, cov_distance
 import numpy as np
 from precise.skaters.portfoliostatic.equalport import equal_long_port
-
+from precise.skaters.covarianceutil.covrandom import jiggle_cov
 
 # from seriate import seriate
 
@@ -65,6 +65,9 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
     if cov is None:
         cov = try_invert(pre)
 
+    # Jiggle cov
+    jiggled_cov = jiggle_cov(cov=cov)
+
     if seriator is None:
         from precise.skaters.covarianceutil.covfunctions import seriation
         seriator = seriation
@@ -72,16 +75,16 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
     if port_kwargs is None:
         port_kwargs = {}
 
-    if any(np.diag(cov)<1e-6):
-        return equal_long_port(cov=cov)
+    if any(np.diag(jiggled_cov)<1e-6):
+        return equal_long_port(cov=jiggled_cov)
     else:
         # Establish ordering using seriator and corr distances
-        cov_dist = cov_distance(cov)
+        cov_dist = cov_distance(jiggled_cov)
         ndx = seriator(cov_dist)
         inv_ndx = np.argsort(ndx)
-        cov_cols = cov[:,ndx]
+        cov_cols = jiggled_cov[:,ndx]
         cov_back = cov_cols[:,inv_ndx]
-        assert np.allclose(cov,cov_back)
+        assert np.allclose(jiggled_cov,cov_back)
         ordered_cov = cov_cols[ndx,:]
 
         # Allocate capital to ordered assets
@@ -99,10 +102,15 @@ def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None,
 def hierarchical_seriated_portfolio_factory(alloc, cov, port, splitter, gamma:float=0.0, delta:float=0):
     """
         Assumes assets have been ordered already
+
+        Jiggles cov
+
     """
-    n1, n2 = splitter(cov)
+    jiggled_cov = jiggle_cov(cov=cov)
+
+    n1, n2 = splitter(jiggled_cov)
     if n1==0 or n2==0:
-        w = port(cov)
+        w = port(jiggled_cov)
         if isinstance(w,list):
             print('Warning: '+port.__name__+' returns list not array ')
             w = np.array(w)
@@ -110,10 +118,10 @@ def hierarchical_seriated_portfolio_factory(alloc, cov, port, splitter, gamma:fl
     else:
         if abs(gamma)<1e-6:
             # Hierarchical risk parity (Lopez de Prado)
-            w = hierarchical_risk_parity(cov=cov, n1=n1, port=port, alloc=alloc, splitter=splitter)
+            w = hierarchical_risk_parity(cov=jiggled_cov, n1=n1, port=port, alloc=alloc, splitter=splitter)
         else:
             # Schur complementary portfolio construction (yours truly)
-            w = hierarchical_schur_complementary_portfolio(cov=cov, n1=n1, port=port, alloc=alloc, splitter=splitter, gamma=gamma, delta=delta)
+            w = hierarchical_schur_complementary_portfolio(cov=jiggled_cov, n1=n1, port=port, alloc=alloc, splitter=splitter, gamma=gamma, delta=delta)
         return w
 
 
