@@ -317,6 +317,11 @@ def schur_diag_weak_pm_t0_r050_n25_s5_g010_l11_long_manager(y, s, k=1,e=1, j=1,q
     return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.05, target=0, n_emp=25, n_split=5, gamma=0.5, delta=0.0, l=11, j=j,q=q)
 
 
+def schur_diag_weak_pm_t0_r050_n25_s5_g010_l7_long_manager(y, s, k=1,e=1, j=1,q=1.0):
+    assert k==1
+    return schur_diag_weak_pm_manager_factory(y=y, s=s, e=e, r=0.05, target=0, n_emp=25, n_split=5, gamma=0.5, delta=0.0, l=7, j=j,q=q)
+
+
 
 SCHUR_GAMMA_010_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g010_long_manager,
                                schur_weak_weak_pm_t0_r050_n25_s5_g010_long_manager,
