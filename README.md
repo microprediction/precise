@@ -24,7 +24,7 @@ Here y is a vector:
 This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
 
 ### Other uses
-This [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) explors the connection between portfolio theory and combining models. See also the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
+This [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) illustrates the connection between portfolio theory and model ensembles. See also the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
 
 ## Install 
 
