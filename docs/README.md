@@ -1,5 +1,6 @@
 # Precise Package Documentation
 
-Instructions for online 
- - [covariance](https://microprediction.github.io/precise/covariance.html) forcasting.
- - [portfolio](https://microprediction.github.io/precise/portfolio.html) construction.
+Instructions for:
+ - Online [covariance](https://microprediction.github.io/precise/covariance.html) forcasting.
+ - The use of [managers](https://microprediction.github.io/precise/managers.html) for online portfolio construction.
+ - The computation of [portfolios](https://microprediction.github.io/precise/portfolios.html) from known covariance. 
