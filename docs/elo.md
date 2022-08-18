@@ -6,6 +6,10 @@ You have to run these notebooks.
 
 as there is currently no automated production of Elo tables. 
 
+### Remarks
+
+I use Elo ratings, despite the shortcomings, because comparisions are extremely time intensive. Match results are recorded in hashed files for easy parallelization and avoidance of git merging. You can run the battle scripts if you like. See [these examples](https://github.com/microprediction/precise/tree/main/precise/skatervaluation/battlescripts/manager_var) for instance. To make a different battle you modify the name of the script and nothing else. Pull requests for match results are welcome, see below.
+
 ### Helping with Elo ratings
 Sorry this isn't too streamlined, but if you'd like to perform some Elo calculations and share the results it is appreciated! 
 
