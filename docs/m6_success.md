@@ -6,7 +6,7 @@ are:
 
 | Handle                                  | Team details                                                |  
 |-----------------------------------------|-------------------------------------------------------------|
-| Can't spell Gratitude without Guacamole | Forthcoming                                                 |
+| Can't spell Gratitude without Guacamole | [Rumi Naik](https://www.linkedin.com/in/armaghannaik/) et al|
 | MarcoGorelli                            | [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/)  |
 | microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    | 
 
