@@ -22,3 +22,16 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 | MarcoGorelli                            | 2nd                                                         |    13th      |  14th      |
 | microprediction                         | 15th                                                        |    20th      |  60th      |
 
+
+-+-
+
+Documentation [home](https://microprediction.github.io/precise)
+
+
+![marco_2nd](https://github.com/microprediction/precise/blob/main/docs/assets/images/marco_2nd.png)
+
+
+
+
+
+
