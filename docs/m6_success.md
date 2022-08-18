@@ -1,7 +1,7 @@
 
 # Success in the M6 Financial Forecasting Contest
 
-So far as we know, there are three teams who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). Those
+So far as we know, there are three teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). Those
 are: 
 
 | Handle                                  | Team details                                                |  
@@ -24,11 +24,11 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 ### Current overall results as of Aug 18
 
 
-| Handle                                  | Overall (out of 162 teams)                                  |   Forecasts  |  Decisions |
+| Handle                                  | Overall (out of 199 teams)                                  |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
 | MarcoGorelli                            | 2nd                                                         |    22nd      |  11th      |
 | microprediction                         | 27th                                                        |    23.5th    |  80th      |
-| Can't spell Gratitude without Guacamole | Did not participate in first quarter                        |              |            |
+| Can't spell Gratitude without Guacamole | 82nd   (joined late)                                        |   161st      |  4th       |
 
 
 
