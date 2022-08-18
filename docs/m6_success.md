@@ -38,7 +38,7 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 | Handle                                  | Overall (out of 199 teams)                                  |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
 | MarcoGorelli                            | 2nd                                                         |    22nd      |  11th      |
-| microprediction                         | 27th                                                        |    23.5th    |  80th      |
+| microprediction                         | 27th                                                        |    23rd      |  80th      |
 
 
 
