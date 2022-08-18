@@ -8,4 +8,7 @@ Instructions for:
 More specific examples:
  - [Creating an M6 entry](https://microprediction.github.io/precise/m6.html)
  
- 
+### Of note
+
+- [M6 success](https://microprediction.github.io/precise/m6_success.html)
+
