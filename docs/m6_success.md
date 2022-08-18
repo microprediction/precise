@@ -12,8 +12,8 @@ So far as we know, there are two team out of 199 who have publically declared th
 
 | Handle                                  | Overall (out of 59 teams)                                   |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
-| MarcoGorelli                            | 2nd                                                         |    13th      |  14th      |
-| microprediction                         | 18th                                                        |    18th      |  39th      |
+| microprediction                         | 2nd                                                         |    13th      |  14th      |
+| MarcoGorelli                            | 18th                                                        |    18th      |  39th      |
 
 Sadly no cash for the pilot. 
 
