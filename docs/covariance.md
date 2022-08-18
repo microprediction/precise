@@ -13,3 +13,6 @@
         x, x_cov, s = f(s=s, y=y)
 
 
+-+-
+
+Documentation [home](https://microprediction.github.io/precise)
