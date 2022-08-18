@@ -16,9 +16,21 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 
 | Handle                                  | Overall (out of 162 teams)                                  |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
-| Can't spell Gratitude without Guacamole | Did not participate                                         |              |            |
 | MarcoGorelli                            | 2nd                                                         |    13th      |  14th      |
 | microprediction                         | 15th                                                        |    20th      |  60th      |
+
+
+
+### Current overall results as of Aug 18
+
+
+| Handle                                  | Overall (out of 162 teams)                                  |   Forecasts  |  Decisions |
+|-----------------------------------------|-------------------------------------------------------------|--------------|------------|
+| MarcoGorelli                            | 2nd                                                         |    22nd      |  11th      |
+| microprediction                         | 27th                                                        |    23.5th    |  80th      |
+| Can't spell Gratitude without Guacamole | Did not participate in first quarter                        |              |            |
+
+
 
 
 -+-
