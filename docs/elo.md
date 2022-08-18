@@ -1,0 +1,22 @@
+# Elo ratings
+
+See the [elo ratings notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) as there
+is currently no automated production of Elo tables. 
+
+
+### Helping with Elo ratings
+Sorry this isn't too streamlined, but if you'd like to perform some Elo calculations and share the results it is appreciated! 
+
+    mkdir charity
+    cd charity
+    python3 -m venv charity
+    source charity/bin/activate
+    git clone https://github.com/microprediction/precise.git
+    cd precise
+    pip install -e . 
+    python3 create_more_elo_ratings_thanks.py
+
+
+-+-
+
+Documentation [home](https://microprediction.github.io/precise)
