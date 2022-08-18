@@ -1,5 +1,5 @@
 
-# Success in the M6 Financial Forecasting Contest
+# Performance of precise users in the M6 financial forecasting contest
 
 So far as we know, there are two team out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). Though since there are a hundred ways to estimate covariance in that package, and about the same number of ways to construct portfolios, that isn't much information. 
 
