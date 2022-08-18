@@ -53,6 +53,12 @@ Same thing, sort of. See this [notebook example](https://github.com/micropredict
 
 At present "weak" and "schur" are the only methods you may have trouble finding implemented elsewhere. The latter is my attempt to unify seemingly disparate approaches: namely those using a global optimization versus those using divide and conquer. 
 
+### Other places to rummage
+... for functionality. 
+
+- [covarianceutil](https://github.com/microprediction/precise/tree/main/precise/skaters/covarianceutil) 
+- [locationutil](https://github.com/microprediction/precise/tree/main/precise/skaters/locationutil) 
+- [portfoliostatic](https://github.com/microprediction/precise/tree/main/precise/skaters/portfoliostatic) or [portfolioutil](https://github.com/microprediction/precise/tree/main/precise/skaters/portfolioutil)
      
 
 -+-
