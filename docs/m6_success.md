@@ -1,8 +1,7 @@
 
 # Success in the M6 Financial Forecasting Contest
 
-So far as we know, there are three teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). Those
-are: 
+So far as we know, there are two team out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). 
 
 | Handle                                  | Team details                                                |  
 |-----------------------------------------|-------------------------------------------------------------|
