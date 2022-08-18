@@ -1,13 +1,16 @@
 
 # Performance of precise users in the M6 financial forecasting contest
 
-So far as we know, there are two teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). Though since there are a hundred ways to estimate covariance in that package, and about the same number of ways to construct portfolios, that isn't conveying much information. However here is the performance thus far:
-
+So far as we know, there are two teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). 
 
 | Handle                                  | Team details                                                |  
 |-----------------------------------------|-------------------------------------------------------------|
 | MarcoGorelli                            | [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/)  |
 | microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    | 
+
+
+Though since there are a hundred ways to estimate covariance in that package, and about the same number of ways to construct portfolios, that isn't conveying much information. I have no idea what Marco is doing but here is the performance thus far:
+
 
 ### Pilot results
 
