@@ -8,9 +8,7 @@ are:
 |-----------------------------------------|-------------------------------------------------------------|
 | Can't spell Gratitude without Guacamole | Forthcoming                                                 |
 | MarcoGorelli                            | [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/)  |
-| microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    |
-
-Guacamole was a late entrant. 
+| microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    | 
 
 ### First quarter results
 
