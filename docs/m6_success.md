@@ -6,13 +6,21 @@ are:
 
 | Handle                                  | Team details                                                |  
 |-----------------------------------------|-------------------------------------------------------------|
-| Can't spell Gratitude without Guacamole | [Rumi Naik](https://www.linkedin.com/in/armaghannaik/), [Robert Sheng](https://www.linkedin.com/in/robert-sheng/), [Sergio barro-Ojeda](https://www.linkedin.com/in/sergio-barro-ojeda-05b858165/) et al|
 | MarcoGorelli                            | [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/)  |
 | microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    | 
 
+### Pilot results
+
+| Handle                                  | Overall (out of 59 teams)                                   |   Forecasts  |  Decisions |
+|-----------------------------------------|-------------------------------------------------------------|--------------|------------|
+| MarcoGorelli                            | 2nd                                                         |    13th      |  14th      |
+| microprediction                         | 18th                                                        |    18th      |  39th      |
+
+Sadly no cash for the pilot. 
+
 ### First quarter results
 
-Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finishing 2nd in the overall ranking for the first quarter and taking home the cash! 
+Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finishing 2nd in the overall ranking for the first quarter and taking home the money! 
 
 | Handle                                  | Overall (out of 162 teams)                                  |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
@@ -28,7 +36,6 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
 | MarcoGorelli                            | 2nd                                                         |    22nd      |  11th      |
 | microprediction                         | 27th                                                        |    23.5th    |  80th      |
-| Can't spell Gratitude without Guacamole | 82nd   (joined late)                                        |   161st      |  4th       |
 
 
 
