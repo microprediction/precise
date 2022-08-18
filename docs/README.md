@@ -10,5 +10,6 @@ More specific examples:
  
 ### Of note
 
-- [M6 success](https://microprediction.github.io/precise/m6_success.html)
-
+- We've had some [m6 success](https://microprediction.github.io/precise/m6_success.html)! 
+- Related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
+- This is a piece of the microprediction project aimed at creating millions of autonomous critters to democratize AI, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere.
