@@ -13,7 +13,7 @@ Here y is a vector:
     for y in ys:
         x, x_cov, s = f(s=s, y=y)
 
-This package contains lots of different "f"s. There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. See the
+This package contains lots of different "f"s. There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. See the [covariance documentation](https://microprediction.github.io/precise/covariance.html).
 
 ## Usage example: portfolio weights
 Here y is a vector:
@@ -23,7 +23,7 @@ Here y is a vector:
         for y in ys:
             w, s = mgr(s=s, y=y)
 
-This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code.  
+This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
 
 ### Other uses
 This [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) explors the connection between portfolio theory and combining models. See also the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
