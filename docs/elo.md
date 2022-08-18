@@ -1,8 +1,10 @@
 # Elo ratings
+You have to run these notebooks. 
 
-See the [elo ratings notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb) as there
-is currently no automated production of Elo tables. 
+- [elo ratings for covariance](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/elo_ratings_and_code_urls.ipynb), or 
+- [elo ratings for managers](https://github.com/microprediction/precise/blob/main/examples_basic_usage/compile_elo_ratings_for_managers.py)
 
+as there is currently no automated production of Elo tables. 
 
 ### Helping with Elo ratings
 Sorry this isn't too streamlined, but if you'd like to perform some Elo calculations and share the results it is appreciated! 
