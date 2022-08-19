@@ -1,23 +1,8 @@
-
 import math
 from precise.skaters.locationutil.vectorfunctions import normalize
-from functools import partial, update_wrapper
 
 
-def buy_and_hold(mgr, j, q=1.0):
-    """ Make a manager with frequency j
-    :param mgr:
-    :param j:
-    :return:
-    """
-    mgr_j_q = partial(mgr,j=j, q=q)
-    mgr_j_q = update_wrapper(mgr_j_q, mgr)
-    mgr_j_q.__name__ = mgr.__name__+'_j'+str(j)+'_q'+str(int(100*q)).zfill(3)
-    return mgr_j_q
-
-
-
-def buy_and_hold_manager_factory(mgr, j:int, y, s:dict, e=1000, q=1.0):
+def buy_and_hold_manager_factory(mgr, j: int, y, s: dict, e=1000, q=1.0):
     """ Ignores manager preference except every j data points
 
          For this to make any sense, 'y' must be changes in log prices.
@@ -32,24 +17,26 @@ def buy_and_hold_manager_factory(mgr, j:int, y, s:dict, e=1000, q=1.0):
     :param mgr_kwargs:
     :return:  w   Portfolio weights
     """
+    # Warning this is not tested. Most buy and hold managers use the cov_manager instead
+
     if s.get('w') is None:
         # Initialization
         s['count'] = 0
         s_mgr = {}
-        w, s_mgr = mgr(y=y, s=s_mgr, e=1000)
+        w, s_mgr = mgr(y=y, s=s_mgr, e=e)
         s['s_mgr'] = s_mgr
         s['w'] = w
         return w, s
     else:
-        s['count'] = s['count']+1
+        s['count'] = s['count'] + 1
         if s['count'] % j == 0:
             # Sporadically use the manager
             s_mgr = s['s_mgr']
-            w_mgr, s_mgr = mgr(y=y, s=s_mgr, e=1000)
+            w_mgr, s_mgr = mgr(y=y, s=s_mgr, e=e)
             s['s_mgr'] = s_mgr
             w_prev = s['w']
             w_roll = normalize([wi * math.exp(yi) for wi, yi in zip(w_prev, y)])
-            w = [ wi*q + (1-q)*wpi for wi, wpi in zip(w_mgr, w_roll) ]
+            w = [wi * q + (1 - q) * wpi for wi, wpi in zip(w_mgr, w_roll)]
             s['w'] = [wi for wi in w]
             return w, s
         else:
@@ -59,8 +46,6 @@ def buy_and_hold_manager_factory(mgr, j:int, y, s:dict, e=1000, q=1.0):
             s['s_mgr'] = s_mgr
             # ... instead we let it ride
             w_prev = s['w']
-            w = normalize( [ wi*math.exp(yi) for wi,yi in zip(w_prev,y)] )
+            w = normalize([wi * math.exp(yi) for wi, yi in zip(w_prev, y)])
             s['w'] = [wi for wi in w]
             return w, s
-
-

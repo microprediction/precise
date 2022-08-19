@@ -70,13 +70,22 @@ def exclude_negative_weights(w, with_neg_mass=False):
         return (w_pos, neg_mass) if with_neg_mass else w_pos
 
 
-def var_scaled_returns(cov, mu:float, r:float):
+def var_scaled_returns(cov, mu:float, r:float, noise=0):
+    """ Set returns as function of variance.
+        Plenty of quibbles here.
+    :param cov:
+    :param mu:
+    :param r:
+    :param noise:
+    :return:
+    """
     import warnings
     warnings.filterwarnings('error')
     vars = np.diag(cov)
     typical_var = np.mean(vars)
+
     try:
-        result = r+(mu-r)*np.array([ v/typical_var for v in vars])
+        result = r+(mu-r)*np.array([ v/typical_var*(1+np.random.rand()*noise) for v in vars])
     except RuntimeWarning as e:
         print(e)
         pass

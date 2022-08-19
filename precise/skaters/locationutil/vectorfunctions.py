@@ -25,6 +25,7 @@ def scatter(x):
     return s
 
 
+
 if __name__=='__main__':
     from pprint import pprint
     x = np.random.randn(5)
