@@ -18,8 +18,16 @@ def rp_port_p70(cov=None, pre=None):
     return rp_portfolio_factory(cov=cov, pre=pre,phi=0.7)
 
 
+def rp_port_p61(cov=None, pre=None):
+    return rp_portfolio_factory(cov=cov, pre=pre,phi=0.61)
+
+
 def rp_port_p60(cov=None, pre=None):
     return rp_portfolio_factory(cov=cov, pre=pre,phi=0.6)
+
+
+def rp_port_p59(cov=None, pre=None):
+    return rp_portfolio_factory(cov=cov, pre=pre,phi=0.59)
 
 
 def rp_port_p50(cov=None, pre=None):
@@ -47,5 +55,5 @@ def rp_port_p0(cov=None, pre=None):
 
 
 RP_LONG_PORT = [rp_port_p100, rp_port_p70, rp_port_p80, rp_port_p90,
-                rp_port_p40, rp_port_p50, rp_port_p60,
+                rp_port_p40, rp_port_p50, rp_port_p59, rp_port_p60, rp_port_p61,
                 rp_port_p10, rp_port_p20, rp_port_p30, rp_port_p0]
