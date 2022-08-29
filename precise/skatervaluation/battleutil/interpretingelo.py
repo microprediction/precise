@@ -4,6 +4,48 @@ import pandas as pd
 import numpy as np
 
 
+def gamma_plot(ratings, model_sub_string:str):
+    """ Plots the relationship between choice of gamma and Elo rating
+
+        :ratings - The output from elo_from_win_files(genre=GENRE, category=CATEGORY_MATCH)
+
+    """
+
+    # Plot gamma relationship to Elo
+    from matplotlib.pyplot import cm
+    import numpy as np
+    rainbow = cm.rainbow(np.linspace(0, 1, len(ratings)))
+    from sklearn.linear_model import LinearRegression
+
+    import matplotlib.pyplot as plt
+    for category_and_ratings, c in zip(ratings, rainbow):
+        category = category_and_ratings[0]
+        elos = list()
+        gammas = list()
+        colors = list()
+        legend = list()
+        for name, (elo,cpu) in category_and_ratings[1].items():
+           if model_sub_string in name:
+              gstr = name.split('_')[8]
+              g = int(gstr[1:])
+              elos.append(elo)
+              gammas.append(g)
+              colors.append(c)
+        # Line of best fit
+        X, Y = np.array(gammas).reshape(-1, 1), np.array(elos).reshape(-1, 1)
+        plt.plot(X, LinearRegression().fit(X, Y).predict(X), color=c, linestyle='dashed')
+        plt.scatter(x=gammas, y=elos, c=colors, label=category)
+
+
+    plt.title('Gamma v. Elo (weak/weak)')
+    plt.xlabel('Gamma')
+    plt.legend()
+    plt.ylabel('Elo')
+    plt.grid();
+    plt.show()
+
+
+
 def manager_regressor_frame(elos):
     """
        Construct a dataframe where regressors are inferred from manager names.
