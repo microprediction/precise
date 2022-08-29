@@ -19,11 +19,18 @@ def manager_regressor_frame(elos):
             splt[1] = splt[1] + 'xy'  # Portfolio
         return '_'.join(splt)
 
+    def augment_weak(name):
+        splt = name.split('_')
+        if splt[0]=='weak':
+            splt[0]='weakxz'
+        return '_'.join(splt)
+
     def infer_categorical_and_ordinal(elos):
         categorical = set()
         ordinal = set()
         for name, (_elo, _cpu) in elos:
             name = augment_alloc(name=name)
+            name = augment_weak(name=name)
             name_words = name.split('_')
             for wd in name_words:
                 for r_old, r_new in MODEL_KEY_REPLACEMENTS.items():
@@ -40,6 +47,7 @@ def manager_regressor_frame(elos):
         model_reg_elo = list()
         for name, (elo,cpu) in elos:
             name = augment_alloc(name=name)
+            name = augment_weak(name=name)
             name_words = name.split('_')
             reg_pairs = list()
             for wd in list(set(name_words)):
