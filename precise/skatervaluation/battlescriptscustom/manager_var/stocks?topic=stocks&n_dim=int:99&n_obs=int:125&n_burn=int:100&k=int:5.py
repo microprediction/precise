@@ -1,5 +1,5 @@
+import runthis
 from runthis import parse_kwargs
-from precise.skatervaluation.battleutil.arrangingbattles import manager_var_battle
 import os
 from precise.skaters.managerutil.managerstats import manager_info, manager_var
 
