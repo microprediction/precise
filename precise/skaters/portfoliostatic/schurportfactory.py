@@ -1,39 +1,61 @@
 from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_factory
 from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from pprint import pprint
-from functools import partial
-from precise.skaters.covarianceutil.covfunctions import schur_complement, \
-    to_symmetric, multiply_by_inverse, inverse_multiply, is_positive_def, nearest_pos_def
-from scipy.optimize import root_scalar
-from precise.skaters.portfoliostatic.schurportutil import symmetric_step_up_matrix, even_split
-from precise.skaters.covarianceutil.covfunctions import try_invert, cov_distance
+from precise.skaters.portfoliostatic.schurportutil import schur_augmentation, symmetric_step_up_matrix, even_split
 import numpy as np
 from precise.skaters.portfoliostatic.equalport import equal_long_port
 from precise.skaters.covarianceutil.covrandom import jiggle_cov
-
-# from seriate import seriate
-
+from precise.skaters.covarianceutil.covfunctions import cov_distance, try_invert
 
 
-def schur_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, gamma=1.0, delta=0.0):
+def schur_portfolio_factory(cov=None, pre=None, port=None, port_kwargs=None,
+                            alloc=None, alloc_kwargs=None,
+                            n_split=5, gamma=1.0, delta=0.0,
+                            seriation_depth=10, jiggle=True):
     """
-          A new top-down method
-    """
-    port_kwargs = {'gamma':gamma, 'delta':delta}
-    return hierarchical_seriation_portfolio_factory(seriator=seriator, alloc=alloc, port=port, splitter=splitter, cov=cov, pre=pre, n_split=n_split, port_kwargs=port_kwargs)
+         A divide and conquer allocation strategy using seriation, and augmented sub-covariance matrices
 
-
-def hierarchical_seriation_portfolio_factory(seriator=None, alloc=None, port=None, splitter=None, cov=None, pre=None, n_split=5, port_kwargs=None):
-    """
-        A class of algorithms that apply seriation ordering then allocate in top-down fashion
-
-    :param alloc:      Decides how much capital to split between portfolios  [covs] -> [ float ]
-    :param port:       Computes a portfolio     cov -> [ float ]    (Used on the leaves only)
-    :param splitter:   Splits into two groups   cov -> (n1,n2)
-    :param gamma:      (0,1) How far to move towards Schur complement
+    :param cov:
+    :param port:                Method to use on leaves
+    :param port_kwargs:
+    :param alloc:               Method to use to allocate
+    :param alloc_kwargs:
+    :param n_split:             Minimum size to split
+    :param gamma:
+    :param delta:
+    :param seriation_depth:
     :return:
     """
-    # Remark. The port and alloc need not be cut from the same cloth
+
+    if cov is None:
+        cov = try_invert(pre)
+
+    splitter = even_split
+    splitter_kwargs = {'n_split':n_split}
+    from precise.skaters.covarianceutil.covfunctions import seriation
+    seriator = seriation
+    seriator_kwargs = {}
+
+    if jiggle:
+        jiggled_cov = jiggle_cov(cov=cov)
+    else:
+        jiggled_cov = np.copy(cov)
+
+    return hierarchical_schur_complementary_portfolio_with_defaults(seriator=seriator, seriator_kwargs=seriator_kwargs,
+                                                                    seriation_depth=seriation_depth,
+                                                                    port=port, port_kwargs=port_kwargs,
+                                                                    alloc=alloc, alloc_kwargs=alloc_kwargs,
+                                                                    splitter=splitter, splitter_kwargs=splitter_kwargs,
+                                                                    cov=jiggled_cov,
+                                                                    gamma=gamma, delta=delta)
+
+
+def hierarchical_schur_complementary_portfolio_with_defaults(cov=None, port=None, port_kwargs=None,
+                                                             alloc=None, alloc_kwargs=None,
+                                                             splitter=None, splitter_kwargs=None,
+                                                             seriator=None, seriator_kwargs=None,
+                                                             seriation_depth=10,
+                                                             delta=0.0, gamma=1.0):
 
     if alloc is None:
         alloc = diag_alloc
@@ -41,213 +63,94 @@ def hierarchical_seriation_portfolio_factory(seriator=None, alloc=None, port=Non
     if port is None:
         port = diagonal_portfolio_factory
 
-    if splitter is None:
-        splitter = partial( even_split, n_split=n_split )
-
     if port_kwargs is None:
         port_kwargs = {}
 
-    port_kwargs.update({'splitter':splitter,'alloc':alloc,'port':port})
-    return corr_seriation_portfolio_factory(seriator=seriator, port=hierarchical_seriated_portfolio_factory, port_kwargs=port_kwargs, cov=cov, pre=pre)
+    if alloc_kwargs is None:
+        alloc_kwargs = {}
+
+    return hierarchical_schur_complementary_portfolio(cov=cov, port=port, port_kwargs=port_kwargs,
+                                                      alloc=alloc, alloc_kwargs=alloc_kwargs,
+                                                      splitter=splitter, splitter_kwargs=splitter_kwargs,
+                                                      seriator = seriator, seriator_kwargs=seriator_kwargs,
+                                                      seriation_depth=seriation_depth,
+                                                      delta=delta, gamma=gamma)
 
 
-def corr_seriation_portfolio_factory(port, port_kwargs:dict=None, seriator=None, cov=None, pre=None)->np.ndarray:
+def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
+                                               alloc, alloc_kwargs,
+                                               splitter, splitter_kwargs,
+                                               seriator, seriator_kwargs,
+                                               seriation_depth,
+                                               delta, gamma):
     """
-        A class of methods whose first step is seriation using correlation
-
-    :param seriator:          Takes a distance matrix and returns an ordering
-    :param port:              Portfolio generator
-    :param port_kwargs:       Arguments to portfolio generator, other than 'cov' and/or 'pre'
-    :param cov:               Original portfolio in arbitrary order
-    :param pre:               Original precision matrix in arbitrary order
-    :return: w                Portfolio weights in original ordering
+        An experimental way to split allocation
     """
-    if cov is None:
-        cov = try_invert(pre)
-
-    # Jiggle cov
-    jiggled_cov = jiggle_cov(cov=cov)
-
-    if seriator is None:
-        from precise.skaters.covarianceutil.covfunctions import seriation
-        seriator = seriation
-
-    if port_kwargs is None:
-        port_kwargs = {}
-
-    if any(np.diag(jiggled_cov)<1e-6):
-        return equal_long_port(cov=jiggled_cov)
-    else:
-        # Establish ordering using seriator and corr distances
-        cov_dist = cov_distance(jiggled_cov)
-        ndx = seriator(cov_dist)
-        inv_ndx = np.argsort(ndx)
-        cov_cols = jiggled_cov[:,ndx]
-        cov_back = cov_cols[:,inv_ndx]
-        assert np.allclose(jiggled_cov,cov_back)
-        ordered_cov = cov_cols[ndx,:]
-
-        # Allocate capital to ordered assets
-        ordered_w = port(cov=ordered_cov, **port_kwargs)
-
-        # Return to original ordering
-        try:
-            w = ordered_w[inv_ndx]
-        except TypeError:
-            print('Warning: '+port.__name__+' returns list not array - should really fix this ')
-            w = np.array(ordered_w)[inv_ndx]
-        return np.array(w)
-
-
-def hierarchical_seriated_portfolio_factory(alloc, cov, port, splitter, gamma:float=0.0, delta:float=0):
-    """
-        Assumes assets have been ordered already
-
-        Jiggles cov
-
-    """
-    jiggled_cov = jiggle_cov(cov=cov)
-
-    n1, n2 = splitter(jiggled_cov)
+    n = np.shape(cov)[0]
+    n1, n2 = splitter(cov)
+    assert n1+n2==n
     if n1==0 or n2==0:
-        w = port(jiggled_cov)
+        # If the portfolio is not too big, apply to leaves directly
+        w = port(cov, **port_kwargs)
         if isinstance(w,list):
             print('Warning: '+port.__name__+' returns list not array ')
             w = np.array(w)
         return w
     else:
-        if abs(gamma)<1e-6:
-            # Hierarchical risk parity (Lopez de Prado)
-            w = hierarchical_risk_parity(cov=jiggled_cov, n1=n1, port=port, alloc=alloc, splitter=splitter)
+        # 1. Establish ordering, or bail out altogether
+        if any(np.diag(cov) < 1e-6):
+            print('Bailing out as diagonal of cov are too small')
+            return equal_long_port(cov=cov)
+        elif seriation_depth<=0:
+            ndx = list(range(n1+n2))
         else:
-            # Schur complementary portfolio construction (yours truly)
-            w = hierarchical_schur_complementary_portfolio(cov=jiggled_cov, n1=n1, port=port, alloc=alloc, splitter=splitter, gamma=gamma, delta=delta)
-        return w
+            cov_dist = cov_distance(cov)
+            ndx = seriator(cov_dist, **seriator_kwargs)
+        inv_ndx = np.argsort(ndx)
+        cov_cols = cov[:, ndx]
+        cov_back = cov_cols[:, inv_ndx]
+        assert np.allclose(cov, cov_back)
+        ordered_cov = cov_cols[ndx, :]
 
+        # 2. Split
+        A = ordered_cov[:n1, :n1]
+        D = ordered_cov[n1:, n1:]
+        B = ordered_cov[:n1, n1:]
+        C = ordered_cov[n1:, :n1]  #  = B.T
 
-def hierarchical_schur_complementary_portfolio(cov, n1, port, alloc, splitter, delta=0.0, gamma=1.0):
-    """
-        An experimental way to split allocation
-    """
-    A = cov[:n1, :n1]
-    D = cov[n1:, n1:]
-    B = cov[:n1, n1:]
-    C = cov[n1:, :n1]  #  = B.T
-
-    if delta>0:
-        # Haven't tried this yet :)
-        rhoB = np.mean(B,axis=None)
-        rhoCov_raw = cov - rhoB*np.ones_like(cov)
-        rhoCov = nearest_pos_def(rhoCov_raw)
-        return hierarchical_schur_complementary_portfolio(cov=rhoCov, n1=n1, port=port, alloc=alloc, splitter=splitter, gamma=gamma)
-    else:
-        if gamma>0.0:
-            # Augment the cov matrices before passing down
-            max_gamma = _maximal_gamma(A=A, B=B, C=C, D=D)
-            augA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
-            augD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
-
-            augmentation_fail = False
-            if not is_positive_def(augA):
-                try:
-                    Ag = nearest_pos_def(augA)
-                except np.linalg.LinAlgError:
-                    augmentation_fail=True
-            else:
-                Ag = augA
-            if not is_positive_def(augD):
-                try:
-                    Dg = nearest_pos_def(augD)
-                except np.linalg.LinAlgError:
-                    augmentation_fail=True
-            else:
-                Dg = augD
-
-            if augmentation_fail:
-                print('Warning: augmentation failed')
-                reductionA = 1.0
-                reductionD = 1.0
-                reductionRatioA = 1.0
-                Ag = A
-                Dg = D
-            else:
-                reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
-                reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
-                reductionRatioA = reductionA/reductionD
-        else:
-            reductionRatioA = 1.0
-            reductionA = 1.0
-            reductionD = 1.0
-            Ag = A
-            Dg = D
-
-        wA = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Ag, port=port, splitter=splitter, gamma=gamma)
-        wD = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=Dg, port=port, splitter=splitter, gamma=gamma)
+        # 3. Augment and allocate
+        Ag, Dg, info = schur_augmentation(A=A, B=B, C=C, D=D, gamma=gamma)
         aA, aD = alloc(covs=[Ag, Dg])
-        aA_original, aD_original = alloc( covs=[A,D])
-        allocationRatioA = (aA/aA_original)
-        if False:
-            info = {'reductionA':reductionA,
-                    'reductionD':reductionD,
-                    'reductionRatioA':reductionRatioA,
-                    'allocationRatioA':allocationRatioA}
-            pprint(info)
-        w = np.concatenate([aA * np.array(wA), aD * np.array(wD)])
+        if True:
+            # 3a. Just for interest, compare allocations
+            aA_original, aD_original = alloc(covs=[A, D])
+            allocationRatioA = (aA / aA_original)
+            info.update({'allocationRatioA':allocationRatioA})
+            pprint({'allocationRatioA':allocationRatioA})
+
+        # Sub-allocate
+        wA = hierarchical_schur_complementary_portfolio(cov=Ag, port=port, port_kwargs=port_kwargs,
+                                                       alloc=alloc, alloc_kwargs=alloc_kwargs,
+                                                       splitter=splitter, splitter_kwargs=splitter_kwargs,
+                                                       seriator=seriator, seriator_kwargs=seriator_kwargs,
+                                                       seriation_depth = seriation_depth-1,
+                                                       delta=delta, gamma=gamma)
+        wD = hierarchical_schur_complementary_portfolio(cov=Dg, port=port, port_kwargs=port_kwargs,
+                                                        alloc=alloc, alloc_kwargs=alloc_kwargs,
+                                                        splitter=splitter, splitter_kwargs=splitter_kwargs,
+                                                        seriator=seriator, seriator_kwargs=seriator_kwargs,
+                                                        seriation_depth=seriation_depth - 1,
+                                                        delta=delta, gamma=gamma)
+        # Reconstruct
+        ordered_w = np.concatenate([aA * np.array(wA), aD * np.array(wD)])
+
+        # Undo seriation ordering
+        try:
+            w = ordered_w[inv_ndx]
+        except TypeError:
+            print('Warning: ' + port.__name__ + ' returns list not array - should really fix this ')
+            w = np.array(ordered_w)[inv_ndx]
         return np.array(w)
-
-
-
-def hierarchical_risk_parity(cov, n1, port, alloc, splitter):
-    """
-         Recursive hierarchical risk parity
-    """
-    # https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678
-    A = cov[:n1, :n1]
-    D = cov[n1:, n1:]
-    wA = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=A, port=port, splitter=splitter, gamma=0.0)
-    wD = hierarchical_seriated_portfolio_factory(alloc=alloc, cov=D, port=port, splitter=splitter, gamma=0.0)
-    aA, aD = alloc(covs=[A, D])
-    w = np.concatenate([aA * np.array(wA), aD * np.array(wD)])
-    return w
-
-
-
-def pseudo_schur_complement(A, B, C, D, gamma, warn=False):
-    """
-       Augmented cov matrix for "A" inspired by the Schur complement
-    """
-    try:
-        Ac_raw = schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
-        nA = np.shape(A)[0]
-        nD = np.shape(D)[0]
-        Ac = to_symmetric(Ac_raw)
-        M = symmetric_step_up_matrix(n1=nA, n2=nD)
-        Mt = np.transpose(M)
-        BDinv = multiply_by_inverse(B, D, throw=False)
-        BDinvMt = np.dot(BDinv, Mt)
-        Ra = np.eye(nA) - gamma * BDinvMt
-        Ag = inverse_multiply(Ra, Ac, throw=False, warn=False)
-    except np.linalg.LinAlgError:
-        if warn:
-            print('Pseudo-schur failed, falling back to A')
-        Ag = A
-    return Ag
-
-
-def _maximal_gamma(A,B,C,D):
-
-    def _gamma_objective(gamma, A, B, C, D):
-        Ag = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
-        Dg = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma)
-        pos_def = is_positive_def(Ag) and is_positive_def(Dg)
-        return -0.01 if pos_def else 1.0
-
-    try:
-        sol = root_scalar(f=_gamma_objective, args=(A,B,C,D), method='bisect', x0=0.25,
-                          x1=0.5, xtol=0.05, bracket=(0,0.95), maxiter=5)
-        return min(max(sol.root - 0.1, 0), 1.0)
-    except ValueError:
-        return 0.0
 
 
 

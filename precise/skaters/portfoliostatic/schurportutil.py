@@ -1,4 +1,97 @@
 import numpy as np
+from precise.skaters.covarianceutil.covfunctions import schur_complement, \
+    to_symmetric, multiply_by_inverse, inverse_multiply, is_positive_def, nearest_pos_def
+from scipy.optimize import root_scalar
+
+
+def schur_augmentation(A,B,C,D, gamma):
+    """
+       Mess with A, D to try to incorporate some off-diag info
+    """
+    if gamma>0.0:
+        max_gamma = _maximal_gamma(A=A, B=B, C=C, D=D)
+        augA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
+        augD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
+
+        augmentation_fail = False
+        if not is_positive_def(augA):
+            try:
+                Ag = nearest_pos_def(augA)
+            except np.linalg.LinAlgError:
+                augmentation_fail=True
+        else:
+            Ag = augA
+        if not is_positive_def(augD):
+            try:
+                Dg = nearest_pos_def(augD)
+            except np.linalg.LinAlgError:
+                augmentation_fail=True
+        else:
+            Dg = augD
+
+        if augmentation_fail:
+            print('Warning: augmentation failed')
+            reductionA = 1.0
+            reductionD = 1.0
+            reductionRatioA = 1.0
+            Ag = A
+            Dg = D
+        else:
+            reductionD = np.linalg.norm(Dg)/np.linalg.norm(D)
+            reductionA = np.linalg.norm(Ag)/np.linalg.norm(A)
+            reductionRatioA = reductionA/reductionD
+    else:
+        reductionRatioA = 1.0
+        reductionA = 1.0
+        reductionD = 1.0
+        Ag = A
+        Dg = D
+
+    info = {'reductionA': reductionA,
+                'reductionD': reductionD,
+                'reductionRatioA': reductionRatioA}
+    return Ag, Dg, info
+
+
+
+def pseudo_schur_complement(A, B, C, D, gamma, warn=False):
+    """
+       Augmented cov matrix for "A" inspired by the Schur complement
+    """
+    try:
+        Ac_raw = schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+        nA = np.shape(A)[0]
+        nD = np.shape(D)[0]
+        Ac = to_symmetric(Ac_raw)
+        M = symmetric_step_up_matrix(n1=nA, n2=nD)
+        Mt = np.transpose(M)
+        BDinv = multiply_by_inverse(B, D, throw=False)
+        BDinvMt = np.dot(BDinv, Mt)
+        Ra = np.eye(nA) - gamma * BDinvMt
+        Ag = inverse_multiply(Ra, Ac, throw=False, warn=False)
+    except np.linalg.LinAlgError:
+        if warn:
+            print('Pseudo-schur failed, falling back to A')
+        Ag = A
+    return Ag
+
+
+def _maximal_gamma(A,B,C,D):
+
+    def _gamma_objective(gamma, A, B, C, D):
+        Ag = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
+        Dg = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma)
+        pos_def = is_positive_def(Ag) and is_positive_def(Dg)
+        return -0.01 if pos_def else 1.0
+
+    try:
+        sol = root_scalar(f=_gamma_objective, args=(A,B,C,D), method='bisect', x0=0.25,
+                          x1=0.5, xtol=0.05, bracket=(0,0.95), maxiter=5)
+        return min(max(sol.root - 0.1, 0), 1.0)
+    except ValueError:
+        return 0.0
+
+
 
 def symmetric_step_up_matrix(n1, n2):
     """
