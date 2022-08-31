@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-def gamma_plot(ratings, model_sub_string:str):
+def gamma_plot(ratings, model_sub_string:str, max_gamma=100):
     """ Plots the relationship between choice of gamma and Elo rating
 
         :ratings - The output from elo_from_win_files(genre=GENRE, category=CATEGORY_MATCH)
@@ -23,23 +23,35 @@ def gamma_plot(ratings, model_sub_string:str):
         elos = list()
         gammas = list()
         colors = list()
-        legend = list()
         for name, (elo,cpu) in category_and_ratings[1].items():
            if model_sub_string in name:
               gstr = name.split('_')[8]
               g = int(gstr[1:])
-              elos.append(elo)
-              gammas.append(g)
-              colors.append(c)
-        # Line of best fit
-        X, Y = np.array(gammas).reshape(-1, 1), np.array(elos).reshape(-1, 1)
-        plt.plot(X, LinearRegression().fit(X, Y).predict(X), color=c, linestyle='dashed')
-        plt.scatter(x=gammas, y=elos, c=colors, label=category)
+              if g<=max_gamma:
+                  elos.append(elo)
+                  gammas.append(g)
+                  colors.append(c)
+        cat_splt = category.split('_')
+        label = cat_splt[3]
+        title = ' '.join( cat_splt[0:2] ) + cat_splt[-1]
+
+        if max_gamma<100:
+            # Line of best fi
+            X, Y = np.array(gammas).reshape(-1, 1), np.array(elos).reshape(-1, 1)
+            plt.plot(X, LinearRegression().fit(X, Y).predict(X), color=c, linestyle='dashed')
+        else:
+            # Smooth fit
+            import smoothfit
+            a, b, n_knot = 0, 100, 99
+            basis, coef = smoothfit.fit1d(x0=gammas, y0=elos, a=a, b=b, n=n_knot, lmbda=1e2)
+            plt.plot(basis.mesh.p[0], coef[basis.nodal_dofs[0]], linestyle='dashed', color=c)
+
+        plt.scatter(x=gammas, y=elos, c=colors, label=label)
 
 
-    plt.title('Gamma v. Elo (weak/weak)')
+    plt.title('Gamma v. Elo '+title)
     plt.xlabel('Gamma')
-    plt.legend()
+    plt.legend(loc='upper center')
     plt.ylabel('Elo')
     plt.grid();
     plt.show()

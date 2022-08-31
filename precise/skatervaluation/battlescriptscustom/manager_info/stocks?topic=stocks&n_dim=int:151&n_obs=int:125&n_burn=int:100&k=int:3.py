@@ -10,4 +10,4 @@ from precise.skatervaluation.battleutil.arrangingbattles import generic_battle
 
 if __name__=='__main__':
     params = parse_kwargs(__file__.split(os.path.sep)[-1])
-    generic_battle(contestants=SCHUR_PM_S5_LONG_MANAGERS+HRP_LONG_MANAGERS, evaluator=manager_var, params=params, atol=1e-8)
+    generic_battle(contestants=SCHUR_PM_S5_LONG_MANAGERS+HRP_LONG_MANAGERS, evaluator=manager_info, params=params, atol=1e-8)

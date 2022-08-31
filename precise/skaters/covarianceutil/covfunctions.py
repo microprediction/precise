@@ -315,6 +315,7 @@ def approx_diag_of_inv(a):
     raise NotImplementedError
 
 
+
 def bottom_schur_complement(A, B, C, D, gamma=1.0):
     # D - gamma C A^{-1} B
     return schur_complement(A=D, B=C, C=B, D=A, gamma=gamma)

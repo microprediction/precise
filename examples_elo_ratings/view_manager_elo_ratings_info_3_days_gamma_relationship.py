@@ -9,7 +9,12 @@ if __name__=='__main__':
     CATEGORY_SUB_STRING = 'stocks_3_days'
     MODEL_SUB_STRING = 'schur_weak_weak'
     ratings = elo_from_win_files(genre=GENRE, category=CATEGORY_MATCH)
-    gamma_plot(ratings,  model_sub_string=MODEL_SUB_STRING)
+    gamma_plot(ratings, model_sub_string=MODEL_SUB_STRING, max_gamma=10)
+    gamma_plot(ratings,  model_sub_string=MODEL_SUB_STRING, max_gamma=20)
+    gamma_plot(ratings,  model_sub_string=MODEL_SUB_STRING, max_gamma=30)
+    gamma_plot(ratings,  model_sub_string=MODEL_SUB_STRING, max_gamma=40)
+    gamma_plot(ratings,  model_sub_string=MODEL_SUB_STRING, max_gamma=100)
+    pprint(ratings)
 
 
 
