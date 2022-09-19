@@ -1,3 +1,9 @@
+## Pessimistic Offline Policy Optimization [pdf](https://arxiv.org/abs/2012.13682)
+Qiang He, Xinwen Hou
+
+Offline reinforcement learning (RL) aims to optimize policy from large pre-recorded datasets without interaction with the environment. This setting offers the promise of utilizing diverse and static datasets to obtain policies without costly, risky, active exploration. However, commonly used off-policy deep RL methods perform poorly when facing arbitrary off-policy datasets. In this work, we show that there exists an estimation gap of value-based deep RL algorithms in the offline setting. To eliminate the estimation gap, we propose a novel offline RL algorithm that we term Pessimistic Offline Policy Optimization (POPO), which learns a pessimistic value function. To demonstrate the effectiveness of POPO, we perform experiments on various quality datasets. And we find that POPO performs surprisingly well and scales to tasks with high-dimensional state and action space, comparing or outperforming tested state-of-the-art offline RL algorithms on benchmark tasksl
+
+
 ## A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms [pdf](https://www.semanticscholar.org/paper/A-Generalized-Approach-to-Portfolio-Optimization%3A-DeMiguel-Garlappi/0c684e0b00e090e064b614f87db321951cfc66ff)
 Victor DeMiguel, Lorenzo Garlappi, R. Uppal
 
