@@ -1,7 +1,23 @@
 ## A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms [pdf](https://www.semanticscholar.org/paper/A-Generalized-Approach-to-Portfolio-Optimization%3A-DeMiguel-Garlappi/0c684e0b00e090e064b614f87db321951cfc66ff)
 Victor DeMiguel, Lorenzo Garlappi, R. Uppal
 
-We provide a general framework for finding portfolios that perform well out-of-sample in the presence of estimation error. This framework relies on solving the traditional minimum-variance problem but subject to the additional constraint that the norm of the portfolio-weight vector be smaller than a given threshold. We show that our framework nests as special cases the shrinkage approaches of Jagannathan and Ma (Jagannathan, R., T. Ma. 2003. Risk reduction in large portfolios: Why imposing the wrong constraints helps. J. Finance 58 16511684) and Ledoit and Wolf (Ledoit, O., M. Wolf. 2003. Improved estimation of the covariance matrix of stock returns with an application to portfolio selection. J. Empirical Finance 10 603–621, and Ledoit, O., M. Wolf. 2004. A well-conditioned estimator for large-dimensional covariance matrices. J. Multivariate Anal. 88 365–411) and the 1/N portfolio studied in DeMiguel et al. (DeMiguel, V., L. Garlappi, R. Uppal. 2009. Optimal versus naive diversification: How inefficient is the 1/N portfolio strategy? Rev. Financial Stud. 22 1915–1953). We also use our framework to propose several new portfolio strategies. For the proposed portfolios, we provide a momentshrinkage interpretation and a Bayesian interpretation where the investor has a prior belief on portfolio weights rather than on moments of asset returns. Finally, we compare empirically the out-of-sample performance of the newportfolios we propose to 10 strategies in the literature across five data sets. We find that the norm-constrained portfolios often have a higher Sharpe ratio than the portfolio strategies in Jagannathan and Ma (2003), Ledoit and Wolf (2003, 2004), the 1/N portfolio, and other strategies in the literature, such as factor portfolios
+In this paper, we provide a general nonlinear programming framework for
+identifying portfolios that have superior out-of-sample performance in the presence
+of estimation error. This general framework relies on solving the traditional
+minimum-variance problem but subject to the additional constraint that the
+norm of the portfolio-weight vector be smaller than a given threshold.
+We show that our general framework nests as special cases several wellknown
+(shrinkage and constrained) approaches considered in the literature. We
+also use our general framework to propose several new portfolio strategies that
+we term partial minimum-variance portfolios. These portfolios are obtained by
+applying the classical conjugate-gradient method to solve the minimum-variance
+problem.
+We compare empirically (in terms of portfolio variance, Sharpe ratio, and
+turnover), the out-of-sample performance of the new portfolios to various wellknown
+strategies across several datasets. We find that the norm-constrained
+portfolios we propose outperform shortsale-constrained portfolio approaches,
+shrinkage approaches, the 1/N portfolio, factor portfolios, and also other strategies
+considered in the literature.
 
 ## Seriation and Matrix Reordering Methods: An Historical Overview [pdf](http://innar.com/Liiv_Seriation.pdf)
 Innar Liiv
