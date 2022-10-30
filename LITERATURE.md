@@ -1,3 +1,35 @@
+## Pessimistic Offline Policy Optimization [pdf](https://arxiv.org/abs/2012.13682)
+Qiang He, Xinwen Hou
+
+Offline reinforcement learning (RL) aims to optimize policy from large pre-recorded datasets without interaction with the environment. This setting offers the promise of utilizing diverse and static datasets to obtain policies without costly, risky, active exploration. However, commonly used off-policy deep RL methods perform poorly when facing arbitrary off-policy datasets. In this work, we show that there exists an estimation gap of value-based deep RL algorithms in the offline setting. To eliminate the estimation gap, we propose a novel offline RL algorithm that we term Pessimistic Offline Policy Optimization (POPO), which learns a pessimistic value function. To demonstrate the effectiveness of POPO, we perform experiments on various quality datasets. And we find that POPO performs surprisingly well and scales to tasks with high-dimensional state and action space, comparing or outperforming tested state-of-the-art offline RL algorithms on benchmark tasksl
+
+
+## A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms [pdf](https://www.semanticscholar.org/paper/A-Generalized-Approach-to-Portfolio-Optimization%3A-DeMiguel-Garlappi/0c684e0b00e090e064b614f87db321951cfc66ff)
+Victor DeMiguel, Lorenzo Garlappi, R. Uppal
+
+In this paper, we provide a general nonlinear programming framework for
+identifying portfolios that have superior out-of-sample performance in the presence
+of estimation error. This general framework relies on solving the traditional
+minimum-variance problem but subject to the additional constraint that the
+norm of the portfolio-weight vector be smaller than a given threshold.
+We show that our general framework nests as special cases several wellknown
+(shrinkage and constrained) approaches considered in the literature. We
+also use our general framework to propose several new portfolio strategies that
+we term partial minimum-variance portfolios. These portfolios are obtained by
+applying the classical conjugate-gradient method to solve the minimum-variance
+problem.
+We compare empirically (in terms of portfolio variance, Sharpe ratio, and
+turnover), the out-of-sample performance of the new portfolios to various wellknown
+strategies across several datasets. We find that the norm-constrained
+portfolios we propose outperform shortsale-constrained portfolio approaches,
+shrinkage approaches, the 1/N portfolio, factor portfolios, and also other strategies
+considered in the literature.
+
+## Seriation and Matrix Reordering Methods: An Historical Overview [pdf](http://innar.com/Liiv_Seriation.pdf)
+Innar Liiv
+
+Seriation is an exploratory combinatorial data analysis technique to reorder objects into a sequence along a one-dimensional continuum so that it best reveals regularity and patterning among the whole series. Unsupervised learning, using seriation and matrix reordering, allows pattern discovery simultaneously at three information levels: local fragments of relationships, sets of organized local fragments of relationships, and an overall structural pattern. This paper presents an historical overview of seriation and matrix reordering methods, several applications from the following disciplines are included in the retrospective review: archaeology and anthropology; cartography, graphics, and information visualization; sociology and sociometry; psychology and psychometry; ecology; biology and bioinformatics; cellular manufacturing; and operations research.
+
 
 ## The Locally Gaussian Partial Correlation [pdf](https://arxiv.org/pdf/1909.09681)
 Håkon Otneim, Dag Tjøstheim
