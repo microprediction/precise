@@ -1,3 +1,16 @@
+## Asymmetric Autoencoders for Factor-Based Covariance Matrix Estimation
+Kevin Huynh, Gregor Lenhard
+
+Estimating high dimensional covariance matrices for portfolio optimization is challenging because the number of parameters to be estimated grows quadratically in the number of assets. When the matrix dimension exceeds the sample size, the sample covariance matrix becomes singular. A possible solution is to impose a (latent) factor structure for the cross-section of asset returns as in the popular capital asset pricing model. Recent research suggests dimension reduction techniques to estimate the factors in a data-driven fashion. We present an asymmetric autoencoder neural network-based estimator that incorporates the factor structure in its architecture and jointly estimates the factors and their loadings. We test our method against well established dimension reduction techniques from the literature and compare them to observable factors as benchmark in an empirical experiment using stock returns of the past five decades. Results show that the proposed estimator is very competitive, as it significantly outperforms the benchmark across most scenarios. Analyzing the loadings, we find that the constructed factors are related to the stocks’ sector classification.
+ 
+
+
+## Theoretically Motivated Data Augmentation and Regularization for Portfolio Construction [arxiv](https://arxiv.org/abs/2106.04114)
+Liu Ziyin, Kentaro Minami, Kentaro Imajo
+
+The task we consider is portfolio construction in a speculative market, a fundamental problem in modern finance. While various empirical works now exist to explore deep learning in finance, the theory side is almost non-existent. In this work, we focus on developing a theoretical framework for understanding the use of data augmentation for deep-learning-based approaches to quantitative finance. The proposed theory clarifies the role and necessity of data augmentation for finance; moreover, our theory implies that a simple algorithm of injecting a random noise of strength to the observed return rt is better than not injecting any noise and a few other financially irrelevant data augmentation techniques.
+
+
 ## Pessimistic Offline Policy Optimization [pdf](https://arxiv.org/abs/2012.13682)
 Qiang He, Xinwen Hou
 
