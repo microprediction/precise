@@ -37,7 +37,9 @@ if __name__=='__main__':
     # Test them out of sample
     n_dim = 10
     anchor_cov = np.eye(n_dim)
-    moments = port_kurtosis(ports=ports, cov=anchor_cov, n_draws=50000, n_true=50, n_anchor=50, n_observed=50, metric='mean')
+    max_time = 10*60
+    moments = port_kurtosis(ports=ports, seed_cov=anchor_cov, max_time=max_time,
+                            n_true=50, n_anchor=50, n_observed=50, metric='mean')
 
 
 

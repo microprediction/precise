@@ -87,9 +87,9 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         An experimental way to split allocation
     """
     n = np.shape(cov)[0]
-    n1, n2 = splitter(cov)
+    n1, n2 = splitter(cov, **splitter_kwargs)
     assert n1+n2==n
-    if n1==0 or n2==0:
+    if n1<=1 or n2<=1:
         # If the portfolio is not too big, apply to leaves directly
         w = port(cov, **port_kwargs)
         if isinstance(w,list):
@@ -126,7 +126,8 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
             aA_original, aD_original = alloc(covs=[A, D])
             allocationRatioA = (aA / aA_original)
             info.update({'allocationRatioA':allocationRatioA})
-            pprint({'allocationRatioA':allocationRatioA})
+            if False:
+                pprint({'allocationRatioA':allocationRatioA})
 
         # Sub-allocate
         wA = hierarchical_schur_complementary_portfolio(cov=Ag, port=port, port_kwargs=port_kwargs,

@@ -8,7 +8,8 @@ import numpy as np
 if __name__=='__main__':
     ports = LONG_PORT
     anchor_cov = np.eye(40)
-    moments = port_kurtosis(ports=ports, cov=anchor_cov, n_draws=500, n_true=50, n_anchor=50, n_observed=50, metric='mean')
+    moments = port_kurtosis(ports=ports, seed_cov=anchor_cov, max_time=5 * 60,
+                            n_true=50, n_anchor=50, n_observed=50, metric='mean')
     pprint(moments)
 
 

@@ -99,7 +99,7 @@ def optimal_b(cov, w0, a=1.0, h=BIG_H):
             return bad_v
 
     v0 = portfolio_variance(cov=cov, w=w0)
-    vd = portfolio_variance(cov=np.diag(np.diag(cov)), w=np.ones_like(w0)/len(w0))
+    vd = portfolio_variance(cov=np.diag(np.diag(cov)), w=np.ones_like(np.atleast_1d(w0))/len(w0))
     initial_ratio = v0/vd
     if initial_ratio<1e-6:
         return 0.1

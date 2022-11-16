@@ -3,27 +3,38 @@ from precise.skaters.covariance.ewapm import ewa_pm_factory, ewa_pm_emp_scov_r01
 from precise.skaters.portfoliostatic.ppoportfactory import ppo_portfolio_factory, PPO_LONG_BOUNDS
 from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from functools import partial
+from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+
+if using_pyportfolioopt:
+
+    def ppo_long_manager_factory(y,s, f, method, e=1, zeta=0,j=1,q=1.0):
+        port = partial(ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS)
+        return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
 
 
-def ppo_long_manager_factory(y,s, f, method, e=1, zeta=0,j=1,q=1.0):
-    port = partial(ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS)
-    return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
+    def ppo_pm_long_manager_factory(y, s, method, target, n_emp, r, e=1, zeta=0,j=1,q=1.0):
+        """
+           PyPortfolioOpt portfolio construction using partial moments cov estimation
+        """
+        f = partial( ewa_pm_factory, k=1,r=r,target=target, n_emp=n_emp )
+        port = partial( ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS )
+        return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
 
 
-def ppo_pm_long_manager_factory(y, s, method, target, n_emp, r, e=1, zeta=0,j=1,q=1.0):
-    """
-       PyPortfolioOpt portfolio construction using partial moments cov estimation
-    """
-    f = partial( ewa_pm_factory, k=1,r=r,target=target, n_emp=n_emp )
-    port = partial( ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS )
-    return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
+    def ppo_ewa_long_manager_factory(y, s, method, n_emp, r, e=1, zeta=0,j=1,q=1.0):
+        """
+           PyPortfolioOpt portfolio construction using EWA cov estimation
+        """
+        f = partial( ewa_emp_pcov_factory, k=1, r=r, n_emp=n_emp )
+        port = partial( ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS )
+        return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
 
+else:
+    def ppo_long_manager_factory(y, s, f, method, e=1, zeta=0, j=1, q=1.0):
+        raise ImportError('pip install pyportfolioopt')
 
-def ppo_ewa_long_manager_factory(y, s, method, n_emp, r, e=1, zeta=0,j=1,q=1.0):
-    """
-       PyPortfolioOpt portfolio construction using EWA cov estimation
-    """
-    f = partial( ewa_emp_pcov_factory, k=1, r=r, n_emp=n_emp )
-    port = partial( ppo_portfolio_factory, method=method, as_dense=True, weight_bounds=PPO_LONG_BOUNDS )
-    return static_cov_manager_factory_d0(f=f, port=port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
+    def ppo_pm_long_manager_factory(y, s, method, target, n_emp, r, e=1, zeta=0, j=1, q=1.0):
+        raise ImportError('pip install pyportfolioopt')
 
+    def ppo_ewa_long_manager_factory(y, s, method, n_emp, r, e=1, zeta=0, j=1, q=1.0):
+        raise ImportError('pip install pyportfolioopt')
