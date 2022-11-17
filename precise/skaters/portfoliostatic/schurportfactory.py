@@ -122,7 +122,7 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         Ag, Dg, info = schur_augmentation(A=A, B=B, C=C, D=D, gamma=gamma)
         aA, aD = alloc(covs=[Ag, Dg])
         if True:
-            # 3a. Just for interest, compare allocations
+            # 3a. Just for interest, compare allocations. This is research code :)
             aA_original, aD_original = alloc(covs=[A, D])
             allocationRatioA = (aA / aA_original)
             info.update({'allocationRatioA':allocationRatioA})

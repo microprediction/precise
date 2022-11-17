@@ -27,3 +27,15 @@ def jiggle_cov(cov, noise=DEFAULT_COV_NOISE):
     cov_jiggle = np.dot(np.transpose(x_rand), x_rand)
     jiggled_cov = cov + noise * cov_jiggle
     return jiggled_cov
+
+
+def rnd_symm_cov(rho, severity, n_dim):
+    """ Approximately symmetric """
+    # Make a symmetric cov matrix somehow
+    symm_cov = rho * (np.ones(shape=(n_dim, n_dim)) - np.eye(n_dim)) + np.eye(n_dim)
+
+    # Randomly break symmetry
+    scaling = np.atleast_2d(np.array(sorted(np.exp(severity*np.random.randn(n_dim)),reverse=True)))
+    scaling2d = np.dot(np.transpose(scaling), scaling)
+    seed_cov = scaling2d * symm_cov
+    return seed_cov

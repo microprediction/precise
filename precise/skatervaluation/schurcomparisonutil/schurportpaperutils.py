@@ -3,32 +3,69 @@ from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_f
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
-from precise.skaters.portfoliostatic.diagalloc import diag_alloc
-from precise.skaters.portfoliostatic.unitalloc import unit_alloc
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
 from precise.skaters.portfoliostatic.unitport import unit_port
 from precise.skaters.portfoliostatic.diagport import diag_long_port
-
+import numpy as np
+from precise.inclusion.matplotlibinclusion import using_matplotlib
+from precise.skaters.portfolioutil.portcomparison import port_kurtosis
+from pprint import pprint
 
 # Some utilities used in the Schur paper
 # Intent is examination of the impact of the gamma parameter
 
-def moment_plot(moments:dict, sty='go'):
-    """ Plot portfolio var against gamma
-    """
-    x_plot = list()
-    y_plot = list()
-    for stp in range(0, 100, 5):
-        ky = 'g' + str(stp).zfill(3)
-        if ky in moments:
-            x_plot.append(stp / 100)
-            y_plot.append(moments[ky])
+if using_matplotlib:
     import matplotlib.pyplot as plt
-    plt.plot(x_plot, y_plot, sty )
-    plt.grid()
-    plt.xlabel('Gamma')
-    plt.ylabel('Portfolio variance')
 
+    def gamma_comparison_and_plot(rnd_cov, rnd_cov_kwargs, n_anchor, n_true,
+                                  n_observed, max_time, n_split, xlabel):
+
+        def moment_plot(moments: dict, sty='go'):
+            """ Plot portfolio var against gamma
+            """
+            x_plot = list()
+            y_plot = list()
+            for stp in range(0, 100, 5):
+                ky = 'g' + str(stp).zfill(3)
+                if ky in moments:
+                    x_plot.append(stp / 100)
+                    y_plot.append(moments[ky])
+            import matplotlib.pyplot as plt
+            plt.plot(x_plot, y_plot, sty)
+            plt.grid()
+            plt.xlabel('Gamma')
+            plt.ylabel('Portfolio variance')
+
+        stys = ['go', 'r+', 'b*']
+        bps = list()
+        ports = G_PORTS + OTHER_PORTS
+        for sty in stys:
+            seed_cov = rnd_cov(**rnd_cov_kwargs)
+            moments = port_kurtosis(ports=ports, seed_cov=seed_cov, n_true=n_true,
+                                    n_anchor=n_anchor, n_observed=n_observed,
+                                    metric='mean', port_kwargs={'n_split': n_split},
+                                    max_time=max_time)
+            pprint(moments)
+            try:
+                # Assumes 10% return annually
+                bps_saved = int(10000 * 0.1 * (moments['g000'] - moments['g100']) / (2 * moments['g000']))
+                bps.append(bps_saved)
+                pprint({'bps_saved': np.mean(bps)})
+            except:
+                pass
+            normalized_moments = dict([(k, v / moments['g000']) for k, v in moments.items()])
+            moment_plot(moments=normalized_moments, sty=sty)
+
+        plt.title('Portfolio variance as $\gamma$ is varied')
+        full_xlabel = xlabel + ' $ benefit=' + str(round(np.mean(bps))) + ' bps'
+        plt.xlabel(full_xlabel)
+        plt.show()
+        plt.savefig('schur.png')
+
+
+else:
+    def gamma_comparison_and_plot(**kwargs):
+        print('pip install matplotlib')
 
 
 def gamma_port(cov, gamma, n_split, jiggle=False):

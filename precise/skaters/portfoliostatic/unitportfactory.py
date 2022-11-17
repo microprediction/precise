@@ -23,7 +23,12 @@ def unitary_from_pre(pre):
     n_dim = np.shape(pre)[1]
     wones = np.ones(shape=(n_dim, 1))
     w = normalize(np.squeeze(np.matmul(pre, wones)))
-    return np.array(w)
+    sum_w = np.sum(w)
+    if abs(sum_w-1)<1e-4:
+        return np.array(w)
+    else:
+        print('Warning. Unitary portfolio failed.')
+        return np.ones_like(w)/n_dim
 
 
 def unitary_from_cov(cov):
