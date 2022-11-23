@@ -1,7 +1,6 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Methods for online covariance forecasting and portfolio construction. See the [documentation](https://microprediction.github.io/precise/) and [M6 Competition successes](https://microprediction.github.io/precise/m6_success.html). a
-
+Methods for online covariance forecasting and portfolio construction, some of which you won't find anywhere else. See the [documentation](https://microprediction.github.io/precise/) and [M6 Competition successes](https://microprediction.github.io/precise/m6_success.html). 
 
 ### Usage example: covariance 
 Here y is a vector:
@@ -44,7 +43,11 @@ Trouble?
     pip install --upgrade riskparityportfolio
     pip install --upgrade scipy
     pip insatll --upgrade precise 
-        
+
+
+# Schur Complementary Portfolios
+
+ - Discuss on th post where I introduce [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
 
 # Miscellaneous remarks
 
