@@ -15,3 +15,6 @@ Here y is a vector:
 -+-
 
 Documentation [home](https://microprediction.github.io/precise)
+
+
+View as [source](https://github.com/microprediction/precise/blob/master/docs/managers.md) or [web](https://microprediction.github.io/precise/managers)
