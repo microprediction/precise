@@ -26,3 +26,5 @@ Sorry this isn't too streamlined, but if you'd like to perform some Elo calculat
 -+-
 
 Documentation [home](https://microprediction.github.io/precise)
+
+View as [source](https://github.com/microprediction/precise/blob/master/docs/elo.md) or [web](https://microprediction.github.io/precise/elo)
