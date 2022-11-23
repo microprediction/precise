@@ -48,6 +48,9 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 Documentation [home](https://microprediction.github.io/precise)
 
 
+View as [source](https://github.com/microprediction/precise/blob/master/docs/m6_success.md) or [web](https://microprediction.github.io/precise/m6_success)
+
+
 ![marco_2nd](/precise/assets/images/first_quarter.png)
 
 
