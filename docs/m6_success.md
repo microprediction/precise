@@ -22,7 +22,7 @@ My view is that the investment side of the contest is a crap-shoot and managers 
 | Q3        |  88        |
 | Overall   |  87        |
 
-This is pretty much the way I thought it would go. Not good enough for the podium as I didn't swing for the fences.  
+Marco is pretty close. See below. This is pretty much the way I thought it would go. Not good enough for the podium (but Marco was in Q1). 
 
 
 ### Pilot results
