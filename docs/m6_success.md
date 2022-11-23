@@ -65,7 +65,7 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 
 
 
-### Current global (year to date) results as of Aug 18
+### Current global (year to date) results as of Nov 23
 
 
 | Handle                                  | Overall (out of 148 teams)                                  |   Forecasts  |  Decisions |
