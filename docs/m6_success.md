@@ -1,7 +1,7 @@
 
 # Performance of precise users in the M6 financial forecasting contest
 
-So far as we know, there are two teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). 
+So far as we know, there are two teams out of 199 who have publically declared that they are using the precise package for the [M6 Financial Forecasting Competition](https://m6competition.com/). I have no idea *how* Marco is using my package, only that he is. 
 
 | Handle                                  | Team details                                                |  
 |-----------------------------------------|-------------------------------------------------------------|
