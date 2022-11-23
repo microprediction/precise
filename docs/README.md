@@ -19,6 +19,6 @@ More specific examples:
 
 
 
-[source](https://github.com/microprediction/precise/blob/master/docs/README.md)
+View as [source](https://github.com/microprediction/precise/blob/master/docs/README.md) or [web](https://microprediction.github.io/precise/)
 
 ![schur](/precise/assets/images/schur_reaction.png)
