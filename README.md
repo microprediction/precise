@@ -45,9 +45,9 @@ Trouble?
     pip insatll --upgrade precise 
 
 
-# Schur Complementary Portfolios
+# Related articles
 
- - Discuss on th post where I introduce [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
+ - [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
 
 # Miscellaneous remarks
 
