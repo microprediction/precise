@@ -15,14 +15,14 @@ My view is that the investment side of the contest is a crap-shoot and managers 
 
 
 | Stage     | Percentile |
-|-------------------------
+|-----------|------------|
 | Pilot     |  85        |
 | Q1        |  78        |
 | Q2        |  77        |
 | Q3        |  88        |
 | Overall   |  87        |
 
-Lucky guy! 
+This is pretty much the way I thought it would go. Not good enough for the podium as I didn't swing for the fences.  
 
 
 ### Pilot results
