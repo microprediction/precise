@@ -30,7 +30,6 @@ Marco is pretty close. See below. This is pretty much the way I thought it would
 | Handle                                  | Overall (out of 59 teams)                                   |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
 | microprediction                         | 9th                                                         |    9th       |  31st      |
-| MarcoGorelli                            | 18th                                                        |    18th      |  39th      |
 
 Sadly no cash for the pilot. 
 
