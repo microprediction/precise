@@ -2,7 +2,7 @@
 
 This repo:
 
-- An enumeration of diverse methods for online covariance forecasting and portfolio construction in a common walk-forward format. See the [documentation](https://microprediction.github.io/precise/). 
+- An enumeration of diverse methods for online covariance forecasting and portfolio construction in a common one-line walk-forward signature. See the [documentation](https://microprediction.github.io/precise/). 
 
 - A home for Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down and bottom-up portfolio construction [posted here](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop). 
 
