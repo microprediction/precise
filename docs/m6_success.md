@@ -9,9 +9,8 @@ So far as we know, there are two teams out of 199 who have publically declared t
 | microprediction                         | [Peter Cotton](https://www.linkedin.com/in/petercotton/)    | 
 
 
-Though since there are a hundred ways to estimate covariance in that package, and about the same number of ways to construct portfolios, that isn't conveying much information. I have no idea what Marco is doing. 
-
-My view is that the investment side of the contest is a crap-shoot and managers should be judged on 35yr records, not one. But the probabilistic forecasting side starts to get into large n territory. Here are my percentiles thus far:
+Though since there are a hundred ways to estimate covariance in that package, and about the same number of ways to construct portfolios, that isn't conveying much information. I have no idea what Marco is doing, and rules forbid me from telling you my usage pattern until the end of the contest. 
+My view is that the investment side of the contest is a crap-shoot and managers should be judged on 35yr records, not one. But the probabilistic forecasting side starts to get into large n territory. Here are my percentiles thus far which hopefully speak for themselves. 
 
 
 | Stage     | Percentile |
@@ -22,7 +21,7 @@ My view is that the investment side of the contest is a crap-shoot and managers 
 | Q3        |  88        |
 | Overall   |  87        |
 
-Marco is pretty close. See below. This is pretty much the way I thought it would go. Not good enough for the podium (but Marco was in Q1). 
+Marco is pretty close, and he won cash too! See below.  
 
 
 ### Pilot results
@@ -30,8 +29,7 @@ Marco is pretty close. See below. This is pretty much the way I thought it would
 | Handle                                  | Overall (out of 59 teams)                                   |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
 | microprediction                         | 9th                                                         |    9th       |  31st      |
-
-Sadly no cash for the pilot. 
+ 
 
 ### First quarter results
 
@@ -63,15 +61,13 @@ Congrats to [Marco Gorelli](https://www.linkedin.com/in/marcogorelli/) for finis
 
 
 
-
 ### Current global (year to date) results as of Nov 23
 
 
 | Handle                                  | Overall (out of 148 teams)                                  |   Forecasts  |  Decisions |
 |-----------------------------------------|-------------------------------------------------------------|--------------|------------|
-| MarcoGorelli                            | 12th                                                        |    22nd      |  45th      |
-| microprediction                         | 33rd                                                        |    21st      |  91st      |
-
+| MarcoGorelli                            | 12th                                                        |    16th      |  40th      |
+| microprediction                         | 33rd                                                        |    15th      |  88th      |
 
 
 
