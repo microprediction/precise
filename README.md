@@ -1,6 +1,6 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-- Diverse methods for online covariance forecasting and portfolio construction in a one-line walk-forward signature. See [docs](https://microprediction.github.io/precise/). 
+- A collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/). 
 
 - A home for Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down and bottom-up portfolio construction [posted here](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop). 
 
