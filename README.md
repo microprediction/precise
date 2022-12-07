@@ -1,7 +1,12 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Methods for online covariance forecasting and portfolio construction, some of which you won't find anywhere else. See the [documentation](https://microprediction.github.io/precise/) and [M6 Competition successes](https://microprediction.github.io/precise/m6_success.html) or maybe this
-quite popular article [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b). 
+This repository contains an enumeration of diverse methods for online covariance forecasting and portfolio construction in a common walk-forward format. See the [documentation](https://microprediction.github.io/precise/). 
+
+It is also home to what I term Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down and bottom-up portfolio construction [dicuss](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop). 
+
+The package was taken for a spin in the M6 Financial Forecasting contest too, and it has been quite [successful](https://microprediction.github.io/precise/m6_success.html) 
+
+It is also useful for model ensembles potentially. See the popular article [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b). 
 
 ### Usage example: covariance 
 Here y is a vector:
@@ -23,8 +28,8 @@ Here y is a vector:
 
 This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
 
-### Other uses
-The [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) mentioned illustrates the connection between portfolio theory and model ensembles. See also the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
+## Usage example: model ensembling
+This will depend on what automl convenient tooling you use. But see the [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) which uses LazyPredict, or the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
 
 ## Install 
 
@@ -49,6 +54,7 @@ Trouble?
 # Related articles
 
  - [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
+ - [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b)
 
 # Miscellaneous remarks
 
