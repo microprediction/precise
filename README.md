@@ -1,15 +1,15 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-This repo:
-
-- An enumeration of diverse methods for online covariance forecasting and portfolio construction in a common one-line walk-forward signature. See the [documentation](https://microprediction.github.io/precise/). 
+- Diverse methods for online covariance forecasting and portfolio construction in a common one-line walk-forward signature. See the [documentation](https://microprediction.github.io/precise/). 
 
 - A home for Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down and bottom-up portfolio construction [posted here](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop). 
 
-The package was taken for a spin in the M6 Financial Forecasting contest too, and it has been quite [successful](https://microprediction.github.io/precise/m6_success.html). Here are two articles:
+Here are two articles:
 
  - [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
  - [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b)
+
+The package was taken for a spin in the M6 Financial Forecasting contest too, and it has been quite [successful](https://microprediction.github.io/precise/m6_success.html).
 
 # Usage 
 Again, see the [docs](https://microprediction.github.io/precise/), but briefly:
