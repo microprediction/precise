@@ -1,6 +1,7 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Methods for online covariance forecasting and portfolio construction, some of which you won't find anywhere else. See the [documentation](https://microprediction.github.io/precise/) and [M6 Competition successes](https://microprediction.github.io/precise/m6_success.html). 
+Methods for online covariance forecasting and portfolio construction, some of which you won't find anywhere else. See the [documentation](https://microprediction.github.io/precise/) and [M6 Competition successes](https://microprediction.github.io/precise/m6_success.html) or maybe this
+quite popular article [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b). 
 
 ### Usage example: covariance 
 Here y is a vector:
