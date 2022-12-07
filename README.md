@@ -2,7 +2,7 @@
 
 - A collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/). 
 
-- A home for Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down and bottom-up portfolio construction that got [quite a bit reaction](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) when I posted it.  
+- A home for Schur Complementary Portfolio construction, a new approach that leans on the under-appreciated connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction that got [quite a bit reaction](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) when I posted it.  
 
 Here are two articles:
 
