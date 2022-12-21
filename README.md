@@ -54,7 +54,7 @@ Trouble?
     pip install --upgrade pyportfolioopt
     pip install --upgrade riskparityportfolio
     pip install --upgrade scipy
-    pip insatll --upgrade precise 
+    pip install --upgrade precise 
 
 
 # Miscellaneous 
