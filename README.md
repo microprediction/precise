@@ -45,11 +45,12 @@ or for latest:
 
     pip install git+https://github.com/microprediction/precise.git
  
-Trouble? 
+Trouble? It probably isn't with precise per se. 
 
     pip install --upgrade pip
     pip install --upgrade setuptools 
     pip install --upgrade wheel
+    pip install --upgrade ecos 
     pip install --upgrade osqp   # <-- Can be tricky on some systems see https://github.com/cvxpy/cvxpy/issues/1190#issuecomment-994613793
     pip install --upgrade pyportfolioopt # <--- Skip if you don't plan to use it
     pip install --upgrade riskparityportfolio
