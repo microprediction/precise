@@ -1,4 +1,5 @@
 recursive-include precise/skatervaluation/battleresults
 recursive-include precise/examples_m6
 include README.md
-include LICENSE.txt
+include LICENSE
+include LITERATURE.md
