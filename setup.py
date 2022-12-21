@@ -33,6 +33,7 @@ setup(
               "precise.skaters.locationutil",
               "precise.inclusion",
               "precise.skatertools",
+              "precise.skatervaluation.schurcomparisionutil",
               "precise.skatertools.data",
               "precise.skatertools.ensembling",
               "precise.skatertools.m6",
