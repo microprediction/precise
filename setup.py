@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.11.5",
+    version="0.11.6",
     description="Online covariance, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -33,7 +33,6 @@ setup(
               "precise.skaters.locationutil",
               "precise.inclusion",
               "precise.skatertools",
-              "precise.skatervaluation.schurcomparisonutil",
               "precise.skatertools.data",
               "precise.skatertools.ensembling",
               "precise.skatertools.m6",
@@ -47,6 +46,8 @@ setup(
               "precise.skatervaluation.battlelatex",
               'precise.skatervaluation.battlescripts.cov_likelihood',
               'precise.skatervaluation.battlescripts.manager_info',
+              "precise.skatervaluation.schurcomparisonutil",
+              "precise.skatervaluation.schurcomparisionutil",
               'precise.skatervaluation.battlescripts.manager_var'
               ],
     test_suite='pytest',
