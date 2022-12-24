@@ -51,7 +51,7 @@ def closest_weak_l1(xs, origin, n_max=50, verbose=False):
     return np.array(origin) + np.array(x)
 
 
-def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=True)->[float]:
+def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=False)->[float]:
     """ Work in progress
      There are some insights in https://arxiv.org/pdf/math/0606426
      This is a heuristic algorithm !
@@ -93,7 +93,8 @@ def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=True)->[
                     best_ratio = d_ratio
                     best_discount = lmbd
                     best_x = x_guess
-    print({'d_ratio': best_ratio, 'discount': best_discount})
+    if verbose:
+        print({'d_ratio': best_ratio, 'discount': best_discount})
     return best_x
 
 
