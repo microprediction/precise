@@ -297,61 +297,61 @@ SCHUR_GAMMA_050_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g050_long_man
 def schur_weak_weak_pm_t0_r025_n50_s5_g000_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.0, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g010_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.1, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g020_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.2, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g030_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.3, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g040_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.4, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g050_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.5, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g060_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.6, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g070_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.7, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g080_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.8, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g090_long_manager(y, s, k=1, e=1, j=1, q=1.0):
     assert k == 1
     return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.9, delta=0.0, j=j,
-                                              q=q)
+                                              q=q, n_split=5)
 
 
 def schur_weak_weak_pm_t0_r025_n50_s5_g100_long_manager(y, s, k=1, e=1, j=1, q=1.0):
@@ -371,6 +371,44 @@ SCHUR_PM_S5_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g000_long_manager
                              schur_weak_weak_pm_t0_r025_n50_s5_g080_long_manager,
                              schur_weak_weak_pm_t0_r025_n50_s5_g090_long_manager,
                              schur_weak_weak_pm_t0_r025_n50_s5_g100_long_manager]
+
+
+def schur_weak_weak_pm_t0_r025_n50_s2_g000_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.0, delta=0.0, j=j,
+                                              q=q, n_split=2)
+
+
+def schur_weak_weak_pm_t0_r025_n50_s2_g010_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.1, delta=0.0, j=j,
+                                              q=q, n_split=2)
+
+
+def schur_weak_weak_pm_t0_r025_n50_s2_g020_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.2, delta=0.0, j=j,
+                                              q=q, n_split=2)
+
+
+def schur_weak_weak_pm_t0_r025_n50_s2_g030_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.3, delta=0.0, j=j,
+                                              q=q, n_split=2)
+
+
+def schur_weak_weak_pm_t0_r025_n50_s2_g040_long_manager(y, s, k=1, e=1, j=1, q=1.0):
+    assert k == 1
+    return schur_weak_weak_pm_manager_factory(y=y, s=s, target=0, e=e, r=0.025, n_emp=50, gamma=0.4, delta=0.0, j=j,
+                                              q=q, n_split=2)
+
+
+SCHUR_PM_S2_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s2_g000_long_manager,
+                             schur_weak_weak_pm_t0_r025_n50_s2_g010_long_manager,
+                             schur_weak_weak_pm_t0_r025_n50_s2_g020_long_manager,
+                             schur_weak_weak_pm_t0_r025_n50_s2_g030_long_manager,
+                             schur_weak_weak_pm_t0_r025_n50_s2_g040_long_manager]
+
 
 
 def schur_weak_weak_pm_t0_r050_n25_s5_g010_long_manager(y, s, k=1, e=1, j=1, q=1.0):
@@ -497,7 +535,7 @@ SCHUR_GAMMA_000_LONG_MANAGERS = [schur_weak_weak_pm_t0_r025_n50_s5_g000_long_man
                                  schur_diag_weak_pm_t0_r050_n25_s5_g000_long_manager]
 
 SCHUR_J1_LONG_MANAGERS = SCHUR_GAMMA_100_LONG_MANAGERS + SCHUR_GAMMA_050_LONG_MANAGERS + \
-                         SCHUR_GAMMA_010_LONG_MANAGERS + SCHUR_GAMMA_000_LONG_MANAGERS + SCHUR_PM_S5_LONG_MANAGERS
+                         SCHUR_GAMMA_010_LONG_MANAGERS + SCHUR_GAMMA_000_LONG_MANAGERS + SCHUR_PM_S5_LONG_MANAGERS + SCHUR_PM_S2_LONG_MANAGERS
 SCHUR_LS_MANAGERS = []
 
 SCHUR_LONG_MANAGERS = SCHUR_J1_LONG_MANAGERS
