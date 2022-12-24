@@ -56,7 +56,7 @@ def ldp_s100_n200_l21_long_manager(y, s, k=1, e=1, j=1, q=1.0):
 
 
 LDP_LONG_MANAGERS = [ldp_s2_n50_long_manager, ldp_s5_n50_long_manager, ldp_s25_n50_long_manager,
-                     ldp_s5_n100_long_manager, ldp_s25_n100_long_manager
+                     ldp_s5_n100_long_manager, ldp_s25_n100_long_manager,
                      ldp_s5_n200_l5_long_manager, ldp_s5_n200_l21_long_manager,
                      ldp_s100_n200_l21_long_manager, ldp_s2_n200_l5_long_manager]
 HRP_LS_NAMED_MANAGERS = []
