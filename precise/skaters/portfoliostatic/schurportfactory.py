@@ -98,8 +98,7 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         return w
     else:
         # 1. Establish ordering, or bail out altogether
-        if any(np.diag(cov) < 1e-6):
-            print('Bailing out as diagonal of cov are too small')
+        if any(np.diag(cov) < 1e-8):
             return equal_long_port(cov=cov)
         elif seriation_depth<=0:
             ndx = list(range(n1+n2))
