@@ -90,36 +90,36 @@ MOLYBOGA_GAMMA100_LONG_MANAGERS = [molyboga_r025_s2_gamma100_long_manager,
                                    molyboga_r001_s100_gamma100_long_manger]
 
 
-def molyboga_r025_s2_gamma100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r025_s2_gamma020_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.025,  e=e, gamma=1.0, delta=0,j=j,q=q, n_split=2)
 
 
-def molyboga_r001_s2_gamma100_long_manger(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r001_s2_gamma020_long_manger(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.01, e=e, gamma=1.0, delta=0,j=j,q=q, n_split=2)
 
 
 
-def molyboga_r025_s5_gamma100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r025_s5_gamma020_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.025,  e=e, gamma=1.0, delta=0,j=j,q=q, n_split=5)
 
 
-def molyboga_r001_s5_gamma100_long_manger(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r001_s5_gamma020_long_manger(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.01, e=e, gamma=1.0, delta=0,j=j,q=q, n_split=5)
 
 
-def molyboga_r025_s25_gamma100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r025_s25_gamma020_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.025,  e=e, gamma=1.0, delta=0,j=j,q=q, n_split=25)
 
 
-def molyboga_r001_s25_gamma100_long_manger(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r001_s25_gamma020_long_manger(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.01,  e=e, gamma=1.0, delta=0,j=j,q=q, n_split=25)
 
 
-def molyboga_r025_s100_gamma100_long_manager(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r025_s100_gamma020_long_manager(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.025, e=e, gamma=1.0, delta=0,j=j,q=q, n_split=100)
 
 
-def molyboga_r001_s100_gamma100_long_manger(y, s, k=1, e=1,j=1,q=1.0):
+def molyboga_r001_s100_gamma020_long_manger(y, s, k=1, e=1,j=1,q=1.0):
     return molyboga_manager_factory(y=y, s=s, r=0.01, e=e, gamma=1.0, delta=0,j=j,q=q, n_split=100)
 
 
