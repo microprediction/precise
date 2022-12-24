@@ -57,7 +57,7 @@ if using_matplotlib:
             moment_plot(moments=normalized_moments, sty=sty)
 
         plt.title('Portfolio variance as $\gamma$ is varied')
-        full_xlabel = xlabel + ' $ benefit=' + str(round(np.mean(bps))) + ' bps'
+        full_xlabel = xlabel + ' benefit=' + str(round(np.mean(bps))) + ' bps'
         plt.xlabel(full_xlabel)
         plt.show()
         plt.savefig('schur.png')

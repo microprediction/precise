@@ -10,8 +10,8 @@ def schur_augmentation(A,B,C,D, gamma):
     """
     if gamma>0.0:
         max_gamma = _maximal_gamma(A=A, B=B, C=C, D=D)
-        augA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
-        augD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
+        augA, bA = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma * max_gamma)
+        augD, bD = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma * max_gamma)
 
         augmentation_fail = False
         if not is_positive_def(augA):
@@ -54,10 +54,12 @@ def schur_augmentation(A,B,C,D, gamma):
 
 
 
-def pseudo_schur_complement(A, B, C, D, gamma, warn=False):
+def  pseudo_schur_complement(A, B, C, D, gamma, lmbda=None, warn=False):
     """
        Augmented cov matrix for "A" inspired by the Schur complement
     """
+    if lmbda is None:
+        lmbda=gamma
     try:
         Ac_raw = schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
         nA = np.shape(A)[0]
@@ -67,20 +69,22 @@ def pseudo_schur_complement(A, B, C, D, gamma, warn=False):
         Mt = np.transpose(M)
         BDinv = multiply_by_inverse(B, D, throw=False)
         BDinvMt = np.dot(BDinv, Mt)
-        Ra = np.eye(nA) - gamma * BDinvMt
+        Ra = np.eye(nA) - lmbda * BDinvMt
         Ag = inverse_multiply(Ra, Ac, throw=False, warn=False)
     except np.linalg.LinAlgError:
         if warn:
             print('Pseudo-schur failed, falling back to A')
         Ag = A
-    return Ag
+    n = np.shape(A)[0]
+    b = np.ones(shape=(n,1))
+    return Ag, b
 
 
 def _maximal_gamma(A,B,C,D):
 
     def _gamma_objective(gamma, A, B, C, D):
-        Ag = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma)
-        Dg = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma)
+        Ag = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma, lmbda=gamma)
+        Dg = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma, lmbda=gamma)
         pos_def = is_positive_def(Ag) and is_positive_def(Dg)
         return -0.01 if pos_def else 1.0
 
