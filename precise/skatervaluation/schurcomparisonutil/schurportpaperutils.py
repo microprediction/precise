@@ -4,8 +4,10 @@ from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_facto
 from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
+from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from precise.skaters.portfoliostatic.unitport import unit_port
 from precise.skaters.portfoliostatic.diagport import diag_long_port
+from precise.skaters.portfoliostatic.hrpport import hrp_diag_diag_s5_long_port as hrp_port
 import numpy as np
 from precise.inclusion.matplotlibinclusion import using_matplotlib
 from precise.skaters.portfolioutil.portcomparison import port_kurtosis
@@ -18,7 +20,10 @@ if using_matplotlib:
     import matplotlib.pyplot as plt
 
     def gamma_comparison_and_plot(rnd_cov, rnd_cov_kwargs, n_anchor, n_true,
-                                  n_observed, max_time, n_split, xlabel):
+                                  n_observed, max_time, n_split, xlabel, g_ports=None):
+
+        if g_ports is None:
+            gports = G_PORTS
 
         def moment_plot(moments: dict, sty='go'):
             """ Plot portfolio var against gamma
@@ -38,7 +43,7 @@ if using_matplotlib:
 
         stys = ['go', 'r+', 'b*']
         bps = list()
-        ports = G_PORTS + OTHER_PORTS
+        ports = g_ports + OTHER_PORTS
         for sty in stys:
             seed_cov = rnd_cov(**rnd_cov_kwargs)
             moments = port_kurtosis(ports=ports, seed_cov=seed_cov, n_true=n_true,
@@ -68,11 +73,20 @@ else:
         print('pip install matplotlib')
 
 
-def gamma_port(cov, gamma, n_split, jiggle=False):
+def alt_gamma_port(cov, gamma, n_split, jiggle=False):
     assert gamma is not None
     return schur_portfolio_factory(port=weak_portfolio_factory,
                                    alloc=weak_long_alloc, cov=cov,
                                    n_split=n_split, gamma=gamma, jiggle=jiggle)
+
+
+def gamma_port(cov, gamma, n_split, jiggle=False):
+    # Only one schur step and then HRP
+    assert gamma is not None
+    return schur_portfolio_factory(port=hrp_port,
+                                   alloc=diag_alloc, cov=cov,
+                                   n_split=n_split, gamma=gamma, jiggle=jiggle)
+
 
 
 def unitary(cov, **ignore):

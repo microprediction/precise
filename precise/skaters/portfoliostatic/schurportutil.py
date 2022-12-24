@@ -83,8 +83,8 @@ def  pseudo_schur_complement(A, B, C, D, gamma, lmbda=None, warn=False):
 def _maximal_gamma(A,B,C,D):
 
     def _gamma_objective(gamma, A, B, C, D):
-        Ag = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma, lmbda=gamma)
-        Dg = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma, lmbda=gamma)
+        Ag, _ = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma, lmbda=gamma)
+        Dg, _ = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma, lmbda=gamma)
         pos_def = is_positive_def(Ag) and is_positive_def(Dg)
         return -0.01 if pos_def else 1.0
 
