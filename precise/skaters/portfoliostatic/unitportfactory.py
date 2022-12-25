@@ -4,20 +4,24 @@ from precise.skaters.portfolioutil.portfunctions import portfolio_variance
 from typing import List
 from itertools import zip_longest
 from precise.skaters.locationutil.vectorfunctions import normalize
-
+from precise.skaters.covarianceutil.covfunctions import multiply_off_diag
 
 # Long-short min-var portfolios where the only constraint is sum(w)=1
 
 
-def unit_portfolio_factory(pre=None, cov=None):
+def unit_portfolio_factory(pre=None, cov=None, phi=1.0):
     """ Signed min var portfolio summing to unity """
-    if pre is not None:
-        return unitary_from_pre(pre=pre)
+    if (pre is not None):
+        if (phi>1.0-1e-4):
+            return unitary_from_pre(pre=pre, phi=phi)
+        else:
+            cov = try_invert(pre)
+            return unitary_from_cov(cov=cov, phi=phi)
     else:
-        return unitary_from_cov(cov=cov)
+        return unitary_from_cov(cov=cov, phi=phi)
 
 
-def unitary_from_pre(pre):
+def unitary_from_pre(pre, phi=1.0):
     """ Signed min var portfolio summing to unity """
     # No optimization required
     n_dim = np.shape(pre)[1]
@@ -31,7 +35,8 @@ def unitary_from_pre(pre):
         return np.ones_like(w)/n_dim
 
 
-def unitary_from_cov(cov):
+def unitary_from_cov(cov,phi=1.0):
+    cov = multiply_off_diag(cov, phi=phi)
     pre = try_invert(cov)
     return unitary_from_pre(pre=pre)
 

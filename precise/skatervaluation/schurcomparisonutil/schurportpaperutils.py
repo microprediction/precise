@@ -3,6 +3,7 @@ from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_f
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
+from precise.skaters.portfoliostatic.hrpportfactory import hierarchical_risk_parity_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
 from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from precise.skaters.portfoliostatic.unitport import unit_port
@@ -23,7 +24,7 @@ if using_matplotlib:
                                   n_observed, max_time, n_split, xlabel, g_ports=None):
 
         if g_ports is None:
-            gports = G_PORTS
+            g_ports = G_PORTS
 
         def moment_plot(moments: dict, sty='go'):
             """ Plot portfolio var against gamma
@@ -42,6 +43,7 @@ if using_matplotlib:
             plt.ylabel('Portfolio variance')
 
         stys = ['go', 'r+', 'b*']
+        stys = ['go']
         bps = list()
         ports = g_ports + OTHER_PORTS
         for sty in stys:
@@ -73,7 +75,7 @@ else:
         print('pip install matplotlib')
 
 
-def alt_gamma_port(cov, gamma, n_split, jiggle=False):
+def deep_gamma_port(cov, gamma, n_split, jiggle=False):
     assert gamma is not None
     return schur_portfolio_factory(port=weak_portfolio_factory,
                                    alloc=weak_long_alloc, cov=cov,
@@ -81,9 +83,15 @@ def alt_gamma_port(cov, gamma, n_split, jiggle=False):
 
 
 def gamma_port(cov, gamma, n_split, jiggle=False):
+    """
+         A shallow version of Schur intended to try to separate out the effect
+         of using Schur at the top division step, versus not using it there.
+    """
+
     # Only one schur step and then HRP
     assert gamma is not None
-    return schur_portfolio_factory(port=hrp_port,
+    return schur_portfolio_factory(port=hierarchical_risk_parity_portfolio_factory,
+                                   port_kwargs={'n_split':n_split},
                                    alloc=diag_alloc, cov=cov,
                                    n_split=n_split, gamma=gamma, jiggle=jiggle)
 
@@ -177,9 +185,37 @@ def eql(cov, **ignore):
     return equal_long_port(cov=cov)
 
 from precise.skaters.portfoliostatic.weakport import weak_long_port
-def wk(cov,**ignore):
+def week(cov, **ignore):
     return weak_long_port(cov=cov)
+
+from precise.skaters.portfoliostatic.unitport import unit_port_p050, unit_port_p090
+def u050(cov, **ignore):
+    return unit_port_p050(cov=cov)
+def u090(cov, **ignore):
+    return unit_port_p090(cov=cov)
+
+
+def d005(cov, n_split, **ignore):
+    return deep_gamma_port(cov=cov, gamma=0.05, n_split=n_split)
+
+
+def d095(cov, n_split, **ignore):
+    return deep_gamma_port(cov=cov, gamma=0.95, n_split=n_split)
+
+
+def d050(cov, n_split, **ignore):
+    return deep_gamma_port(cov=cov, gamma=0.5, n_split=n_split)
+
+def d075(cov, n_split, **ignore):
+    return deep_gamma_port(cov=cov, gamma=0.75, n_split=n_split)
+
+
+def d025(cov, n_split, **ignore):
+    return deep_gamma_port(cov=cov, gamma=0.25, n_split=n_split)
+
+
+
 
 G_PORTS = [g000, g000i, g050, g010, g010j, g015, g020, g020j, g025,
            g030, g035, g040, g050, g060, g070, g080, g090, g100]
-OTHER_PORTS = [unitary, diagn, eql, wk]
+OTHER_PORTS = [u050, d005, d025, d050, d075, d095]
