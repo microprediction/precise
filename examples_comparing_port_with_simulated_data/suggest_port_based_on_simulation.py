@@ -1,11 +1,11 @@
-from precise.skatervaluation.portfoliocomparisonutil.portsuggestion import sample_var_suggestions
+from precise.skatervaluation.portfoliocomparisonutil.portsuggestion import suggest_port_using_sample_cov
 from pprint import pprint
 
-# Recommend static portfolio function based on sampled port var
+# Recommend static portfolio function based on sampled port var using simulation
 
 
 if __name__=='__main__':
-    pprint(sample_var_suggestions(n_dim=500, n_draws=2000,  n_anchor=600, n_true=1000, n_observed=250))
+    pprint(suggest_port_using_sample_cov(n_dim=500, n_anchor=600, n_true=1000, n_observed=250))
 
 
 

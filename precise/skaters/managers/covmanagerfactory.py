@@ -47,7 +47,7 @@ def closest_random_nudge(port, cov, q, l, w, port_kwargs, zeta=None):
 
         # Find a portfolio near to w
         if (l is not None) and (l >= 3) and is_odd(l):
-            w_target = closest_weak_l1(origin=w, xs=w_ports, verbose=True)
+            w_target = closest_weak_l1(origin=w, xs=w_ports, verbose=False)
         else:
             w_target = closest_point_l1(origin=w, xs=w_ports)
 
