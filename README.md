@@ -1,4 +1,4 @@
-# precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg)![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+# precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg) ![tests-sans-ppo](https://github.com/microprediction/precise/workflows/tests-sans-ppo/badge.svg)  ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 - A collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/). 
 
