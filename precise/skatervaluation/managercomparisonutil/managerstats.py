@@ -40,6 +40,7 @@ def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.
         lb.append((score, mgr.__name__, mgr))
         info_brief = [(s, n) for (s, n, _) in lb]
         if verbose:
+            print('')
             pprint(sorted(info_brief, reverse=True))
     return lb
 
