@@ -5,7 +5,7 @@ from pprint import pprint
 
 # Use a "manager" to allocate to 40 ETFs
 # (Pulls data slowly so be patient!)
-# Not investment advice, just an show_em
+# Not investment advice
 
 
 if __name__=='__main__':

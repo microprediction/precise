@@ -82,7 +82,7 @@ def _lw_ema_scov_update(s, x, r):
         X = np.asarray(s['buffer'])
         s['lmbd'] = ledoit_wolf_shrinkage(X=X)
 
-    # Create shrunk version of moving avg sample covariance
+    # Create shrunk version of moving avg sample covariancecomparisonutil
     if s['ema_scov']['n_samples']>2:
         scov = s['ema_scov']['scov']
         s['scov'] = grand_shrink(a=scov, lmbd=s['lmbd'], copy=True)

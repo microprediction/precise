@@ -1,6 +1,6 @@
 from precise.skaters.portfoliostatic.unitport import unit_port
 import numpy as np
-from precise.skaters.portfolioutil.portcomparison import port_kurtosis
+from precise.skatervaluation.portfoliocomparisonutil.portcomparison import port_kurtosis
 
 # A small example intended to illustrate why cov weakening can sometimes serve
 # one well out of sample

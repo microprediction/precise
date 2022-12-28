@@ -1,6 +1,6 @@
-# from precise.skaters.covariance.ewaemp import ewa_emp_pcov_d0_r01 as f
-# from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r01_n100 as f
-#from precise.skaters.covariance.ewalw import ewa_lw_scov_d0_r01 as f
+# from precise.skaters.covariancecomparisonutil.ewaemp import ewa_emp_pcov_d0_r01 as f
+# from precise.skaters.covariancecomparisonutil.ewapm import ewa_pm_emp_scov_r01_n100 as f
+#from precise.skaters.covariancecomparisonutil.ewalw import ewa_lw_scov_d0_r01 as f
 from precise.skaters.covariance.ewaemp import ewa_emp_pcov_d0_r01 as f
 from precise.skaters.portfoliostatic.unitport import unit_port
 from precise.skaters.portfoliostatic.unitport import unit_port as champion_port

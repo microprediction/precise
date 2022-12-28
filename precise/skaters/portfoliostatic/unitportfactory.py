@@ -52,7 +52,7 @@ def unitary_portfolio_variance(cov=None, pre=None):
 
 def prc_unit_alloc(covs:List, pres:List=None)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
+    :param covs:  List of covariancecomparisonutil matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """

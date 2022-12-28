@@ -1,17 +1,14 @@
 # These are merely here as a convenience for gamma studies
-from precise.skaters.portfoliostatic.diagportfactory import diagonal_portfolio_factory
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
-from precise.skaters.portfoliostatic.unitportfactory import unit_portfolio_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.hrpportfactory import hierarchical_risk_parity_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_long_alloc
 from precise.skaters.portfoliostatic.diagalloc import diag_alloc
 from precise.skaters.portfoliostatic.unitport import unit_port
 from precise.skaters.portfoliostatic.diagport import diag_long_port
-from precise.skaters.portfoliostatic.hrpport import hrp_diag_diag_s5_long_port as hrp_port
 import numpy as np
 from precise.inclusion.matplotlibinclusion import using_matplotlib
-from precise.skaters.portfolioutil.portcomparison import port_kurtosis
+from precise.skatervaluation.portfoliocomparisonutil.portcomparison import port_kurtosis
 from pprint import pprint
 
 # Some utilities used in the Schur paper

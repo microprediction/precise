@@ -3,7 +3,7 @@ from precise.whereami import M6_EXAMPLES
 import os
 import time
 
-# Example of creating an M6 Competition entry and choosing a method of predicting covariance
+# Example of creating an M6 Competition entry and choosing a method of predicting covariancecomparisonutil
 
 if __name__=='__main__':
     from precise.skaters.covariance.bufsk import buf_sk_oas_pcov_d0_n100 as f   # Sklearn's Oracle Approx implementation

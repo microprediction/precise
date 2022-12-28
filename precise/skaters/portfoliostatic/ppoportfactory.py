@@ -138,12 +138,12 @@ if using_pyportfolioopt:
             return dense_weights_from_dict(weights, n_dim=n_dim)
 
 
-    def long_from_cov( cov, as_dense=True ):
+    def ppo_vol_long_from_cov(cov, as_dense=True):
         """ Backward compat """
         return ppo_vol_port(cov=cov, as_dense=as_dense)
 
 
-    def long_from_pre(pre, as_dense=True):
+    def ppo_vol_long_from_pre(pre, as_dense=True):
         """ Backward compate """
         return ppo_vol_port(pre=pre, as_dense=as_dense)
 
@@ -171,7 +171,7 @@ if using_pyportfolioopt:
 
     def _ppo_portfolio_allocation(method:str, covs:List, pres:List)->[float]:
         """ Allocate capital between portfolios using either cov or pre matrices
-        :param covs:  List of covariance matrices
+        :param covs:  List of covariancecomparisonutil matrices
         :param pres:  List of precision matrices
         :return: Capital allocation vector
         """

@@ -1,6 +1,6 @@
 from precise.skatertools.data.equitylive import live_veteran_etf_data
 from pprint import pprint
-from precise.skaters.managerutil.managerstats import manager_stats
+from precise.skatervaluation.managercomparisonutil.managerstats import manager_stats
 import json
 import numpy as np
 

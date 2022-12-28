@@ -62,7 +62,7 @@ def random_cov_skater():
 
 def cov_skater_manifest_markdown():
     manifest = cov_skater_manifest()
-    data = [ {'covariance skater':mgr,'location':url} for mgr, url in manifest.items() ]
+    data = [ {'covariancecomparisonutil skater':mgr,'location':url} for mgr, url in manifest.items() ]
     markdown = Tomark.table(data)
     return markdown
 

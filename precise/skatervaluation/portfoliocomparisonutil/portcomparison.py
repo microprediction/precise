@@ -156,7 +156,7 @@ def portfolio_variance_comparison(ports, covrnd, n_observed, max_time=5*60, n_an
          Sample true and observed cov matrices, and compute out of sample portfolio var
 
     :param ports:     List of port functions
-    :param covrnd:    Function returning a random covariance matrix
+    :param covrnd:    Function returning a random covariancecomparisonutil matrix
     :param n_draws:   Number of outer iterations
     :param n_true:    Number of samples used to generate random true and observed cov from anchor, or None
     :param n_anchor:  Number of samples used to generate random anchor from cov

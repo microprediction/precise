@@ -1,5 +1,5 @@
 import random
-from precise.skaters.managerutil.managertesting import manager_debug_run
+from precise.skatervaluation.managercomparisonutil.managertesting import manager_debug_run
 
 
 def test_random_schur_manager():

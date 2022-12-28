@@ -20,7 +20,7 @@ def max_discrepancy_from_e(e, n_dim):
 
 def weak_pcov_factory(y, f, s:dict, k=1, e=1, max_neg_mass=0.01, **f_kwargs):
     """
-         Takes a covariance skater f and shrinks off-diagonal
+         Takes a covariancecomparisonutil skater f and shrinks off-diagonal
          (A speculative method motivated by out of sample portfolio performance)
     """
 

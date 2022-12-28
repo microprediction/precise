@@ -62,7 +62,7 @@ SCHUR_PORT = SCHUR_LONG_PORT + SCHUR_LS_PORT
 
 
 if __name__=='__main__':
-    from precise.skaters.portfolioutil.portcomparison import m6_equity_portfolio_variance_rankings
+    from precise.skatervaluation.portfoliocomparisonutil.portcomparison import m6_equity_portfolio_variance_rankings
     from precise.skaters.portfoliostatic.hrpport import HRP_PORT
     from pprint import pprint
     rankings = m6_equity_portfolio_variance_rankings(ports=SCHUR_PORT + HRP_PORT, n_dim=50)

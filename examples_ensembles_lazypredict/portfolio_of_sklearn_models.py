@@ -10,7 +10,7 @@ import time
 # Train on X_train, y_train
 # Select best based on X_test, y_test out of sample performance
 # Retrain on X_train+X_test
-# Estimate portfolio using X_test,y_test covariance
+# Estimate portfolio using X_test,y_test covariancecomparisonutil
 # Compare the val performance of:
 # The best model from step 2, retrained in step 3.
 # A weighted combination of models from step 4.

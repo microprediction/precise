@@ -34,7 +34,7 @@ def data_population_correlation(xs):
 
 
 def scatter_func_cov(xs, cov_loc_func, demean=False, make_pos=True):
-    """ Compute covariance using some location function acting on the flattenned scatter data
+    """ Compute covariancecomparisonutil using some location function acting on the flattenned scatter data
     :param xs:
     :param cov_loc_func:    Should take 2d array and return a column-wise pseudo-mean (i.e. axis=0)
     :param make_pos:        If True, will ensure cov matrix is pos def
@@ -58,7 +58,7 @@ def scatter_func_cov(xs, cov_loc_func, demean=False, make_pos=True):
 
 
 def scatter_skater_cov(xs, f, demean=False):
-    """ Compute covariance using a univariate skater function on the flattened scatter data entries """
+    """ Compute covariancecomparisonutil using a univariate skater function on the flattened scatter data entries """
 
     if isinstance(xs, pd.DataFrame):
         return data_to_square_dataframe(df=xs, data_func=scatter_skater_cov, f=f, demean=demean)

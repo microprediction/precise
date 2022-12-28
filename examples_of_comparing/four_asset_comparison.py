@@ -1,5 +1,5 @@
 from pprint import pprint
-from precise.skaters.portfolioutil.portcomparison import port_kurtosis
+from precise.skatervaluation.portfoliocomparisonutil.portcomparison import port_kurtosis
 from precise.skaters.portfoliostatic.allstaticport import LONG_PORT
 import numpy as np
 

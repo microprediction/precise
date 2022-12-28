@@ -1,4 +1,3 @@
-
 from precise.skaters.covarianceutil.covrandom import random_band_cov
 from precise.skaters.portfoliostatic.hrpport import hrp_unit_unit_s5_port
 import numpy as np

@@ -1,7 +1,6 @@
-import runthis
 from runthis import parse_kwargs
 import os
-from precise.skaters.managerutil.managerstats import manager_info, manager_var
+from precise.skatervaluation.managercomparisonutil.managerstats import manager_info
 
 # Infers params from file name and runs a battle
 from precise.skaters.managers.schurmanagers import SCHUR_PM_S5_LONG_MANAGERS

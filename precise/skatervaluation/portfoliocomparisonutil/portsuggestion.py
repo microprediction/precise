@@ -1,7 +1,6 @@
-from precise.skaters.portfolioutil.portcomparison import port_sample_var
+from precise.skatervaluation.portfoliocomparisonutil.portcomparison import port_sample_var
 from precise.skaters.portfoliostatic.allstaticport import PORT
 from precise.skaters.covarianceutil.covrandom import random_factor_cov
-import numpy as np
 from pprint import pprint
 
 

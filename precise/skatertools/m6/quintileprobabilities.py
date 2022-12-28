@@ -35,7 +35,7 @@ def scores_to_quintiles(x):
 
 def m6_probabilities(f, interval='d',n_dim=100, n_samples=5000, n_obs=200, verbose=False, love=None, hate=None, intensity=1.0):
     if verbose:
-        print('   ... retrieving data and estimating covariance')
+        print('   ... retrieving data and estimating covariancecomparisonutil')
     covdf = m6_cov(f=f, interval=interval, n_dim=n_dim, n_obs=n_obs)
     tickers = list(covdf.columns)
     sgma = covdf.values

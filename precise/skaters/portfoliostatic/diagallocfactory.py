@@ -16,7 +16,7 @@ def diagonal_portfolio_variance(cov=None, pre=None, ridge=0.1):
 
 def diagonal_allocation_factory(covs:List, pres:List=None, ridge=0.1)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
+    :param covs:  List of covariancecomparisonutil matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """

@@ -3,7 +3,7 @@ import numpy as np
 
 DEFAULT_COV_NOISE = 0.2
 
-# Generate random covariance matrices
+# Generate random covariancecomparisonutil matrices
 
 def random_factor_cov(n=500, n_dim=100):
     xs = create_factor_dataset(n=n, n_dim=n_dim)

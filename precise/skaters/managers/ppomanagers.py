@@ -1,5 +1,5 @@
 from precise.skaters.managers.ppomanagerfactory import ppo_ewa_long_manager_factory, ppo_pm_long_manager_factory, ppo_long_manager_factory
-from precise.skaters.covariance.bufsk import buf_sk_glcv_pcov_d0_n100, buf_sk_glcv_pcov_d0_n100_t0, buf_sk_lw_pcov_d0_n100, buf_sk_mcd_pcov_d0_n100, buf_sk_lw_pcov_d1_n100
+from precise.skaters.covariance.bufsk import buf_sk_glcv_pcov_d0_n100, buf_sk_glcv_pcov_d0_n100_t0, buf_sk_lw_pcov_d0_n100, buf_sk_mcd_pcov_d0_n100
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
 
 
@@ -91,31 +91,30 @@ if using_pyportfolioopt:
         return ppo_long_manager_factory(y=y,s=s,f=buf_sk_mcd_pcov_d0_n100, method='max_sharpe',j=j,q=q)
 
 
-
-    PPO_LONG_MANGERS = [ppo_pm_t0_d0_r025_n50_vol_long_manager,
-                        ppo_ewa_d0_r025_n50_vol_long_manager,
-                        ppo_pm_t0_d0_r025_n50_quad_long_manager,
-                        ppo_ewa_d0_r025_n50_quad_long_manager,
-                        ppo_ewa_d0_r025_n50_quad_long_manager,
-                        ppo_pm_t0_d0_r025_n50_sharpe_long_manager,
-                        ppo_ewa_d0_r025_n50_sharpe_long_manager,
-                        ppo_sk_lw_pcov_d1_n100_vol_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_vol_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_t0_vol_long_manager,
-                        ppo_sk_mcd_pcov_d0_n100_vol_long_manager,
-                        ppo_sk_lw_pcov_d0_n100_quad_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_quad_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_t0_quad_long_manager,
-                        ppo_sk_mcd_pcov_d0_n100_quad_long_manager,
-                        ppo_sk_lw_pcov_d0_n100_sharpe_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_sharpe_long_manager,
-                        ppo_sk_glcv_pcov_d0_n100_t0_sharpe_long_manager,
-                        ppo_sk_mcd_pcov_d0_n100_sharpe_long_manager]
+    PPO_LONG_MANAGERS = [ppo_pm_t0_d0_r025_n50_vol_long_manager,
+                         ppo_ewa_d0_r025_n50_vol_long_manager,
+                         ppo_pm_t0_d0_r025_n50_quad_long_manager,
+                         ppo_ewa_d0_r025_n50_quad_long_manager,
+                         ppo_ewa_d0_r025_n50_quad_long_manager,
+                         ppo_pm_t0_d0_r025_n50_sharpe_long_manager,
+                         ppo_ewa_d0_r025_n50_sharpe_long_manager,
+                         ppo_sk_lw_pcov_d1_n100_vol_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_vol_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_t0_vol_long_manager,
+                         ppo_sk_mcd_pcov_d0_n100_vol_long_manager,
+                         ppo_sk_lw_pcov_d0_n100_quad_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_quad_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_t0_quad_long_manager,
+                         ppo_sk_mcd_pcov_d0_n100_quad_long_manager,
+                         ppo_sk_lw_pcov_d0_n100_sharpe_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_sharpe_long_manager,
+                         ppo_sk_glcv_pcov_d0_n100_t0_sharpe_long_manager,
+                         ppo_sk_mcd_pcov_d0_n100_sharpe_long_manager]
 else:
     PPO_LONG_MANAGERS = []
 
 
 if __name__=='__main__':
     mgr = ppo_pm_t0_d0_r025_n50_sharpe_long_manager
-    from precise.skaters.managerutil.managertesting import manager_test_run
+    from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
     manager_test_run(mgr=mgr,n_dim=5, n_obs=50)

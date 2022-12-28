@@ -1,6 +1,6 @@
 import random
-from precise.skaters.managerutil.managertesting import manager_test_run
-from precise.skaters.managers.equalmanagers import equal_check_long_manager, equal_long_manager
+from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
+from precise.skaters.managers.equalmanagers import equal_long_manager
 from precise.skatertools.data.equityhistorical import random_cached_equity_dense
 from numpy.testing import assert_array_almost_equal
 

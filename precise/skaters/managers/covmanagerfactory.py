@@ -7,12 +7,12 @@ from precise.skaters.portfolioutil.portgeometry import closest_weak_l1, closest_
 
 # A family of managers characterized as follows:
 #
-#    1. They maintain online estimates of covariance
+#    1. They maintain online estimates of covariancecomparisonutil
 #    2. Periodic application of a static portfolio method (or multiple, or repeated).
 #    3. An ad-hoc compromise between adjusting to new weights versus trading cost.
 #
 # In this context one can employ:
-#     - Any skater in precise.skaters.covariance
+#     - Any skater in precise.skaters.covariancecomparisonutil
 #     - Any portfolio methods in precise.skaters.portfoliostatic
 #
 # See examples in precise.managers.ppomanagers, rpmanagers, weakmanagers etc
@@ -103,12 +103,12 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs: dict = None, por
     """
      A family of managers characterized as follows:
 
-    1. They maintain online estimates of covariance
+    1. They maintain online estimates of covariancecomparisonutil
     2. Periodic application of a static portfolio method (or multiple, or repeated) to determine a new target composition
     3. An ad-hoc compromise between the new target and trading cost, here refered to as "nudging"
 
     In this context one can employ:
-     - Any skater in precise.skaters.covariance
+     - Any skater in precise.skaters.covariancecomparisonutil
      - Any portfolio methods in precise.skaters.portfoliostatic
      - Any nudging method
 
@@ -121,7 +121,7 @@ def static_cov_manager_factory_d0(y, s, f, port, e=1, f_kwargs: dict = None, por
     See examples in precise.managers.ppomanagers, rpmanagers, weakmanagers etc
 
     Financial remark: This is at the moment a basic manager pattern ignoring mean.
-    If you have opinions on means, you'll have to incorporate them into variance somehow via a covariance skater you modify.
+    If you have opinions on means, you'll have to incorporate them into variance somehow via a covariancecomparisonutil skater you modify.
 
           :param f     cov skater ("d0" hints that it expects to receive *changes* in log(price) so won't do any differencing itself)
           :param port  portfolio constructor

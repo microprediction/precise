@@ -13,7 +13,7 @@ def schur_portfolio_factory(cov=None, pre=None, port=None, port_kwargs=None,
                             n_split=5, gamma=1.0, delta=0.0,
                             seriation_depth=10, jiggle=True):
     """
-         A divide and conquer allocation strategy using seriation, and augmented sub-covariance matrices
+         A divide and conquer allocation strategy using seriation, and augmented sub-covariancecomparisonutil matrices
 
     :param cov:
     :param port:                Method to use on leaves

@@ -16,7 +16,7 @@ def weak_portfolio_variance(cov=None, pre=None, **kwargs):
 
 def weak_allocation_factory(covs:List, pres:List=None, **kwargs)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
+    :param covs:  List of covariancecomparisonutil matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """

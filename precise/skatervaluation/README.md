@@ -1,1 +1,10 @@
-Holds results of head to head matches between estimators 
+
+
+
+### Comparison utilities
+
+  - Portfolios, cov estimators, managers
+
+### Battle utilities
+Used for Elo rating generation
+

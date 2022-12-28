@@ -1,5 +1,5 @@
 import random
-from precise.skaters.managerutil.managertesting import manager_test_run
+from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
 from precise.skatertools.data.equityhistorical import random_cached_equity_dense
 from numpy.testing import assert_array_almost_equal
 import numpy as np

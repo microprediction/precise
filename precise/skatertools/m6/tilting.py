@@ -5,7 +5,7 @@ import pandas as pd
 
 def affection_tilt(covdf:pd.DataFrame, love:[str]=None, hate:[str]=None, intensity=1.0):
     """ Convert list of tickers loved and hated into relative means
-    :param covdf:   covariance pandas dataframe with tickers as columns and index
+    :param covdf:   covariancecomparisonutil pandas dataframe with tickers as columns and index
     :param love:
     :param hate:
     :return:

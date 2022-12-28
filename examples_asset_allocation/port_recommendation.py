@@ -1,4 +1,4 @@
-from precise.skaters.portfolioutil.portsuggestion import sample_var_suggestions
+from precise.skatervaluation.portfoliocomparisonutil.portsuggestion import sample_var_suggestions
 from pprint import pprint
 
 # Recommend static portfolio function based on sampled port var

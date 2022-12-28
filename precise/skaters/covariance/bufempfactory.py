@@ -4,7 +4,7 @@ import numpy as np
 
 def buf_emp_pcov_d0_factory(y:Y_DATA_TYPE, s:dict, k=1, n_buffer:int=100, e=1):
     """
-        Empirical covariance skater that assumes y's are iid
+        Empirical covariancecomparisonutil skater that assumes y's are iid
 
     :param y:  (n_dim,)   Incoming vector of observations
     :param s             State

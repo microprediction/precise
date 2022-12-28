@@ -1,13 +1,13 @@
 
 # Functions that respect typical key conventions
 #
-# i.e.   f(**s) usually works where s is the state for a covariance skater
+# i.e.   f(**s) usually works where s is the state for a covariancecomparisonutil skater
 
 import numpy as np
 
 
 def oas(n_samples:int, pcov=None, scov=None, **ignore):
-    """ Compute shrunk covariance matrix from empirical
+    """ Compute shrunk covariancecomparisonutil matrix from empirical
     :param pcov:         Covariance matrix
     :return:             Shrunk cov matrix
     """

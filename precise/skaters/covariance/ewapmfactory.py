@@ -3,7 +3,7 @@ from precise.skaters.covariance.ewaempfactory import _ema_scov_update, _ema_scov
 from typing import Union, List
 from precise.skaters.location.averagingpre import sma
 
-# Exponential weighted partial moment covariance estimation
+# Exponential weighted partial moment covariancecomparisonutil estimation
 
 # If no target is supplied, either initially or for the update call, then a running mean will be used.
 
@@ -23,7 +23,7 @@ def ewa_pm_factory(s, y, k, r, target=0, n_emp=None, e=1):
 
 
 def partial_ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, target=None, n_emp=None):
-    """ Maintain running population covariance """
+    """ Maintain running population covariancecomparisonutil """
     if s.get('n_samples') is None:
         if isinstance(x,(int,float)):
             return _partial_ema_scov_init(n_dim=int(x), r=r, target=target, n_emp=n_emp)
