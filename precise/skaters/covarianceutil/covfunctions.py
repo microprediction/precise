@@ -389,8 +389,5 @@ def multiply_by_inverse(a, b, throw=True):
 
 
 
-def parity(cov,w):
-
-    np.dot(cov,w)
 
 
