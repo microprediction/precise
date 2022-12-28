@@ -22,7 +22,6 @@ setup(
     ],
     packages=["precise","precise.z",
               "precise.skaters",
-              "precise.skaters.covariancecomparisonutil",
               "precise.skaters.covarianceutil",
                "precise.skaters.scalarutil",
               "precise.skaters.portfoliostatic",
