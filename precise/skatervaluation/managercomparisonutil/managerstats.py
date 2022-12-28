@@ -33,6 +33,13 @@ def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.
     :param field:
     :return:  [ (score, name, manager) ]
     """
+    try:
+        from shutil import get_terminal_size
+        import pandas as pd
+        pd.set_option('display.width', get_terminal_size()[0])
+    except Exception as e:
+        print(e)
+
     lb = list()
     for mgr in mgrs:
         stats = manager_stats(mgr=mgr, xs=xs, n_burn=n_burn, j=j, q=q, metric=metric, verbose=False)
@@ -40,7 +47,8 @@ def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.
         lb.append((score, mgr.__name__, mgr))
         info_brief = [(s, n) for (s, n, _) in lb]
         if verbose:
-            print('')
+            print(' ')
+            print('---- leaderboard ---- ')
             pprint(sorted(info_brief, reverse=True))
     return lb
 

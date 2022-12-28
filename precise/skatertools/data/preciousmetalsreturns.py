@@ -15,6 +15,7 @@ def precious_metals_returns():
         xs = 0.01 * df[driver_cols].values
         return xs
     except Exception as e:
+        print(e)
         return random_cached_equity_dense(k=1, n_obs=5000, n_dim=10, as_frame=False)
 
 

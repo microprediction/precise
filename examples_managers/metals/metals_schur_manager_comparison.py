@@ -18,10 +18,9 @@ mrgs = [equal_long_manager,
 
 if __name__=='__main__':
     xs = precious_metals_returns()[-1000:]
-    j = 1   # How often to rebalance
+    j = 20   # How often to rebalance
     q = 1.0 # How far to move towards target when rebalancing
     lb = manager_stats_leaderboard(mgrs=mrgs, xs=xs, verbose=True, field='info', j=j, q=q)
-    pprint(lb)
 
 
 
