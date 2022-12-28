@@ -1,13 +1,10 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests-scipy-173](https://github.com/microprediction/precise/workflows/tests-scipy-173/badge.svg) ![tests-sans-ppo](https://github.com/microprediction/precise/workflows/tests-sans-ppo/badge.svg)  ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-1. A collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/). 
+1. A slowly growing collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/) and related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
 
-2. A home for Schur Complementary Portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. This got [quite a reaction](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) when I posted it, and it is evidently [ground-breaking](https://www.linkedin.com/feed/update/urn:li:activity:7005343236386914304?utm_source=share&utm_medium=member_desktop), seminal work.  
-
-Here are two related articles, though see also the [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md) page. 
-
- - [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop)
- - [Optimizing a Portfolio of Models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b)
+2. A home for my own stuff: "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. This got [quite a reaction](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) when I posted it, and it is evidently [ground-breaking](https://www.linkedin.com/feed/update/urn:li:activity:7005343236386914304?utm_source=share&utm_medium=member_desktop), seminal work. Yes I'm joking but see [Schur Complementary Portfolios to unify Modern Portfolio Theory and Machine Learning methodology](https://www.linkedin.com/feed/update/urn:li:activity:7001007317131436032?utm_source=share&utm_medium=member_desktop) if you are interested. 
+ 
+ 3. Maybe ... ensembling per [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b) although to be honest my main focus is financial portfolios. 
 
 The package was taken for a spin in the M6 Financial Forecasting contest too, and it has been quite [successful](https://microprediction.github.io/precise/m6_success.html).
 
