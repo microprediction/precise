@@ -1,4 +1,4 @@
-# These are merely here as a convenience for gamma studies
+# These are merely here as a convenience for gamma academic
 from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.hrpportfactory import hierarchical_risk_parity_portfolio_factory

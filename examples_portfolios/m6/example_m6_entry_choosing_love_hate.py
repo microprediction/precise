@@ -9,5 +9,5 @@ if __name__=='__main__':
     love = ['IAU']         # Peruse https://github.com/microprediction/m6/blob/main/data/official/M6_Universe.csv
     hate = ['REET','XLB']  # Not investment advice
     df = m6_competition_entry(love=love, hate=hate)
-    timestamped_csv_file = os.path.join(M6_EXAMPLES,'full','m6_'+time.strftime("%Y%m%d-%H%M%S")+'.csv')
+    timestamped_csv_file = os.path.join(M6_EXAMPLES, 'full', 'm6_' + time.strftime("%Y%m%d-%H%M%S") + '.csv')
     m6_dump(df=df,file_name=timestamped_csv_file)

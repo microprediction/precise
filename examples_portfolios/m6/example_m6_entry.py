@@ -7,5 +7,5 @@ import time
 
 if __name__=='__main__':
     df = m6_competition_entry()
-    timestamped_csv_file = os.path.join(M6_EXAMPLES,'full','m6_'+time.strftime("%Y%m%d-%H%M%S")+'.csv')
+    timestamped_csv_file = os.path.join(M6_EXAMPLES, 'full', 'm6_' + time.strftime("%Y%m%d-%H%M%S") + '.csv')
     m6_dump(df=df,file_name=timestamped_csv_file)

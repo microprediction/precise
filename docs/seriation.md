@@ -7,7 +7,7 @@ Reordering assets. If *xs* contains one column per variable:
     ndx = seriation(cov=cov)
 
 
-See [example](https://github.com/microprediction/precise/blob/main/examples_seriation/metals_seriation.py)
+See [example](https://github.com/microprediction/precise/blob/main/examples_portfolios/seriation/metals_seriation.py)
   
 -+-
 
