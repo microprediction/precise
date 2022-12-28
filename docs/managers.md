@@ -12,6 +12,10 @@ Here y is a vector:
         for y in ys:
             w, s = mgr(s=s, y=y)
   
+### See also
+
+ - [Manager comparison](https://microprediction.github.io/precise/managercomparison)
+
 -+-
 
 Documentation [home](https://microprediction.github.io/precise)
