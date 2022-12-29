@@ -1,11 +1,10 @@
-from precise.skaters.managers.schurmanagers import schur_weak_diag_pm_t0_r050_n25_s5_g050_long_manager as mgr
+from precise.skaters.managers.schurmanagers import schur_diag_diag_ewa_r050_n25_s5_g100_long_manager as mgr
 from precise.skatertools.data.preciousmetalsreturns import precious_metals_returns
 import numpy as np
 from precise.whereami import ROOT
 import os
 
 OUTPUT_CSV = os.path.join(ROOT,'private_examples','weights.csv')
-
 
 if __name__=='__main__':
     ys = precious_metals_returns()

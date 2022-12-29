@@ -21,7 +21,8 @@ def var_metric(y,w_prev):
     return sum([yi * wi for yi, wi in zip_longest(y, w_prev)])
 
 
-def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.0, verbose=True, field='info'):
+def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.0,
+                              verbose=True, field='info'):
     """
     :param mgrs:
     :param xs:
@@ -33,6 +34,12 @@ def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.
     :param field:
     :return:  [ (score, name, manager) ]
     """
+    def beating(score, benchmark_score):
+        if abs(score-benchmark_score)<1e-8:
+            return 0.5
+        else:
+            return score>benchmark_score
+
     try:
         from shutil import get_terminal_size
         import pandas as pd
@@ -41,15 +48,24 @@ def manager_stats_leaderboard(mgrs, xs, n_burn=100, metric=var_metric, j=1, q=1.
         print(e)
 
     lb = list()
-    for mgr in mgrs:
+    print('Benchmark is '+ mgrs[0].__name__)
+    for ndx, mgr in enumerate(mgrs):
         stats = manager_stats(mgr=mgr, xs=xs, n_burn=n_burn, j=j, q=q, metric=metric, verbose=False)
         score = stats[field]
-        lb.append((score, mgr.__name__, mgr))
-        info_brief = [(s, n) for (s, n, _) in lb]
+        if ndx==0:
+            benchmark_score = score
+            beat = np.nan
+        else:
+            beat = beating(score, benchmark_score)
+        lb.append((score, mgr.__name__, mgr, beat))
+
         if verbose:
             print(' ')
             print('---- leaderboard ---- ')
+            info_brief = [(s, n) for (s, n, _, _) in lb]
             pprint(sorted(info_brief, reverse=True))
+            beat_prob = np.nanmean([rec[3] for rec in lb])
+            print('Prob of beating benchmark is '+str(beat_prob))
     return lb
 
 
