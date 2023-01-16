@@ -20,7 +20,6 @@ My view is that the investment side of the contest is a crap-shoot and managers 
 | Q2        |  77        |
 | Q3        |  86        |
 | Q4        |  89        |
-|-----------|------------|
 | Overall   |  91        |
 
 Marco is pretty close, and he won cash too! See below.  
