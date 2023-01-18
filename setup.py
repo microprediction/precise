@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.12.1",
+    version="0.12.2",
     description="Online covariancecomparisonutil, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -22,6 +22,7 @@ setup(
     ],
     packages=["precise","precise.z",
               "precise.skaters",
+              "precise.skaters.covariance",
               "precise.skaters.covarianceutil",
                "precise.skaters.scalarutil",
               "precise.skaters.portfoliostatic",
