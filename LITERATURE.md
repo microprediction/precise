@@ -1,3 +1,8 @@
+## A Constrained Hierarchical Risk Parity Algorithm with Cluster-based Capital Allocation [pdf](https://www.fmx.nfkatzke.com/Projects/HRP.pdf)
+Johann Pfitzinger, Nico Katzke 
+
+Hierarchical Risk Parity (HRP) is a risk-based portfolio optimisation algorithm, which has been shown to generate diversified portfolios with robust out-of-sample properties without the need for a positive-definite return covariance matrix (Lopez de Prado 2016). The algorithm applies machine learning techniques to identify the underlying hierarchical correlation structure of the portfolio, allowing clusters of similar assets to compete for capital. The resulting allocation is both well-diversified over risk sources and intuitively appealing. This paper proposes a method of fully exploiting the information created by the clustering process, achieving enhanced out-of-sample risk and return characteristics. In addition, a practical approach to calculating HRP weights under box and group constraints is introduced. A comprehensive set of portfolio simulations over 6 equity universes demonstrates the appeal of the algorithm for portfolios consisting of 20 − 200 assets. HRP delivers highly diversified allocations with low volatility, low portfolio turnover and competitive performance metrics.
+
 
 ## A Clustering Algorithm for Correlation Quickest Hub Discovery Mixing Time Evolution and Random Matrix Theory
  [pdf](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4241975)
