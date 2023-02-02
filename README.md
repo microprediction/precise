@@ -69,6 +69,6 @@ Trouble? It probably isn't with precise per se.
 Not investment advice. Not M6 entry advice. Just a bunch of code subject to the MIT License disclaimers. 
 
 
-<img src="https://github.com/microprediction/precise/blob/main/images/incremental.png" width="600">
+<img src="https://github.com/microprediction/precise/blob/main/images/schur_reaction.png" width="600">
 
 
