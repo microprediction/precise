@@ -2,7 +2,7 @@
 
 Goals:
 
-1. A collection of simple online covariance forecasting and portfolio construction functions. See [docs](https://microprediction.github.io/precise/) and related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
+1. A collection of simple *online* covariance forecasting and portfolio construction functions. See [docs](https://microprediction.github.io/precise/) and related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
 
 2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See [post](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) on the methodology and [how I used it to hyjack the M6 contest](https://www.linkedin.com/posts/petercotton_the-options-market-beat-94-of-participants-activity-7020917422085795840-Pox0?utm_source=share&utm_medium=member_desktop). 
  
