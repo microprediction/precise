@@ -9,7 +9,7 @@ Goals:
 
 One observes that tools for portfolio construction might also be useful in [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
 
-
+---
 
 <img src="https://github.com/microprediction/precise/blob/main/docs/assets/images/schur_reaction.png" width="600">
 
