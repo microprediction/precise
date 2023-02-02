@@ -4,10 +4,7 @@ Goals:
 
 1. A slowly growing collection of one-line online covariance forecasting and portfolio construction methods. See [docs](https://microprediction.github.io/precise/) and related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
 
-2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. 
-
- - See [post](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) 
- - See [how I used it to win M6](https://www.linkedin.com/posts/petercotton_the-options-market-beat-94-of-participants-activity-7020917422085795840-Pox0?utm_source=share&utm_medium=member_desktop)
+2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See [post](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) on the methodology and [how I used it to hyjack the M6 contest](https://www.linkedin.com/posts/petercotton_the-options-market-beat-94-of-participants-activity-7020917422085795840-Pox0?utm_source=share&utm_medium=member_desktop). 
  
  3. Tools for ensembling per [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
 
