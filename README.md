@@ -11,12 +11,14 @@ One observes that tools for portfolio construction might also be useful in [opti
 
 ---
 
-<img src="https://github.com/microprediction/precise/blob/main/docs/assets/images/schur_reaction.png" width="600">
+<a href="https://medium.com/geekculture/schur-complementary-portfolios-fix-hierarchical-risk-parity-28b0efa1f35f">
+<img src="https://github.com/microprediction/precise/blob/main/docs/assets/images/schur_reaction.png" width="600"></a>
 
 
+---
 
 # Usage 
-Again, see the [docs](https://microprediction.github.io/precise/), but briefly:
+See the [docs](https://microprediction.github.io/precise/), but briefly:
 
 ### Covariance estimation
 Here y is a vector:
@@ -37,9 +39,6 @@ Here y is a vector:
             w, s = mgr(s=s, y=y)
 
 This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
-
-### Model ensembling
-This will depend on what automl convenient tooling you use. But see the [article](https://medium.com/@microprediction/optimizing-a-portfolio-of-models-f1ed432d728b) which uses LazyPredict, or the [colab notebook](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) on which is is based. 
 
 # Install 
 
