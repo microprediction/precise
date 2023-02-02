@@ -13,7 +13,6 @@ One observes that tools for portfolio construction might also be useful in [opti
 
 <a href="https://medium.com/geekculture/schur-complementary-portfolios-fix-hierarchical-risk-parity-28b0efa1f35f">
 <img src="https://github.com/microprediction/precise/blob/main/docs/assets/images/schur_reaction.png" width="600"></a>
-(Click image for methodology article)
 
 ---
 
