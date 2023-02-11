@@ -1,3 +1,24 @@
+In no particular order
+
+
+## Estimating covariance matrices for portfolio optimization [pdf](http://www.gcoqueret.com/files/Estim_cov.pdf)
+GUILLAUME COQUERET AND VINCENT MILHAU
+
+We compare twelve estimators of the covariance matrix: the sample covariance matrix, the identity
+matrix, the constant-correlation estimator, three estimators derived from an explicit factor model, three obtained
+from an implicit factor model, and three shrunk estimators. Following the literature, we conduct the comparison
+by computing the volatility of estimated Minimum Variance portfolios. We do this in two frameworks: first, an
+ideal situation where the true covariance matrix would be known, and second, a real-world situation where it
+is unknown. In each of these two cases, we perform the tests with and without short-sales constraints, and we
+assess the impact of the universe and sample sizes on the results. Our findings are in line with those of Ledoit
+and Wolf (2003), in that we confirm that in the absence of short-sales constraints, shrunk estimators lead in
+general to the lowest volatilities. With long-only constraints, however, their performance is similar to that of
+principal component estimators. Moreover, the latter estimators tend to imply lower levels of turnover, which
+is an important practical consideration.
+
+
+
+
 ## A Modified CTGAN-Plus-Features Based Method for Optimal Asset Allocation [pdf](https://arxiv.org/pdf/2302.02269)
 José-Manuel Peña, Fernando Suárez, Omar Larré, Domingo Ramírez, Arturo Cifuentes
 
