@@ -1,4 +1,4 @@
-In no particular order
+In no particular order. To add, send me a PR or just file an [issue](https://github.com/microprediction/precise/issues). 
 
 
 ##  Rotational invariant estimator for general noisy matrices [pdf](https://arxiv.org/pdf/1502.06736.pdf) [code](https://github.com/GGiecold/pyRMT/blob/main/pyRMT.py)
