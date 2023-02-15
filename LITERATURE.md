@@ -1,4 +1,10 @@
-In no particular order. To add, send me a PR or just file an [issue](https://github.com/microprediction/precise/issues). 
+In no particular order. Scope is robust portfolios. To add to this list or correct an entry, ideally:
+
+   1. Fork the repo (top right)
+   2. Edit this file. 
+   3. Submit a pull request (also possible with a click or two).
+  
+Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
 ## James–Stein for the leading eigenvector [pdf](https://www.pnas.org/doi/epdf/10.1073/pnas.2207046120)
