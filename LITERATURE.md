@@ -1,4 +1,4 @@
-In no particular order. Scope is robust portfolios. To add to this list or correct an entry, ideally:
+In no particular order. The scope is robust diversified portfolios and things that help. To add to this list or correct an entry, ideally:
 
    1. Fork the repo (top right)
    2. Edit this file. 
