@@ -6,7 +6,7 @@ Goals:
 
 2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See my posts on the [methodology](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) and its role in the [hijacking of the M6 contest](https://www.linkedin.com/posts/alexander-fleiss-70b49410_does-option-volume-predict-stock-direction-activity-7021134433344749569-bxx4?utm_source=share&utm_medium=member_desktop). 
  
-3. A small compendium of portfoli theory papers tilted towards my interests. See [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
+3. A small compendium of portfolio theory papers tilted towards my interests. See [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
 
 One observes that tools for portfolio construction might also be useful in [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
 
