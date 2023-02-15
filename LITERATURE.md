@@ -1,6 +1,12 @@
 In no particular order. To add, send me a PR or just file an [issue](https://github.com/microprediction/precise/issues). 
 
 
+## James–Stein for the leading eigenvector [pdf](https://www.pnas.org/doi/epdf/10.1073/pnas.2207046120)
+Lisa Goldberg and Alec Kercheval
+
+Recent research identifies and corrects bias, such as excess dispersion, in the leadingsample  eigenvector  of  a  factor-based  covariance  matrix  estimated  from  a  high-dimension low sample size (HL) data set. We show that eigenvector bias can have asubstantial impact on variance-minimizing optimization in the HL regime, while biasin estimated eigenvalues may have little effect. We describe a data-driven eigenvectorshrinkage estimator in the HL regime called “James–Stein for eigenvectors” (JSE) andits close relationship with the James–Stein (JS) estimator for a collection of averages.We show, both theoretically and with numerical experiments, that, for certain variance-minimizing problems of practical importance, efforts to correct eigenvalues have littlevalue in comparison to the JSE correction of the leading eigenvector. When certainextra information is present, JSE is a consistent estimator of the leading eigenvector
+
+
 ##  Rotational invariant estimator for general noisy matrices [pdf](https://arxiv.org/pdf/1502.06736.pdf) [code](https://github.com/GGiecold/pyRMT/blob/main/pyRMT.py)
 Joël Bun, Romain Allez, Jean-Philippe Bouchaud, Marc Potters
 
