@@ -22,8 +22,8 @@ from precise.skaters.covarianceutil.covfunctions import affine_shrink
 # Thin wrapper for PyPortfolioOpt
 # For full flexibility refer to the package https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
 
-COV_NOISE = 0.2
-VAR_NOISE = 0.2
+COV_NOISE = 0.1
+VAR_NOISE = 0.1
 
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
@@ -68,7 +68,7 @@ if using_pyportfolioopt:
 
 
     def ppo_portfolio_factory(method:str, cov=None, pre=None, as_dense=False, weight_bounds=None,
-                              risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5, warn=False, throw=False):
+                              risk_free_rate:float=0.02, mu:float=0.04, n_attempts=5, warn=False, throw=False, noise=0.0):
         """
         :param method:
         :param cov:
@@ -89,8 +89,11 @@ if using_pyportfolioopt:
         # Set return style
         as_series = (not as_dense) and isinstance(cov,pd.DataFrame)
 
-        # Jiggle cov
-        jiggled_cov = jiggle_cov(cov=cov)
+        if noise>1e-12:
+            # Jiggle cov
+            jiggled_cov = jiggle_cov(cov=cov, noise=noise)
+        else:
+            jiggled_cov = np.copy(cov)
 
         # Tidy up cov and send to optimizer ... repeatedly with more shrinkage as needed
         shrunk_cov = nearest_pos_def( to_symmetric( jiggled_cov) )
