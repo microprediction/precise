@@ -22,8 +22,8 @@ from precise.skaters.covarianceutil.covfunctions import affine_shrink
 # Thin wrapper for PyPortfolioOpt
 # For full flexibility refer to the package https://pyportfolioopt.readthedocs.io/en/latest/MeanVariance.html
 
-COV_NOISE = 0.1
-VAR_NOISE = 0.1
+COV_NOISE = 0.0
+VAR_NOISE = 0.0
 
 
 PPO_METHODS = ['max_sharpe','min_volatility','max_quadratic_utility']
