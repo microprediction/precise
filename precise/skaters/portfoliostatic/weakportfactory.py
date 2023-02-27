@@ -65,7 +65,7 @@ def ensure_rel_entropish(w, h:float):
 
 
 
-def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_mass=False):
+def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_mass=False, noise=0.0):
     """ Long only portfolio somewhat similar to unitary min-var portfolio
         Uses a "weakenned" cov matrix
 
@@ -83,7 +83,10 @@ def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_
     if cov is None:
         cov = try_invert(pre)
 
-    jiggled_cov = jiggle_cov(cov=cov)
+    if noise>1e-12:
+      jiggled_cov = jiggle_cov(cov=cov, noise=noise)
+    else:
+      jiggled_cov = np.copy(cov)
 
     w0 = unitary_from_cov(cov=jiggled_cov)
     if b is not None:
