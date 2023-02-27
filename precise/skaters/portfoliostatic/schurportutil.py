@@ -81,19 +81,28 @@ def  pseudo_schur_complement(A, B, C, D, gamma, lmbda=None, warn=False):
 
 
 def _maximal_gamma(A,B,C,D):
+    """
+        Tries to find a large value of gamma where both augmented matrixes where is_positive_def(Ag) and is_positive_def(Dg)
+    """
 
-    def _gamma_objective(gamma, A, B, C, D):
-        Ag, _ = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma, lmbda=gamma)
-        Dg, _ = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma, lmbda=gamma)
-        pos_def = is_positive_def(Ag) and is_positive_def(Dg)
-        return -0.01 if pos_def else 1.0
+    Ag, _ = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=1.0, lmbda=1.0)
+    Dg, _ = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=1.0, lmbda=1.0)
+    pos_def = is_positive_def(Ag) and is_positive_def(Dg)
+    if pos_def:
+        return 1.0
+    else:
+        def _gamma_objective(gamma, A, B, C, D):
+            Ag, _ = pseudo_schur_complement(A=A, B=B, C=C, D=D, gamma=gamma, lmbda=gamma)
+            Dg, _ = pseudo_schur_complement(A=D, B=C, C=B, D=A, gamma=gamma, lmbda=gamma)
+            pos_def = is_positive_def(Ag) and is_positive_def(Dg)
+            return -0.01 if pos_def else 1.0
 
-    try:
-        sol = root_scalar(f=_gamma_objective, args=(A,B,C,D), method='bisect', x0=0.25,
-                          x1=0.5, xtol=0.05, bracket=(0,0.95), maxiter=5)
-        return min(max(sol.root - 0.1, 0), 1.0)
-    except ValueError:
-        return 0.0
+        try:
+            sol = root_scalar(f=_gamma_objective, args=(A,B,C,D), method='bisect', x0=0.25,
+                              x1=0.5, xtol=0.05, bracket=(0,0.95), maxiter=5)
+            return min(max(sol.root - 0.1, 0), 1.0)
+        except ValueError:
+            return 0.0
 
 
 
