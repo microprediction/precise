@@ -11,7 +11,7 @@ def random_factor_cov(n=500, n_dim=100):
 
 
 def random_band_cov(n=250, n_dim=20, n_bands=5):
-    xs = create_band_dataset(n=250, n_dim=20, n_bands=5)
+    xs = create_band_dataset(n=n, n_dim=n_dim, n_bands=n_bands)
     return np.cov(xs, rowvar=False)
 
 
