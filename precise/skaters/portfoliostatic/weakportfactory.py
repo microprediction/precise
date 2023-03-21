@@ -12,7 +12,12 @@ from precise.skaters.covarianceutil.covrandom import jiggle_cov
 #       w>0,
 #       rel_entropish(w)<e
 
-BIG_H = 1e10 # Relative entropish
+BIG_H = 10 # Relative scaled entropish
+
+def rel_entropish_like(w):
+   n = len(w)
+   w_ = [1. if i>n/2 else 1.1 for i in range(len(w))]
+   return rel_entropish(w_)
 
 
 def entropish(w):
@@ -31,9 +36,15 @@ def rel_entropish(w):
     """ Always non-positive """
     return entropish(w) - max_entropish(w)
 
+def scaled_entropish(w):
+    return rel_entropish(w)/rel_entropish_like(w)
+
 
 def ensure_rel_entropish(w, h:float):
-    """ Crudely force portfolio to almost have rel_entropish > 1/h
+    """ Crudely force portfolio to almost have rel_entropish > -1/h
+
+         - Moves the equal weighted portfolio towards w with shorts removed
+
     :param w:
     :param h:  h > 1
     :return:
@@ -42,19 +53,19 @@ def ensure_rel_entropish(w, h:float):
         print(h)
         raise ValueError('Expecting h<1 got h='+str(h))
 
-    if rel_entropish(w)>=-1/h:
+    if scaled_entropish(w)>=-100/h:
         return w
     else:
         v = np.ones_like(w) / len(w)
         w_pos = exclude_negative_weights(w)
-        while rel_entropish(v)>-1/h:
+        while scaled_entropish(v)>-100/h:
             v_prior = np.copy(v)
             v = 0.99*v + 0.01*np.array(w_pos)
         return v_prior
 
 
 
-def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_mass=False):
+def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_mass=False, noise=0.0):
     """ Long only portfolio somewhat similar to unitary min-var portfolio
         Uses a "weakenned" cov matrix
 
@@ -72,7 +83,10 @@ def weak_portfolio_factory(cov=None, pre=None, a=1.0, b=None, h=BIG_H, with_neg_
     if cov is None:
         cov = try_invert(pre)
 
-    jiggled_cov = jiggle_cov(cov=cov)
+    if noise>1e-12:
+      jiggled_cov = jiggle_cov(cov=cov, noise=noise)
+    else:
+      jiggled_cov = np.copy(cov)
 
     w0 = unitary_from_cov(cov=jiggled_cov)
     if b is not None:
@@ -138,5 +152,11 @@ def _weak_from_cov(cov, w, a=1.0, b=0.75, with_weak=False):
 
 
 
+if __name__=='__main__':
+   w = np.ones(5)/5.0
+   print({'scaled_entropish':scaled_entropish(w)})
+   w2 = np.concatenate([np.ones(5),2*np.ones(5)])
+   w2 = w2/sum(w2)
+   print({'scaled_entropish': scaled_entropish(w2)})
 
 
