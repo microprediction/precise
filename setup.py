@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.13.0",
+    version="0.13.1",
     description="Online covariancecomparisonutil, precision, portfolios and ensembles",
     long_description=README,
     long_description_content_type="text/markdown",
