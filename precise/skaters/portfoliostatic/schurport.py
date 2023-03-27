@@ -35,8 +35,6 @@ def schur_diag_diag_s5_g050_long_port(cov=None, pre=None):
     return schur_portfolio_factory(port=diagonal_portfolio_factory, alloc=diag_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
-
-
 def schur_unit_weak_s5_g100_port(cov=None, pre=None):
     return schur_portfolio_factory(port=unit_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=1.0)
 
@@ -53,9 +51,17 @@ def schur_diag_weak_s5_g050_long_port(cov=None, pre=None):
     return schur_portfolio_factory(port=diagonal_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=5, gamma=0.5)
 
 
+def schur_weak_weak_s2_g100_long_port(cov=None, pre=None):
+    return schur_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=2, gamma=1.0)
+
+
+def schur_weak_weak_s2_g050_long_port(cov=None, pre=None):
+    return schur_portfolio_factory(port=weak_portfolio_factory, alloc=weak_long_alloc, cov=cov, pre=pre, n_split=2, gamma=0.5)
+
 
 SCHUR_LONG_PORT = [schur_diag_diag_s5_g100_long_port, schur_weak_weak_s5_g100_long_port,
-                   schur_diag_diag_s5_g050_long_port, schur_weak_weak_s5_g050_long_port]
+                   schur_diag_diag_s5_g050_long_port, schur_weak_weak_s5_g050_long_port,
+                   schur_weak_weak_s2_g100_long_port, schur_weak_weak_s2_g050_long_port]
 SCHUR_LS_PORT = [schur_unit_unit_s5_g100_port, schur_unit_unit_s5_g050_port]
 SCHUR_PORT = SCHUR_LONG_PORT + SCHUR_LS_PORT
 
