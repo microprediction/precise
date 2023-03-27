@@ -64,6 +64,7 @@ Differencing hints:
 
 
 
+View as [source](https://github.com/microprediction/precise/blob/master/docs/covariance.md) or [web](https://microprediction.github.io/precise/covariance)
 
 
 -+-

@@ -20,7 +20,7 @@ def random_port():
 
 
 if __name__=='__main__':
-    from precise.skaters.portfolioutil.portcomparison import stock_portfolio_variance_points_race
+    from precise.skatervaluation.portfoliocomparisonutil.portcomparison import stock_portfolio_variance_points_race
     report = stock_portfolio_variance_points_race(n_iter=5000, ports=LONG_PORT, n_dim=500, n_obs=100, k=5, n_top=100)
     from pprint import pprint
     pprint(report)

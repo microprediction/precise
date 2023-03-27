@@ -1,8 +1,10 @@
-
 from precise.skaters.covarianceutil.covrandom import random_band_cov
 import numpy as np
 from precise.skaters.portfoliostatic.allstaticport import PORT
-from pypfopt.exceptions import OptimizationError
+from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+
+if using_pyportfolioopt:
+    from pypfopt.exceptions import OptimizationError
 
 
 def test_all():

@@ -10,7 +10,7 @@ def diagonal_portfolio_factory(pre=None, cov=None, sparse_approx=False, ridge=0.
     """ Min-var portfolio using only diagonal entries in cov
         (e.g. precision weighting of stacked models)
     :param pre:  precision matrix
-    :param cov:  covariance matrix
+    :param cov:  covariancecomparisonutil matrix
     :param sparse_approx: Use fast approximate inversion of precision matrix
     :return:
     """

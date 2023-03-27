@@ -1,12 +1,14 @@
 import random
-from precise.skaters.managerutil.managertesting import manager_test_run
+from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
+from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
 
 
 def test_random_manager(verbose=False, n_dim=7):
-    from precise.skaters.managers.ppomanagers import PPO_LONG_MANGERS
-    mgr = random.choice(PPO_LONG_MANGERS)
-    print(mgr.__name__)
-    manager_test_run(mgr=mgr, verbose=verbose, n_dim=n_dim)
+    if using_pyportfolioopt:
+        from precise.skaters.managers.ppomanagers import PPO_LONG_MANAGERS
+        mgr = random.choice(PPO_LONG_MANAGERS)
+        print(mgr.__name__)
+        manager_test_run(mgr=mgr, verbose=verbose, n_dim=n_dim)
 
 
 if __name__=='__main__':

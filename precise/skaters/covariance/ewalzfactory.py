@@ -85,7 +85,7 @@ def lz_factory(y, s:dict, n_epoch=DEFAULT_N_EPOCH,
     :param y:                Vector of observations
     :param s:                State
     :param n_epoch:          Length of epoch during which adjacency matrix is held constant
-    :param f_global:         Skater maintaining a global estimate of covariance
+    :param f_global:         Skater maintaining a global estimate of covariancecomparisonutil
     :param f_local:          Skater used to maintain n_dim local estimates, one for each variable
     :param e:                Set <0 to skip global cov, pre calculations
     :param adj_func:         Takes pre matrix and returns binary of same shape (where non-zeros should go)
@@ -123,7 +123,7 @@ def lz_factory(y, s:dict, n_epoch=DEFAULT_N_EPOCH,
              'warm':0,        # Local models are primed
              'stale':0}       # Global pre/cov is stale
 
-    # Maintain a global covariance model
+    # Maintain a global covariancecomparisonutil model
     s['count'] += 1
     x_gl, gl_cov, s['g'] = f_global(s=s['g'], y=y, **f_global_kwargs)
     if s['count'] % n_epoch == 0:
@@ -172,7 +172,7 @@ def lz_factory(y, s:dict, n_epoch=DEFAULT_N_EPOCH,
 
 
 
-    # If allowed time, compute precision and covariance
+    # If allowed time, compute precision and covariancecomparisonutil
     #  - User can set e<0 to skip this step)
     #  - User can supply a "fake" global_cov_func to avoid that overhead, if they want
     if s['warm']:

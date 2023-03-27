@@ -4,7 +4,7 @@ junk = """
 # Ack: https://carstenschelp.github.io/2019/05/12/Online_Covariance_Algorithm_002.html
 import numpy as np
 from precise.skaters.precision.lezhong import _lz_ema_spre_init, _lz_ema_spre_update
-from precise.skaters.covariance import multiply_diag, normalize, grand_shrink
+from precise.skaters.covariancecomparisonutil import multiply_diag, normalize, grand_shrink
 from precise.skatertools.syntheticdata import create_disjoint_dataset
 from pprint import pprint
 from precise.skaters.covarianceutil.adjacency import centroid_precision_adjacency

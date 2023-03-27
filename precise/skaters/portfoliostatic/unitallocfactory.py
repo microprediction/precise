@@ -17,7 +17,7 @@ def unitary_portfolio_variance(cov=None, pre=None, **kwargs):
 
 def unitary_min_var_allocation_factory(covs:List, pres:List=None)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
+    :param covs:  List of covariancecomparisonutil matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """

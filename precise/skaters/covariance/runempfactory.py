@@ -4,7 +4,7 @@ from precise.skaters.covarianceutil.conventions import infer_dimension, X_DATA_T
 
 def emp_pcov(s:dict, x:[float]=None, n_dim=None, k=1)->dict:
     """
-        Track empirical sample covariance
+        Track empirical sample covariancecomparisonutil
     """
     assert k==1
     if not s:
@@ -15,7 +15,7 @@ def emp_pcov(s:dict, x:[float]=None, n_dim=None, k=1)->dict:
 
 
 def _emp_pcov_init(s:dict=None, x:X_DATA_TYPE=None, n_dim=None):
-    """ Empirical population covariance"""
+    """ Empirical population covariancecomparisonutil"""
     n_dim = infer_dimension(x=x,n_dim=n_dim)
     if s is None:
        s = dict()
@@ -46,7 +46,7 @@ def _emp_pcov_update(s:dict, x:X_DATA_TYPE, target=None):
 
 
 def merge_emp_scov(s:dict, other_s:dict):
-    """ Merge two online covariance tracking objects as if the data had been merged """
+    """ Merge two online covariancecomparisonutil tracking objects as if the data had been merged """
     if other_s['n_dim'] != s['n_dim']:
         raise ValueError(
             f'''

@@ -1,7 +1,7 @@
 from precise.skaters.managers.equalmanagers import equal_long_manager as mgr
 import numpy as np
 
-if __name__=='__main__':
+def test_not_much():
     ys = np.random.randn(50,50)
     s = {}
     for y in ys:

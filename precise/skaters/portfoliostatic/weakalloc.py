@@ -6,7 +6,7 @@ from precise.skaters.portfoliostatic.weakallocfactory import weak_allocation_fac
 
 def weak_long_alloc(covs:List, pres:List=None)->[float]:
     """ Allocate capital between portfolios using either cov or pre matrices
-    :param covs:  List of covariance matrices
+    :param covs:  List of covariancecomparisonutil matrices
     :param pres:  List of precision matrices
     :return: Capital allocation vector
     """

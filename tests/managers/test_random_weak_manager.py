@@ -1,5 +1,5 @@
 import random
-from precise.skaters.managerutil.managertesting import manager_test_run
+from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
 
 
 def test_random_weak_manager():

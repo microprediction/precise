@@ -1,11 +1,11 @@
 from precise.skaters.covariance.runempfactory import emp_pcov
 import numpy as np
 
-# Running empirical covariance with infinite memory, equal weighting
+# Running empirical covariancecomparisonutil with infinite memory, equal weighting
 
 def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=1):
     """
-        Empirical covariance skater that assumes y's are iid
+        Empirical covariancecomparisonutil skater that assumes y's are iid
 
     :param y:  (n_dim,)   Incoming vector of observations
     :param s:             State
@@ -25,7 +25,7 @@ def run_emp_pcov_d0(y, s:dict, k=1, a=None, t=None, e=1):
 
 def run_emp_pcov_d1(y, s:dict, k=1, a=None, t=None, e=None):
     """
-       Empirical covariance skater that assumes changes in y's are iid
+       Empirical covariancecomparisonutil skater that assumes changes in y's are iid
     """
     assert k==1
     if not s or s.get('dy'):

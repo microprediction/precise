@@ -7,7 +7,7 @@ import warnings
 
 def buf_sk_factory(cls, y:X_TYPE=None, s:dict=None,  n_buffer:int=100, n_emp=5, cls_kwargs:dict=None, fit_kwargs:dict=None, e=1):
     """
-        :param cls  an sklearn covariance estimating class
+        :param cls  an sklearn covariancecomparisonutil estimating class
         :param n_emp:   If we don't yet have n_emp data points, will revert to empirical
     """
 

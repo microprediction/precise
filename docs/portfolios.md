@@ -20,7 +20,7 @@ Then:
      
      
 ### Model ensembles, stacking, mixtures of experts et cetera
-Same thing, sort of. See this [notebook example](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) or [these examples](https://github.com/microprediction/precise/tree/main/examples_ensembles_lazypredict).  
+Same thing, sort of. See this [notebook example](https://github.com/microprediction/precise/blob/main/examples_colab_notebooks/lazypredict_model_portfolio.ipynb) or [these examples](https://github.com/microprediction/precise/tree/main/examples_portfolios/ensembles).  
 
      
 ### Interpreting portfolio names

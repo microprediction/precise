@@ -3,7 +3,7 @@ from precise.skaters.covariance.runempfactory import _emp_pcov_init, _emp_pcov_u
 import math
 from typing import Union, List
 
-# Exponential weighted sample covariance
+# Exponential weighted sample covariancecomparisonutil
 
 
 def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025, n_emp=None, e=1):
@@ -15,7 +15,7 @@ def ewa_emp_pcov_factory(y, s:dict, k=1, r=0.025, n_emp=None, e=1):
 
 
 def ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, n_emp=None):
-    """ Maintain running population covariance """
+    """ Maintain running population covariancecomparisonutil """
     if s.get('n_samples') is None:
         if isinstance(x,int):
             return _ema_scov_init(n_dim=x,r=r, n_emp=n_emp)

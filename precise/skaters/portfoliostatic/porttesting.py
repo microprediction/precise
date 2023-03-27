@@ -1,5 +1,5 @@
 
-from precise.skaters.portfolioutil.portcomparison import m6_equity_portfolio_correlation_rankings
+from precise.skatervaluation.portfoliocomparisonutil.portcomparison import m6_equity_portfolio_correlation_rankings
 
 
 def ports_test(ports, n_dim=10):

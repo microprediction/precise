@@ -1,4 +1,7 @@
-import pandas_datareader.data as web
+import pandas_datareader.data as pdr
+import yfinance as yf
+yf.pdr_override()
+
 import pandas as pd
 import time
 from functools import lru_cache
@@ -7,13 +10,16 @@ import time
 
 @lru_cache(maxsize=500)
 def get_prices(ticker,n_obs,interval, max_attempts=10):
+    if interval=='m':
+        interval = '1mo'
+
     print('Getting '+ticker)
     time.sleep(5)
     success = False
     attempts = 0
     while not success:
         try:
-            data = web.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
+            data = pdr.get_data_yahoo(ticker, interval=interval)[-n_obs - 1:]['Close'].values
             success = True
         except Exception as e:
             print(str(e))
@@ -26,7 +32,7 @@ def get_prices(ticker,n_obs,interval, max_attempts=10):
 
 
 
-def live_equity_returns(tickers, n_obs=60, interval='m', k=1):
+def live_equity_returns(tickers, n_obs=60, interval='1d', k=1):
     df = pd.DataFrame()
     for ticker in tickers:
         try:
@@ -39,14 +45,14 @@ def live_equity_returns(tickers, n_obs=60, interval='m', k=1):
     return df
 
 
-def live_veteran_etf_data(interval='d',k=1):
+def live_veteran_etf_data(interval='1d',k=1):
     from precise.skatertools.data.etflists import VETERAN_NON_BOND_ETFS
     n_obs = 60 if interval=='m' else 250
     df = live_equity_returns(tickers=VETERAN_NON_BOND_ETFS, n_obs=n_obs, interval=interval, k=k)
     return df
 
 
-def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0, **ignore):
+def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='1d', etf=0, **ignore):
     """
         Use portfolio for M6 competition
     """
@@ -60,7 +66,7 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='m', etf=0,
     return random_equity_returns(all_tickers=tickers, n_dim=n_dim, n_obs=n_obs, verbose=verbose, interval=interval)
 
 
-def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, implied=0, **ignore):
+def all_m6_returns(n_obs:int=60, verbose=True, interval='1d', etf=0, implied=0, **ignore):
     n_buffer = np.random.choice([20,40,60,80,100,120,140])
     constituents = pd.read_csv(
         'https://raw.githubusercontent.com/microprediction/m6/main/data/official/M6_Universe.csv')
@@ -75,7 +81,7 @@ def all_m6_returns(n_obs:int=60, verbose=True, interval='d', etf=0, implied=0, *
     return xs[:-n_buffer]
 
 
-def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', implied=0, **ignore):
+def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='5d', implied=0, **ignore):
     """ Get return series for those of minimum length desired
     :param n_dim:            Number of assets
     :param n_obs:
@@ -83,6 +89,11 @@ def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='m', implie
     :return: prices NOT necessarily corresponding to all_tickers
     """
     if interval=='m':
+        interval='1mo'
+    if interval == 'd':
+        interval = '1d'
+
+    if interval=='1mo':
         assert n_obs<=60,'too many observations for monthly'
 
     prices = list()

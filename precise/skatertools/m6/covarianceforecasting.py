@@ -22,7 +22,7 @@ def m6_data(interval='d', n_dim=100, n_obs=300):
 
 
 def m6_cov(f=None, interval='d', n_dim=100, n_obs=300):
-    """ Use any skater to estimate daily (by default) covariance
+    """ Use any skater to estimate daily (by default) covariancecomparisonutil
     :param f: cov skater
     :return:
     """

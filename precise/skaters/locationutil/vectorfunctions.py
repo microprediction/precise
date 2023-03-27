@@ -2,6 +2,8 @@ import numpy as np
 
 def normalize(x):
     ### See also portfolioutil.portfunctions.normalize_portfolio
+    if not np.shape(x):
+        return np.ones_like(x)
     try:
         return x/sum(x)
     except (TypeError, ArithmeticError, RuntimeWarning):

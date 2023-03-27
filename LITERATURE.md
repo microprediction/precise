@@ -1,3 +1,119 @@
+In no particular order. The scope is robust diversified portfolios and things that help. To add to this list or correct an entry, ideally:
+
+   1. Fork the repo (top right)
+   2. Edit this file. 
+   3. Submit a pull request (also possible with a click or two).
+  
+Or file an [issue](https://github.com/microprediction/precise/issues).  
+
+
+## James–Stein for the leading eigenvector [pdf](https://www.pnas.org/doi/epdf/10.1073/pnas.2207046120)
+Lisa Goldberg and Alec Kercheval
+
+Recent research identifies and corrects bias, such as excess dispersion, in the leadingsample eigenvector of a factor-based covariance  matrix estimated  from  a high-dimension low sample size (HL) data set. We show that eigenvector bias can have asubstantial impact on variance-minimizing optimization in the HL regime, while bias in estimated eigenvalues may have little effect. We describe a data-driven eigenvector shrinkage estimator in the HL regime called “James–Stein for eigenvectors” (JSE) andits close relationship with the James–Stein (JS) estimator for a collection of averages.We show, both theoretically and with numerical experiments, that, for certain variance-minimizing problems of practical importance, efforts to correct eigenvalues have little value in comparison to the JSE correction of the leading eigenvector. When certain extra information is present, JSE is a consistent estimator of the leading eigenvector
+
+
+##  Rotational invariant estimator for general noisy matrices [pdf](https://arxiv.org/pdf/1502.06736.pdf) [code](https://github.com/GGiecold/pyRMT/blob/main/pyRMT.py)
+Joël Bun, Romain Allez, Jean-Philippe Bouchaud, Marc Potters
+
+We investigate the problem of estimating a given real symmetric signal matrix C from a noisy observation matrix M in the limit of large dimension. We consider the case where the noisy measurement M comes either from an arbitrary additive or multiplicative rotational invariant perturbation. We establish, using the Replica method, the asymptotic global law estimate for three general classes of noisy matrices, significantly extending previously obtained results. We give exact results concerning the asymptotic deviations (called overlaps) of the perturbed eigenvectors away from the true ones, and we explain how to use these overlaps to "clean" the noisy eigenvalues of M. We provide some numerical checks for the different estimators proposed in this paper and we also make the connection with some well known results of Bayesian statistics
+
+
+## Estimating covariance matrices for portfolio optimization [pdf](http://www.gcoqueret.com/files/Estim_cov.pdf)
+GUILLAUME COQUERET AND VINCENT MILHAU
+
+We compare twelve estimators of the covariance matrix: the sample covariance matrix, the identity
+matrix, the constant-correlation estimator, three estimators derived from an explicit factor model, three obtained
+from an implicit factor model, and three shrunk estimators. Following the literature, we conduct the comparison
+by computing the volatility of estimated Minimum Variance portfolios. We do this in two frameworks: first, an
+ideal situation where the true covariance matrix would be known, and second, a real-world situation where it
+is unknown. In each of these two cases, we perform the tests with and without short-sales constraints, and we
+assess the impact of the universe and sample sizes on the results. Our findings are in line with those of Ledoit
+and Wolf (2003), in that we confirm that in the absence of short-sales constraints, shrunk estimators lead in
+general to the lowest volatilities. With long-only constraints, however, their performance is similar to that of
+principal component estimators. Moreover, the latter estimators tend to imply lower levels of turnover, which
+is an important practical consideration.
+
+
+## A Modified CTGAN-Plus-Features Based Method for Optimal Asset Allocation [pdf](https://arxiv.org/pdf/2302.02269)
+José-Manuel Peña, Fernando Suárez, Omar Larré, Domingo Ramírez, Arturo Cifuentes
+
+We propose a new approach to portfolio optimization that utilizes a unique combination of synthetic data generation and a CVaR-constraint. We formulate the portfolio optimization problem as an asset allocation problem in which each asset class is accessed through a passive (index) fund. The asset-class weights are determined by solving an optimization problem which includes a CVaR-constraint. The optimization is carried out by means of a Modified CTGAN algorithm which incorporates features (contextual information) and is used to generate synthetic return scenarios, which, in turn, are fed into the optimization engine. For contextual information we rely on several points along the U.S. Treasury yield curve. The merits of this approach are demonstrated with an example based on ten asset classes (covering stocks, bonds, and commodities) over a fourteen-and-half year period (January 2008-June 2022). We also show that the synthetic generation process is able to capture well the key characteristics of the original data, and the optimization scheme results in portfolios that exhibit satisfactory out-of-sample performance. We also show that this approach outperforms the conventional equal-weights (1/N) asset allocation strategy and other optimization formulations based on historical data only.
+
+## Cross Asset Portfolios of Tradable Risk Premia Indices - Hierarchical Risk Parity - Enhancing Returns [link](https://www.scribd.com/document/466110701/Cross-Asset-Portfolios-of-Tradable-Risk-Premia-Indices-Hierarchical-Risk-Parity-Enhancing-Returns-pdf#)
+
+
+## Adaptive Seriational Risk Parity and Other Extensions for Heuristic Portfolio Construction Using Machine Learning and Graph Theory [pdf](https://jfds.pm-research.com/content/iijjfds/early/2021/10/06/jfds.2021.1.078.full-text.pdf)
+Peter Schwendner, Jochen Papenbrock, Markus Jaeger and Stephan Krügel
+
+In this article, the authors present a conceptual framework named adaptive seriational risk parity (ASRP) to extend hierarchical risk parity (HRP) as an asset allocation heuristic. The first step of HRP (quasi-diagonalization), determining the hierarchy of assets, is required for the actual allocation done in the second step (recursive bisectioning). In the original HRP scheme, this hierarchy is found using single-linkage hierarchical clustering of the correlation matrix, which is a static tree-based method. The authors compare the performance of the standard HRP with other static and adaptive tree-based methods, as well as seriation-based methods that do not rely on trees. Seriation is a broader concept allowing reordering of the rows or columns of a matrix to best express similarities between the elements. Each discussed variation leads to a different time series reflecting portfolio performance using a 20-year backtest of a multi-asset futures universe. Unsupervised learningbased on these time-series creates a taxonomy that groups the strategies in high correspondence to the construction hierarchy of the various types of ASRP. Performance analysis of the variations shows that most of the static tree-based alternatives to HRP outperform the single-linkage clustering used in HRP on a risk-adjusted basis. Adaptive tree methods show mixed results, and most generic seriation-based approaches underperform.
+
+
+
+## A Constrained Hierarchical Risk Parity Algorithm with Cluster-based Capital Allocation [pdf](https://www.fmx.nfkatzke.com/Projects/HRP.pdf)
+Johann Pfitzinger, Nico Katzke 
+
+Hierarchical Risk Parity (HRP) is a risk-based portfolio optimisation algorithm, which has been shown to generate diversified portfolios with robust out-of-sample properties without the need for a positive-definite return covariance matrix (Lopez de Prado 2016). The algorithm applies machine learning techniques to identify the underlying hierarchical correlation structure of the portfolio, allowing clusters of similar assets to compete for capital. The resulting allocation is both well-diversified over risk sources and intuitively appealing. This paper proposes a method of fully exploiting the information created by the clustering process, achieving enhanced out-of-sample risk and return characteristics. In addition, a practical approach to calculating HRP weights under box and group constraints is introduced. A comprehensive set of portfolio simulations over 6 equity universes demonstrates the appeal of the algorithm for portfolios consisting of 20 − 200 assets. HRP delivers highly diversified allocations with low volatility, low portfolio turnover and competitive performance metrics.
+
+
+## A Clustering Algorithm for Correlation Quickest Hub Discovery Mixing Time Evolution and Random Matrix Theory
+ [pdf](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4241975)
+ Alejandro Rodriguez Dominguez
+
+We present a geometric version of Quickest Change Detection (QCD) and Quickest Hub Discovery (QHD) tests in correlation structures that allows us to include and combine new information with distance metrics. The topic falls within the scope of sequential, nonparametric, high-dimensional QCD and QHD, from which state-of-the-art settings developed global and local summary statistics from asymptotic Random Matrix Theory (RMT) to detect changes in random matrix law. These settings work only for uncorrelated pre-change variables. With our geometric version of the tests via clustering, we can test the hypothesis that we can improve state-of-the-art settings for QHD, by combining QCD and QHD simultaneously, as well as including information about pre-change time-evolution in correlations. We can work with correlated pre-change variables and test if the time-evolution of correlation improves performance. We prove test consistency and design test hypothesis based on clustering performance. We apply this solution to financial time series correlations. Future developments on this topic are highly relevant in finance for Risk Management, Portfolio Management, and Market Shocks Forecasting which can save billions of dollars for the global economy. We introduce the Diversification Measure Distribution (DMD) for modeling the time-evolution of correlations as a function of individual variables which consists of a Dirichlet-Multinomial distribution from a distance matrix of rolling correlations with a threshold. Finally, we are able to verify all these hypotheses.
+
+
+
+## Hierarchical Sensitivity Parity [pdf](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4110188)
+Alejandro Rodriguez Dominguez
+
+In this work we present a new framework for modelling portfolio dynamics and how to incorporate this information in the portfolio selection process. We define drivers for asset and portfolio dynamics, and their optimal selection. We introduce the new Commonality Principle, which gives a solution for the optimal selection of portfolio drivers as being the common drivers. Asset dynamics are modelled by PDEs and approximated with Neural Networks, and sensitivities of portfolio constituents with respect to portfolio common drivers are obtained via Automatic Adjoint Differentiation (AAD). Information of asset dynamics is incorporated via sensitivities into the portfolio selection process. Portfolio constituents are projected into a hypersurface, from a vector space formed by the returns of common drivers of the portfolio. The commonality principle allows for the necessary geometric link between the hyperplane formed by portfolio constituents in a traditional setup with no exogenous information, and the hypersurface formed by the vector space of common portfolio drivers, so that when portfolio constituents are projected into this hypersurface, the representations of idiosyncratic risks from the hyperplane are kept at most in this new subspace, while systematic risks representations are added via exogenous information as part of this common drivers vector space. We build a sensitivity matrix, which is a similarity matrix of the projections in this hypersurface, and can be used to optimize for diversification on both, idiosyncratic and systematic risks, which is not contemplated on the literature. Finally, we solve the convex optimization problem for optimal diversification by applying a hierarchical clustering to the sensitivity matrix, avoiding quadratic optimizers for the matrix properties, and we reach over-performance in all experiments with respect to all other out-of-sample methods.
+
+## Asymmetric Autoencoders for Factor-Based Covariance Matrix Estimation [pdf](https://dl.acm.org/doi/pdf/10.1145/3533271.3561715)
+Kevin Huynh, Gregor Lenhard
+
+Estimating high dimensional covariance matrices for portfolio optimization is challenging because the number of parameters to be estimated grows quadratically in the number of assets. When the matrix dimension exceeds the sample size, the sample covariance matrix becomes singular. A possible solution is to impose a (latent) factor structure for the cross-section of asset returns as in the popular capital asset pricing model. Recent research suggests dimension reduction techniques to estimate the factors in a data-driven fashion. We present an asymmetric autoencoder neural network-based estimator that incorporates the factor structure in its architecture and jointly estimates the factors and their loadings. We test our method against well established dimension reduction techniques from the literature and compare them to observable factors as benchmark in an empirical experiment using stock returns of the past five decades. Results show that the proposed estimator is very competitive, as it significantly outperforms the benchmark across most scenarios. Analyzing the loadings, we find that the constructed factors are related to the stocks’ sector classification.
+ 
+
+
+## Theoretically Motivated Data Augmentation and Regularization for Portfolio Construction [arxiv](https://arxiv.org/abs/2106.04114)
+Liu Ziyin, Kentaro Minami, Kentaro Imajo
+
+The task we consider is portfolio construction in a speculative market, a fundamental problem in modern finance. While various empirical works now exist to explore deep learning in finance, the theory side is almost non-existent. In this work, we focus on developing a theoretical framework for understanding the use of data augmentation for deep-learning-based approaches to quantitative finance. The proposed theory clarifies the role and necessity of data augmentation for finance; moreover, our theory implies that a simple algorithm of injecting a random noise of strength to the observed return rt is better than not injecting any noise and a few other financially irrelevant data augmentation techniques.
+
+
+## Pessimistic Offline Policy Optimization [pdf](https://arxiv.org/abs/2012.13682)
+Qiang He, Xinwen Hou
+
+Offline reinforcement learning (RL) aims to optimize policy from large pre-recorded datasets without interaction with the environment. This setting offers the promise of utilizing diverse and static datasets to obtain policies without costly, risky, active exploration. However, commonly used off-policy deep RL methods perform poorly when facing arbitrary off-policy datasets. In this work, we show that there exists an estimation gap of value-based deep RL algorithms in the offline setting. To eliminate the estimation gap, we propose a novel offline RL algorithm that we term Pessimistic Offline Policy Optimization (POPO), which learns a pessimistic value function. To demonstrate the effectiveness of POPO, we perform experiments on various quality datasets. And we find that POPO performs surprisingly well and scales to tasks with high-dimensional state and action space, comparing or outperforming tested state-of-the-art offline RL algorithms on benchmark tasksl
+
+
+## A Generalized Approach to Portfolio Optimization: Improving Performance by Constraining Portfolio Norms [pdf](https://www.semanticscholar.org/paper/A-Generalized-Approach-to-Portfolio-Optimization%3A-DeMiguel-Garlappi/0c684e0b00e090e064b614f87db321951cfc66ff)
+Victor DeMiguel, Lorenzo Garlappi, R. Uppal
+
+In this paper, we provide a general nonlinear programming framework for
+identifying portfolios that have superior out-of-sample performance in the presence
+of estimation error. This general framework relies on solving the traditional
+minimum-variance problem but subject to the additional constraint that the
+norm of the portfolio-weight vector be smaller than a given threshold.
+We show that our general framework nests as special cases several wellknown
+(shrinkage and constrained) approaches considered in the literature. We
+also use our general framework to propose several new portfolio strategies that
+we term partial minimum-variance portfolios. These portfolios are obtained by
+applying the classical conjugate-gradient method to solve the minimum-variance
+problem.
+We compare empirically (in terms of portfolio variance, Sharpe ratio, and
+turnover), the out-of-sample performance of the new portfolios to various wellknown
+strategies across several datasets. We find that the norm-constrained
+portfolios we propose outperform shortsale-constrained portfolio approaches,
+shrinkage approaches, the 1/N portfolio, factor portfolios, and also other strategies
+considered in the literature.
+
+## Seriation and Matrix Reordering Methods: An Historical Overview [pdf](http://innar.com/Liiv_Seriation.pdf)
+Innar Liiv
+
+Seriation is an exploratory combinatorial data analysis technique to reorder objects into a sequence along a one-dimensional continuum so that it best reveals regularity and patterning among the whole series. Unsupervised learning, using seriation and matrix reordering, allows pattern discovery simultaneously at three information levels: local fragments of relationships, sets of organized local fragments of relationships, and an overall structural pattern. This paper presents an historical overview of seriation and matrix reordering methods, several applications from the following disciplines are included in the retrospective review: archaeology and anthropology; cartography, graphics, and information visualization; sociology and sociometry; psychology and psychometry; ecology; biology and bioinformatics; cellular manufacturing; and operations research.
+
 
 ## The Locally Gaussian Partial Correlation [pdf](https://arxiv.org/pdf/1909.09681)
 Håkon Otneim, Dag Tjøstheim

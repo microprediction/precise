@@ -52,7 +52,7 @@ HRP_PORT = HRP_LONG_PORT + HRP_LS_PORT
 
 
 if __name__=='__main__':
-    from precise.skaters.portfolioutil.portcomparison import m6_equity_portfolio_correlation_rankings
+    from precise.skatervaluation.portfoliocomparisonutil.portcomparison import m6_equity_portfolio_correlation_rankings
     from pprint import pprint
     rankings = m6_equity_portfolio_correlation_rankings(ports=HRP_PORT, n_dim=40)
     pprint(rankings)

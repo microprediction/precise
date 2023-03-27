@@ -14,3 +14,11 @@ More specific examples:
 - Related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
 - This is a piece of the microprediction project aimed at creating millions of autonomous critters to distribute AI cheaply, as per the [book](https://github.com/microprediction/building_an_open_ai_network). The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere.
 - It would be lovely if you [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md). 
+
+
+
+
+
+View as [source](https://github.com/microprediction/precise/blob/master/docs/README.md) or [web](https://microprediction.github.io/precise/)
+
+![schur](/precise/assets/images/schur_reaction.png)

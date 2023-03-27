@@ -262,7 +262,7 @@ def corr_distance(corr, expon=0.5):
 
 def cov_distance(cov, expon=0.5):
     """
-           Convert covariance into a distance between variables
+           Convert covariancecomparisonutil into a distance between variables
     """
     if isinstance(cov, pd.DataFrame):
         return square_to_square_dataframe(cov, cov_distance, expon=expon)
@@ -289,7 +289,7 @@ def try_invert(a, **affine_inversion_kwargs):
 
 
 def weaken_cov(cov, diag_multipliers:[float], off_diag_additional_factor=0.9):
-    """  Augment a covariance matrix
+    """  Augment a covariancecomparisonutil matrix
     :param cov:
     :param diag_multipliers:             Vector to multiply diagonals by
     :param off_diag_additional_factor:   Additional multiplicative factor
@@ -389,8 +389,5 @@ def multiply_by_inverse(a, b, throw=True):
 
 
 
-def parity(cov,w):
-
-    np.dot(cov,w)
 
 

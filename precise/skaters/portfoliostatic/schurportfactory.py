@@ -13,7 +13,7 @@ def schur_portfolio_factory(cov=None, pre=None, port=None, port_kwargs=None,
                             n_split=5, gamma=1.0, delta=0.0,
                             seriation_depth=10, jiggle=True):
     """
-         A divide and conquer allocation strategy using seriation, and augmented sub-covariance matrices
+         A divide and conquer allocation strategy using seriation, and augmented sub-covariancecomparisonutil matrices
 
     :param cov:
     :param port:                Method to use on leaves
@@ -87,9 +87,9 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         An experimental way to split allocation
     """
     n = np.shape(cov)[0]
-    n1, n2 = splitter(cov)
+    n1, n2 = splitter(cov, **splitter_kwargs)
     assert n1+n2==n
-    if n1==0 or n2==0:
+    if n1<=1 or n2<=1:
         # If the portfolio is not too big, apply to leaves directly
         w = port(cov, **port_kwargs)
         if isinstance(w,list):
@@ -98,8 +98,7 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         return w
     else:
         # 1. Establish ordering, or bail out altogether
-        if any(np.diag(cov) < 1e-6):
-            print('Bailing out as diagonal of cov are too small')
+        if any(np.diag(cov) < 1e-8):
             return equal_long_port(cov=cov)
         elif seriation_depth<=0:
             ndx = list(range(n1+n2))
@@ -122,11 +121,12 @@ def hierarchical_schur_complementary_portfolio(cov, port, port_kwargs,
         Ag, Dg, info = schur_augmentation(A=A, B=B, C=C, D=D, gamma=gamma)
         aA, aD = alloc(covs=[Ag, Dg])
         if True:
-            # 3a. Just for interest, compare allocations
+            # 3a. Just for interest, compare allocations. This is research code :)
             aA_original, aD_original = alloc(covs=[A, D])
             allocationRatioA = (aA / aA_original)
             info.update({'allocationRatioA':allocationRatioA})
-            pprint({'allocationRatioA':allocationRatioA})
+            if False:
+                pprint({'allocationRatioA':allocationRatioA})
 
         # Sub-allocate
         wA = hierarchical_schur_complementary_portfolio(cov=Ag, port=port, port_kwargs=port_kwargs,

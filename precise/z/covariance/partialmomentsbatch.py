@@ -5,7 +5,7 @@ import NNS
 from NNS.Partial_Moments import PM_matrix
 
 def _NNS_pcov_init(s:dict=None, x:[[float]]=None, n_dim=None):
-    """ NNS population covariance"""
+    """ NNS population covariancecomparisonutil"""
     n_dim = len(x[-1]) if x is not None else n_dim
     if s is None:
        s = dict()
@@ -26,7 +26,7 @@ def _NNS_pcov_update(s:dict, x:[[float]]):
 
 def NNS_pcov(s:dict, x:[[float]])->dict:
     """
-        Track NNS sample covariance
+        Track NNS sample covariancecomparisonutil
     """
     if s.get('n_samples') is None:
         if isinstance(x,int):
@@ -38,7 +38,7 @@ def NNS_pcov(s:dict, x:[[float]])->dict:
 
 
 def merge_NNS_scov(s:dict, other_s:dict):
-    """ Merge two online covariance tracking objects as if the data had been merged """
+    """ Merge two online covariancecomparisonutil tracking objects as if the data had been merged """
     if other_s['n_dim'] != s['n_dim']:
         raise ValueError(
             f'''

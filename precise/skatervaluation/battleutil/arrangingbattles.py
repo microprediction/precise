@@ -1,7 +1,7 @@
 from precise.skaters.covariance.allcovskaters import ALL_D0_SKATERS
 from precise.skaters.managers.allmanagers import RELIABLE_LONG_MANAGERS
 from precise.skaters.covarianceutil.likelihood import cov_likelihood
-from precise.skaters.managerutil.managerstats import manager_info, manager_var
+from precise.skatervaluation.managercomparisonutil.managerstats import manager_info, manager_var
 from precise.skatervaluation.battledata.allsources import params_category_and_data
 from uuid import uuid4
 import os

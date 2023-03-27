@@ -6,7 +6,7 @@ import numpy as np
 
 class OnlineEmpiricalCovariance:
     """
-    A class to calculate the mean and the covariance matrix
+    A class to calculate the mean and the covariancecomparisonutil matrix
     of the incrementally added, n-dimensional data.
     """
 
@@ -15,7 +15,7 @@ class OnlineEmpiricalCovariance:
         Parameters
         ----------
         order: int, The order (=="number of features") of the incrementally added
-        dataset and of the resulting covariance matrix.
+        dataset and of the resulting covariancecomparisonutil matrix.
         """
         self._order = order
         self._shape = (order, order)
@@ -43,14 +43,14 @@ class OnlineEmpiricalCovariance:
     @property
     def cov(self):
         """
-        array_like, The covariance matrix of the added data.
+        array_like, The covariancecomparisonutil matrix of the added data.
         """
         return self._cov
 
     @property
     def corrcoef(self):
         """
-        array_like, The normalized covariance matrix of the added data.
+        array_like, The normalized covariancecomparisonutil matrix of the added data.
         Consists of the Pearson Correlation Coefficients of the data's features.
         """
         if self._count < 1:
