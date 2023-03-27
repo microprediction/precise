@@ -23,23 +23,23 @@ def get_elo(genre):
     return df
 
 
-def create_elo_csvs():
+def create_elo_csvs(k=10):
     """ Clobber the elo_***.csv files """
     print(ELO_CSV)
     for genre in GENRES:
         fn = ELO_CSV.replace('elo', 'elo_' + genre)
         print(fn)
-        df = elo_df(genre=genre, category=None)
+        df = elo_df(genre=genre, category=None, k=k)
         df.to_csv(fn, index=False)
 
 
-def elo_df(genre='manager_info', category='stocks'):
+def elo_df(genre='manager_info', category='stocks',k=10):
     """ Elo ratings in a dataframe
     :param genre:      'cov_likelihood'
     :param category:
     :return:
     """
-    ratings = elo_from_win_files(genre=genre, category=category)
+    ratings = elo_from_win_files(genre=genre, category=category, k=k)
     elo_tuples = list()
     for r in ratings:
         cat = r[0]
@@ -69,16 +69,16 @@ def elo_df(genre='manager_info', category='stocks'):
 
 
 
-def elo_from_win_files(genre='cov_likelihood', category=None):
+def elo_from_win_files(genre='cov_likelihood', category=None, k=10):
     """
     :return:  Elo ratings for all categories
     """
     # MAYBETODO: It would be easy to make this // across categories but not a high priority :)
-    return [(cat, elo_from_win_counts(cat_data, timing_genre=genre)) for cat, cat_data in win_data(genre=genre, category=category)]
+    return [(cat, elo_from_win_counts(cat_data, timing_genre=genre, k=k)) for cat, cat_data in win_data(genre=genre, category=category)]
 
 
 
-def elo_from_win_counts(ctn, timing_genre=None):
+def elo_from_win_counts(ctn, timing_genre=None, k=10):
     """
         Elo ratings from a counter or dict of match results
 
@@ -94,6 +94,9 @@ def elo_from_win_counts(ctn, timing_genre=None):
 
         There is no temporality. When older battle results files become irrelevant they
         should simply be deleted
+
+          :param k   Elo speed parameters
+
     """
     contestants = list(set( [ k.split('>')[0] for k in ctn.keys() ] + [ k.split('>')[1] for k in ctn.keys() ]))
     elo = Counter( dict([ (c,1500) for c in contestants ]))
@@ -118,7 +121,7 @@ def elo_from_win_counts(ctn, timing_genre=None):
             random_battle = random.choices(population=remaining_battles, weights=weights,k=1)[0]
             ct += time.time()-cts
             winner, loser = random_battle[0].split('>')
-            winner_change, loser_change = elo_change(elo[winner],elo[loser],points=1.0, k=10)
+            winner_change, loser_change = elo_change(elo[winner],elo[loser],points=1.0, k=k)
             ctn[random_battle[0]] -= 1
             elo[winner] += winner_change
             elo[loser] += loser_change

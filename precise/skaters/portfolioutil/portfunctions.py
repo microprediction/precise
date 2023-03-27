@@ -42,6 +42,25 @@ def portfolio_variance(w, cov=None, pre=None):
         return np.matmul( np.matmul(w1, np.array(cov)), wt)[0][0]
 
 
+def combine_portfolios(ws, alpha=None)->[float]:
+    """ Weighted combination of portfolios
+    :param ws:
+    :param alpha:
+    :return:
+    """
+    n_portfolios = len(ws)
+    n_assets = len(ws[0])
+    if alpha is None:
+        alpha = [1.0/len(ws) for _ in range(n_portfolios)]
+    nws = [ np.array(normalize_portfolio(w)) for w in ws ]
+    convex_combination = np.zeros(n_assets)
+
+    for i in range(n_portfolios):
+        convex_combination += alpha[i] * nws[i]
+
+    return list(convex_combination)
+
+
 def normalize_portfolio(w):
     """ Ensure sum(w) = 1 """
     if isinstance(w,(dict,pd.Series)):
