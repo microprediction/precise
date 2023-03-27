@@ -10,3 +10,4 @@ scipy
 tomark
 collinearity
 riskparityportfolio
+yfinance

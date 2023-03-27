@@ -28,8 +28,25 @@ def equity_portfolio_variance_points_race(n_iter=100,n_top=50, **kwargs):
     return points_race(n_iter=n_iter, n_top=n_top, ranker=m6_equity_portfolio_variance_rankings, ranker_kwargs=kwargs)
 
 
+def rdps_portfolio_variance_points_race(n_iter=100,n_top=50, **kwargs):
+    return points_race(n_iter=n_iter, n_top=n_top, ranker=rdps_etf_variance_rankings, ranker_kwargs=kwargs)
+
+
 def equity_portfolio_correlation_points_race(n_iter=100,n_top=50, **kwargs):
     return points_race(n_iter=n_iter, n_top=n_top, ranker=m6_equity_portfolio_correlation_rankings, ranker_kwargs=kwargs)
+
+
+def rdps_etf_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_frame=True, n_iter=10):
+    """
+        Quick and dirty leave one-out
+    """
+    from precise.skatertools.data.equitylive import random_rdps_returns
+    data = random_rdps_returns(n_dim=n_dim, n_obs=n_obs, verbose = False, k=k)
+    t_obs = int(0.75*n_obs)
+    test_cov = np.cov(data[:t_obs] ,rowvar=False)
+    train_cov = np.cov(data[t_obs:], rowvar=False)
+    return portfolio_variance_rankings(cov_test=test_cov, ports=ports, cov_train=train_cov, as_frame=as_frame, n_iter=n_iter )
+
 
 
 def stock_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_frame=True, n_iter=10):
@@ -203,3 +220,11 @@ def portfolio_variance_comparison(ports, covrnd, n_observed, max_time=5*60, n_an
         return dict([ (pn,m.get(metric)) for pn,m in moments.items() ])
     else:
         return moments
+
+
+if __name__=='__main__':
+    from precise.skaters.portfoliostatic.rpport import RP_LONG_PORT
+    from precise.skaters.portfoliostatic.schurport import SCHUR_LONG_PORT
+    from precise.skaters.portfoliostatic.hrpport import HRP_LONG_PORT
+    ports = RP_LONG_PORT + SCHUR_LONG_PORT + HRP_LONG_PORT
+    rdps_portfolio_variance_points_race(n_iter=20,n_top=50, ports=ports)

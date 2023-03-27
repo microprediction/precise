@@ -66,6 +66,17 @@ def random_m6_returns(n_dim=10, n_obs:int=60, verbose=True, interval='1d', etf=0
     return random_equity_returns(all_tickers=tickers, n_dim=n_dim, n_obs=n_obs, verbose=verbose, interval=interval)
 
 
+def random_rdps_returns(n_dim=10, n_obs:int=60, verbose=True, interval='1d', etf=1, **ignore):
+    """
+        Leave one-out sectors by default
+    """
+    from getjson import getjson
+    rdps_tickers = getjson('https://raw.githubusercontent.com/microprediction/microprediction/master/microprediction/live/rdpstickers.json')
+    tickers = list(rdps_tickers.values())
+    return random_equity_returns(all_tickers=tickers, n_dim=n_dim, n_obs=n_obs, verbose=verbose, interval=interval)
+
+
+
 def all_m6_returns(n_obs:int=60, verbose=True, interval='1d', etf=0, implied=0, **ignore):
     n_buffer = np.random.choice([20,40,60,80,100,120,140])
     constituents = pd.read_csv(
@@ -124,19 +135,20 @@ def get_equity_returns(tickers, n_obs:int=60, verbose=True, interval='5d', impli
     return np.array(prices_transposed)
 
 
-
-def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, interval='m', **ignore):
+def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, interval='1d', **ignore):
     """ Get return series
-    :param n_dim:            Number of assets
+    :param n_dim:            Number of assets desired, but may return less
     :param n_obs:
-    :param interval: 'd' or 'm'
+    :param interval: '1d' or '1mo'
     :return: prices NOT necessarily corresponding to all_tickers
     """
-    assert 2*n_dim<=len(all_tickers)
-    if interval=='m':
+    if interval=='1mo':
         assert n_obs<=60,'too many observations for monthly'
-
-    tickers = list(np.random.choice(all_tickers, n_dim * 2, replace=False))
+    n_take = min(len(all_tickers),2*n_dim)
+    tickers = list(np.random.choice(all_tickers, n_take, replace=False))
+    unique_tickers = list(set(tickers))
+    if len(unique_tickers)<n_dim:
+        n_dim = len(unique_tickers)
     prices = list()
     while (len(prices)<n_dim) and len(tickers):
         ticker = tickers.pop()
@@ -159,6 +171,6 @@ def random_equity_returns(all_tickers, n_dim=10, n_obs:int=60, verbose=True, int
 if __name__=='__main__':
     import numpy as np
     from pprint import pprint
-    a = random_m6_returns(n_dim=3, n_obs=60, etf=1)
+    a = random_rdps_returns(n_dim=3, n_obs=60, etf=1)
     c = np.corrcoef(np.array(a),rowvar=False)
     pprint(c)
