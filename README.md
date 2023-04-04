@@ -2,7 +2,7 @@
 
 Goals:
 
-1. A collection of *online* [covariance forecasting](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) and [portfolio construction](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) functions. See [docs](https://microprediction.github.io/precise/). 
+1. A collection of *online* (incremental) [covariance forecasting](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) and [portfolio construction](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) functions. See [docs](https://microprediction.github.io/precise/). 
 
 2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See my posts on the [methodology](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) and its role in the [hijacking of the M6 contest](https://www.linkedin.com/posts/alexander-fleiss-70b49410_does-option-volume-predict-stock-direction-activity-7021134433344749569-bxx4?utm_source=share&utm_medium=member_desktop). 
  
