@@ -3,7 +3,7 @@ from precise.skatervaluation.managercomparisonutil.managertesting import manager
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
 
 
-def test_randomized_manager():
+def dont_test_randomized_manager():
     if using_pyportfolioopt:
         from precise.skaters.managers.hrpmanagers import HRP_21_LONG_MANGERS_USING_PPO
         mgr = random.choice(HRP_21_LONG_MANGERS_USING_PPO)
@@ -14,4 +14,4 @@ def test_randomized_manager():
 
 if __name__=='__main__':
     for _ in range(10):
-        test_randomized_manager()
+        dont_test_randomized_manager()

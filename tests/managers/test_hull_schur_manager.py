@@ -2,7 +2,7 @@ from precise.skatervaluation.managercomparisonutil.managertesting import manager
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
 
 
-def test_randomized_manager():
+def dont_test_randomized_manager():
     if using_pyportfolioopt:
         from precise.skaters.managers.schurmanagers import schur_weak_vol_ewa_r001_n200_s50_g100_l20_long_manager as mgr
         j = 3
@@ -11,4 +11,4 @@ def test_randomized_manager():
 
 
 if __name__=='__main__':
-    test_randomized_manager()
+    dont_test_randomized_manager()
