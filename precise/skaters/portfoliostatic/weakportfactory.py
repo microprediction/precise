@@ -40,7 +40,7 @@ def scaled_entropish(w):
     return rel_entropish(w)/rel_entropish_like(w)
 
 
-def ensure_rel_entropish(w, h:float):
+def ensure_rel_entropish_old(w, h:float):
     """ Crudely force portfolio to almost have rel_entropish > -1/h
 
          - Moves the equal weighted portfolio towards w with shorts removed
@@ -62,6 +62,40 @@ def ensure_rel_entropish(w, h:float):
             v_prior = np.copy(v)
             v = 0.99*v + 0.01*np.array(w_pos)
         return v_prior
+
+
+def ensure_rel_entropish(w, h: float):
+    """ Force portfolio to almost have rel_entropish > -1/h
+         - Moves the equal weighted portfolio towards w with shorts removed
+    :param w:
+    :param h:  h > 1
+    :return:
+    """
+    if h < 1:
+        print(h)
+        raise ValueError('Expecting h>1 got h=' + str(h))
+
+    if scaled_entropish(w) >= -100 / h:
+        return w
+    else:
+        v = np.ones_like(w) / len(w)
+        w_pos = exclude_negative_weights(w)
+        low, high = 0, 1
+
+        while high - low > 1e-2:
+            mid = (low + high) / 2
+            v_mid = mid * v + (1 - mid) * np.array(w_pos)
+
+            if scaled_entropish(v_mid) > -100 / h:
+                low = mid
+            else:
+                high = mid
+
+        return low * v + (1 - low) * np.array(w_pos)
+
+
+
+
 
 
 

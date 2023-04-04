@@ -48,7 +48,6 @@ def rdps_etf_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_frame=True,
     return portfolio_variance_rankings(cov_test=test_cov, ports=ports, cov_train=train_cov, as_frame=as_frame, n_iter=n_iter )
 
 
-
 def stock_portfolio_variance_rankings(ports, n_dim=10, n_obs = 300, k=1, as_frame=True, n_iter=10):
     """
         Quick and dirty
@@ -227,4 +226,5 @@ if __name__=='__main__':
     from precise.skaters.portfoliostatic.schurport import SCHUR_LONG_PORT
     from precise.skaters.portfoliostatic.hrpport import HRP_LONG_PORT
     ports = RP_LONG_PORT + SCHUR_LONG_PORT + HRP_LONG_PORT
-    rdps_portfolio_variance_points_race(n_iter=20,n_top=50, ports=ports)
+    #rdps_portfolio_variance_points_race(n_iter=500,n_top=50, n_obs =120, ports=ports)
+    stock_portfolio_variance_points_race(n_iter=500,n_top=50, n_obs =200, ports=ports, n_dim=100)

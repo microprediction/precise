@@ -8,6 +8,7 @@ def test_weak():
     cov = random_band_cov()
     print(np.shape(cov))
     w = weak_portfolio_factory(cov=cov)
+    assert all([wi >= 0 for wi in w]), ' weak portfolio was not long only'
     assert len(w) == np.shape(cov)[0], ' dim mismatch '
 
 
@@ -15,6 +16,7 @@ def test_weak_entropish():
     cov = random_band_cov()
     print(np.shape(cov))
     w = weak_portfolio_factory(cov=cov, h=2)
+    assert all([wi >= 0 for wi in w]), ' weak portfolio was not long only'
 
 
 def test_weak_entropish_again():
