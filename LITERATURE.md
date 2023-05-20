@@ -7,6 +7,24 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Regularized Tyler’s Scatter Estimator: Existence, Uniqueness, and Algorithms [pdf](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6879466)
+Ying Sun and Daniel P. Palomar
+
+This paper considers the regularized Tyler’s scatter
+estimator for elliptical distributions, which has received considerable attention recently. Various types of shrinkage Tyler’s estimators have been proposed in the literature and proved work effectively in the “large small ” scenario. Nevertheless, the existence
+and uniqueness properties of the estimators are not thoroughly
+studied, and in certain cases the algorithms may fail to converge.
+In this work, we provide a general result that analyzes the sufficient condition for the existence of a family of shrinkage Tyler’s
+estimators, which quantitatively shows that regularization indeed
+reduces the number of required samples for estimation and the
+convergence of the algorithms for the estimators. For two specific
+shrinkage Tyler’s estimators, we also proved that the condition is
+necessary and the estimator is unique. Finally, we show that the
+two estimators are actually equivalent. Numerical algorithms are
+also derived based on the majorization-minimization framework,
+under which the convergence is analyzed systematically.
+
+
 ## James–Stein for the leading eigenvector [pdf](https://www.pnas.org/doi/epdf/10.1073/pnas.2207046120)
 Lisa Goldberg and Alec Kercheval
 
