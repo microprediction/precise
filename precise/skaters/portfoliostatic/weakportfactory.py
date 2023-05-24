@@ -86,7 +86,7 @@ def ensure_rel_entropish(w, h: float):
             mid = (low + high) / 2
             v_mid = mid * v + (1 - mid) * np.array(w_pos)
 
-            if scaled_entropish(v_mid) > -100 / h:
+            if scaled_entropish(v_mid) < -100 / h:
                 low = mid
             else:
                 high = mid
