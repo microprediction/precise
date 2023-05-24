@@ -1,6 +1,8 @@
 
 ## M6 Financial forecasting contest utilities
 
+Warning ... this is no longer maintained. 
+
 You can use this library to enter M6 as follows:
 
    1. Pick a cov estimator (i.e. a "cov skater"), if you wish
