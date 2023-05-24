@@ -36,6 +36,7 @@ def rel_entropish(w):
     """ Always non-positive """
     return entropish(w) - max_entropish(w)
 
+
 def scaled_entropish(w):
     return rel_entropish(w)/rel_entropish_like(w)
 

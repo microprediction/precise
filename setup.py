@@ -7,8 +7,8 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.13.4",
-    description="Online covariancecomparisonutil, precision, portfolios and ensembles",
+    version="0.13.5",
+    description="The home of Schur Hierarchical Portfolios: an aesthetically pleasing version of Hierarchical Risk Parity",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/microprediction/precise",

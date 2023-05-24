@@ -44,7 +44,7 @@ def buy_and_hold_manager_factory(mgr, j: int, y, s: dict, e=1000, q=1.0):
             s_mgr = s['s_mgr']
             _ignore_w, s_mgr = mgr(y=y, s=s_mgr, e=-1)
             s['s_mgr'] = s_mgr
-            # ... instead we let it ride
+            # ... instead we just hold the assets
             w_prev = s['w']
             w = normalize([wi * math.exp(yi) for wi, yi in zip(w_prev, y)])
             s['w'] = [wi for wi in w]

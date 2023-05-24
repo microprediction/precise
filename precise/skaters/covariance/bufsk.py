@@ -4,11 +4,9 @@ from precise.skaters.covarianceutil.differencing import d1_factory
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV, LedoitWolf, MinCovDet, OAS, EmpiricalCovariance
 
 
-# Sklearn
+# A collection of "online" covariance skaters that just call down to batch-style
+# sklearn covariance estimators (so not terribly efficient) evaluated on a buffer.
 
-
-    
- 
 
 def buf_sk_emp_pcov_d0_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ Sklearn empirical covariancecomparisonutil based estimator for IID observations """
@@ -75,7 +73,6 @@ def buf_sk_glcv_pcov_d0_n100_t0(y: X_TYPE = None, s: dict = None, k=1, e=1):
     assert k == 1
     cls_kwargs = {'tol': 1e-4, 'max_iter': 200, 'assume_centered':True}
     return buf_sk_factory(cls=GraphicalLassoCV, y=y, s=s, n_buffer=100, n_emp=30, cls_kwargs=cls_kwargs, e=e)
-
 
 
 def buf_sk_glcv_pcov_d0_n200(y: X_TYPE = None, s: dict = None, k=1, e=1):
@@ -186,10 +183,10 @@ def buf_sk_oas_pcov_d1_n300(y: X_TYPE = None, s: dict = None, k=1, e=1):
     return d1_factory(f=buf_sk_oas_pcov_d0_n300, y=y, s=s, k=1, e=e)
 
 
-def buf_sk_gl_pcov_d1_n100(y: X_TYPE = None, s: dict = None, n_buffer: int = 100, k=1, e=1):
+def buf_sk_gl_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
     """ GL based estimator for IID changes  """
     assert k == 1
-    return d1_factory(f=buf_sk_gl_pcov_d0_n100, y=y, s=s, n_buffer=n_buffer, e=e)
+    return d1_factory(f=buf_sk_gl_pcov_d0_n100, y=y, s=s,  e=e)
 
 
 def buf_sk_glcv_pcov_d1_n100(y: X_TYPE = None, s: dict = None, k=1, e=1):
