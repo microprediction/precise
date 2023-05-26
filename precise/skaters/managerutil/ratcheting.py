@@ -1,4 +1,38 @@
 
+from precise.skaters.locationutil.vectorfunctions import normalize
+import math
+import numpy as np
+
+
+def ratchet_portfolios(ys, w, w_lower, w_upper, min_dw=1e-6)->([float], dict):
+    """
+
+         Process a month of data (say) with ratcheting trading to upper and lower envelope
+
+
+    :param ys:          num_days x num_assets  log returns
+    :param w:           portfolio at start of period
+    :param w_lower:
+    :param w_upper:
+    :param min_dw:
+    :return:  w, stats
+    """
+    print('not tested')
+    w_prev = np.array(w)
+    ys = np.array(ys).tolist()
+    stats = {'profit':list(),
+             'volume':list()}
+    for y in ys:
+        w_grow = w_prev*np.exp(y)
+        stats['profit'].append(math.log(np.sum(w_grow)))
+        w_roll = normalize( w_grow )
+        w_next = ratchet_portfolios( w = w_roll, w_lower=w_lower, w_upper=w_upper, min_dw=min_dw )
+        l1_trading_dist = sum(np.abs(w_next-w_prev))
+        stats['volume'].append(l1_trading_dist)
+        w_prev = w_next
+    return w_next, stats
+
+
 
 def ratchet_trades(w, w_lower, w_upper, min_dw:float=1e-6)->[float]:
     """
@@ -8,10 +42,14 @@ def ratchet_trades(w, w_lower, w_upper, min_dw:float=1e-6)->[float]:
 
                    w_lower <= w + dw <= w_upper
 
-         The algorithm is somewhat heuristic but motivated by results suggesting a
-         no-trade region for portfolios managed on a continuous basis in the presence of
-         trading costs.
+         The algorithms steps are as follows:
 
+             1. Determine all envelope-restoring buys and sells
+             2. Sort by decreasing size into two piles: potential buy and potential sell queues
+             3. If total sell volume exceeds buy volume, pop a trade off the front of the buy queue (or conversely)
+             4. At each step of a greedy loop, take from the buy queue if existing trades net short (or conversely)
+             5. Once a trade list is created in this fashion, walk backwards and at the first opportunity,
+                 reduce the size of one trade so that all net trading sums to zero
 
     :param w:             Current portfolio
     :param w_lower:       Lower envelope
@@ -28,9 +66,11 @@ def ratchet_trades(w, w_lower, w_upper, min_dw:float=1e-6)->[float]:
         [[max(0, wli - wi), 1, i] for i, (wi, wli) in enumerate(zip(w, w_lower)) if (wli - wi > min_dw)],
         reverse=True)
 
-    if len(sells):
+    buy_volume = sum([trade[0] for trade in buys])
+    sell_volume = sum([trade[0] for trade in sells])
+    if sell_volume > buy_volume:
         trades = [sells.pop(0)]
-    elif len(buys):
+    elif buy_volume > sell_volume:
         trades = [buys.pop(0)]
     else:
         # We're already in the envelope

@@ -31,19 +31,15 @@ def test_ratchet_trades_with_mixed_opportunity():
     assert dw[2]<0
 
 
-
 def test_random():
     w = sorted(np.random.rand(50))
     w = w/sum(w)
-
     w_ = np.random.rand(50)
     w_ = w_ / sum(w_)
-
     w_upper = 1.01*w_
     w_lower = 0.99*w_
-
     dw = ratchet_trades(w=w, w_lower=w_lower, w_upper=w_upper, min_dw=0.001)
-    assert abs(sum(dw))<1e-6 
+    assert abs(sum(dw))<1e-6
 
 
 
