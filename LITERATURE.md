@@ -7,6 +7,24 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Dictionary Learning-Based Denoising for Portfolio [pdf](https://2023.ic-dsp.org/wp-content/uploads/2023/05/DSP2023-43.pdf)
+Sadik, Et-tolba, Nsiri
+
+In the finance industry, real-world data are affected
+by noise, which comes from several external sources. This makes
+it challenging to select optimal portfolios for profitable investment
+strategies. Therefore, noise removal (or denoising) has become
+important for investors to create accurate investment models
+that guarantee better returns. In this paper, we propose a novel
+dictionary learning-based denoising approach for financial time
+series. The transform matrix in dictionary learning is built by
+training the noisy data with a K-singular value decomposition (KSVD) algorithm. We evaluated the effectiveness of the proposed
+method using the 30 Fama French portfolio (FF30) as sample
+data. Furthermore, the out-of-sample performance of the denoising approach is tested under a minimum-variance framework.
+Empirical results prove that the proposed dictionary learningbased denoising method outperforms the other benchmarks in
+terms of portfolio selection
+
+
 ## Regularized Tyler’s Scatter Estimator: Existence, Uniqueness, and Algorithms [pdf](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6879466)
 Ying Sun and Daniel P. Palomar
 
