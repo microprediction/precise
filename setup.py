@@ -54,7 +54,7 @@ setup(
               'precise.skatervaluation.battlescripts.manager_var'
               ],
     test_suite='pytest',
-    tests_require=['pytest'],
+    tests_require=['pytest','riskparityportfolio'],
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.7','kmeans1d','runthis','scikit-learn','latextable','tomark',
                       'pandas_datareader','pandas','scipy>=1.7.3','pyportfolioopt','collinearity',
