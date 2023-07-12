@@ -9,5 +9,4 @@ pyportfolioopt
 scipy
 tomark
 collinearity
-riskparityportfolio
 yfinance
