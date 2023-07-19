@@ -7,6 +7,12 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Machine Learning Risk Models [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3308964)
+Zura Kakushadze and Willie Yu
+
+We give an explicit algorithm and source code for constructing risk models based on machine learning techniques. The resultant covariance matrices are not factor models. Based on empirical backtests, we compare the performance of these machine learning risk models to other constructions, including statistical risk models, risk models based on fundamental industry classifications, and also those utilizing multilevel clustering based industry classifications.
+
+
 ## Dictionary Learning-Based Denoising for Portfolio [pdf](https://2023.ic-dsp.org/wp-content/uploads/2023/05/DSP2023-43.pdf)
 Sadik, Et-tolba, Nsiri
 
