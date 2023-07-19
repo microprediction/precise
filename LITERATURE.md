@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Portfolio Optimization with Tracking-Error Constraints [pdf](https://merage.uci.edu/~jorion/papers/optim.pdf)
+Philippe Jorion
+
+This article explores the risk and return relationship of active portfolios subject to a constraint on tracking-error volatility (TEV), which can also be interpreted in terms of value at risk. Such a constrained portfolio is the typical setup for active managers who are given the task of beating a benchmark. The problem with this setup is that the portfolio manager pays no attention to total portfolio risk, which results in seriously inefficient portfolios unless some additional constraints are imposed. The development in this article shows that TEV-constrained portfolios are described by an ellipse on the traditional mean–variance plane. This finding yields a number of new insights. Because of the flat shape of this ellipse, adding a constraint on total portfolio volatility can substantially improve the performance of the active portfolio. In general, plan sponsors should concentrate on controlling total portfolio risk.
+
 ## Machine Learning Risk Models [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3308964)
 Zura Kakushadze and Willie Yu
 
