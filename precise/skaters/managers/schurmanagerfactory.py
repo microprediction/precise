@@ -6,12 +6,12 @@ from precise.skaters.portfoliostatic.weakportfactory import weak_portfolio_facto
 from precise.skaters.portfoliostatic.weakalloc import weak_allocation_factory
 from precise.skaters.portfoliostatic.diagalloc import diagonal_allocation_factory
 from precise.skaters.portfoliostatic.diagport import diagonal_portfolio_factory
-from precise.skaters.portfoliostatic.rpport import rp_port_p20
 from precise.skaters.covariance.ewaempfactory import ewa_emp_pcov_factory
 from precise.skaters.portfoliostatic.equalport import equal_long_port
 from functools import partial
 from precise.skaters.portfoliostatic.weakportfactory import BIG_H
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
 
 
 # Convenience functions for Schur managers

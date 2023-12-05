@@ -4,6 +4,7 @@ from precise.skaters.managers.schurmanagerfactory import schur_weak_weak_pm_mana
 # (i.e. Schur managers with gamma=delta=0,j=j,q=q)
 
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
 
 
 def hrp_weak_weak_pm_t0_d0_r025_n50_s5_long_manager(y, s, k=1, e=1, j=1, q=1.0):
