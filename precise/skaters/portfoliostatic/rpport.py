@@ -1,10 +1,11 @@
-from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
 from precise.skaters.covarianceutil.covfunctions import multiply_diag
-
 
 from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
 
 if using_riskparityportfolio:
+
+    from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
+
 
     def rp_port_p100(cov=None, pre=None):
         return rp_portfolio_factory(cov=cov, pre=pre, phi=1.0)
