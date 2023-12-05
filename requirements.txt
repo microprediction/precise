@@ -1,7 +1,6 @@
 numpy
 momentum>=0.2.7
 kmeans1d
-runthis
 scikit-learn
 pandas_datareader
 pandas
