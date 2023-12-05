@@ -2,13 +2,16 @@ from precise.skaters.managers.covmanagerfactory import static_cov_manager_factor
 from precise.skaters.covariance.ewalwfactory import ewa_lw_scov_factory
 from precise.skaters.portfoliostatic.schurportfactory import schur_portfolio_factory
 from precise.skaters.portfoliostatic.weakalloc import weak_allocation_factory
-from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
 from functools import partial
 
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
 
-if using_pyportfolioopt:
+
+if using_pyportfolioopt and using_riskparityportfolio:
     from precise.skaters.portfoliostatic.volalloc import vol_allocation_factory
+    from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
+
 
     def slurp_vol_manager_factory(y, s, e, r, n_split=5, phi=1.0,gamma=0.0, delta=0, zeta=0,j=1,q=1.0):
         """  A sluring of "Schur Ledoit Risk Parity"
@@ -23,13 +26,15 @@ if using_pyportfolioopt:
         sch_port = partial( schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
         return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta,j=j,q=q)
 
+if using_riskparityportfolio:
+    from precise.skaters.portfoliostatic.rpportfactory import rp_portfolio_factory
 
-def slurp_weak_manager_factory(y, s, e, r, n_split=5, phi=1.0, gamma=0.0, delta=0, zeta=0, j=1, q=1.0):
-    """  A sluring of "Schur Ledoit Risk Parity"
+    def slurp_weak_manager_factory(y, s, e, r, n_split=5, phi=1.0, gamma=0.0, delta=0, zeta=0, j=1, q=1.0):
+        """  A sluring of "Schur Ledoit Risk Parity"
 
-    """
-    f = partial(ewa_lw_scov_factory, k=1, r=r)
-    alloc = partial(weak_allocation_factory)
-    leaf_port = partial(rp_portfolio_factory, phi=phi)
-    sch_port = partial(schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
-    return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta, j=j, q=q)
+        """
+        f = partial(ewa_lw_scov_factory, k=1, r=r)
+        alloc = partial(weak_allocation_factory)
+        leaf_port = partial(rp_portfolio_factory, phi=phi)
+        sch_port = partial(schur_portfolio_factory, alloc=alloc, port=leaf_port, n_split=n_split, gamma=gamma, delta=delta)
+        return static_cov_manager_factory_d0(f=f, port=sch_port, y=y, s=s, e=e, zeta=zeta, j=j, q=q)

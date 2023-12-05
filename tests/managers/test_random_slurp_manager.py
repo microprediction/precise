@@ -2,6 +2,8 @@ import random
 from precise.skatervaluation.managercomparisonutil.managertesting import manager_test_run
 from precise.skatertools.data.equityhistorical import random_cached_equity_dense
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
+
 
 def test_random_slurp_manager():
     from precise.skaters.managers.slurpmanagers import SLURP_LONG_MANAGERS
