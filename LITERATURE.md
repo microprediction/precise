@@ -7,6 +7,13 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Improved Portfolio Diversification Through Unsupervised Learning [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4580833)
+Michael J. Lewis
+
+From a theoretical perspective, portfolio optimization has been well understood for quite some time; Markowitz’ Critical Line Method stems from 1956, for example. In practice, the covariance matrix for portfolio returns is known to be noisy and frequently ill-conditioned, making the necessary inversion of the matrix impractical and inaccurate.
+
+The approach of shrinking the covariance matrix in practice solves the inversion issue, but in doing so modifies the relationships between stocks, throwing the baby out with the bathwater. Hierarchical Risk Parity (HRP) took a novel approach to leverage these relationships, and in doing so sidestep the issue of inversion, but limited its scope to sorting the indices. We build upon this philosophy, introducing Recursive Clustering Risk Parity (RCRP). This procedure takes advantage of advances in unsupervised learning and inverse approximations to adhere more completely to these stock relationships by building and leveraging the corresponding tree structure to sidestep inversion, reduce noise impact, and in doing so enhance portfolio performance.
+
 ## Portfolio Optimization with Tracking-Error Constraints [pdf](https://merage.uci.edu/~jorion/papers/optim.pdf)
 Philippe Jorion
 
