@@ -10,7 +10,7 @@ Contents:
 
 One observes that tools for portfolio construction might also be useful in [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
 
-NEW: Some [slides](https://github.com/microprediction/precise/blob/main/academic/Schur_Complementary_Portfolios_CQF_Slides.pdf) for the CQF talk. 
+NEW: Some [slides](https://github.com/microprediction/precise/blob/main/academic/Schur_Complementary_Portfolios_CQF_Slides_Updated.pdf) for the CQF talk. 
 
 ---
 
