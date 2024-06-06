@@ -7,6 +7,22 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## The Economic Value of MSE [link](https://www.researchgate.net/publication/381196782_The_Economic_Value_of_Mean_Squared_Error_Evidence_from_Portfolio_Selection)
+Zhaokun Cai et al
+
+When designing and evaluating estimators, the mean squared error (MSE) is the most commonly
+used generic statistical loss function because it captures the bias-variance tradeoff and allows
+easy analytical and numerical treatment. However, MSE estimators are often applied to decision
+problems for which the loss function is different, raising questions about how much value there
+is in using a generic statistical loss function like the MSE rather than a decision loss function.
+We elucidate this question through the lens of the portfolio selection problem by showing that
+for several important portfolio rules, there is a positive linear relation between the MSE and
+a portfolio-decision loss function. Moreover, shrinkage portfolio estimators derived under these
+two loss functions are typically close to each other. Our findings highlight the economic value
+of MSE to serve as a general-purpose statistical loss function in portfolio selection.
+
+
+
 ## Improved Portfolio Diversification Through Unsupervised Learning [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4580833)
 Michael J. Lewis
 
