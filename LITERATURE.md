@@ -7,6 +7,13 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## A Consistently oriented basis for eigenanalysis: improved directional statistics [link](https://link.springer.com/article/10.1007/s41060-024-00570-5)
+Jay Damask
+
+The algorithm derived in this article, which builds upon the original paper, takes a holistic view of the handedness of an orthonormal eigenvector matrix so as to transfer what would have been labeled as a reflection in the original algorithm into a rotation through a major arc in the new algorithm. In so doing, the angular wrap-around on the interval 
+ that exists in the original is extended to a 
+ interval for primary rotations, which in turn provides clean directional statistics. The modified algorithm is detailed in this article and an empirical example is shown. The empirical example is analyzed in the context of random matrix theory, after which two methods are discussed to stabilize eigenvector pointing directions as they evolve in time. The thucyd Python package and source code, reported in the original paper, has been updated to include the new algorithm and is freely available.
+
 ## The Economic Value of MSE [link](https://www.researchgate.net/publication/381196782_The_Economic_Value_of_Mean_Squared_Error_Evidence_from_Portfolio_Selection)
 Zhaokun Cai et al
 
