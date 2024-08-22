@@ -6,6 +6,27 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+
+## Portfolio management with robustness in both prediction and decision: A mixture model based learning approach [pdf](https://isiarticles.com/bundles/Article/pre/pdf/49455.pdf)
+Shushang Zhu, Minjie Fan, Duan Li
+
+We develop in this paper a novel portfolio selection framework with a feature of double
+robustness in both return distribution modeling and portfolio optimization. While predicting
+the future return distributions always represents the most compelling challenge in investment,
+any underlying distribution can be always well approximated by utilizing a mixture distribution, if we are able to ensure that the component list of a mixture distribution includes all
+possible distributions corresponding to the scenario analysis of potential market modes.
+Adopting a mixture distribution enables us to (1) reduce the problem of distribution prediction
+to a parameter estimation problem in which the mixture weights of a mixture distribution are
+estimated under a Bayesian learning scheme and the corresponding credible regions of the
+mixture weights are obtained as well and (2) harmonize information from different channels,
+such as historical data, market implied information and investors' subjective views. We further
+formulate a robust mean-CVaR portfolio selection problem to deal with the inherent
+uncertainty in predicting the future return distributions. By employing the duality theory, we
+show that the robust portfolio selection problem via learning with a mixture model can be
+reformulated as a linear program or a second-order cone program, which can be effectively
+solved in polynomial time. We present the results of simulation analyses and primary empirical
+tests to illustrate a significance of the proposed approach and demonstrate its pros and cons.
+
 ## Data-driven distributionally robust optimization using the wasserstein metric: Performance guarantees and tractable reformulations [pdf](https://arxiv.org/pdf/1505.05116)
 PEYMAN MOHAJERIN ESFAHANI AND DANIEL KUHN
 
