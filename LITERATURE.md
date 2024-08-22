@@ -107,6 +107,12 @@ By focusing on constant rebalanced portfolios, we exploit temporal symmetries to
 emerging distributionally robust optimization problems as tractable conic programs whose sizes are
 independent of the investment horizon.
 
+## Portfolio Optimization and Parameter Uncertainty [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4709317) [code](https://os.fortitudo.tech)
+Laura Kristensen and Anton Vorobets
+
+Portfolio optimization has a mixed reputation among investment managers, with some being so skeptical that they believe it is almost useless due to the inherent parameter uncertainty. It is undeniable that portfolio optimization problems are sensitive to parameter estimates, especially the expected returns that are arguably also the hardest parameters to estimate. However, most practitioners still attempt to build mean-risk optimal portfolios, albeit in implicit ways. Resampled optimization is a popular mathematical heuristic to tackle the parameter uncertainty issue. It computes optimal portfolios using sampled parameter estimates and calculates a simple average of the portfolio exposures across samples. The unsatisfactory aspect of the resampled approach is that there is no mathematical justification for using the average of portfolio exposures, it just works well in practice. This article provides perspectives for understanding the resampling approach by analyzing the portfolio exposure estimation process from a bias-variance trade-off. We show that the traditional resampled optimization corresponds to a naive version of stacked generalization. Finally, we introduce a stacked generalization approach that can be used to handle both parameter uncertainty and combine optimization methods in full generality. We coin the new method Exposure Stacking.
+
+
 ## Distributionally Robust Reward-risk Ratio Programming with Wasserstein Metric [pdf](https://optimization-online.org/wp-content/uploads/2017/01/5805.pdf)
 Yong Zhao, Yongchao Liu, Jin Zhang, Xinmin Yang
 
