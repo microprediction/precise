@@ -6,6 +6,58 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Distributionally Robust Reward-risk Ratio Programming with Wasserstein Metric [pdf](https://optimization-online.org/wp-content/uploads/2017/01/5805.pdf)
+Yong Zhao, Yongchao Liu, Jin Zhang, Xinmin Yang
+
+Reward-risk ratio (RR) is a very important stock market definition. In order to capture the
+situation that the investor does not have complete information on the distribution of the underlying
+uncertainty, people extend RR model to distributionally robust reward-risk ratio (DRR) model. In this
+paper, we study the DRR problem where the ambiguity on the distributions is defined through Wassertein
+metric. Under some moderate conditions, we show that for a fixed ratio, the DRR problem has the
+tractable reformulation, which means that we may solve the problem by bisection method. Specifically,
+we analyze the DRR problems for Sortino-Satchel ratio, Stable Tail Adjusted Return ratio and Omega
+ratio.
+
+## Robust minimum variance portfolio optimization modelling under scenario uncertainty [pdf](https://isiarticles.com/bundles/Article/pre/pdf/111157.pdf)
+Panos Xidonasa, Christis Hassapis, John Soulisc, Aristeidis Samitasd
+
+Our purpose in this article is to develop a robust optimization model which minimizes portfolio variance for a
+finite set of covariance matrices scenarios. The proposed approach aims at the proper selection of portfolios, in a
+way that for every covariance matrix estimate included in the analysis, the calculated portfolio variance remains
+as close to the corresponding individual minimum value, as possible. To accomplish this, we formulate a mixedinteger non-linear program with quadratic constraints. With respect to practical underlying concerns,
+investment policy constraints regarding the portfolio structure are also taken into consideration. The validity
+of the proposed approach is verified through extensive out-of-sample empirical testing in the EuroStoxx 50, the
+S & P 100, the S & P 500, as well as a well-diversified investment universe of ETFs. We report consistent
+generation of stable out-of-sample returns, which are in most cases superior to those of the worst-case scenario.
+Moreover, we provide strong evidence that the proposed robust model assists in selective asset picking and
+systematic avoidance of excessive losses.
+
+
+## Robust portfolio optimization: a categorized bibliographic review [pdf](https://www.terry.uga.edu/wp-content/uploads/Robust.pdf)
+Panos Xidonas, Ralph Steuer, Christis Hassapis
+
+Robust portfolio optimization refers to finding an asset allocation strategy whose behavior
+under the worst possible realizations of the uncertain inputs, e.g., returns and covariances, is
+optimized. The robust approach is in contrast to the classical approach, where one estimates
+the inputs to a portfolio allocation problem and then treats them as certain and accurate. In
+this paper we provide a categorized bibliography on the application of robust mathematical
+programming to the portfolio selection problem. With no similar surveys available, one of
+the aims of this review is to provide quick access for those interested, but maybe not yet in the
+area, so they know what the area is about, what has been accomplished and where everything
+can be found. Toward this end, a total of 148 references have been compiled and classified
+in various ways. Additionally, the number of Scopus© citations by contribution and journal
+is recorded. Finally, a brief discussion of the review’s major findings is provided and some
+solid leads on future directions are given.
+
+## Regime-dependent Robust Risk Measures with Application in Portfolio Selection [via](https://www.researchgate.net/publication/262691745_Regime-dependent_Robust_Risk_Measures_with_Application_in_Portfolio_Selection)
+Jia Liu, Zhiping Chen
+
+Current robust risk measures or portfolio selection models are usually derived under the worst-case analysis, which makes the investment decision too conservative and could not reflect the change of uncertainty sets with respect to different market environ- ments. We use the regime switching technique to describe the time-varying uncertainty set of the first and second order moments, and propose two kinds of robust risk measures: worst regime risk measure and mixed worst-case risk measure. These new risk measures have good properties and the robust portfolio selection models derived from them can be efficiently solved in polynomial time. Empirical results show the reasonability and efficiency of our new models.
+
+## Robust Portfolio Rebalancing with Cardinality and Diversification Constraints [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3808694)
+Zhihua Allen-Zhao, Fengmin Xu, Donglei Du, Meihua Wang
+
+In this paper, we develop a robust conditional value at risk (CVaR) optimal portfolio rebalancing model under various financial constraints to construct sparse and diversified rebalancing portfolios. Our model includes transaction costs and double cardinality constraints in order to capture the trade-off between the limit of investment scale and the diversified industry coverage requirement. We first derive a closed-form solution for the robust CVaR portfolio rebalancing model with only transaction costs. It allows us to conduct industry risk analysis for sparse portfolio rebalancing in the absence of diversification constraints. Then, we attempt to remedy the hidden industry risk by establishing a new robust portfolio rebalancing model with both sparse and diversified constraints. This is followed by the development of a distributed-version of the Alternating Direction Method of Multipliers (ADMM) algorithm, where each subproblem admits a closed-form solution. Finally, we conduct empirical tests to compare our proposed strategy with the standard sparse rebalancing and no-rebalancing strategies. The computational results demonstrate that our rebalancing approach produces sparse and diversified portfolios with higher industry coverage. Additionally, to measure out-of-sample performance, two superiority indices are created based on the worst-case CVaR and annualized return, respectively. Our ADMM strategy also outperforms the sparse rebalancing and no-rebalancing strategies in terms of the two indices.
 
 ## Portfolio management with robustness in both prediction and decision: A mixture model based learning approach [pdf](https://isiarticles.com/bundles/Article/pre/pdf/49455.pdf)
 Shushang Zhu, Minjie Fan, Duan Li
