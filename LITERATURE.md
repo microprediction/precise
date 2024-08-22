@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Incorporating estimation errors into portfolio selection: Robust portfolio construction [via](https://www.researchgate.net/publication/228380747_Incorporating_estimation_errors_into_portfolio_selection_Robust_portfolio_construction)
+Sebastián Ceria and Robert A. Stubbs
+
+The authors explore the negative effect that estimation error has on mean-variance optimal portfolios. It is shown that asset weights in mean-variance optimal portfolios are very sensitive to slight changes in input parameters. This instability is magnified by the presence of constrains that asset managers typically impose on their portfolios. The authors propose to use robust mean variance, a new technique which is based on robust optimisation, a deterministic framework designed to explicitly consider parameter uncertainty in optimisation problems. Alternative uncertainty regions that create a less conservative robust problem are introduced. In fact, the authors' proposed approach does not assume that all estimation errors will negatively affect the portfolios, as is the case in traditional robust optimisation, but rather that there are as many errors with negative consequences as there are errors with positive consequences. The authors demonstrate through extensive computational experiments that portfolios generated with their proposed robust mean variance methodolgy typically outperform traditional mean variance portfolios in a variety of investment scenarios. Additionally, robust mean variance portfolios are usually less sensitive to input parameters.
+
 ## Robust Portfolio Optimization with Correlation Penalties [pdf](https://kth.diva-portal.org/smash/get/diva2:1816894/FULLTEXT01.pdf)
 Pelle Nydahl
 
