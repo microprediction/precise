@@ -6,6 +6,26 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Robust Growth-Optimal Portfolios [pdf](https://core.ac.uk/download/pdf/76990543.pdf)
+Napat Rujeerapaiboon
+
+A portfolio which has a maximum expected growth rate is often referred to in the literature as a logoptimal portfolio or a growth-optimal portfolio. The origin of the log-optimal portfolio is arguably
+due to Kelly when he observed that logarithmic wealth is additive in sequential investments and
+invented a betting strategy for gambling that relies on results from information theory. As a result of
+the law of large numbers, if investment returns are serially independent and identically distributed,
+the growth rate of any constant rebalanced portfolio (the log-optimal portfolio included) converges
+to its expectation. Moreover, under such conditions, one of the strongest advantages of the logoptimal portfolio is that, when implemented repeatedly, the log-optimal portfolio outperforms any
+other causal portfolio in the long run with probability 1. In other words, if all of these conditions
+are met, there is no sequence of portfolios that has a higher growth rate than that of the log-optimal
+portfolio. Stock markets however are different from casinos in the sense that investment returns are
+not serially independent and identically distributed. Also, since trading incurs transaction costs,
+investors are discouraged from making frequent trades. Plus, the probability distribution of stock
+returns is never precisely known, which impedes the calculation of the log-optimal portfolio. In
+this project, we generalize the results for the log-optimal portfolio. In particular, we establish similar guarantees for finite investment horizons where the distribution of stock returns is ambiguous.
+By focusing on constant rebalanced portfolios, we exploit temporal symmetries to formulate the
+emerging distributionally robust optimization problems as tractable conic programs whose sizes are
+independent of the investment horizon.
+
 ## Distributionally Robust Reward-risk Ratio Programming with Wasserstein Metric [pdf](https://optimization-online.org/wp-content/uploads/2017/01/5805.pdf)
 Yong Zhao, Yongchao Liu, Jin Zhang, Xinmin Yang
 
