@@ -6,6 +6,12 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## A new distributionally robust reward-risk model for portfolio optimization [pdf](https://www.degruyter.com/document/doi/10.1515/math-2024-0010/pdf?licenseType=open-access)
+Yijia Zhou and Lijun Xu 
+
+A new distributionally robust ratio optimization model is proposed under the known first and second moments of the uncertain distributions. In this article, both standard deviation (SD) and conditional value-at-risk (CVaR) are used to measure the risk, avoiding both fat-tail and volatility. The new model can be reduced to a simple distributionally robust model under assumptions on the measurements of reward, CVaR and SD. Furthermore, it can be rewritten as a tractable semi-definite programming problem by the duality theorem under partially known information of the uncertain parameters. Finally, the model is tested on portfolio problems and verified from numerical results that it can give a reasonable decision under only the first and second moments.
+
+
 ## Robust and Sparse Portfolio: Optimization Models and Algorithms [pdf](https://www.mdpi.com/2227-7390/11/24/4925)
 Hongxin Zhao, Yilun Jiang, and Yizhou Yang
 
