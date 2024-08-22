@@ -7,6 +7,17 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Some connections between higher moments portfolio optimization methods [pdf](https://arxiv.org/pdf/2201.00205)
+Farshad Noravesh1 Kristiaan Kerstens 
+
+In this paper, different approaches to portfolio optimization having
+higher moments such as skewness and kurtosis are classified so that
+the reader can observe different paradigms and approaches in this
+field of research which is essential for practitioners in Hedge Funds
+in particular. Several methods based on different paradigms such as
+utility approach and multi-objective optimization are reviewed and
+the advantage and disadvantageous of these ideas are explained. 
+
 ## Incorporating estimation errors into portfolio selection: Robust portfolio construction [via](https://www.researchgate.net/publication/228380747_Incorporating_estimation_errors_into_portfolio_selection_Robust_portfolio_construction)
 Sebastián Ceria and Robert A. Stubbs
 
