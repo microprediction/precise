@@ -6,6 +6,23 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Data-driven distributionally robust optimization using the wasserstein metric: Performance guarantees and tractable reformulations [pdf](https://arxiv.org/pdf/1505.05116)
+PEYMAN MOHAJERIN ESFAHANI AND DANIEL KUHN
+
+We consider stochastic programs where the distribution of the uncertain parameters is only observable through a finite training dataset. Using the Wasserstein metric, we construct a ball in the space of
+(multivariate and non-discrete) probability distributions centered at the uniform distribution on the training samples, and we seek decisions that perform best in view of the worst-case distribution within this
+Wasserstein ball. The state-of-the-art methods for solving the resulting distributionally robust optimization
+problems rely on global optimization techniques, which quickly become computationally excruciating. In this
+paper we demonstrate that, under mild assumptions, the distributionally robust optimization problems over
+Wasserstein balls can in fact be reformulated as finite convex programs—in many interesting cases even as
+tractable linear programs. Leveraging recent measure concentration results, we also show that their solutions
+enjoy powerful finite-sample performance guarantees. Our theoretical results are exemplified in mean-risk
+portfolio optimization as well as uncertainty quantification.
+
+## Robust and Sparse Portfolio: Optimization Models and Algorithms [via](https://www.researchgate.net/publication/376420963_Robust_and_Sparse_Portfolio_Optimization_Models_and_Algorithms)
+Hongxin Zhao, Yilun Jiang, Yizhou Yang
+
+The robust and sparse portfolio selection problem is one of the most-popular and -frequently studied problems in the optimization and financial literature. By considering the uncertainty of the parameters, the goal is to construct a sparse portfolio with low volatility and decent returns, subject to other investment constraints. In this paper, we propose a new portfolio selection model, which considers the perturbation in the asset return matrix and the parameter uncertainty in the expected asset return. We define three types of stationary points of the penalty problem: the Karush–Kuhn–Tucker point, the strong Karush–Kuhn–Tucker point, and the partial minimizer. We analyze the relationship between these stationary points and the local/global minimizer of the penalty model under mild conditions. We design a penalty alternating-direction method to obtain the solutions. Compared with several existing portfolio models on seven real-world datasets, extensive numerical experiments demonstrate the robustness and effectiveness of our model in generating lower volatility.
 
 ## Some connections between higher moments portfolio optimization methods [pdf](https://arxiv.org/pdf/2201.00205)
 Farshad Noravesh1 Kristiaan Kerstens 
