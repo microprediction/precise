@@ -6,6 +6,21 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Essays on Robust Portfolio Management [pdf](https://www.e-helvetica.nb.admin.ch/api/download/urn%3Anbn%3Ach%3Abel-1412461%3ADis4910.pdf/Dis4910.pdf)
+Lukas Plachel
+
+Chapter 1 addresses the problems of traditional mean-variance optimization originating from model- and estimation errors. In order to simultaneously tackle both
+error sources, a joint method for covariance regularization and robust optimization
+is proposed which exploits the inherent complementarity between the two concepts.
+Chapter 2 introduces a covariance estimation approach which is based solely on
+characteristic company information. In contrast to traditional, time series based estimation procedures which typically lead to extreme and unreliable estimates, the proposed method produces stable covariance matrices which can be used if no time series
+data is available, or complementary to traditional methods. We derive characteristicsbased covariance matrices for a US stock universe and use them as shrinkage targets in
+a minimum variance optimization example. 
+Chapter 3 bridges the gap between MPT and one of the most vivid fields of contemporary research: Artificial Intelligence. A model is introduced which uses a Neural
+Network to learn the relation between portfolio weights and arbitrary measures of
+portfolio success. Based on the resulting approximation function, a Genetic Algorithm is employed to derive a near-optimal allocation. Two portfolio selection examples for the commodity and the equity market illustrate the potential to successfully
+implement a wide scope of traditional and exotic investment strategies.
+
 ## Robust Growth-Optimal Portfolios [pdf](https://core.ac.uk/download/pdf/76990543.pdf)
 Napat Rujeerapaiboon
 
