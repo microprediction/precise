@@ -6,6 +6,12 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Robust Portfolio Selection Based on Copula Change Analysis [via](https://www.researchgate.net/publication/331394689_Robust_Portfolio_Selection_Based_on_Copula_Change_Analysis)
+
+Yingwei Han, Ping Li, Jie Li, Sanmang Wu
+
+In this article, we construct a robust portfolio selection model based on dynamic copulas. We first use a type of dynamic copula, which contains copulas with time-varying parameters or sequence of copulas, to characterize the dynamic dependence between financial assets. Then, we use it for portfolio selection based on worst-case Conditional Value-at-Risk (WCVaR). In the empirical part we choose four representative assets from Chinese market to construct a macro asset allocation of portfolio and make the performance analysis. Results show that our method performs the best in out-of-sample tests when considering the dynamic dependence between assets and the uncertainty in the estimated model.
+
 ## A new distributionally robust reward-risk model for portfolio optimization [pdf](https://www.degruyter.com/document/doi/10.1515/math-2024-0010/pdf?licenseType=open-access)
 Yijia Zhou and Lijun Xu 
 
