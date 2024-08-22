@@ -6,6 +6,22 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+
+## Robust Portfolio Optimization with Correlation Penalties [pdf](https://kth.diva-portal.org/smash/get/diva2:1816894/FULLTEXT01.pdf)
+Pelle Nydahl
+
+Robust portfolio optimization models attempt to address the standard optimization method’s
+high sensitivity to noise in the parameter estimates, by taking an investor’s uncertainty
+about the estimates into account when finding an optimal portfolio. In this thesis, we
+study robust variations of an extension of the mean-variance problem, where an additional
+term penalizing the portfolio’s correlation with an exogenous return sequence is included
+in the objective. Using a normalized risk factor model of the asset returns, estimations are
+done using EMA filtering as well as exponentially weighted linear regression. We show that
+portfolio performance can significantly improve with respect to a range of metrics, such as
+Sharpe ratio, expected shortfall and skewness, when using appropriate robust models and
+hyperparameters. We further show that extending the optimization problem with a correlation penalty can notably reduce portfolio correlation with an arbitrary return sequence,
+with only a small impact on other performance metrics.
+
 ## Robust Portfolio Selection Problems: A Comprehensive Review [arxiv](https://arxiv.org/abs/2103.13806)
 Alireza Ghahtarani, Ahmed Saif, Alireza Ghasemi
 
