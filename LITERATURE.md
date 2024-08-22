@@ -6,6 +6,60 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Robust and Sparse Portfolio: Optimization Models and Algorithms [pdf](https://www.mdpi.com/2227-7390/11/24/4925)
+Hongxin Zhao, Yilun Jiang, and Yizhou Yang
+
+The robust and sparse portfolio selection problem is one of the most-popular and -frequently studied problems in the optimization and financial literature. By considering the uncertainty of the parameters, the goal is to construct a sparse portfolio with low volatility and decent returns, subject to other investment constraints. In this paper, we propose a new portfolio selection model, which considers the perturbation in the asset return matrix and the parameter uncertainty in the expected asset return. We define three types of stationary points of the penalty problem: the Karush–Kuhn–Tucker point, the strong Karush–Kuhn–Tucker point, and the partial minimizer. We analyze the relationship between these stationary points and the local/global minimizer of the penalty model under mild conditions. We design a penalty alternating-direction method to obtain the solutions. Compared with several existing portfolio models on seven real-world datasets, extensive numerical experiments demonstrate the robustness and effectiveness of our model in generating lower volatility.
+
+## Robust Multi-period Portfolio Selection Based on Downside Risk with Asymmetrically Distributed Uncertainty Set [pdf](https://www.researchgate.net/publication/330326468_Robust_Multi-period_Portfolio_Selection_Based_on_Downside_Risk_with_Asymmetrically_Distributed_Uncertainty_Set)
+
+Aifan Ling, Jie Sun, Meihua Wang
+
+Motivated by the asymmetrical attitudes of investors towards downside losses and upside gains, this paper proposes a robust multi-period portfolio selection model based on downside risk with asymmetrically distributed uncertainty set, in which the downside losses of a portfolio are controlled by the lower partial moment (LPM). A computationally tractable approximation approach based on second-order cone optimization is used for solving the proposed model. We show in theory that the optimal solution of the robust model can generate a given probability guarantee for individual and joint stochastic constraints. The effect of the asymmetrically distributed uncertainty set on performance of the optimal solution is analyzed by the usual comparative static method. Comprehensive numerical comparisons with real market data are reported and indicate that the proposed model can obtain the smaller standard deviation and turnover ratios which reduce the Sharpe ratios of optimal portfolio, compared with some well-known models in the literature.
+
+
+## Risk Parity Portfolio Optimization under Heavy-Tailed Returns and Time-Varying Volatility [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4652551)
+Marc S. Paolella, Pawel Polak, Patrick S. Walker
+
+Risk parity portfolio optimization, using expected shortfall as the risk measure, is investigated when asset returns are fat-tailed and heteroscedastic. The conditional return distribution is modeled by an elliptical multivariate generalized hyperbolic distribution, allowing for fast parameter estimation, via an expectation-maximization algorithm and a semi-closed form of the risk contributions. The efficient computation of non-Gaussian risk parity weights sidesteps the need for numerical simulations or Cornish-Fisher-type approximations. Accounting for fat-tailed returns, the risk parity allocation is less sensitive to volatility shocks, thereby generating lower portfolio turnover, in particular during market turmoils such as the global financial crisis. Although risk parity portfolios are surprisingly robust to the misuse of the Gaussian distribution, a more realistic model for conditional returns and time-varying volatilies can improve risk-adjusted returns, reduces turnover during periods of market stress and enables the use of a holistic risk model for portfolio and risk management.
+
+## The 1/N investment strategy is optimal under high model ambiguity [pdf](https://www-user.tu-chemnitz.de/~alopi/publications/uniformInvestRevision.pdf)
+Georg Ch. Pfluga, Alois Pichlera, David Wozabalb
+
+The 1/N investment strategy, i.e. the strategy to split one’s wealth uniformly between the
+available investment possibilities, recently received plenty of attention in the literature. In
+this paper, we demonstrate that the uniform investment strategy is rational in situations where
+an agent is faced with a sufficiently high degree of model uncertainty in the form of ambiguous
+loss distributions. More specifically, we use a classical risk minimization framework to show
+that, for a broad class of risk measures, as the uncertainty concerning the probabilistic model
+increases, the optimal decisions tend to the uniform investment strategy. To illustrate the theoretical results of the paper, we investigate the Markowitz portfolio
+selection model as well as Conditional Value-at-Risk minimization with ambiguous loss distributions. Subsequently, we set up a numerical study using real market data to demonstrate the
+convergence of optimal portfolio decisions to the uniform investment strategy
+
+## On robust mean-variance portfolios [pdf](https://repository.bilkent.edu.tr/server/api/core/bitstreams/79bb8dd8-46d0-48ba-91eb-6ce2b400f77c/content)
+Mustafa Ç. Pınar
+
+We derive closed-form portfolio rules for robust mean–variance portfolio
+optimization where the return vector is uncertain or the mean return
+vector is subject to estimation errors, both uncertainties being confined
+to an ellipsoidal uncertainty set. We consider different mean–variance
+formulations allowing short sales, and derive closed-form optimal portfolio
+rules in static and dynamic settings.
+
+## Mean semi-deviation from a target and robust portfolio choice under distribution and mean return ambiguity [pdf](https://core.ac.uk/download/pdf/52923773.pdf)
+Mustafa Ç. Pınar, A. Burak Paç
+
+We consider the problem of optimal portfolio choice using the lower partial moments
+risk measure for a market consisting of n risky assets and a riskless asset. For when the
+mean return vector and variance/covariance matrix of the risky assets are specified without
+specifying a return distribution, we derive distributionally robust portfolio rules. We then
+address potential uncertainty (ambiguity) in the mean return vector as well, in addition to
+distribution ambiguity, and derive a closed-form portfolio rule for when the uncertainty in
+the return vector is modelled via an ellipsoidal uncertainty set. Our result also indicates a
+choice criterion for the radius of ambiguity of the ellipsoid. Using the adjustable robustness
+paradigm we extend the single-period results to multiple periods, and derive closed-form
+dynamic portfolio policies which mimic closely the single-period policy
+
 ## Essays on Robust Portfolio Management [pdf](https://www.e-helvetica.nb.admin.ch/api/download/urn%3Anbn%3Ach%3Abel-1412461%3ADis4910.pdf/Dis4910.pdf)
 Lukas Plachel
 
