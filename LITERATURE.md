@@ -6,6 +6,11 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+## Optimal Portfolio Diversification via Independent Component Analysis [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3285156)
+Nathan Lassance, Victor DeMiguel, Frédéric D. Vrins
+
+A natural approach to enhance portfolio diversification is to rely on factor-risk parity, which yields the portfolio whose risk is equally spread among a set of uncorrelated factors. The standard choice is to take the variance as risk measure, and the principal components (PCs) of asset returns as factors. Although PCs are unique and useful for dimension reduction, they are an arbitrary choice: any rotation of the PCs results in uncorrelated factors. This is problematic because we demonstrate that any portfolio is a factor-variance-parity portfolio for some rotation of the PCs. More importantly, choosing the PCs does not account for the higher moments of asset returns. To overcome these issues, we propose to use the independent components (ICs) as factors, which are the rotation of the PCs that are maximally independent, and care about higher moments of asset returns. We demonstrate that using the IC-variance-parity portfolio helps to reduce the return kurtosis. We also show how to exploit the near independence of the ICs to parsimoniously estimate the factor-risk-parity portfolio based on Value-at-Risk. Finally, we empirically demonstrate that portfolios based on ICs outperform those based on PCs, and several state-of-the-art benchmarks.
+
 ## Robust Portfolio Selection Based on Copula Change Analysis [via](https://www.researchgate.net/publication/331394689_Robust_Portfolio_Selection_Based_on_Copula_Change_Analysis)
 
 Yingwei Han, Ping Li, Jie Li, Sanmang Wu
