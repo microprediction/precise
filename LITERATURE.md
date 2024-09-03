@@ -6,6 +6,12 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+
+## Optimal Portfolio Size under Parameter Uncertainty [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4886000)
+Nathan Lassance, Rodolphe Vanderveken,Frédéric D. Vrins
+
+Estimation risk in portfolio selection can be mitigated with sparse approaches such as lasso that penalizes for the norm of the portfolio weights and excludes assets from the investment universe. The latter are revealed a posteriori, by identifying which assets receive an optimal weight of zero. We show instead that in the presence of parameter uncertainty, it is desirable to remove assets before computing the portfolio weights. In particular, we show that the optimal portfolio size strikes a tradeoff between accessing additional investment opportunities and limiting estimation risk. Our approach disentangles the determination of the optimal portfolio size from the asset selection rule, making it more easily implementable and robust to estimation risk than alternative sparse methods. Empirically, our restricted portfolios substantially outperform their counterparts applied to all available assets. Our methodology renders portfolio theory valuable even when the full dataset dimension is comparable to the sample size.
+
 ## Optimal Portfolio Diversification via Independent Component Analysis [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3285156)
 Nathan Lassance, Victor DeMiguel, Frédéric D. Vrins
 
