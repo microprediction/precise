@@ -7,7 +7,7 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
-## GEODESICALLY PARAMETERIZED COVARIANCE ESTIMATION [pdf](https://arxiv.org/pdf/2001.01805)
+## Geodesiically Parametrized Covariance Estimation [pdf](https://arxiv.org/pdf/2001.01805)
 ANTONI MUSOLAS, STEVEN T. SMITH, AND YOUSSEF MARZOUK
 
 Statistical modeling of spatiotemporal phenomena often requires selecting a covariance matrix from
