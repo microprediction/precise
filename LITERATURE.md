@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Portfolio Optimization. Theory and Application (Book) [html (https://bookdown.org/palomar/portfoliooptimizationbook/)
+Daniel P. Palomar
+
+his book explores practical financial data modeling and portfolio optimization, covering a wide range of variations and extensions. It systematically starts with mathematical formulations and proceeds to develop practical numerical algorithms, supplemented with code examples to enhance understanding.
+
 ## Efficient and Scalable Parametric High-Order Portfolios Design via the Skew-t Distribution [pdf](https://palomar.home.ece.ust.hk/papers/2023/WangZhouYingPalomar-TSP2023.pdf)
 Xiwen Wang , Rui Zhou, Jiaxi Ying , and Daniel P. Palomar
 
