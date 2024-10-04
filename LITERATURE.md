@@ -10,7 +10,7 @@ Or file an [issue](https://github.com/microprediction/precise/issues).
 ## Efficient and Scalable Parametric High-Order Portfolios Design via the Skew-t Distribution [pdf](https://palomar.home.ece.ust.hk/papers/2023/WangZhouYingPalomar-TSP2023.pdf)
 Xiwen Wang , Rui Zhou, Jiaxi Ying , and Daniel P. Palomar
 
-bstract—Since Markowitz’s mean-variance framework, optimizing a portfolio that strikes a trade-off between maximizing profit and minimizing risk has been ubiquitous in the financial industry. Initially, profit and risk were measured by the first two moments of the portfolio’s return, a.k.a. the mean
+Since Markowitz’s mean-variance framework, optimizing a portfolio that strikes a trade-off between maximizing profit and minimizing risk has been ubiquitous in the financial industry. Initially, profit and risk were measured by the first two moments of the portfolio’s return, a.k.a. the mean
 and variance, which are sufficient to characterize a Gaussian
 distribution. However, it is broadly believed that the first two
 moments are not enough to capture the characteristics of the
