@@ -7,6 +7,28 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Efficient and Scalable Parametric High-Order Portfolios Design via the Skew-t Distribution [pdf](https://palomar.home.ece.ust.hk/papers/2023/WangZhouYingPalomar-TSP2023.pdf)
+Xiwen Wang , Rui Zhou, Jiaxi Ying , and Daniel P. Palomar
+
+bstract—Since Markowitz’s mean-variance framework, optimizing a portfolio that strikes a trade-off between maximizing profit and minimizing risk has been ubiquitous in the financial industry. Initially, profit and risk were measured by the first two moments of the portfolio’s return, a.k.a. the mean
+and variance, which are sufficient to characterize a Gaussian
+distribution. However, it is broadly believed that the first two
+moments are not enough to capture the characteristics of the
+returns’ behavior, which have been recognized to be asymmetric
+and heavy-tailed. Although portfolio designs involving the third
+and fourth moments, i.e., skewness and kurtosis, have been
+demonstrated to outperform the conventional mean-variance
+framework, they present non-trivial challenges. Specifically, in
+the classical framework, the memory and computational cost
+of computing the skewness and kurtosis grow sharply with the
+number of assets. To alleviate the difficulty in high-dimensional
+problems, we consider an alternative expression for high-order
+moments based on parametric representations via a generalized
+hyperbolic skew-t distribution. Then, we reformulate the highorder portfolio optimization problem as a fixed-point problem and propose a robust fixed-point acceleration algorithm that
+solves the problem in an efficient and scalable manner. Empirical
+experiments also attest to the efficiency of our proposed highorder portfolio optimization framework, which presents low complexity and significantly outperforms the state-of-the-art
+methods by 2 ∼ 4 orders of magnitude
+
 ## Optimal Portfolio Size under Parameter Uncertainty [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4886000)
 Nathan Lassance, Rodolphe Vanderveken,Frédéric D. Vrins
 
