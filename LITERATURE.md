@@ -7,6 +7,13 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## GEODESICALLY PARAMETERIZED COVARIANCE ESTIMATION [pdf](https://arxiv.org/pdf/2001.01805)
+ANTONI MUSOLAS, STEVEN T. SMITH, AND YOUSSEF MARZOUK
+
+Statistical modeling of spatiotemporal phenomena often requires selecting a covariance matrix from
+a covariance class. Yet standard parametric covariance families can be insufficiently flexible for practical applications, while non-parametric approaches may not easily allow certain kinds of prior knowledge to be incorporated. We propose instead to build covariance families out of geodesic curves. These covariances offer more flexibility for problem-specific tailoring than classical parametric families, and are preferable to simple convex combinations. Once the covariance family has been chosen, one typically needs to select a representative member by solving an optimization problem, e.g., by maximizing the likelihood of a data set. We consider instead a differential geometric interpretation of this problem: minimizing the geodesic distance to a sample covariance matrix (“natural projection”). Our approach is consistent with the notion of distance employed to build the covariance family and does not require assuming a particular probability distribution for the data. We show that natural projection and maximum likelihood estimation within the covariance family are locally equivalent up to second order. We also demonstrate
+that natural projection may yield more accurate estimates with noise-corrupted data
+
 ## Portfolio Optimization. Theory and Application (Book) [html](https://bookdown.org/palomar/portfoliooptimizationbook/)
 Daniel P. Palomar
 
