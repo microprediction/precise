@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Constrained Max Drawdown [pdf](https://arxiv.org/pdf/2401.02601)
+Albert Dorador
+
+We propose an alternative linearization to the classical Markowitz quadratic portfolio optimization model, based on maximum drawdown. This model, which minimizes maximum portfolio drawdown, is particularly appealing during times of financial distress, like during the COVID-19 pandemic. In addition, we will present a Mixed-Integer Linear Programming variation of our new model that, based on our out-of-sample results and sensitivity analysis, delivers a more profitable and robust solution with a 200 times faster solving time compared to the standard Markowitz quadratic formulation.
+
 ## Geodesiically Parametrized Covariance Estimation [pdf](https://arxiv.org/pdf/2001.01805)
 ANTONI MUSOLAS, STEVEN T. SMITH, AND YOUSSEF MARZOUK
 
