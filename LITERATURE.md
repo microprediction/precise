@@ -7,10 +7,6 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
-## Hierarchical Matrices: Algorithms and Analysis (Book as pdf) [via](https://www.researchgate.net/publication/267664110_Hierarchical_Matrices_Algorithms_and_Analysis)
-Wolfgang Hackbusch
-
-
 
 
 ## Constrained Max Drawdown [pdf](https://arxiv.org/pdf/2401.02601)
@@ -1213,3 +1209,19 @@ In this paper, we revisit the relationship between investors' utility functions 
 Maxime Markov, Vladimir Markov
 
 In this paper, we explore the portfolio allocation problem involving an uncertain covariance matrix. We calculate the expected value of the Constant Absolute Risk Aversion (CARA) utility function, marginalized over a distribution of covariance matrices. We show that marginalization introduces a logarithmic dependence on risk, as opposed to the linear dependence assumed in the mean-variance approach. Additionally, it leads to a decrease in the allocation level for higher uncertainties. Our proposed method extends the mean-variance approach by considering the uncertainty associated with future covariance matrices and expected returns, which is important for practical applications.
+
+
+
+## A FAST PARALLEL ALGORITHM FOR SELECTED INVERSION OF STRUCTURED SPARSE MATRICES WITH APPLICATION TO 2D ELECTRONIC STRUCTURE CALCULATIONS [pdf](https://sites.math.duke.edu/~jianfeng/paper/parallel.pdf)
+LIN LIN, CHAO YANG, JIANFENG LU, LEXING YING, AND WEINAN E
+
+An efficient parallel algorithm is presented and tested for computing selected components of H−1 where H has the structure of a Hamiltonian matrix of two-dimensional lattice models
+with local interaction. Calculations of this type are useful for several applications, including electronic structure analysis of materials in which the diagonal elements of the Green’s functions are
+needed. The algorithm proposed here is a direct method based on an LDLT factorization. The
+elimination tree is used to organize the parallel algorithm. Synchronization overhead is reduced by
+passing the data level by level along this tree using the technique of local buffers and relative indices.
+The performance of the proposed parallel algorithm is analyzed by examining its load balance and
+communication overhead, and is shown to exhibit an excellent weak scaling on a large-scale high
+performance parallel machine with distributed memory.
+
+
