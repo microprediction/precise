@@ -7,6 +7,12 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Hierarchical Matrices: Algorithms and Analysis (Book as pdf) [via](https://www.researchgate.net/publication/267664110_Hierarchical_Matrices_Algorithms_and_Analysis)
+Wolfgang Hackbusch
+
+
+
+
 ## Constrained Max Drawdown [pdf](https://arxiv.org/pdf/2401.02601)
 Albert Dorador
 
