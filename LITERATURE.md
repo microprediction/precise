@@ -1175,6 +1175,20 @@ applications conrm that ranking. All in all, equally-weighted risk contribution
 and equally-weighted portfolios and might be considered a good trade-o between those two approaches in terms of absolute level of risk, risk budgeting
 and diversication.
 
+## High Performance Cholesky and Symmetric Indefinite Factorizations with Applications [pdf](https://www.maths.ed.ac.uk/sites/default/files/atoms/files/hogg.pdf)
+Jonathan David Hogg
+
+The process of factorizing a symmetric matrix using the Cholesky (LLT) or indefinite (LDLT) factorization of A allows the efficient solution of systems Ax = b when A is symmetric. This
+thesis describes the development of new serial and parallel techniques for this problem and
+demonstrates them in the setting of interior point methods.
+In serial, the effects of various scalings are reported, and a fast and robust mixed precision
+sparse solver is developed. In parallel, DAG-driven dense and sparse factorizations are developed
+for the positive definite case. These achieve performance comparable with other world-leading
+implementations using a novel algorithm in the same family as those given by Buttari et al. for
+the dense problem. Performance of these techniques in the context of an interior point method
+is assessed.
+
+
 
 ## Improved iterative methods for solving risk parity portfolio [pdf](https://www.emerald.com/insight/content/doi/10.1108/JDQS-12-2021-0031/full/pdf?title=improved-iterative-methods-for-solving-risk-parity-portfolio)
 Jaehyuk Choi and Rong Chen
