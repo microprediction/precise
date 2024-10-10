@@ -9,6 +9,19 @@ Or file an [issue](https://github.com/microprediction/precise/issues).
 
 
 
+## The Factorization of Sparse Symmetric Indefinite Matrices [pdf](https://www.numerical.rl.ac.uk/media/people/nick-gould/DuffGoulReidScot91_imajna.pdf)
+Duff et al
+
+The Harwell multifrontal code MA27 is able to solve symmetric indefinite systems
+of linear equations such as those that arise from least-squares and constrained
+optimization algorithms, but may sometimes lead to many more arithmetic
+operations being needed to factorize the matrix than is required by other
+strategies. In this paper, we report on the results of our investigation of this
+problem. We have concentrated on seeking new strategies that preserve the
+multifrontal principle but follow the sparsity structure more closely in the case
+when some of the diagonal entries are zero.
+
+
 ## Constrained Max Drawdown [pdf](https://arxiv.org/pdf/2401.02601)
 Albert Dorador
 
