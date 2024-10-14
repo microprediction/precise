@@ -8,7 +8,7 @@ Or file an [issue](https://github.com/microprediction/precise/issues).
 
 
 ## Shrinking the eigenvalues of M-estimators of covariance matrix [pdf](https://arxiv.org/pdf/2006.10005)
-Daniel P. Palomar, Fred´ eric Pascal
+Daniel P. Palomar, Frederic Pascal
 
 A highly popular regularized (shrinkage) covariance
 matrix estimator is the shrinkage sample covariance matrix
