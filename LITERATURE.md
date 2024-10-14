@@ -7,6 +7,28 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Shrinking the eigenvalues of M-estimators of covariance matrix [pdf](https://arxiv.org/pdf/2006.10005)
+Daniel P. Palomar, Fred´ eric Pascal
+
+A highly popular regularized (shrinkage) covariance
+matrix estimator is the shrinkage sample covariance matrix
+(SCM) which shares the same set of eigenvectors as the SCM but
+shrinks its eigenvalues toward the grand mean of the eigenvalues
+of the SCM. In this paper, a more general approach is considered
+in which the SCM is replaced by an M-estimator of scatter
+matrix and a fully automatic data adaptive method to compute
+the optimal shrinkage parameter with minimum mean squared
+error is proposed. Our approach permits the use of any weight
+function such as Gaussian, Huber’s, Tyler’s, or t weight functions,
+all of which are commonly used in M-estimation framework. Our
+simulation examples illustrate that shrinkage M-estimators based
+on the proposed optimal tuning combined with robust weight
+function do not loose in performance to shrinkage SCM estimator
+when the data is Gaussian, but provide significantly improved
+performance when the data is sampled from an unspecified
+heavy-tailed elliptically symmetric distribution. Also, real-world
+and synthetic stock market data validate the performance of the
+proposed method in practical applications
 
 
 ## The Factorization of Sparse Symmetric Indefinite Matrices [pdf](https://www.numerical.rl.ac.uk/media/people/nick-gould/DuffGoulReidScot91_imajna.pdf)
