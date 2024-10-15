@@ -7,6 +7,12 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Universal Portfolios [pdf](https://web.mit.edu/6.454/www/www_fall_2001/shaas/universal_portfolios.pdf)
+Tom Cover
+
+We exhibit an algorithm for portfolio selection that asymptotically outperforms the best stock in the market. 
+
+
 ## Shrinking the eigenvalues of M-estimators of covariance matrix [pdf](https://arxiv.org/pdf/2006.10005)
 Daniel P. Palomar, Frederic Pascal
 
