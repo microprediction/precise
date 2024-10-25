@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Squeezing Financial Noise: A Novel Approach to Covariance Matrix Estimation [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4986939)
+Sander Gerber et al
+
+We introduce a technique which can be used to manipulate the noise present in financial data in order to better estimate a covariance matrix. The technique, which we refer to as squeezing, parameterizes statistical distributional alignment so that we can vectorize co-movement noise. Squeezing underpins a novel approach to portfolio optimization in which the covariance matrix may be determined on an objective-specific basis. Our model-free approach more fully explores the eigenspace of the estimated matrix and is applicable across the dimensionality range of portfolio size and concentration. Squeezing is shown to outperform popular techniques used to treat noise in financial covariance matrices
+
 ## Universal Portfolios [pdf](https://web.mit.edu/6.454/www/www_fall_2001/shaas/universal_portfolios.pdf)
 Tom Cover
 
