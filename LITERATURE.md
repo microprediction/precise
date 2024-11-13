@@ -7,6 +7,12 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Graph-Based Methods for Forecasting Realized Covariances  [via](https://academic.oup.com/jfec/advance-article/doi/10.1093/jj)
+Chao Zhang, Xingyue Pu, Mihai Cucuringu, Xiaowen Dong
+
+We forecast the realized covariance matrix of asset returns in the U.S. equity market by exploiting the predictive information of graphs in volatility and correlation. Specifically, we augment the Heterogeneous Autoregressive model via neighborhood aggregation on these graphs. Our proposed method allows for the modeling of interdependence in volatility (also known as spillover effect) and correlation, while maintaining parsimony and interpretability. We explore various graph construction methods, including sector membership and graphical LASSO (for modeling volatility), and line graph (for modeling correlation). The results generally suggest that the augmented model incorporating graph information yields both statistically and economically significant improvements for out-of-sample performance over the traditional models. Such improvements remain significant over horizons up to 1 month ahead, but decay in time. The robustness tests demonstrate that the forecast improvements are obtained consistently over the different out-of-sample sub-periods and are insensitive to measurement errors of volatilities.
+
+
 ## Squeezing Financial Noise: A Novel Approach to Covariance Matrix Estimation [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4986939)
 Sander Gerber et al
 
