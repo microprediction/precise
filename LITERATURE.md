@@ -7,6 +7,21 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Trans-Glasso: A Transfer Learning Approach to Precision Matrix Estimation [arxiv](https://arxiv.org/pdf/2411.15624)
+Boxin Zhao1, Cong Ma2 , and Mladen Kolar
+
+Precision matrix estimation is essential in various fields, yet it is challenging when
+samples for the target study are limited. Transfer learning can enhance estimation accuracy by leveraging data from related source studies. We propose Trans-Glasso, a two-step
+transfer learning method for precision matrix estimation. First, we obtain initial estimators using a multi-task learning objective that captures shared and unique features
+across studies. Then, we refine these estimators through differential network estimation
+to adjust for structural differences between the target and source precision matrices.
+Under the assumption that most entries of the target precision matrix are shared with
+source matrices, we derive non-asymptotic error bounds and show that Trans-Glasso
+achieves minimax optimality under certain conditions. Extensive simulations demonstrate Trans-Glasso ’s superior performance compared to baseline methods, particularly
+in small-sample settings. We further validate Trans-Glasso in applications to gene networks across brain tissues and protein networks for various cancer subtypes, showcasing
+its effectiveness in biological contexts. Additionally, we derive the minimax optimal rate
+for differential network estimation, representing the first such guarantee in this area.
+
 ## Graph-Based Methods for Forecasting Realized Covariances  [JoFE](https://academic.oup.com/jfec/advance-article/doi/10.1093/jjfinec/nbae026/7889003?login=false)
 Chao Zhang, Xingyue Pu, Mihai Cucuringu, Xiaowen Dong
 
