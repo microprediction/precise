@@ -46,7 +46,7 @@ def _lw_ema_scov_update(s, x, r):
     """
     # Uses buffered LD up to 2*n_emp observations, then switches to an updating scheme
     x = np.asarray(x)
-    s['ema_scov']  = ema_scov(s=s['ema_scov'], x=x, r=r)
+    s['ema_scov']  = ema_scov(s=s['ema_scov'], y=x, r=r)
     s['buffer'].append(x)
     if len(s['buffer'])>s['ema_scov']['n_emp']:
         # Update running estimate of the LD shrinkage parameter

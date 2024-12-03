@@ -60,12 +60,12 @@ if __name__ == '__main__':
     ]
     # Update with data points
     for x in data_stream:
-        print({'x':x})
+        print({'y':x})
         skater_cov.update(x=x, f=f)
 
     # Second lap
     for x in data_stream:
-        print({'x': x})
+        print({'y': x})
         skater_cov.update(x=x,f=f)
 
         # Retrieve correlation matrix

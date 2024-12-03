@@ -20,7 +20,7 @@ def infer_dimension(n_dim:int=None, x:X_TYPE=None, **ignore)->int:
     elif len(x)>1:
         return len(x)
     else:
-        raise ValueError('Ambiguity in number of variables. Try supplying x or n_dim')
+        raise ValueError('Ambiguity in number of variables. Try supplying y or n_dim')
 
 
 def is_data(x):

@@ -16,20 +16,20 @@ def test_same_burn_in():
 
     sm = {}
     for x in data:
-        sm = ema_scov(s=sm, x=x)
+        sm = ema_scov(s=sm, y=x)
 
     assert np.isclose(se['pcov'], sm['pcov']).all()
 
 
 def test_diag():
-    data = create_correlated_dataset(19, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7], [0.3, 0.2, 0.2], [0.5, 0.3, 0.1]]),
+    data = create_correlated_dataset(100, (2.2, 4.4, 1.5), np.array([[0.2, 0.5, 0.7], [0.3, 0.2, 0.2], [0.5, 0.3, 0.1]]),
                                      (1, 5, 3))
     rho = 0.05
     r0 = {}
     r1 = {}
     n_emp = 10
     for k,x in enumerate(data):
-        r1 = ema_scov(s=r1, x=x,r=rho, n_emp=n_emp)
+        r1 = ema_scov(s=r1, y=x, r=rho, n_emp=n_emp)
         r0 = rvar(m=r0,x=x[0],rho=rho, n=n_emp)
         if k >= 2:
             c = r1['scov'][0, 0]

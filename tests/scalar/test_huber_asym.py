@@ -7,8 +7,8 @@ def huber_ratio(x):
     b = 1.0
     f = math.log(math.exp(a * x) + math.exp(-(a * x)) + b) / a
     c = math.log(2 + b) / a
-    d = a / (2 + b)  # f-c ->  d x**2
-    g = (f - c) / d  # g -> x**2
+    d = a / (2 + b)  # f-c ->  d y**2
+    g = (f - c) / d  # g -> y**2
     h = x ** 2
     r = g / h
     return r

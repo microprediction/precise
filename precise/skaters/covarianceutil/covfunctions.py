@@ -354,9 +354,9 @@ def _schur_complement_direct(A, B, C, D, gamma):
 
 
 def inverse_multiply(a, b, warn=False, throw=False):
-    # Want  x = a^{-1} b
-    #       a x = b
-    #       x = solve(a,b)
+    # Want  y = a^{-1} b
+    #       a y = b
+    #       y = solve(a,b)
     x = np.linalg.solve(a, b)
     if (warn or throw):
         if np.linalg.matrix_rank(x)<max(np.shape(a)):
@@ -372,7 +372,7 @@ def inverse_multiply(a, b, warn=False, throw=False):
 
 
 def multiply_by_inverse(a, b, throw=True):
-    #  Want x = a b^{-1}
+    #  Want y = a b^{-1}
     #       xt = bt^{-1} at  = inverse_multiply(bt, at)
     #       bt xt = at
     #       xt = solve(bt, at)
