@@ -57,7 +57,7 @@ setup(
     tests_require=['pytest','riskparityportfolio'],
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.7','kmeans1d','scikit-learn','latextable','tomark',
-                      'pandas_datareader','pandas','scipy>=1.7.3','pyportfolioopt','collinearity',
+                      'pandas_datareader','pandas','scipy','pyportfolioopt','collinearity',
                       'yfinance'],
     entry_points={
         "console_scripts": [
