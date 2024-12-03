@@ -1,6 +1,7 @@
 from precise.inclusion.pyportfoliooptinclusion import using_pyportfolioopt
+from precise.inclusion.riskparityportfolioinclusion import using_riskparityportfolio
 
-if using_pyportfolioopt:
+if using_pyportfolioopt and using_riskparityportfolio:
     from precise.skaters.managers.slurpmanagerfactory import slurp_vol_manager_factory
 
     def slurp_vol_r025_s2_p20_g000_long_manager(y, s, k=1, e=1,j=1,q=1.0):

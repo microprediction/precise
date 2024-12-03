@@ -16,7 +16,7 @@ def test_random_slurp_manager():
 
 
 def test_troublesome():
-    if using_pyportfolioopt:
+    if using_pyportfolioopt and using_riskparityportfolio:
         from precise.skaters.managers.slurpmanagers import slurp_vol_r001_s5_p20_g100_long_manger as mgr
         ys = random_cached_equity_dense(k=1, n_obs=50, n_dim=5, as_frame=False)
         s = {}

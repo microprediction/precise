@@ -30,7 +30,7 @@ def scatter_tensor_flat(xs, demean=False):
     sc = scatter_tensor(xs=xs, demean=demean)
     [n_samples, n_dim, n_dim_check] = np.shape(sc)
     assert n_dim == n_dim_check
-    return np.reshape(sc, newshape=[n_samples, n_dim * n_dim])
+    return np.reshape(sc, shape=(n_samples, n_dim * n_dim))
 
 
 

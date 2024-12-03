@@ -66,7 +66,7 @@ def verbosely_choose_close_point_on_boundary_of_convex_hull(xs, verbose=False)->
     best_ratio = np.linalg.norm(best_x, ord=1) / d_upper
     best_discount = -1
 
-    W_points = np.row_stack(xs)
+    W_points = np.vstack(xs)
     n_points, n_dim = np.shape(W_points)
     HEAVY = 100
     HEAVIER = 1000

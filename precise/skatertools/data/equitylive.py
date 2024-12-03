@@ -1,6 +1,6 @@
 import pandas_datareader.data as pdr
 import yfinance as yf
-yf.pdr_override()
+
 
 import pandas as pd
 import time

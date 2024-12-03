@@ -9,3 +9,4 @@ scipy
 tomark
 collinearity
 yfinance
+getjson

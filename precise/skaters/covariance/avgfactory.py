@@ -21,7 +21,7 @@ def avg_factory(y, fs, s:dict, k=1, e=1, draw_probability=1.0, **f_kwargs):
            x_mean, x_cov, s['s_fs'][f_ndx] = f(y=y, s=s['s_fs'][f_ndx], k=k, e=e, **f_kwargs)
            ravel_cov, _, ravel_cov_s = emp_d0(y=np.ravel(x_cov), s=ravel_cov_s)
            avg_mean, _, avg_mean_s = emp_d0(y=x_mean, s=avg_mean_s)
-    avg_cov = np.reshape( ravel_cov, newshape=np.shape(x_cov) )
+    avg_cov = np.reshape( ravel_cov, shape=np.shape(x_cov) )
 
     return avg_mean, avg_cov, s
 

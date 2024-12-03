@@ -51,7 +51,7 @@ def scatter_func_cov(xs, cov_loc_func, demean=False, make_pos=True):
             stf = scatter_tensor_flat(xs=xs, demean=demean)  # (n_samples, n_dim*n_dim )
             assert np.shape(stf)[1]==n_dim*n_dim
             loc = cov_loc_func(stf)
-            cov = np.reshape(loc, newshape=(n_dim, n_dim))
+            cov = np.reshape(loc, shape=(n_dim, n_dim))
             if make_pos:
                 cov = nearest_pos_def(a=cov)
             return cov

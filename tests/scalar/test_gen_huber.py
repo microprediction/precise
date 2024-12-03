@@ -13,8 +13,5 @@ def test_huber_mean():
     x_mean = np.mean(xs ,axis=0)
     mu = huber_mean(xs=xs)
     ratios = (mu-x_median)/(x_mean-x_median)
-    return ratios
+    assert True
 
-
-if __name__=='__main__':
-    print(test_huber_mean())
