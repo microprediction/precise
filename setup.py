@@ -58,7 +58,7 @@ setup(
     include_package_data=True,
     install_requires=['numpy','momentum>=0.2.7','kmeans1d','scikit-learn','latextable','tomark',
                       'pandas_datareader','pandas','scipy','pyportfolioopt','collinearity',
-                      'yfinance'],
+                      'yfinance','dictionaries'],
     entry_points={
         "console_scripts": [
             "precise=precise.__main__:main",

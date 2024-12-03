@@ -60,6 +60,8 @@ def _partial_ema_scov_update(s:dict, x:[float], r:float=None, target=None):
 
     assert len(x)==s['n_dim']
 
+    x = np.array(x)
+
     # If target is not supplied we maintain a mean that switches from emp to ema
     if target is None:
         target = s['target']

@@ -41,12 +41,12 @@ def cov_to_corrcoef(a):
         return square_to_square_dataframe(a, cov_to_corrcoef)
     else:
         variances = np.diagonal(a)
-        denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])
+        denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis])+1e-12
         with np.errstate(divide='raise'):
             try:
                 corr = a / denominator
                 return corr
-            except (FloatingPointError, ZeroDivisionError):
+            except (FloatingPointError, ZeroDivisionError, RuntimeWarning):
                 sub_cov = np.diag(variances) + 1e-6
                 return cov_to_corrcoef(sub_cov)
 
@@ -231,7 +231,7 @@ def mean_off_diag(a):
         return square_to_square_dataframe(a, mean_off_diag)
     else:
         n = np.shape(a)[0]
-        b = np.vectorize(int)(a)
+        b = np.vectorize(float)(a)
         b = b - np.eye(n)
         the_sum = np.sum(b,axis=None)
         return the_sum/(n*(n-1))
