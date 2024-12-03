@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.16.2",
+    version="0.16.3",
     description="The home of Schur Hierarchical Portfolios: an aesthetically pleasing version of Hierarchical Risk Parity",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -33,6 +33,7 @@ setup(
               "precise.skaters.locationutil",
               "precise.inclusion",
               "precise.skatertools",
+              "precise.skatertools.dictionaries",
               "precise.skatertools.data",
               "precise.skatertools.ensembling",
               "precise.skatertools.m6",
