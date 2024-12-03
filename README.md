@@ -20,7 +20,7 @@ NEW: Some [slides](https://github.com/microprediction/precise/blob/main/academic
 ---
 
 # Usage 
-See the [docs](https://microprediction.github.io/precise/), but briefly:
+See the [docs](https://microprediction.github.io/precise/) but briefly ...
 
 ### Covariance estimation
 Here y is a vector:
@@ -43,6 +43,7 @@ Here y is a vector:
 This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
 
 # Install 
+Supported for Python 3.11 or earlier
 
     pip install precise 
     
