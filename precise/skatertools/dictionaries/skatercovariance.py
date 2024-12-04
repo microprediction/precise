@@ -116,7 +116,6 @@ class SkaterCovariance():
                         self.states[uni_ndx].cloned = True
                         self.states[self.universe_counter] = clone
                         self.universe_counter += 1
-                        print({'new clone':str(clone)})
                     else:
                         self.states[uni_ndx].staleness += 1
                         # Increment staleness if the new data can't really be used to update the universe usefully
