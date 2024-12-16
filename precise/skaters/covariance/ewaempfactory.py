@@ -81,7 +81,7 @@ def _ema_scov_update(s:dict, x:[float], r:float=None, target=None, y=None):
 
         yyt = np.dot(xcol, ycolT)
         s['scov'] = (1 - r) * s['scov'] + r * yyt
-        s['mean'] = (1 - r) * s['mean'] + r * x
+        s['mean'] = (1 - r) * s['mean'] + r * np.array(x)
         s['pcov']= s['scov']*(s['n_samples']-1)/s['n_samples']
     return s
 
