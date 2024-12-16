@@ -91,7 +91,7 @@ def lz_factory(y, s:dict, n_epoch=DEFAULT_N_EPOCH,
     :param adj_func:         Takes pre matrix and returns binary of same shape (where non-zeros should go)
     :param local_pre_func:   Function to take local cov matrices and produce precision matrices
     :param global_cov_func:  Function to take global precision matrix and produce global cov matrix
-    :return: x, x_cov, s
+    :return: y, x_cov, s
     """
 
     # Mildly tedious stuff...

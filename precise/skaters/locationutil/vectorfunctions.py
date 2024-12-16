@@ -18,7 +18,7 @@ def normalize(x):
 
 def scatter(x):
     """
-         matrix  x x^t
+         matrix  y y^t
     """
     x1 = np.atleast_2d(x)
     xt = np.transpose(x1)

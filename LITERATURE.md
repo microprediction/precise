@@ -7,6 +7,18 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## A Mean/Variance Analysis of Tracking Error [pdf](https://www.anderson.ucla.edu/documents/areas/fac/finance/1992-2.pdf)
+Richard Roll 
+
+Minimizing the volatility of tracking error will not produce a more efficient managed portfolio.
+
+## Passive Investment Styles [pdf](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5024011)
+Tom Ernst, Monika Gehde-Trapp, Holger Kraft
+
+Passive investment funds hold cash, for example to honor redemption claims. We show that in the presence of cash there is no uniquely optimal passive strategy. Instead a trade-off arises: Minimizing tracking error generates a return gap, whereas closing this gap increases tracking error. This gives rise to different passive investment styles. We theoretically and empirically document that three different styles exist, which cater to three different investor types. Furthermore, the existence of cash inevitably leads to deviations from the benchmark (positive and negative) if a fund minimizes tracking error. As a consequence, the passive industry as a whole generates a heterogeneous price impact in the cross section of stock returns resulting from these deviations.
+
+
+
 ## Trans-Glasso: A Transfer Learning Approach to Precision Matrix Estimation [arxiv](https://arxiv.org/pdf/2411.15624)
 Boxin Zhao1, Cong Ma2 , and Mladen Kolar
 

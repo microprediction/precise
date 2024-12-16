@@ -7,9 +7,9 @@ from scipy.optimize import newton
 
 def huber_mean(xs:[[float]], a:float=1.0, b=2.0, n_iter=20, atol=1e-8)->[float]:
     """ Compute a columnwise pseudo-mean of xs, by minimizing a generalized Huber error that is
-        proportional to x^2 near zero and asymptotes to |x| as |x|->infinity.
-               f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
-        This is the same as the function below, except the parameter a will multiply std(x)
+        proportional to y^2 near zero and asymptotes to |y| as |y|->infinity.
+               f(y) = 1/a log( exp(a*(y-mu)) + exp(-(a*(y-mu)) + b )
+        This is the same as the function below, except the parameter a will multiply std(y)
         :param xs:    (n_samples, n_vars)
         :param a:    Generalized Huber parameter as per formula
         :param b:    Generalized Huber parameter as per formula above, scalar or (nvars,)
@@ -36,11 +36,11 @@ def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_fr
         Thus the result mu might be compared to np.mean(xs, axis=0)
 
         The function being minimized w.r.t mu is
-              f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
-        and for |x|->0 this has asymptote:
-             f(x) ->  log(2+b)/a + a/(2+b) * (x-mu)^2
-        whereas for |x|->infinity
-             f(x) -> |x-mu|
+              f(y) = 1/a log( exp(a*(y-mu)) + exp(-(a*(y-mu)) + b )
+        and for |y|->0 this has asymptote:
+             f(y) ->  log(2+b)/a + a/(2+b) * (y-mu)^2
+        whereas for |y|->infinity
+             f(y) -> |y-mu|
 
         This Huber function is not the standard Huber loss https://en.wikipedia.org/wiki/Huber_loss
         Rather, it is based on https://arxiv.org/pdf/2108.12627.pdf
@@ -64,7 +64,7 @@ def huber_mean_absolute_params(xs:[[float]], a, b, n_iter=20, atol=1e-8, with_fr
 def huber_deriv(mu, a, b, xs):
     """ Derivative of generalized Huber loss w.r.t. mu
 
-         f'(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
+         f'(y) = 1/a log( exp(a*(y-mu)) + exp(-(a*(y-mu)) + b )
 
     :param mu:   (n_samples,)                    # Vector of location parameters
     :param xs :   (n_samples,n_vars)              # Data
@@ -83,8 +83,8 @@ def huber_deriv(mu, a, b, xs):
 
 
 def huber_abs_error(mu, a, b, xs):
-    """ Generalized Huber loss which is "like" abs error, as it approaches |x-mu| as |x-mu|-> infinity
-          f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
+    """ Generalized Huber loss which is "like" abs error, as it approaches |y-mu| as |y-mu|-> infinity
+          f(y) = 1/a log( exp(a*(y-mu)) + exp(-(a*(y-mu)) + b )
      """
     n_samples, n_vars = np.shape(xs)
     mu_rep = np.tile(np.atleast_2d(mu), (n_samples, 1))
@@ -104,14 +104,14 @@ def mean_huber_linear_error(mu, a, b, xs):
 
 def huber_squared_error(mu, a, b, xs):
     """ Rescaled generalized Huber loss which is "like" squared error, in
-    the sense that it approaches (x-mu)^2 as |x-mu|-> 0
+    the sense that it approaches (y-mu)^2 as |y-mu|-> 0
 
         If
-         f(x) = 1/a log( exp(a*(x-mu)) + exp(-(a*(x-mu)) + b )
+         f(y) = 1/a log( exp(a*(y-mu)) + exp(-(a*(y-mu)) + b )
         Then
-         f(x) -> log(2+b)/a + a/(2+b) * x^2   as x->0
+         f(y) -> log(2+b)/a + a/(2+b) * y^2   as y->0
         by Taylor. So we define
-         g(x) :=  ( f(x) - log(2+b)/a ) * (2+b)/a
+         g(y) :=  ( f(y) - log(2+b)/a ) * (2+b)/a
 
     """
     f = huber_abs_error(mu=mu,a=a,b=b,xs=xs)

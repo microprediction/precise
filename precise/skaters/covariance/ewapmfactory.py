@@ -7,7 +7,7 @@ from precise.skaters.location.averagingpre import sma
 
 # If no target is supplied, either initially or for the update call, then a running mean will be used.
 
-QUADRANTS = {'cu':(1.0,1,1),    # x*1 > 0  y*1 > 0
+QUADRANTS = {'cu':(1.0,1,1),    # y*1 > 0  y*1 > 0
              'du':(-1.0,-1,1),
              'dl':(-1.0,1,-1),
              'cl':(1.0,-1,-1)}
@@ -30,7 +30,7 @@ def partial_ema_scov(s:dict, x:Union[List[float], int]=None, r:float=0.025, targ
         elif len(x)>1:
             s = _partial_ema_scov_init(n_dim=len(x), r=r, target=target, n_emp=n_emp)
         else:
-            raise ValueError('Not sure how to initialize EWA COV tracker. Supply x=5 say, for 5 dim')
+            raise ValueError('Not sure how to initialize EWA COV tracker. Supply y=5 say, for 5 dim')
     if x is not None:
         s = _partial_ema_scov_update(s=s, x=x, r=r)
     return s
@@ -60,6 +60,8 @@ def _partial_ema_scov_update(s:dict, x:[float], r:float=None, target=None):
 
     assert len(x)==s['n_dim']
 
+    x = np.array(x)
+
     # If target is not supplied we maintain a mean that switches from emp to ema
     if target is None:
         target = s['target']
@@ -69,8 +71,8 @@ def _partial_ema_scov_update(s:dict, x:[float], r:float=None, target=None):
     # Update running partial scatter estimates
     for q,(w,sgn1,sgn2) in QUADRANTS.items():
         # Morally:
-        #    x1 = max(0, (x-target)*sgn1) * sgn1
-        #    x2 = (np.max(0, (x-target)*sgn2) * sgn2) if sgn1!=sgn2 else x1
+        #    x1 = max(0, (y-target)*sgn1) * sgn1
+        #    x2 = (np.max(0, (y-target)*sgn2) * sgn2) if sgn1!=sgn2 else x1
         x1 = (x-target)*sgn1
         x2 = (x-target)*sgn2
         x1[x1<0]=0

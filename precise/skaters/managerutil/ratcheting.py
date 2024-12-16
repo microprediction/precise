@@ -10,7 +10,7 @@ def ratchet_portfolios(ys, w, w_lower, w_upper, min_dw=1e-6)->([float], dict):
          Process a month of data (say) with ratcheting trading to upper and lower envelope
 
 
-    :param ys:          num_days x num_assets  log returns
+    :param ys:          num_days y num_assets  log returns
     :param w:           portfolio at start of period
     :param w_lower:
     :param w_upper:
