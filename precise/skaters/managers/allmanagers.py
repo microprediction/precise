@@ -2,8 +2,6 @@ from precise.skaters.managers.weakmanagers import WEAK_LONG_MANAGERS
 from precise.skaters.managers.ppomanagers import PPO_LONG_MANAGERS
 from precise.skaters.managers.hrpmanagers import HRP_LONG_MANAGERS
 from precise.skaters.managers.schurmanagers import SCHUR_LONG_MANAGERS
-#from precise.skaters.managers.rflmanagers import RFL_HRP_LONG_MANAGERS
-from precise.skaters.managers.rpmanagers import RP_LONG_MANAGERS
 from precise.skaters.managers.equalmanagers import EQUAL_LONG_MANAGERS
 from precise.skaters.managers.ldpmanagers import LDP_LONG_MANAGERS
 from precise.skaters.managers.molybogamanagers import MOLYBOGA_LONG_MANGERS

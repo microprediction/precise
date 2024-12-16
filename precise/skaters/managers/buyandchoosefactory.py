@@ -46,7 +46,7 @@ def buy_and_choose_manager_factory(mgr, j:int, y, s:dict, e=1000, q=1.0, n_seed=
             w_roll = normalize([wi * math.exp(yi) for wi, yi in zip(w_prev, y)])
 
             w_mgrs = list()
-            for l in n_seed:
+            for l in range(n_seed):
                 s_mgr = deepcopy(s['s_mgr'])
 
                 # Drop a hint to the manager, just in case it is alert
