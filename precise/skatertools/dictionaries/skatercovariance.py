@@ -108,8 +108,9 @@ class SkaterCovariance():
                     intersect = fixed_uni_skater.keys_set.intersection(x_keys_set)
                     num_keys = len(fixed_uni_skater.keys_set)
                     import math
+                    min_overlap_0 = 2
                     min_overlap_1 = int(math.ceil(math.sqrt(num_keys)))
-                    min_overlap = max(max(min_overlap_1, 2), num_keys - 10)
+                    min_overlap = max( max(max(min_overlap_1, 2), num_keys - 10), min_overlap_0)
                     if len(intersect) >= min_overlap:
                         # Clone the universe with the intersected keys
                         clone = fixed_uni_skater.clone_and_replay(key_subset=intersect,f=f)

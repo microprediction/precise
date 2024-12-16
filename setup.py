@@ -7,7 +7,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="precise",
-    version="0.16.5",
+    version="0.16.6",
     description="The home of Schur Hierarchical Portfolios: an aesthetically pleasing version of Hierarchical Risk Parity",
     long_description=README,
     long_description_content_type="text/markdown",
