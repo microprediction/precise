@@ -7,6 +7,18 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Learning Risk Preferences from Investment Portfolios Using Inverse Optimization [arxiv](https://arxiv.org/pdf/2010.01687)
+Shi Yu, Chaosheng Dong
+
+The fundamental principle in Modern Portfolio Theory (MPT) is
+based on the quantification of the portfolio’s risk related to performance. Although MPT has made huge impacts to the investment world and prompted the success and prevalence of passive investing,
+it still has shortcomings in real-world applications. One of the main
+challenges is that the level of risk an investor can endure, known
+as risk-preference, is a subjective choice that is tightly related to
+psychology and behavioral science in decision making. This paper
+presents a novel approach of measuring risk preference from existing portfolios using inverse optimization on mean-variance portfolio allocation framework. Our approach allows the learner to continuously estimate real-time risk preferences using concurrent observed portfolios and market price data. We demonstrate our methods on
+robotic investment portfolios and real market data that consists of 20 years of asset pricing and 10 years of mutual fund portfolio holdings.
+
 ## Portfolio Allocation as an Inverse Problem [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1317479)
 Guillaume Simon, Anna Simoni
 
