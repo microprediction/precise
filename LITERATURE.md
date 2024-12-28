@@ -7,6 +7,12 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Portfolio Allocation as an Inverse Problem [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1317479)
+Guillaume Simon, Anna Simoni
+
+Proceeding to portfolio allocation in the framework of Markowitz, a numerical inconsistency may occur when the sample covariance matrix of assets returns has to be inverted. This is mainly caused by the magnitude of its lowest eigenvalues. In this paper, we tackle the Markowitz problem as an inverse problem and give a spectral justification for the causes of instability of the inverse when computing the sample covariance matrix for portfolio allocation. We particularly detail the regularizing effect of two techniques commonly accepted in practice: Black-Litterman and shrinkage. Our aim is to make a spectral analysis of these techniques and to analyze whether they can be related to regularization schemes or interpreted within a Bayesian setting.
+
+
 ## A Mean/Variance Analysis of Tracking Error [pdf](https://www.anderson.ucla.edu/documents/areas/fac/finance/1992-2.pdf)
 Richard Roll 
 
