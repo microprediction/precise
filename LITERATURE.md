@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Generalized Inverse Optimization through Online Learning [arxiv](https://arxiv.org/abs/1810.01920)
+Chaosheng Dong, Yiran Chen, Bo Zeng
+
+Inverse optimization is a powerful paradigm for learning preferences and restrictions that explain the behavior of a decision maker, based on a set of external signal and the corresponding decision pairs. However, most inverse optimization algorithms are designed specifically in batch setting, where all the data is available in advance. As a consequence, there has been rare use of these methods in an online setting suitable for real-time applications. In this paper, we propose a general framework for inverse optimization through online learning. Specifically, we develop an online learning algorithm that uses an implicit update rule which can handle noisy data. Moreover, under additional regularity assumptions in terms of the data and the model, we prove that our algorithm converges at a rate of (1/√T) and is statistically consistent. In our experiments, we show the online learning approach can learn the parameters with great accuracy and is very robust to noises, and achieves a dramatic improvement in computational efficacy over the batch learning approach.
+
 ## Learning Risk Preferences from Investment Portfolios Using Inverse Optimization [arxiv](https://arxiv.org/pdf/2010.01687)
 Shi Yu, Chaosheng Dong
 
