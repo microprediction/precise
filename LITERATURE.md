@@ -7,6 +7,13 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Synthetic Data for Portfolios: A Throw of the Dice Will Never Abolish Chance [pdf](https://arxiv.org/pdf/2501.03993)
+Adil Rengim CETINGOZ, Charles-Albert LEHALLE 
+
+Simulation methods have always been instrumental in finance, and data-driven methods with minimal model specification—commonly referred to as generative models—have attracted increasing attention, especially after the success of deep learning in a broad range
+of fields. However, the adoption of these models in financial applications has not kept pace with the growing interest, probably due to the unique complexities and challenges of financial markets. This paper aims to contribute to a deeper understanding of the limitations of generative models, particularly in portfolio and risk management. To this end, we begin by presenting theoretical results on the importance of initial sample size, and point out the potential pitfalls of generating far more data than originally available. We then highlight the inseparable nature of model development and the desired use case by touching on a paradox: generic generative models inherently care less about what is important for constructing portfolios (in particular the long-short ones). Based on these findings, we propose a pipeline for the generation of multivariate returns that meets conventional evaluation standards on a large universe of US equities while being compliant with stylized facts observed in asset returns and turning around the pitfalls we previously identified. Moreover, we insist on the need for more delicate evaluation methods, and suggest, through an example of mean-reversion strategies, a method designed to identify poor models for a given application based on regurgitative training, i.e. retraining the model using the data it has itself
+generated, which is commonly referred to in statistics as identifiability.
+
 ## Generalized Inverse Optimization through Online Learning [arxiv](https://arxiv.org/abs/1810.01920)
 Chaosheng Dong, Yiran Chen, Bo Zeng
 
