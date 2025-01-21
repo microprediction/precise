@@ -7,6 +7,22 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## A mixture transition distribution approach to portfolio optimization [pdf](https://arxiv.org/pdf/2501.04646)
+R. DE BLASIS and L. GALATI and F. PETRONI
+
+Understanding the dependencies among financial assets is critical for portfolio optimization. Traditional
+approaches based on correlation networks often fail to capture the nonlinear and directional relationships
+that exist in financial markets. In this study, we construct directed and weighted financial networks
+using the Mixture Transition Distribution (MTD) model, offering a richer representation of asset interdependencies. We apply local assortativity measures—metrics that evaluate how assets connect based on
+similarities or differences—to guide portfolio selection and allocation. Using data from the Dow Jones 30,
+Euro Stoxx 50, and FTSE 100 indices constituents, we show that portfolios optimized with network-based
+assortativity measures consistently outperform the classical mean-variance framework. Notably, modalities in which assets with differing characteristics connect enhance diversification and improve Sharpe
+ratios. The directed nature of MTD-based networks effectively captures complex relationships, yielding portfolios with superior risk-adjusted returns. Our findings highlight the utility of network-based
+methodologies in financial decision-making, demonstrating their ability to refine portfolio optimization
+strategies. This work thus underscores the potential of leveraging advanced financial networks to achieve
+enhanced performance, offering valuable insights for practitioners and setting a foundation for future
+research.
+
 ## Synthetic Data for Portfolios: A Throw of the Dice Will Never Abolish Chance [pdf](https://arxiv.org/pdf/2501.03993)
 Adil Rengim CETINGOZ, Charles-Albert LEHALLE 
 
