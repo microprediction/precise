@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Generative Meta-Learning Robust Quality-Diversity Portfolio [arxiv](https://arxiv.org/abs/2307.07811) [code](https://github.com/kayuksel/robust-qd-portfolio-ensemble?tab=readme-ov-file)
+Kamer Ali Yuksel
+
+This paper proposes a novel meta-learning approach to optimize a robust portfolio ensemble. The method uses a deep generative model to generate diverse and high-quality sub-portfolios combined to form the ensemble portfolio. The generative model consists of a convolutional layer, a stateful LSTM module, and a dense network. During training, the model takes a randomly sampled batch of Gaussian noise and outputs a population of solutions, which are then evaluated using the objective function of the problem. The weights of the model are updated using a gradient-based optimizer. The convolutional layer transforms the noise into a desired distribution in latent space, while the LSTM module adds dependence between generations. The dense network decodes the population of solutions. The proposed method balances maximizing the performance of the sub-portfolios with minimizing their maximum correlation, resulting in a robust ensemble portfolio against systematic shocks. The approach was effective in experiments where stochastic rewards were present. Moreover, the results (Fig. 1) demonstrated that the ensemble portfolio obtained by taking the average of the generated sub-portfolio weights was robust and generalized well. The proposed method can be applied to problems where diversity is desired among co-optimized solutions for a robust ensemble. The source-codes and the dataset are in the supplementary material.
+
 ## A mixture transition distribution approach to portfolio optimization [pdf](https://arxiv.org/pdf/2501.04646)
 R. DE BLASIS and L. GALATI and F. PETRONI
 
