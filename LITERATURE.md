@@ -7,6 +7,22 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Improved Deep Learning Methods for Large-Scale Dynamic Portfolio Choice [arxiv](ttps://arxiv.org/pdf/2501.12600)
+Jeonggyu Huh1, Hyeng Keun Koo2, and Jaegi Jeon
+
+We present a Pontryagin-Guided Direct Policy Optimization (PG-DPO)
+method that scales dynamic portfolio choice—including consumption and
+multi-asset investment—to tens of thousands of risky assets. By combining neural-network controls with Pontryagin’s Maximum Principle (PMP),
+we avoid intractable dynamic programming (DP) grids, which traditionally
+cannot handle more than six assets in practice. Instead of approximating the
+value function (as in deep backward stochastic differential equation (BSDE)
+methods), we track a policy-fixed adjoint process and align each gradient update with continuous-time PMP conditions. A “one-shot” variant deploys
+Pontryagin controls after a brief warm-up, often achieving 100–1,000-fold
+accuracy improvements over naive baselines. Crucially, on modern GPUs,
+100,000 iterations typically take under an hour, while a few thousand iterations (often just 1–2 minutes) already yield near-optimal solutions for portfolios with thousands of assets. Numerical experiments confirm consistency
+with one-asset Merton benchmarks and tractability up to 10,000 assets, surpassing the longstanding DP-based limit of fewer than seven. This enables
+truly large-scale continuous-time portfolio optimization
+
 ## Generative Meta-Learning Robust Quality-Diversity Portfolio [arxiv](https://arxiv.org/abs/2307.07811) [code](https://github.com/kayuksel/robust-qd-portfolio-ensemble?tab=readme-ov-file)
 Kamer Ali Yuksel
 
