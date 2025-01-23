@@ -7,7 +7,7 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
-## Improved Deep Learning Methods for Large-Scale Dynamic Portfolio Choice [arxiv](ttps://arxiv.org/pdf/2501.12600)
+## Improved Deep Learning Methods for Large-Scale Dynamic Portfolio Choice [arxiv](https://arxiv.org/pdf/2501.12600) [discussion](https://www.linkedin.com/posts/petercotton_improved-deep-learning-methods-for-large-scale-activity-7288058274959003648-zMiT?utm_source=share&utm_medium=member_desktop)
 Jeonggyu Huh1, Hyeng Keun Koo2, and Jaegi Jeon
 
 We present a Pontryagin-Guided Direct Policy Optimization (PG-DPO)
