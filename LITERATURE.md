@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Risk budget portfolios with convex Non-negative Matrix Factorization [arxiv](https://arxiv.org/abs/2204.02757v2)
+Bruno Spilak, Wolfgang Karl Härdle 
+
+We propose a portfolio allocation method based on risk factor budgeting using convex Nonnegative Matrix Factorization (NMF). Unlike classical factor analysis, PCA, or ICA, NMF ensures positive factor loadings to obtain interpretable long-only portfolios. As the NMF factors represent separate sources of risk, they have a quasi-diagonal correlation matrix, promoting diversified portfolio allocations. We evaluate our method in the context of volatility targeting on two long-only global portfolios of cryptocurrencies and traditional assets. Our method outperforms classical portfolio allocations regarding diversification and presents a better risk profile than hierarchical risk parity (HRP). We assess the robustness of our findings using Monte Carlo simulation.
+
 ## Improved Deep Learning Methods for Large-Scale Dynamic Portfolio Choice [arxiv](https://arxiv.org/pdf/2501.12600) [discussion](https://www.linkedin.com/posts/petercotton_improved-deep-learning-methods-for-large-scale-activity-7288058274959003648-zMiT?utm_source=share&utm_medium=member_desktop)
 Jeonggyu Huh1, Hyeng Keun Koo2, and Jaegi Jeon
 
