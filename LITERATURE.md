@@ -7,6 +7,19 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Disciplined Geodesically Convex Programming [pdf](https://arxiv.org/pdf/2407.05261)
+Andrew N. Cheng, Vaibhav Dixit, Melanie Weber 
+
+Convex programming plays a fundamental role in machine learning, data science, and engineering. Testing convexity structure in nonlinear programs relies on verifying the convexity of objectives and constraints. Grant et al. (2006) introduced a framework, Disciplined Convex
+Programming (DCP), for automating this verification task for a wide range of convex functions that can be decomposed into basic convex functions (atoms) using convexity-preserving compositions and transformations (rules). However, the restriction to Euclidean convexity
+concepts can limit the applicability of the framework. For instance, many notable instances of statistical estimators and matrix-valued (sub)routines in machine learning applications are Euclidean non-convex, but exhibit geodesic convexity through a more general Riemannian
+lens. In this work, we extend disciplined programming to this setting by introducing Disciplined Geodesically Convex Programming (DGCP). We determine convexity-preserving compositions and transformations for geodesically convex functions on general Cartan-Hadamard
+manifolds, as well as for the special case of symmetric positive definite matrices, a common
+setting in matrix-valued optimization. For the latter, we also define a basic set of atoms.
+Our paper is accompanied by a Julia package SymbolicAnalysis.jl, which provides functionality for testing and certifying DGCP-compliant expressions. Our library interfaces with
+manifold optimization software, which allows for directly solving verified geodesically convex
+programs
+
 ## Risk budget portfolios with convex Non-negative Matrix Factorization [arxiv](https://arxiv.org/abs/2204.02757v2)
 Bruno Spilak, Wolfgang Karl Härdle 
 
