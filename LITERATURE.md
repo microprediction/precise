@@ -7,6 +7,19 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## OPTIMAL DATA SPLITTING FOR HOLDOUT CROSS-VALIDATION IN LARGE COVARIANCE MATRIX ESTIMATION [arxiv](https://arxiv.org/pdf/2503.15186)
+Lamia Lamrani, Christian Bongiorno, Marc Potters
+
+Cross-validation is a statistical tool that can be used to improve large covariance matrix estimation.
+Although its efficiency is observed in practical applications, the theoretical reasons behind it remain
+largely intuitive, with formal proofs currently lacking. To carry on analytical analysis, we focus on
+the holdout method, a single iteration of cross-validation, rather than the traditional k-fold approach.
+We derive a closed-form expression for the estimation error when the population matrix follows a
+white inverse Wishart distribution, and we observe the optimal train-test split scales as the square root
+of the matrix dimension. For general population matrices, we connected the error to the variance of
+eigenvalues distribution, but approximations are necessary. Interestingly, in the high-dimensional
+asymptotic regime, both the holdout and k-fold cross-validation methods converge to the optimal
+estimator when the train-test ratio scales with the square root of the matrix dimension
 
 ## Practical Portfolio Optimization with Metaheuristics Pre-assignment Constraint and Margin Trading [arxiv](https://arxiv.org/pdf/2503.15965)
 Hang Kin Poon
