@@ -7,6 +7,19 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+
+## Practical Portfolio Optimization with Metaheuristics Pre-assignment Constraint and Margin Trading [arxiv](https://arxiv.org/pdf/2503.15965)
+Hang Kin Poon
+
+Portfolio optimization is a critical area in finance, aiming to maximize
+returns while minimizing risk. Metaheuristic algorithms were shown to solve
+complex optimization problems efficiently, with Genetic Algorithms and Particle
+Swarm Optimization being among the most popular methods. This paper introduces an innovative approach to portfolio optimization that incorporates pre-assignment to limit the search space for investor preferences and better results. Additionally, taking margin trading strategies in account and using a rare performance ratio to evaluate portfolio efficiency. Through an illustrative example, this
+paper demonstrates that the metaheuristic-based methodology yields superior
+risk-adjusted returns compared to traditional benchmarks. The results highlight
+the potential of metaheuristics with help of assets filtering in enhancing portfolio
+performance in terms of risk adjusted return.
+
 ## Weighted Average Ensemble for Cholesky-based Covariance Matrix Estimation [arxiv](https://arxiv.org/pdf/2503.15991)
 Xiaoning Kang, Zhenguo Gao, Xi Liang and Xinwei Deng
 
