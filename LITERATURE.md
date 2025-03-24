@@ -7,6 +7,22 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Weighted Average Ensemble for Cholesky-based Covariance Matrix Estimation [arxiv](https://arxiv.org/pdf/2503.15991)
+Xiaoning Kang, Zhenguo Gao, Xi Liang and Xinwei Deng
+
+The modified Cholesky decomposition (MCD) is an efficient technique for estimating
+a covariance matrix. However, it is known that the MCD technique often requires
+a pre-specified variable ordering in the estimation procedure. In this work, we propose a weighted average ensemble covariance estimation for high-dimensional data
+based on the MCD technique. It can flexibly accommodate the high-dimensional
+case and ensure the positive definiteness property of the resultant estimate. Our key
+idea is to obtain different weights for different candidate estimates by minimizing
+an appropriate risk function with respect to the Frobenius norm. Different from
+the existing ensemble estimation based on the MCD, the proposed method provides
+a sparse weighting scheme such that one can distinguish which variable orderings
+employed in the MCD are useful for the ensemble matrix estimate. The asymptotically theoretical convergence rate of the proposed ensemble estimate is established
+under regularity conditions. The merits of the proposed method are examined by
+the simulation studies and a portfolio allocation example of real stock data.
+
 ## Disciplined Geodesically Convex Programming [pdf](https://arxiv.org/pdf/2407.05261)
 Andrew N. Cheng, Vaibhav Dixit, Melanie Weber 
 
