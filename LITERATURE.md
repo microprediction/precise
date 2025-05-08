@@ -1460,7 +1460,7 @@ The performance of the proposed parallel algorithm is analyzed by examining its 
 communication overhead, and is shown to exhibit an excellent weak scaling on a large-scale high
 performance parallel machine with distributed memory.
 
-## Optimal Diversification and Leverage in a Utility-Based Portfolio Allocation Approach [pdf](https://arxiv.org/pdf/2311.07478)
+## Optimal Diversification and Leverage in a Utility-Based Portfolio Allocation Approach [pdf](https://arxiv.org/pdf/2503.07498)
 Vladimir Markov
 
 We examine the problem of optimal portfolio allocation within the framework of utility theory. We apply exponential utility to derive the optimal diversification strategy and logarithmic utility to determine the optimal leverage. We enhance existing methodologies by incorporating compound probability distributions to model the effects of both statistical and non-stationary uncertainties. Additionally, we extend the maximum expected utility objective by including the variance of utility in the objective function, which we term generalized mean-variance. In the case of logarithmic utility, it provides a natural explanation for the half-Kelly criterion, a concept widely used by practitioners.
