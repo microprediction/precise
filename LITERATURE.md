@@ -7,6 +7,11 @@ In no particular order. The scope is robust diversified portfolios and things th
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
 
+## Robust Portfolio Selection Problems: A Comprehensive Review [arxiv](https://arxiv.org/abs/2103.13806)
+Alireza Ghahtarani, Ahmed Saif, Alireza Ghasemi
+
+In this paper, we provide a comprehensive review of recent advances in robust portfolio selection problems and their extensions, from both operational research and financial perspectives. A multi-dimensional classification of the models and methods proposed in the literature is presented, based on the types of financial problems, uncertainty sets, robust optimization approaches, and mathematical formulations. Several open questions and potential future research directions are identified.
+
 ## Agnostic Risk Parity Taming Known and Unknown-Unknowns [pdf](https://arxiv.org/pdf/1610.08818)
 Raphael Benichou, Yves Lempérière, Emmanuel Sérié, Julien Kockelkoren, Philip Seager, Jean-Philippe Bouchaud & Marc Potters
 
