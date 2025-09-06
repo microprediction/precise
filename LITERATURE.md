@@ -6,6 +6,8 @@ In no particular order. The scope is robust diversified portfolios and things th
   
 Or file an [issue](https://github.com/microprediction/precise/issues).  
 
+There's a [Robust Portfolio Theory Chat](https://chatgpt.com/g/g-68bc49db00748191b65846ac348d0ca2-robust-portfolio-theory) too. 
+
 
 ## Robust Portfolio Selection Problems: A Comprehensive Review [arxiv](https://arxiv.org/abs/2103.13806)
 Alireza Ghahtarani, Ahmed Saif, Alireza Ghasemi
