@@ -1,12 +1,14 @@
 # precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests_312](https://github.com/microprediction/precise/workflows/tests_312/badge.svg) ![tests-sans-ppo](https://github.com/microprediction/precise/workflows/tests-sans-ppo/badge.svg)  ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Contents:
+What's here: 
 
-1. A collection of *online* (incremental) [covariance forecasting](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) and [portfolio construction](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) functions. See [docs](https://microprediction.github.io/precise/). 
+1. The [Robust Portfolio Literature Reading List](https://github.com/microprediction/precise/blob/main/LITERATURE.md) used by a [Portfolio Theory GPT](https://chatgpt.com/g/g-68bc49db00748191b65846ac348d0ca2-robust-portfolio-theory). 
 
-2. "Schur Complementary" portfolio construction, a new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See my posts on the [methodology](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) and its role in the [hijacking of the M6 contest](https://www.linkedin.com/posts/alexander-fleiss-70b49410_does-option-volume-predict-stock-direction-activity-7021134433344749569-bxx4?utm_source=share&utm_medium=member_desktop). 
+
+2. A collection of *online* (incremental) [covariance forecasting](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) and [portfolio construction](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) functions. See [docs](https://microprediction.github.io/precise/). 
+
+3. I originally developed "Schur Complementary" portfolio construction in this repo, although subsequently worked with Hugo Delatte to put it in [SkFolio](https://skfolio.org/) and I recommend that implementation instead. Schur is a relatively new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See my posts on the [methodology](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) and its role in the [hijacking of the M6 contest](https://www.linkedin.com/posts/alexander-fleiss-70b49410_does-option-volume-predict-stock-direction-activity-7021134433344749569-bxx4?utm_source=share&utm_medium=member_desktop). 
  
-3. A small compendium of portfolio theory papers tilted towards my interests. See [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
 
 One observes that tools for portfolio construction might also be useful in [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
 
