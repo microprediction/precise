@@ -9,6 +9,11 @@ Or file an [issue](https://github.com/microprediction/precise/issues).
 There's a [Robust Portfolio Theory Chat](https://chatgpt.com/g/g-68bc49db00748191b65846ac348d0ca2-robust-portfolio-theory) too. 
 
 
+## Adaptive Beta Shrinkage estimation of covariance matrices  [open access](https://www.tandfonline.com/doi/full/10.1080/10293523.2025.2553255?src=exp-la#d1e142)
+Henri Staal a and Emlyn Flint 
+
+Accurate estimation of the covariance matrix is essential for mean-variance portfolio optimisation, yet the sample covariance matrix isa notoriously noisy estimate, especially in high dimensions.Contemporary shrinkage methods attempt to mitigate this noisebut often retain significant estimation error in higher-dimensionalsettings or become computationally impractical in these scenarios.In this paper, we present a novel non-linear shrinkage method,Adaptive Beta Shrinkage. We also investigate an existing method,CorShrink, which has yet to be applied in a financial context. Inempirical studies, Adaptive Beta Shrinkage outperforms all surveyedcontemporary methods in terms of realised risk and risk-adjustedreturns for large asset universes. For smaller asset universes, thebest method is Munro’s (2010) equally-weighted blend estimator
+
 ## Robust Portfolio Selection Problems: A Comprehensive Review [arxiv](https://arxiv.org/abs/2103.13806)
 Alireza Ghahtarani, Ahmed Saif, Alireza Ghasemi
 
