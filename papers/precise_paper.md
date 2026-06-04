@@ -66,24 +66,53 @@ factor ensemble produces the failure. Any honest benchmark must sweep the genera
 delegate generation to the sibling `randomcov` library and report per-ensemble. See
 `papers/evaluation_and_generation_review.md` for the full literature.
 
-## 4. Schur-style methods
+## 4. The Schur likelihood
 
-The full Gaussian likelihood factorizes, via Schur complements, into a sum of *block-conditional*
-log-likelihoods. Dropping (or regularizing by a coupling parameter γ) the cross-block conditioning
-yields a **block pseudo-likelihood** that inverts only small matrices. As an *assessor* it is cheap
-(feasible at p≈500), robust where the full likelihood fails, a proper composite likelihood, and
-tunable (block size is the robustness↔power knob; the full block recovers the likelihood). As an
-*estimator*, `SchurCovariance` damps the cross-block coupling of the running covariance (γ=0
-block-diagonal, γ=1 full), improving conditioning in high dimensions.
+The full Gaussian likelihood factorizes *exactly*, via Schur complements, into a sum of
+**block-conditional** log-likelihoods — each block scored under its conditional covariance
+`Σ_{i|C} = Σ_ii − Σ_{iC}Σ_{CC}⁻¹Σ_{Ci}`. We introduce a **coupling-strength parameter γ** that damps
+that Schur complement, defining the **Schur likelihood**:
 
-This is the **same trade-off as portfolio theory.** The minimum-variance portfolio `w ∝ Σ̂⁻¹1` fails
-in high dimensions for the identical reason — it trusts the raw inverse of an ill-conditioned matrix
-(de Prado 2015/2016; Antonov, Lipton & de Prado 2024). Schur complementary allocation (Cotton 2024)
-controls exactly how much of that coupling to trust, interpolating hierarchical risk parity (γ=0) and
-minimum variance (γ=1). The block pseudo-likelihood is the *evaluation* analogue of that allocation
-principle: do not invert the full ill-conditioned covariance to *judge* an estimate, any more than to
-*allocate* with it. We verify both the γ-regularized and block-factorized likelihood recover power in
-the high-dimensional regime.
+- **γ = 1** → the exact full likelihood (most powerful; fragile in high dimensions);
+- **γ = 0** → the block-diagonal likelihood (robust; this endpoint is the marginal *composite
+  likelihood*);
+- **γ ∈ (0,1)** → a tunable bridge that *changes the block covariances* (augments them by the
+  γ-damped Schur complement), only ever inverting small matrices, and — crucially — better
+  conditioned than the full likelihood because damping lifts the small eigenvalues that cause its
+  high-dimensional collapse.
+
+This is the **same trade-off, and the same knob, as portfolio theory.** Minimum-variance
+`w ∝ Σ̂⁻¹1` fails in high dimensions for the identical reason — trusting the raw inverse of an
+ill-conditioned matrix (de Prado 2015/2016; Antonov, Lipton & de Prado 2024). Schur complementary
+allocation (Cotton 2024) interpolates HRP (γ=0) and minimum variance (γ=1) by exactly this
+coupling control. The Schur likelihood is its *evaluation* mirror.
+
+**Empirically, γ traces a regime-dependent optimum** (`research/metric_power.py`): when the coupling
+is reliable, power climbs monotonically to γ=1 (recovering the full likelihood); in the
+high-dimensional noisy regime it falls with γ (dial down to block-diagonal robustness); and **when
+the coupling is *partially* reliable, an interior γ strictly dominates both endpoints** (e.g. 0.84
+vs 0.43 at either end) — the likelihood analogue of the Schur portfolio beating both HRP and
+minimum variance.
+
+**Relation to existing methods (so the contribution is precise).** The block-conditional likelihood
+is grounded in the *same exact Schur-complement conditioning identity* as the **Vecchia
+approximation** and **Gaussian-Markov-random-field** likelihoods (Vecchia 1988; Katzfuss & Guinness
+2021; block Vecchia, Pan et al. 2024); indeed γ=1 with limited conditioning *is* a block-Vecchia /
+GMRF likelihood, and nested dissection is Schur-complement elimination. Those methods regularize by
+**sparsity** — *which* variables to condition on — at full coupling strength. The Schur likelihood
+adds an **orthogonal coupling-*strength* axis γ**; to our knowledge a continuous strength damping of
+the Schur complement (as opposed to structural sparsity/tapering) is not used there. The γ=0
+endpoint is composite likelihood (Besag; Lindsay; Varin–Reid–Firth); the γ=1 endpoint is the full
+likelihood / block Vecchia; the **γ-bridge and the allocation unification are the contribution.**
+
+**Interpolation geometry.** Damping can be **linear** (`Σ_ii − γ·BD⁻¹Bᵀ`) or **geodesic** (along the
+affine-invariant SPD geodesic between the block-diagonal and full covariances, reusing the geodesic
+step of §2). The interior-γ dominance is robust to the choice; and when the Schur complement is
+near-singular (strong coupling) the **geodesic interpolation stays stable while the linear one has a
+power dip**, making geodesic the safer default in that regime.
+
+As an *estimator*, `SchurCovariance` applies the same cross-block coupling damping to the running
+covariance, improving conditioning in high dimensions.
 
 ## 5. Recommendation from matrix properties
 

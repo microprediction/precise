@@ -89,6 +89,26 @@ binary classifiers of edges: **true/false positive rates**, **AUROC** across the
 and — crucial under extreme sparsity (genomics) — **AUPRC**, plus **graph edit distance**. This is a
 distinct evaluation family from §A–H, tied to the conditional-independence objective.
 
+### J. Scalable / approximate likelihoods (where the Schur likelihood sits)
+The full Gaussian likelihood is O(p³) and fragile in high dimensions, so a large literature builds
+*approximate* likelihoods from low-dimensional pieces:
+- **Composite / pseudo-likelihood** — products of marginal or conditional sub-densities (Besag 1975;
+  Lindsay 1988; Varin, Reid & Firth 2011). The block-*marginal* version is our γ=0 endpoint.
+- **Vecchia approximation** — the joint density as a product of *exact* conditionals on small
+  conditioning sets, implying a sparse Cholesky of the precision (Vecchia 1988; general framework
+  Katzfuss & Guinness 2021; **block** Vecchia, Pan et al. 2024). It uses the *exact Schur-complement
+  conditioning identity*; its approximation lever is **sparsity** (which/how-many to condition on),
+  at full coupling strength.
+- **GMRF / sparse precision** (Rue & Held 2005) and **nested dissection** (George 1973) — the latter
+  is literally Schur-complement (block) elimination.
+
+The **Schur likelihood** (this work) is grounded in the same exact identity — γ=1 is a block-Vecchia
+/ GMRF likelihood — but adds an *orthogonal coupling-strength* axis γ that damps the Schur
+complement (linear or geodesic), interpolating full ↔ block-diagonal, with the interior dominating
+both when the coupling is partially reliable, and unifying with Schur complementary allocation. To
+our knowledge a continuous strength-damping of the Schur complement (vs structural sparsity/tapering)
+is not used in that literature.
+
 ## Part 2 — Covariance generation methods (and why the results depend on them)
 
 - **LKJ / vine / onion** — Lewandowski, Kurowicka & Joe (2009, JMVA 100:1989–2001), building on Joe
@@ -195,3 +215,11 @@ factor) need not win in another.
 - Cai, T., Liu, W. & Luo, X. (2011). A constrained ℓ₁ minimization approach to sparse precision matrix estimation (CLIME). *JASA* 106:594–607.
 - Furrer, R., Genton, M. & Nychka, D. (2006). Covariance tapering for interpolation of large spatial datasets. *J. Computational & Graphical Statistics* 15:502–523; Kaufman, Schervish & Nychka (2008), *JASA*.
 - Xue, L. & Zou, H. (2012). Regularized rank-based estimation of high-dimensional nonparanormal graphical models. *Annals of Statistics*.
+- Besag, J. (1975). Statistical analysis of non-lattice data. *The Statistician* 24:179–195 (pseudo-likelihood).
+- Lindsay, B. (1988). Composite likelihood methods. *Contemporary Mathematics* 80:221–239.
+- Varin, C., Reid, N. & Firth, D. (2011). An overview of composite likelihood methods. *Statistica Sinica* 21:5–42.
+- Vecchia, A. (1988). Estimation and model identification for continuous spatial processes. *JRSS-B* 50:297–312.
+- Katzfuss, M. & Guinness, J. (2021). A general framework for Vecchia approximations of Gaussian processes. *Statistical Science* 36:124–141.
+- Pan, Q., Abdulah, S., Genton, M., Sun, Y. et al. (2024). Block Vecchia approximation for scalable Gaussian process computations. *Technometrics*.
+- Rue, H. & Held, L. (2005). *Gaussian Markov Random Fields: Theory and Applications.* Chapman & Hall.
+- George, A. (1973). Nested dissection of a regular finite element mesh. *SIAM J. Numerical Analysis* 10:345–363.
