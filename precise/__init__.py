@@ -20,12 +20,15 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from precise.base import BaseOnlineCovariance
+from precise.dcc import DCCCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
+from precise.factor import FactorCovariance
 from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance
 from precise.keyed import DynamicUniverse, FixedUniverse, keyed
 from precise.ledoitwolf import LedoitWolfCovariance
+from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
 from precise.registry import all_estimators, estimator_from_name, estimator_names
 
@@ -39,9 +42,12 @@ __all__ = [
     "EmpiricalCovariance",
     "EwaCovariance",
     "LedoitWolfCovariance",
+    "OASCovariance",
     "PartialMomentsCovariance",
     "HuberCovariance",
     "GeodesicEwaCovariance",
+    "DCCCovariance",
+    "FactorCovariance",
     "keyed",
     "FixedUniverse",
     "DynamicUniverse",

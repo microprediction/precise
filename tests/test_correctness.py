@@ -10,10 +10,13 @@ import numpy as np
 import pytest
 
 from precise import (
+    DCCCovariance,
     EmpiricalCovariance,
     EwaCovariance,
+    FactorCovariance,
     HuberCovariance,
     LedoitWolfCovariance,
+    OASCovariance,
     all_estimators,
     keyed,
 )
@@ -94,6 +97,46 @@ def test_ledoitwolf_shrinks_and_stays_well_conditioned():
     cond_lw = np.linalg.cond(lw.covariance_)
     cond_ewa = np.linalg.cond(ewa.covariance_)
     assert cond_lw <= cond_ewa * 1.05
+
+
+def test_oas_shrinks_toward_identity():
+    rng = np.random.default_rng(40)
+    true = _spd(8, rng)
+    X = rng.multivariate_normal(np.zeros(8), true, size=4000)
+    oas = OASCovariance(r=0.02)
+    ewa = EwaCovariance(r=0.02)
+    for row in X:
+        oas.partial_fit(row)
+        ewa.partial_fit(row)
+    # Shrinkage towards a scaled identity should not worsen conditioning.
+    assert np.linalg.cond(oas.covariance_) <= np.linalg.cond(ewa.covariance_) * 1.05
+
+
+# --------------------------------------------------------------- DCC
+def test_dcc_recovers_correlation_and_per_series_vol():
+    rng = np.random.default_rng(41)
+    vols = np.array([1.0, 3.0])
+    corr = np.array([[1.0, 0.6], [0.6, 1.0]])
+    cov = np.diag(vols) @ corr @ np.diag(vols)
+    X = rng.multivariate_normal([0, 0], cov, size=40_000)
+    est = DCCCovariance(r=0.01).fit(X)
+    assert est.correlation_[0, 1] == pytest.approx(0.6, abs=0.1)
+    assert np.allclose(np.diag(est.correlation_), 1.0)
+    assert np.sqrt(np.diag(est.covariance_)) == pytest.approx(vols, rel=0.15)
+
+
+# --------------------------------------------------------------- Factor
+def test_factor_recovers_one_factor_structure():
+    rng = np.random.default_rng(42)
+    b = np.ones(4)  # single common factor with unit loadings
+    f = rng.standard_normal(20_000)
+    noise = 0.1 * rng.standard_normal((20_000, 4))
+    X = np.outer(f, b) + noise  # true cov ~ b bᵀ + 0.01 I  (rank-1 + diagonal)
+    est = FactorCovariance(k=1, r=0.01).fit(X)
+    C = est.covariance_
+    off = C[0, 1]
+    assert off == pytest.approx(1.0, abs=0.3)  # off-diagonals driven by the common factor
+    assert np.min(np.linalg.eigvalsh(C)) > 0
 
 
 # --------------------------------------------------------------- scoring

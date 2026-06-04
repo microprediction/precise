@@ -8,11 +8,14 @@ conformance test and the ``research/`` bake-offs can iterate over every estimato
 from __future__ import annotations
 
 from precise.base import BaseOnlineCovariance
+from precise.dcc import DCCCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
+from precise.factor import FactorCovariance
 from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance
 from precise.ledoitwolf import LedoitWolfCovariance
+from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
 
 # The shipped positional estimators. Add new estimator classes here (one line each).
@@ -20,9 +23,12 @@ _REGISTRY: list[type[BaseOnlineCovariance]] = [
     EmpiricalCovariance,
     EwaCovariance,
     LedoitWolfCovariance,
+    OASCovariance,
     PartialMomentsCovariance,
     HuberCovariance,
     GeodesicEwaCovariance,
+    DCCCovariance,
+    FactorCovariance,
 ]
 
 
