@@ -207,7 +207,7 @@ def projection_power(p=18, k_list=(1, 2, 3, 5, 10, None), total_dirs=60, eps_goo
 
 def projection_report(power, mean_gap, p=18) -> str:
     lines = [
-        f"Power of random k-D projection scoring vs projection dimension  (mean KL gap = {mean_gap:.3f})",
+        f"Power of random k-D projection scoring vs k  (mean KL gap = {mean_gap:.3f})",
         "(total direction budget held ~constant; k=p is the full Gaussian log-likelihood)",
         "",
         f"{'k':>6}{'power':>10}",
@@ -219,9 +219,42 @@ def projection_report(power, mean_gap, p=18) -> str:
     return "\n".join(lines)
 
 
+# ------------------------------------------------- high-dimensional cost of the full likelihood
+def compute_scaling(ps=(50, 100, 200, 400), n_test=64, k=5, repeats=40, seed=0):
+    """Per-evaluation cost of the full Gaussian log-likelihood vs k-D projection scoring.
+
+    The full likelihood needs the precision and log-determinant of the dense p x p estimate
+    (O(p^3)); k-D projection scoring needs only ``W Σ̂ Wᵀ`` and a k x k inverse. In high dimensions
+    the full likelihood is also *statistically* fragile: it is dominated by the smallest eigenvalues
+    of the estimate, which are exactly the least identifiable when the sample size is not >> p.
+    """
+    import time
+
+    rng = np.random.default_rng(seed)
+    rows = []
+    for p in ps:
+        cov = _spd_factor(p, rng)
+        X = rng.multivariate_normal(np.zeros(p), cov, size=n_test)
+        subs = _random_subspaces(p, k, max(1, 60 // k), rng)
+        t = time.perf_counter()
+        for _ in range(repeats):
+            _loglik(cov, X)
+        t_ll = (time.perf_counter() - t) / repeats * 1e3
+        t = time.perf_counter()
+        for _ in range(repeats):
+            _kproj_loglik(cov, X, subs)
+        t_pr = (time.perf_counter() - t) / repeats * 1e3
+        rows.append((p, t_ll, t_pr))
+    lines = [f"{'p':>6}{'loglik_ms':>12}{'proj_k' + str(k) + '_ms':>13}", "-" * 31]
+    lines += [f"{p:>6}{a:>12.3f}{b:>13.3f}" for p, a, b in rows]
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
     pw, gap, grid = run()
     print(report(pw, gap, grid))
     print()
     ppw, pgap = projection_power()
     print(projection_report(ppw, pgap))
+    print("\nPer-evaluation compute cost (full likelihood is O(p^3)):")
+    print(compute_scaling())
