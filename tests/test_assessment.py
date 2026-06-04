@@ -41,6 +41,25 @@ def test_capability_flags():
     assert not FrobeniusToTruth().usable(have_data=True, have_truth=False)
 
 
+def test_schur_likelihood_gamma_endpoints():
+    from precise.assessment import LogLikelihood, SchurLikelihood
+
+    good, _, _, X = _setup(p=8, n=3000, seed=2)
+    # gamma=1 recovers the full Gaussian likelihood (LogLikelihood)
+    full = LogLikelihood().score(good, X_test=X)
+    schur_full = SchurLikelihood(gamma=1.0, n_blocks=4).score(good, X_test=X)
+    assert schur_full == pytest.approx(full, rel=1e-6)
+    # gamma=0 is the block-diagonal likelihood: strictly less than the full likelihood here
+    schur_blockdiag = SchurLikelihood(gamma=0.0, n_blocks=4).score(good, X_test=X)
+    assert schur_blockdiag < full
+    # geodesic interpolation is finite and also reduces to the full likelihood at gamma=1
+    schur_geo = SchurLikelihood(
+        gamma=1.0, n_blocks=4, interpolation="geodesic"
+    ).score(good, X_test=X)
+    assert np.isfinite(schur_geo)
+    assert schur_geo == pytest.approx(full, rel=1e-4)
+
+
 def test_registry():
     assessors = all_assessors()
     assert len(assessors) >= 6

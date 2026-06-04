@@ -7,6 +7,7 @@ from precise.assessment.assessors import (
     FrobeniusToTruth,
     GMVVariance,
     LogLikelihood,
+    SchurLikelihood,
     SteinLoss,
     VariogramScore,
 )
@@ -18,6 +19,7 @@ def all_assessors() -> list[Assessor]:
     return [
         LogLikelihood(),
         BlockPseudoLikelihood(),
+        SchurLikelihood(),
         SteinLoss(),
         FrobeniusToTruth(),
         GMVVariance(),

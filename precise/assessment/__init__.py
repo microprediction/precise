@@ -15,6 +15,7 @@ from precise.assessment.assessors import (
     FrobeniusToTruth,
     GMVVariance,
     LogLikelihood,
+    SchurLikelihood,
     SteinLoss,
     VariogramScore,
 )
@@ -25,6 +26,7 @@ __all__ = [
     "Assessor",
     "LogLikelihood",
     "BlockPseudoLikelihood",
+    "SchurLikelihood",
     "SteinLoss",
     "FrobeniusToTruth",
     "GMVVariance",
