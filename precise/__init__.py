@@ -20,6 +20,7 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from precise.adaptive import AdaptiveEwaCovariance
+from precise.assessment import all_assessors, assessor_from_name
 from precise.base import BaseOnlineCovariance
 from precise.conditional import ConditionalCovariance, from_skater
 from precise.dcc import DCCCovariance
@@ -32,7 +33,6 @@ from precise.huber import HuberCovariance
 from precise.keyed import DynamicUniverse, FixedUniverse, keyed
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.oas import OASCovariance
-from precise.assessment import all_assessors, assessor_from_name
 from precise.partialmoments import PartialMomentsCovariance
 from precise.recommend import covariance_features, suggest
 from precise.registry import all_estimators, estimator_from_name, estimator_names
