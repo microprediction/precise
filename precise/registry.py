@@ -13,11 +13,17 @@ from precise.base import BaseOnlineCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
 from precise.geodesic import GeodesicEwaCovariance
+from precise.huber import HuberCovariance
+from precise.ledoitwolf import LedoitWolfCovariance
+from precise.partialmoments import PartialMomentsCovariance
 
 # The shipped positional estimators. Add new estimator classes here (one line each).
 _REGISTRY: List[Type[BaseOnlineCovariance]] = [
     EmpiricalCovariance,
     EwaCovariance,
+    LedoitWolfCovariance,
+    PartialMomentsCovariance,
+    HuberCovariance,
     GeodesicEwaCovariance,
 ]
 

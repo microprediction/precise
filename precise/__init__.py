@@ -23,6 +23,9 @@ from precise.empirical import EmpiricalCovariance
 from precise.dynamic import DynamicCovariance
 from precise.ewa import EwaCovariance
 from precise.geodesic import GeodesicEwaCovariance
+from precise.huber import HuberCovariance
+from precise.ledoitwolf import LedoitWolfCovariance
+from precise.partialmoments import PartialMomentsCovariance
 from precise.registry import all_estimators, estimator_from_name, estimator_names
 
 try:
@@ -34,6 +37,9 @@ __all__ = [
     "BaseOnlineCovariance",
     "EmpiricalCovariance",
     "EwaCovariance",
+    "LedoitWolfCovariance",
+    "PartialMomentsCovariance",
+    "HuberCovariance",
     "GeodesicEwaCovariance",
     "DynamicCovariance",
     "all_estimators",

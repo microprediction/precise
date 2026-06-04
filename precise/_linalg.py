@@ -113,6 +113,52 @@ def weaken_cov(
     return covs
 
 
+def ledoit_wolf(X: np.ndarray) -> tuple:
+    """Ledoit-Wolf linear shrinkage of the sample covariance towards ``mu * I``.
+
+    Returns ``(shrunk_cov, intensity)`` where ``intensity`` is the estimated optimal
+    shrinkage in [0, 1]. Numpy port of the Ledoit & Wolf (2004) estimator; ``X`` is a
+    ``(n_samples, n_features)`` array.
+    """
+    n, p = X.shape
+    Xc = X - X.mean(axis=0)
+    S = (Xc.T @ Xc) / n  # population (MLE) sample covariance
+    mu = np.trace(S) / p
+    d2 = np.sum((S - mu * np.eye(p)) ** 2) / p
+    if d2 <= 0:
+        return S, 0.0
+    # b2 = (1/n) * mean_k || x_k x_k^T - S ||_F^2 / p, expanded to avoid the per-sample loop
+    norms = np.einsum("ij,ij->i", Xc, Xc) ** 2  # ||x_k x_k^T||_F^2
+    quad = np.einsum("ij,jk,ik->i", Xc, S, Xc)  # <x_k x_k^T, S>
+    b2 = np.sum(norms - 2 * quad + np.sum(S**2)) / (p * n * n)
+    intensity = float(np.clip(min(b2, d2) / d2, 0.0, 1.0))
+    cov = (1 - intensity) * S + intensity * mu * np.eye(p)
+    return cov, intensity
+
+
+def huber_location(
+    X: np.ndarray, c: float = 1.345, n_iter: int = 25, atol: float = 1e-8
+) -> np.ndarray:
+    """Columnwise Huber M-estimate of location (robust mean) of a 2d array.
+
+    Iteratively reweighted: residuals beyond ``c`` robust standard deviations are
+    downweighted, so the estimate resists outliers. Numpy only.
+    """
+    X = np.atleast_2d(X)
+    mu = np.median(X, axis=0)
+    mad = np.median(np.abs(X - mu), axis=0)
+    scale = np.where(mad > 0, 1.4826 * mad, 1.0)
+    for _ in range(n_iter):
+        z = (X - mu) / scale
+        w = np.where(np.abs(z) <= c, 1.0, c / np.maximum(np.abs(z), 1e-12))
+        new_mu = np.sum(w * X, axis=0) / np.sum(w, axis=0)
+        if np.max(np.abs(new_mu - mu)) < atol:
+            mu = new_mu
+            break
+        mu = new_mu
+    return mu
+
+
 def geodesic_step(start: np.ndarray, end: np.ndarray, gamma: float) -> np.ndarray:
     """Move a fraction ``gamma`` along the affine-invariant Riemannian geodesic.
 
