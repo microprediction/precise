@@ -1,24 +1,26 @@
-# Precise Package Documentation
+# precise documentation
 
-Instructions for:
- - Online [covariance](https://microprediction.github.io/precise/covariance.html) forcasting.
- - The use of [managers](https://microprediction.github.io/precise/managers.html) for online portfolio construction.
- - The computation of [portfolios](https://microprediction.github.io/precise/portfolios.html) from known covariance. 
+**Online (incremental) covariance and correlation estimation** — the streaming complement to
+`sklearn.covariance`.
 
-More specific examples:
- - [Creating an M6 entry](https://microprediction.github.io/precise/m6.html)
- 
+- [Covariance estimation](https://microprediction.github.io/precise/covariance) — the estimator
+  classes, `partial_fit`, and the keyed (river-style) adapters for dynamic universes.
+- [Correlation estimation](https://microprediction.github.io/precise/correlation) — correlation as
+  a first-class output, including dynamic conditional correlation.
+
+```python
+from precise import EwaCovariance
+est = EwaCovariance(r=0.05)
+for y in stream:
+    est.partial_fit(y)
+est.covariance_   # also .correlation_, .precision_, .location_
+```
+
 ### Of note
-
-- We've had some [m6 success](https://microprediction.github.io/precise/m6_success.html)! 
+- Generating random covariance/correlation matrices to test against: [randomcov](https://github.com/microprediction/randomcov).
+- Portfolio construction (Schur-complementary allocation, HRP) lives in [schur](https://github.com/microprediction/schur); for production the [skfolio](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) implementation is recommended.
 - Related [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md).
-- This is a piece of the microprediction project aimed at creating millions of autonomous critters to distribute AI cheaply, as per the [book](https://github.com/microprediction/building_an_open_ai_network). The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere.
-- It would be lovely if you [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md). 
+- Migrating from precise &lt; 1.0? See [MIGRATING.md](https://github.com/microprediction/precise/blob/main/MIGRATING.md).
+- Part of the [microprediction](https://github.com/microprediction/microprediction) project. It would be lovely if you [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md).
 
-
-
-
-
-View as [source](https://github.com/microprediction/precise/blob/master/docs/README.md) or [web](https://microprediction.github.io/precise/)
-
-![schur](/precise/assets/images/schur_reaction.png)
+View as [source](https://github.com/microprediction/precise/blob/main/docs/README.md) or [web](https://microprediction.github.io/precise/).
