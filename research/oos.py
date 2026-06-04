@@ -102,7 +102,13 @@ def _ranks(scores: dict) -> dict:
     return {nm: i + 1 for i, nm in enumerate(order)}
 
 
-def _trial(gen, heavy, p, n_train, n_test, rng, assessor):
+def _trial(gen, heavy, p, n_train, n_test, rng, assessor, recommender=None):
+    """One trial: score every estimator OOS, and record the recommended one.
+
+    ``recommender`` is a callable ``train_window -> estimator_name``; when ``None`` the shipped
+    :func:`precise.suggest` (frozen tree) is used. Passing a freshly-trained predictor is what makes
+    :func:`leave_one_family_out_trained` leak-free.
+    """
     true_cov = gen(p, rng)
     train = _sample(true_cov, n_train, rng, heavy)
     test = _sample(true_cov, n_test, rng, heavy)
@@ -112,7 +118,10 @@ def _trial(gen, heavy, p, n_train, n_test, rng, assessor):
             scores[cls.__name__] = assessor.score(cls().fit(train).covariance_, X_test=test)
         except Exception:
             scores[cls.__name__] = -np.inf
-    recommended = suggest(train, top=1)[0].__name__
+    if recommender is not None:
+        recommended = recommender(train)
+    else:
+        recommended = suggest(train, top=1)[0].__name__
     return scores, recommended
 
 
@@ -152,6 +161,82 @@ def leave_one_ensemble_out(p=30, n_train=60, n_test=300, trials=40, seed=0, asse
     return results
 
 
+def _train_recommender(train_ensembles, n_problems, rng, assessor):
+    """Fit a *fresh* decision tree on ``train_ensembles`` only; return ``predict(window)->name``.
+
+    Mirrors the shipped pipeline (``research/train_recommender.py``: same features, same tree
+    hyper-parameters) but is restricted to a subset of generative families, so the resulting
+    recommender has *never seen* the held-out family. Requires scikit-learn (research extra).
+    """
+    from sklearn.tree import DecisionTreeClassifier
+
+    from research.train_recommender import _features
+
+    ests = all_estimators()
+    names = [E.__name__ for E in ests]
+    Xf, y = [], []
+    for _ in range(n_problems):
+        gen, heavy = ENSEMBLES[train_ensembles[rng.integers(len(train_ensembles))]]
+        p = int(rng.choice([15, 25, 40, 60]))
+        n = max(int(p * rng.choice([0.5, 0.8, 1.5, 3.0])), 10)
+        true = gen(p, rng)
+        tr, te = _sample(true, n, rng, heavy), _sample(true, 400, rng, heavy)
+        scores = []
+        for E in ests:
+            try:
+                scores.append(assessor.score(E().fit(tr).covariance_, X_test=te))
+            except Exception:
+                scores.append(-np.inf)
+        Xf.append(_features(tr))
+        y.append(names[int(np.argmax(scores))])
+    X = np.asarray(Xf, dtype=float)
+    mean, std = X.mean(0), X.std(0) + 1e-9
+    # hyper-parameters mirror research/train_recommender.main
+    clf = DecisionTreeClassifier(max_depth=5, min_samples_leaf=10, random_state=0)
+    clf.fit((X - mean) / std, y)
+
+    def predict(window):
+        f = (np.asarray(_features(window), dtype=float) - mean) / std
+        return str(clf.predict(f[None, :])[0])
+
+    return predict
+
+
+def leave_one_family_out_trained(
+    p=30, n_train=60, n_test=300, trials=40, n_problems=500, seed=0, assessor=None
+):
+    """Leak-free LOFO for the *trained* recommender.
+
+    For each held-out generative family, train a brand-new tree on the *other* families only, then
+    evaluate its per-problem picks on the held-out family — so the recommender is judged purely on
+    its ability to generalize to a generative regime it never saw during training (the gap the
+    shipped frozen model, trained on all families, cannot itself demonstrate).
+    """
+    assessor = assessor or GMVVariance()
+    rng = np.random.default_rng(seed)
+    names = list(ENSEMBLES)
+    results = {}
+    for held in names:
+        train_ens = [e for e in names if e != held]
+        predict = _train_recommender(train_ens, n_problems, rng, assessor)
+        bf = _best_fixed(train_ens, p, n_train, n_test, trials, rng, assessor)
+        gen, heavy = ENSEMBLES[held]
+        rk_rec, rk_bf = [], []
+        for _ in range(trials):
+            scores, rec = _trial(
+                gen, heavy, p, n_train, n_test, rng, assessor, recommender=predict
+            )
+            ranks = _ranks(scores)
+            rk_rec.append(ranks[rec])
+            rk_bf.append(ranks[bf])
+        results[held] = {
+            "best_fixed": bf,
+            "rank_recommender": float(np.mean(rk_rec)),
+            "rank_best_fixed": float(np.mean(rk_bf)),
+        }
+    return results
+
+
 def report(results) -> str:
     header = (
         f"{'held-out ensemble':22}{'best_fixed (on rest)':>24}"
@@ -176,4 +261,8 @@ def report(results) -> str:
 if __name__ == "__main__":
     src = "randomcov + numpy" if HAVE_RANDOMCOV else "numpy ensembles"
     print(f"Out-of-sample recommender validation  [{src}; assessor = GMVVariance]\n")
+    print("== shipped frozen recommender (suggest), leave-one-ensemble-out ==")
     print(report(leave_one_ensemble_out()))
+    print("\n== trained recommender, leak-free leave-one-FAMILY-out ==")
+    print("   (per held-out family, a fresh tree is trained on the other families only)\n")
+    print(report(leave_one_family_out_trained()))

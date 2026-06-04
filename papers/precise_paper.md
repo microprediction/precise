@@ -141,12 +141,19 @@ oracle. The protocol, designed against the generation-sensitivity caveat:
    Report the average rank of the chosen estimator (1 = per-trial oracle) for recommender vs
    best-fixed.
 
-**Preliminary synthetic result** (`research/oos.py`, leave-one-ensemble-out over eight generative
-families, p=24, n=50, GMV assessor): the recommender attains **mean rank 3.22** versus **4.44** for
-the best single fixed estimator (of 14), winning on 7 of 8 held-out families — *even with the
-un-tuned frozen heuristic ruleset*. It wins by the largest margins exactly where regime-adaptivity
-matters (`spiked`: 1.73 vs 5.60; `ar1_toeplitz`: 2.80 vs 6.73), confirming that the value comes from
-switching estimator by regime, which no fixed choice can do. A *trained* recommender is the remaining step.
+**Synthetic result, and an honest null** (`research/oos.py`, eight generative families, GMV assessor,
+mean rank of the chosen estimator, 1 = per-trial oracle). Two protocols, with a deliberately
+demanding gap between them:
+- *Leave-one-ensemble-out with the shipped `suggest`* (frozen tree): mean rank **3.27** vs **3.33**
+  for the best single fixed estimator — essentially a tie. But this is **leaky**: the frozen tree was
+  trained on all families, including the held-out one, so it is not a true out-of-family test.
+- *Leak-free leave-one-**family**-out* (`leave_one_family_out_trained`: for each held-out family a
+  fresh tree is trained on the *other* families only): the recommender **does not** beat best-fixed —
+  mean rank **4.64** vs **3.58**, with two outright failures (`one_factor` 9.57, `one_factor_heavy`
+  10.07). The recommender generalizes across *samples within* regimes it has seen, but **does not
+  robustly extrapolate to a wholly novel generative family** — choosing the estimator from observable
+  features is only as good as the coverage of the training ensembles. We report this rather than the
+  flattering leaky number.
 
 **Real-data holdout** (`research/oos_equity.py`, Ken French 100 portfolios, rolling minimum-variance
 OOS volatility, `p=100`, `n=60`, `p/n≈1.7`): the recommender selects shrinkage (annualized vol
