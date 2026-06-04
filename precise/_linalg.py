@@ -15,10 +15,6 @@ import numpy as np
 EPS = 1e-12
 
 
-def is_symmetric(a: np.ndarray, rtol: float = 1e-05, atol: float = 1e-08) -> bool:
-    return bool(np.allclose(a, a.T, rtol=rtol, atol=atol))
-
-
 def to_symmetric(a: np.ndarray) -> np.ndarray:
     return (a + a.T) / 2.0
 
@@ -88,29 +84,6 @@ def try_invert(a: np.ndarray, phi: float = 1.01, lmbd: float = 0.01) -> np.ndarr
             return np.linalg.pinv(a)
         except np.linalg.LinAlgError:
             return np.linalg.inv(affine_shrink(a, phi=phi, lmbd=lmbd))
-
-
-def weaken_cov(
-    cov: np.ndarray,
-    diag_multipliers,
-    off_diag_additional_factor: float = 0.9,
-) -> np.ndarray:
-    """Shrink a covariance matrix by scaling diagonal and off-diagonal entries.
-
-    Kept as a reusable shrink primitive (the portfolio-motivated *stopping criterion*
-    that used to drive it lives in the ``schur`` package).
-    """
-    covs = np.copy(cov)
-    diag_multipliers = np.asarray(diag_multipliers, dtype=float)
-    n = covs.shape[0]
-    for i in range(n):
-        covs[i, i] *= diag_multipliers[i]
-        for j in range(n):
-            if j != i:
-                covs[i, j] *= off_diag_additional_factor * np.sqrt(
-                    diag_multipliers[i] * diag_multipliers[j]
-                )
-    return covs
 
 
 def geodesic_step(start: np.ndarray, end: np.ndarray, gamma: float) -> np.ndarray:
