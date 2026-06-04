@@ -48,8 +48,10 @@ often it reproduces that ordering (its statistical power), using only a held-out
 
 ## References
 
+- López de Prado, M. (2015). *Building Diversified Portfolios that Outperform Out-of-Sample.*
+  SSRN working paper 2708678 (the original HRP paper). [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678)
 - López de Prado, M. (2016). *Building Diversified Portfolios that Outperform Out-of-Sample.*
-  Journal of Portfolio Management 42(4), 59–69. [link](https://jpm.pm-research.com/content/42/4/59.short)
+  Journal of Portfolio Management 42(4), 59–69 (published version). [link](https://jpm.pm-research.com/content/42/4/59.short)
 - Antonov, A., Lipton, A., & López de Prado, M. (2024). *Overcoming Markowitz's Instability with the
   Help of the Hierarchical Risk Parity (HRP): Theoretical Evidence.* SSRN 4748151. Analytical
   out-of-sample variance results for HRP. [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4748151)
