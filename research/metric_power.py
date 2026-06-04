@@ -258,9 +258,9 @@ def proof_high_dim(p=150, bulk=20, sig_bulk_good=0.10, sig_bulk_bad=0.22, sig_ta
     The genuine quality difference lives in ``bulk`` recoverable directions (the "good" estimate has
     smaller bulk-eigenvalue error). Both estimates carry independent, *non-informative* noise in the
     remaining ``p - bulk`` small-eigenvalue directions — the regime near ``p`` == sample size, where
-    the tail is unidentifiable. The full likelihood (and Stein) weight that tail most heavily via the
-    inverse/log-det, so they are swamped; moderate-k projection scoring and Frobenius, which avoid
-    inverting the full matrix, track the bulk.
+    the tail is unidentifiable. The full likelihood (and Stein) weight that tail most heavily via
+    the inverse/log-det, so they are swamped; moderate-k projection scoring and Frobenius, which
+    avoid inverting the full matrix, track the bulk.
 
     Returns ``{judge_name: power}``.
     """
@@ -292,6 +292,72 @@ def proof_high_dim(p=150, bulk=20, sig_bulk_good=0.10, sig_bulk_bad=0.22, sig_ta
     return {m: correct[m] / trials for m in names}
 
 
+# ----------------------------------- Schur-gamma regularized likelihood (the portfolio-theory knob)
+def _schur_loglik(cov, X, block_id, gamma):
+    """Likelihood under a covariance whose cross-block entries are shrunk by ``gamma``.
+
+    gamma=1 is the full likelihood; gamma=0 is the block-diagonal (robust) likelihood. This is the
+    same Schur-complement coupling control that interpolates HRP and min-variance portfolios.
+    """
+    cross = block_id[:, None] != block_id[None, :]
+    c = cov.copy()
+    c[cross] *= gamma
+    return _loglik(_project_pd(c), X)
+
+
+def schur_power(p=120, g=6, rho=0.6, err_good=0.05, err_bad=0.20, sig_cross=0.18,
+                gammas=(0.0, 0.25, 0.5, 0.75, 1.0), n_test=90, trials=250, seed=0):
+    """Power of a Schur-gamma likelihood judge vs gamma, in a high-dim noisy-cross-block regime.
+
+    Truth is block-diagonal within ``g`` groups (the recoverable signal: the good estimate has a
+    more accurate within-group correlation); both estimates carry spurious noisy *between-group*
+    correlations (the unidentifiable part). The full likelihood (gamma=1) inverts the whole matrix
+    and is destabilized by that noise; shrinking the cross-block coupling (gamma<1) recovers power,
+    peaking at a moderate gamma — exactly the HRP-vs-min-variance interpolation, here as a scoring
+    rule. Returns ``{"full": power, gamma: power, ...}``.
+
+    (Note: in these experiments the *gamma* strength drives the recovery; aligning the blocks to the
+    true groups via seriation gave no clean additional gain over arbitrary contiguous blocks.)
+    """
+    rng = np.random.default_rng(seed)
+    gs = p // g
+    block_id = np.repeat(np.arange(g), gs)  # contiguous blocks (in the shuffled variable order)
+    keys = ["full"] + [f"gamma_{x}" for x in gammas]
+    correct = {k: 0 for k in keys}
+
+    def _within(re):
+        c = np.zeros((p, p))
+        for j in range(g):
+            sl = slice(j * gs, (j + 1) * gs)
+            c[sl, sl] = (1 - re) * np.eye(gs) + re * np.ones((gs, gs))
+        return c
+
+    canon = np.repeat(np.arange(g), gs)
+    cross_true = canon[:, None] != canon[None, :]
+
+    def _make(err, perm):
+        re = rho + rng.choice([-1, 1]) * err
+        c = _within(re)
+        n = rng.standard_normal((p, p))
+        n = (n + n.T) / 2
+        c[cross_true] += sig_cross * n[cross_true]  # spurious noisy between-group correlations
+        return _project_pd(c)[np.ix_(perm, perm)], abs(re - rho)
+
+    for _ in range(trials):
+        perm = rng.permutation(p)
+        a_cov, err_a = _make(err_good, perm)
+        b_cov, err_b = _make(err_bad, perm)
+        good, bad = (a_cov, b_cov) if err_a <= err_b else (b_cov, a_cov)
+        true_cov = _project_pd(_within(rho))[np.ix_(perm, perm)]
+        X = rng.multivariate_normal(np.zeros(p), true_cov, size=n_test)
+        correct["full"] += _loglik(good, X) > _loglik(bad, X)
+        for x in gammas:
+            sg = _schur_loglik(good, X, block_id, x)
+            sb = _schur_loglik(bad, X, block_id, x)
+            correct[f"gamma_{x}"] += sg > sb
+    return {k: correct[k] / trials for k in keys}
+
+
 if __name__ == "__main__":
     pw, gap, grid = run()
     print(report(pw, gap, grid))
@@ -302,4 +368,7 @@ if __name__ == "__main__":
     print(compute_scaling())
     print("\nHigh-dim proof — full likelihood vs moderate-k projections with a noisy tail:")
     for judge, power in proof_high_dim().items():
+        print(f"  {judge:12}{power:>8.3f}")
+    print("\nSchur-gamma likelihood judge (noisy cross-block regime; gamma=1 == full likelihood):")
+    for judge, power in schur_power().items():
         print(f"  {judge:12}{power:>8.3f}")

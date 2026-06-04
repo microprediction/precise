@@ -44,3 +44,13 @@ def test_full_likelihood_fails_under_high_dim_noisy_tail():
     assert power["loglik"] < 0.6  # full likelihood derailed by the tail
     assert power["proj_k5"] > power["loglik"]  # moderate-k projection does better
     assert power["proj_k60"] == pytest.approx(power["loglik"], abs=0.2)  # k=p behaves like loglik
+
+
+def test_schur_gamma_recovers_power_where_full_likelihood_fails():
+    # The portfolio-theory knob: shrinking the noisy cross-block coupling (gamma<1) recovers power
+    # that the full likelihood (gamma=1) loses in the high-dim noisy-cross-block regime.
+    power = metric_power.schur_power(
+        p=60, g=6, gammas=(0.5, 1.0), n_test=60, trials=120, seed=0
+    )
+    assert power["gamma_0.5"] > power["full"]
+    assert power["gamma_1.0"] == pytest.approx(power["full"], abs=0.2)  # gamma=1 == full likelihood
