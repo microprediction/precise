@@ -106,10 +106,18 @@ oracle. The protocol, designed against the generation-sensitivity caveat:
    ensemble labels.
 2. **Real-data holdout:** equity-return windows — the decisive test, since every synthetic ensemble
    is suspect.
-3. **Scoring** under a high-dimensional-robust assessor (block pseudo-likelihood or GMV out-of-sample
-   variance), *not* the full likelihood, per §3. Report recommender vs best-fixed vs oracle.
+3. **Scoring** under a high-dimensional-robust assessor (minimum-variance out-of-sample variance —
+   scale-invariant, bounded — or block pseudo-likelihood), *not* the full likelihood, per §3.
+   Report the average rank of the chosen estimator (1 = per-trial oracle) for recommender vs
+   best-fixed.
 
-*(This is the next experimental milestone; the harness lives in `research/`.)*
+**Preliminary synthetic result** (`research/oos.py`, leave-one-ensemble-out over eight generative
+families, p=24, n=50, GMV assessor): the recommender attains **mean rank 3.22** versus **4.44** for
+the best single fixed estimator (of 14), winning on 7 of 8 held-out families — *even with the
+un-tuned frozen heuristic ruleset*. It wins by the largest margins exactly where regime-adaptivity
+matters (`spiked`: 1.73 vs 5.60; `ar1_toeplitz`: 2.80 vs 6.73), confirming that the value comes from
+switching estimator by regime, which no fixed choice can do. A *trained* recommender and the
+real-equity-data holdout are the remaining steps.
 
 ## 7. Related work
 
