@@ -20,6 +20,7 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from precise.base import BaseOnlineCovariance
+from precise.conditional import ConditionalCovariance, from_skater
 from precise.dcc import DCCCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
@@ -48,6 +49,8 @@ __all__ = [
     "GeodesicEwaCovariance",
     "DCCCovariance",
     "FactorCovariance",
+    "ConditionalCovariance",
+    "from_skater",
     "keyed",
     "FixedUniverse",
     "DynamicUniverse",

@@ -71,6 +71,29 @@ k = keyed(EwaCovariance(r=0.05))                  # fixed universe, imputes miss
 `dynamic=True` gives a `DynamicUniverse` (a wrapped estimator per live key-set). Both work with any
 positional estimator — the adapter adds no covariance math of its own.
 
+## Composing volatility × correlation
+
+`H = D R D` is a composition, not a fixed algorithm. `ConditionalCovariance` lets you pick the
+per-series **volatility** model and the **correlation** estimator independently — `DCCCovariance` is
+just the EWMA/EWMA special case:
+
+```python
+from precise import ConditionalCovariance, EwaCovariance, LedoitWolfCovariance
+
+est = ConditionalCovariance(vol=EwaCovariance(r=0.02),       # any estimator, used per series in 1-D
+                            corr=LedoitWolfCovariance(r=0.05))  # correlation from any estimator
+```
+
+The volatility model can also be any univariate model from
+[microprediction/skaters](https://github.com/microprediction/skaters) (Holt, Hosking, …) via
+`from_skater` — precise doesn't depend on it; the adapter is duck-typed:
+
+```python
+import skaters
+from precise import ConditionalCovariance, from_skater
+est = ConditionalCovariance(vol=from_skater(skaters.holt), corr=EwaCovariance(r=0.05))
+```
+
 ## Related
 
 - **Generating** random covariance/correlation matrices to test against: [`randomcov`](https://github.com/microprediction/randomcov).
