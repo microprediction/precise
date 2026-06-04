@@ -42,14 +42,16 @@ The `d0`/`d1` distinction (levels vs first differences) is now the `diff=` flag,
 
 ## Dynamic universes
 
-The dict-keyed `SkaterCovariance` (variables entering/leaving) is now `DynamicCovariance`, which
-wraps the estimator classes and offers river-style `update` / `learn_one`:
+The dict-keyed `SkaterCovariance` (variables entering/leaving) is replaced by the `keyed(...)`
+adapters, which decorate any positional estimator with a river-style `update` / `learn_one` surface:
 
 ```python
-from precise import DynamicCovariance, EwaCovariance
-d = DynamicCovariance(EwaCovariance, r=0.05)
+from precise import keyed, EwaCovariance
+d = keyed(EwaCovariance(r=0.05), dynamic=True)   # DynamicUniverse: names enter/leave
 d.update({"AAPL": 0.01, "MSFT": -0.02})
 d.covariance_   # dict-of-dicts;  d.to_frame() for a pandas DataFrame
+
+k = keyed(EwaCovariance(r=0.05))                 # FixedUniverse: fixed names, missing keys imputed
 ```
 
 ## Portfolio construction, managers, and the Schur work

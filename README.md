@@ -46,21 +46,27 @@ all_estimators()                          # the list of classes (a bake-off in o
 estimator_from_name("LedoitWolfCovariance")
 ```
 
-## Dynamic universes (keyed, river-style)
+## Keyed / dynamic universes (river-style)
 
-In finance the set of variables changes over time — names enter and leave. `DynamicCovariance`
-takes observations as **dicts keyed by name** and tracks a covariance whose dimension follows the
-live universe (river-style `update` / `learn_one`):
+In streaming/finance settings observations arrive as **dicts keyed by name**, and the set of names
+can change over time. `keyed(...)` decorates *any* of the estimators above to consume keyed dicts
+(river-style `update` / `learn_one`) and emit keyed output:
 
 ```python
-from precise import DynamicCovariance
+from precise import keyed, EwaCovariance
 
-d = DynamicCovariance(EwaCovariance, r=0.05)
+d = keyed(EwaCovariance(r=0.05), dynamic=True)   # changing universe (DynamicUniverse)
 d.update({"AAPL": 0.01, "MSFT": -0.02})
-d.update({"MSFT": 0.00, "NVDA": 0.03})    # AAPL leaves, NVDA enters
-d.covariance_                              # dict-of-dicts over the live universe
-d.to_frame()                               # pandas DataFrame  (pip install precise[pandas])
+d.update({"MSFT": 0.00, "NVDA": 0.03})           # AAPL leaves, NVDA enters
+d.covariance_                                     # dict-of-dicts over the live universe
+d.to_frame()                                      # pandas DataFrame  (pip install precise[pandas])
+
+k = keyed(EwaCovariance(r=0.05))                  # fixed universe, imputes missing keys (FixedUniverse)
 ```
+
+`dynamic=False` (the default) gives a `FixedUniverse` (one wrapped estimator, missing keys imputed);
+`dynamic=True` gives a `DynamicUniverse` (a wrapped estimator per live key-set). Both work with any
+positional estimator — the adapter adds no covariance math of its own.
 
 ## Related
 

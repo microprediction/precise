@@ -4,7 +4,8 @@ The online complement to ``sklearn.covariance`` (whose estimators are batch-only
 ``partial_fit``). Two cooperating layers:
 
 * a positional, sklearn-style core (fixed dimension, fast) — :class:`EmpiricalCovariance` et al.;
-* a keyed, river-style dynamic layer — :class:`DynamicCovariance` — for universes whose
+* keyed, river-style adapters — :func:`keyed` → :class:`FixedUniverse` / :class:`DynamicUniverse` —
+  that decorate any positional estimator to consume name-keyed dicts and track a universe whose
   variables enter and leave over time (a real need in finance).
 
     from precise import EwaCovariance
@@ -19,11 +20,11 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from precise.base import BaseOnlineCovariance
-from precise.dynamic import DynamicCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
 from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance
+from precise.keyed import DynamicUniverse, FixedUniverse, keyed
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.partialmoments import PartialMomentsCovariance
 from precise.registry import all_estimators, estimator_from_name, estimator_names
@@ -41,7 +42,9 @@ __all__ = [
     "PartialMomentsCovariance",
     "HuberCovariance",
     "GeodesicEwaCovariance",
-    "DynamicCovariance",
+    "keyed",
+    "FixedUniverse",
+    "DynamicUniverse",
     "all_estimators",
     "estimator_from_name",
     "estimator_names",
