@@ -23,3 +23,13 @@ def test_power_experiment_runs():
     # A clear quality gap should be detected well above chance by the proper score.
     assert np.mean(list(power["loglik"].values())) > 0.6
     assert "loglik" in metric_power.report(power, gap, grid)
+
+
+def test_kdim_projection_power_increases_with_k():
+    # Scoring jointly in more dimensions recovers cross-direction info: k=p (full likelihood)
+    # should have at least as much power as marginal (k=1) random projections.
+    power, gap = metric_power.projection_power(
+        p=8, k_list=(1, None), total_dirs=24, n_test=40, trials=200, seed=3
+    )
+    assert power[None] >= power[1]
+    assert "power" in metric_power.projection_report(power, gap, p=8)

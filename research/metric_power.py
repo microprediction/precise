@@ -150,6 +150,78 @@ def report(power, mean_gap, n_grid) -> str:
     return "\n".join(lines)
 
 
+# ------------------------------------------------- random k-dimensional projection scoring
+def _random_subspaces(p, k, n_sub, rng):
+    """A list of ``n_sub`` orthonormal (k, p) projection matrices."""
+    subs = []
+    for _ in range(n_sub):
+        q, _ = np.linalg.qr(rng.standard_normal((p, k)))
+        subs.append(q[:, :k].T)
+    return subs
+
+
+def _kproj_loglik(cov, X, subspaces):
+    """Mean joint k-D Gaussian log-likelihood of X projected onto each random subspace."""
+    total = 0.0
+    for W in subspaces:
+        Z = X @ W.T  # (n, k)
+        C = W @ cov @ W.T  # (k, k) predicted covariance in the subspace
+        prec = np.linalg.inv(C)
+        _, logdet = np.linalg.slogdet(prec)
+        quad = np.einsum("ij,jk,ik->i", Z, prec, Z)
+        total += float(np.mean(0.5 * logdet - 0.5 * quad))
+    return total / len(subspaces)
+
+
+def projection_power(p=18, k_list=(1, 2, 3, 5, 10, None), total_dirs=60, eps_good=0.04,
+                     eps_bad=0.055, n_test=40, trials=700, min_gap=0.005, seed=3):
+    """Power of random k-D projection scoring vs the projection dimension k.
+
+    The *total direction budget* is held ~constant (``n_sub = total_dirs // k``) so the comparison
+    isolates the effect of scoring jointly in k dimensions versus marginally. ``k=None`` means the
+    full dimension p (which is the full Gaussian log-likelihood, up to rotation).
+    """
+    rng = np.random.default_rng(seed)
+    correct = {k: 0 for k in k_list}
+    counted = 0
+    gaps = []
+    for _ in range(trials):
+        true_cov = _spd_factor(p, rng)
+        good, bad = _perturb(true_cov, eps_good, rng), _perturb(true_cov, eps_bad, rng)
+        kl_good, kl_bad = _kl(true_cov, good), _kl(true_cov, bad)
+        a, b = (good, bad) if kl_good <= kl_bad else (bad, good)
+        gap = abs(kl_good - kl_bad)
+        if gap < min_gap:
+            continue
+        gaps.append(gap)
+        counted += 1
+        X = rng.multivariate_normal(np.zeros(p), true_cov, size=n_test)
+        for k in k_list:
+            kk = p if k is None else k
+            subs = _random_subspaces(p, kk, max(1, total_dirs // kk), rng)
+            if _kproj_loglik(a, X, subs) > _kproj_loglik(b, X, subs):
+                correct[k] += 1
+    power = {k: correct[k] / counted for k in k_list}
+    return power, float(np.mean(gaps))
+
+
+def projection_report(power, mean_gap, p=18) -> str:
+    lines = [
+        f"Power of random k-D projection scoring vs projection dimension  (mean KL gap = {mean_gap:.3f})",
+        "(total direction budget held ~constant; k=p is the full Gaussian log-likelihood)",
+        "",
+        f"{'k':>6}{'power':>10}",
+        "-" * 16,
+    ]
+    for k in power:
+        label = f"{('p=' + str(p)) if k is None else k}"
+        lines.append(f"{label:>6}{power[k]:>10.3f}")
+    return "\n".join(lines)
+
+
 if __name__ == "__main__":
     pw, gap, grid = run()
     print(report(pw, gap, grid))
+    print()
+    ppw, pgap = projection_power()
+    print(projection_report(ppw, pgap))
