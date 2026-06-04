@@ -21,8 +21,6 @@ the optional ``[pandas]`` extra is installed.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Type
-
 import numpy as np
 
 from precise._linalg import cov_to_corrcoef, nearest_pos_def, to_symmetric
@@ -34,7 +32,7 @@ class _Universe:
     """A fixed set of keys with a wrapped online positional estimator. No buffer."""
 
     def __init__(self, keys, factory):
-        self.keys: List[str] = list(keys)
+        self.keys: list[str] = list(keys)
         self.keys_set = set(self.keys)
         self.staleness = 0
         self.longevity = 0
@@ -47,7 +45,7 @@ class _Universe:
         self.longevity += 1
 
     @property
-    def running_cov(self) -> Optional[np.ndarray]:
+    def running_cov(self) -> np.ndarray | None:
         return self._est.covariance_ if self._est.n_samples_ > 0 else None
 
 
@@ -63,7 +61,7 @@ class DynamicCovariance:
 
     def __init__(
         self,
-        estimator: Type[BaseOnlineCovariance] = EwaCovariance,
+        estimator: type[BaseOnlineCovariance] = EwaCovariance,
         *,
         max_universes: int = 10,
         max_staleness: int = 50,
@@ -73,8 +71,8 @@ class DynamicCovariance:
         self.estimator_kwargs = estimator_kwargs
         self.max_universes = max_universes
         self.max_staleness = max_staleness
-        self.states: Dict[int, _Universe] = {}
-        self.x: Optional[dict] = None
+        self.states: dict[int, _Universe] = {}
+        self.x: dict | None = None
         self._counter = 0
 
     # ------------------------------------------------------------------ internals
@@ -86,7 +84,7 @@ class DynamicCovariance:
         self._counter += 1
 
     # ----------------------------------------------------------------- streaming
-    def update(self, x: dict) -> "DynamicCovariance":
+    def update(self, x: dict) -> DynamicCovariance:
         """Update with one keyed observation ``{name: value, ...}``."""
         self.x = dict(x)
         x_keys = set(x.keys())
@@ -115,23 +113,23 @@ class DynamicCovariance:
         return self
 
     # river-compatible aliases
-    def learn_one(self, x: dict) -> "DynamicCovariance":
+    def learn_one(self, x: dict) -> DynamicCovariance:
         return self.update(x)
 
-    def learn_many(self, X) -> "DynamicCovariance":
+    def learn_many(self, X) -> DynamicCovariance:
         for x in X:
             self.update(x)
         return self
 
     # ---------------------------------------------------------------- assembly
-    def _resolve_keys(self, keys) -> List[str]:
+    def _resolve_keys(self, keys) -> list[str]:
         if keys is not None:
             return list(keys)
         if self.x is None:
             raise ValueError("No keys supplied and no observation has been seen yet.")
         return list(self.x.keys())
 
-    def _pairwise(self, keys: List[str]) -> np.ndarray:
+    def _pairwise(self, keys: list[str]) -> np.ndarray:
         n = len(keys)
         idx = {k: i for i, k in enumerate(keys)}
         M = np.full((n, n), np.nan)
@@ -145,8 +143,10 @@ class DynamicCovariance:
                 if candidates:
                     # Prefer the longest-lived universe, breaking ties towards the freshest.
                     u = max(candidates, key=lambda u: (u.longevity, -u.staleness))
+                    cov = u.running_cov
+                    assert cov is not None  # guaranteed by the candidate filter
                     a, b = u.keys.index(ki), u.keys.index(kj)
-                    value = u.running_cov[a, b]
+                    value = cov[a, b]
                     M[idx[ki], idx[kj]] = value
                     M[idx[kj], idx[ki]] = value
         return M
@@ -172,7 +172,7 @@ class DynamicCovariance:
         return corr
 
     @staticmethod
-    def _as_dict_of_dicts(matrix: np.ndarray, keys: List[str]) -> Dict[str, Dict[str, float]]:
+    def _as_dict_of_dicts(matrix: np.ndarray, keys: list[str]) -> dict[str, dict[str, float]]:
         return {
             ki: {kj: float(matrix[i, j]) for j, kj in enumerate(keys)}
             for i, ki in enumerate(keys)
@@ -180,12 +180,12 @@ class DynamicCovariance:
 
     # ------------------------------------------------------- fitted attributes
     @property
-    def covariance_(self) -> Dict[str, Dict[str, float]]:
+    def covariance_(self) -> dict[str, dict[str, float]]:
         cov, keys = self.cov_array()
         return self._as_dict_of_dicts(cov, keys)
 
     @property
-    def correlation_(self) -> Dict[str, Dict[str, float]]:
+    def correlation_(self) -> dict[str, dict[str, float]]:
         keys = self._resolve_keys(None)
         return self._as_dict_of_dicts(self.get_corr(keys), keys)
 

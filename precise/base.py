@@ -14,7 +14,6 @@ dependency. The functional update hooks keep the state a plain dict, so ``get_st
 from __future__ import annotations
 
 import inspect
-from typing import Optional
 
 import numpy as np
 
@@ -30,9 +29,9 @@ class BaseOnlineCovariance:
     # Subclasses may set diff=True (in __init__) to estimate on first differences.
 
     def __init__(self) -> None:
-        self._state: Optional[dict] = None
-        self.n_features_in_: Optional[int] = None
-        self._prev_x: Optional[np.ndarray] = None  # for diff=True
+        self._state: dict | None = None
+        self.n_features_in_: int | None = None
+        self._prev_x: np.ndarray | None = None  # for diff=True
 
     # ------------------------------------------------------------------ hooks
     def _init_state(self, n_dim: int) -> dict:
@@ -48,7 +47,7 @@ class BaseOnlineCovariance:
         return state["mean"]
 
     # -------------------------------------------------------------- fitting
-    def partial_fit(self, X, y=None) -> "BaseOnlineCovariance":
+    def partial_fit(self, X, y=None) -> BaseOnlineCovariance:
         """Update the estimate with one observation (1d) or a batch of rows (2d)."""
         use_diff = getattr(self, "diff", False)
         for x in as_rows(X):
@@ -63,7 +62,7 @@ class BaseOnlineCovariance:
             self._state = self._update_state(self._state, x)
         return self
 
-    def fit(self, X, y=None) -> "BaseOnlineCovariance":
+    def fit(self, X, y=None) -> BaseOnlineCovariance:
         """Reset and fit on a 2d batch ``X`` (sklearn drop-in)."""
         self._state = None
         self._prev_x = None
@@ -72,12 +71,13 @@ class BaseOnlineCovariance:
             raise ValueError("fit expects a 2d array of shape (n_samples, n_features).")
         return self.partial_fit(arr)
 
-    def _check_fitted(self) -> None:
+    def _fitted_state(self) -> dict:
         if self._state is None or self._state.get("n_samples", 0) < 1:
             raise NotFittedError(
                 f"{type(self).__name__} has not seen any observations yet; "
                 "call partial_fit or fit first."
             )
+        return self._state
 
     # --------------------------------------------------- fitted attributes
     @property
@@ -86,13 +86,12 @@ class BaseOnlineCovariance:
 
     @property
     def location_(self) -> np.ndarray:
-        self._check_fitted()
-        return np.asarray(self._state_to_mean(self._state), dtype=float)
+        return np.asarray(self._state_to_mean(self._fitted_state()), dtype=float)
 
     @property
     def covariance_(self) -> np.ndarray:
-        self._check_fitted()
-        return _linalg.to_symmetric(np.asarray(self._state_to_cov(self._state), dtype=float))
+        cov = np.asarray(self._state_to_cov(self._fitted_state()), dtype=float)
+        return _linalg.to_symmetric(cov)
 
     @property
     def correlation_(self) -> np.ndarray:
@@ -132,13 +131,13 @@ class BaseOnlineCovariance:
     def get_params(self, deep: bool = True) -> dict:
         return {k: getattr(self, k) for k in self._param_names()}
 
-    def set_params(self, **params) -> "BaseOnlineCovariance":
+    def set_params(self, **params) -> BaseOnlineCovariance:
         for key, value in params.items():
             setattr(self, key, value)
         return self
 
     # ------------------------------------------------------- serialization
-    def get_state(self) -> Optional[dict]:
+    def get_state(self) -> dict | None:
         """Return the current state as a plain, JSON-friendly dict (or None if unfitted)."""
         if self._state is None:
             return None
@@ -147,7 +146,7 @@ class BaseOnlineCovariance:
             for k, v in self._state.items()
         }
 
-    def set_state(self, state: Optional[dict]) -> "BaseOnlineCovariance":
+    def set_state(self, state: dict | None) -> BaseOnlineCovariance:
         """Restore state previously produced by :meth:`get_state`."""
         if state is None:
             self._state = None
@@ -157,7 +156,8 @@ class BaseOnlineCovariance:
         for k, v in state.items():
             restored[k] = np.array(v, dtype=float) if isinstance(v, list) else v
         self._state = restored
-        self.n_features_in_ = restored.get("n_dim")
+        n_dim = restored.get("n_dim")
+        self.n_features_in_ = None if n_dim is None else int(n_dim)
         return self
 
     def __getstate__(self) -> dict:

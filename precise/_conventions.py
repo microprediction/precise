@@ -5,16 +5,12 @@ Kept dependency-light: numpy only.
 
 from __future__ import annotations
 
-from typing import Union
-
 import numpy as np
 
 # An observation is a 1d vector; a batch is a 2d (n_samples, n_features) array.
-Vector = Union[list, np.ndarray]
-Matrix = Union[list, np.ndarray]
 
 
-def infer_dimension(n_dim: int = None, x: Vector = None) -> int:
+def infer_dimension(n_dim: int | None = None, x: list | np.ndarray | None = None) -> int:
     """Infer the number of variables from either an explicit dimension or a sample.
 
     :param n_dim:  Explicit number of variables, if known.
@@ -30,7 +26,7 @@ def infer_dimension(n_dim: int = None, x: Vector = None) -> int:
     raise ValueError("Ambiguous dimension. Supply an observation y or n_dim.")
 
 
-def as_rows(X: Matrix) -> np.ndarray:
+def as_rows(X: list | np.ndarray) -> np.ndarray:
     """Coerce input to a 2d float array of rows.
 
     A 1d input is treated as a single observation (one row); a 2d input is a

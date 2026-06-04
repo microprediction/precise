@@ -7,8 +7,6 @@ conformance test and the ``research/`` bake-offs can iterate over every estimato
 
 from __future__ import annotations
 
-from typing import List, Type
-
 from precise.base import BaseOnlineCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
@@ -18,7 +16,7 @@ from precise.ledoitwolf import LedoitWolfCovariance
 from precise.partialmoments import PartialMomentsCovariance
 
 # The shipped positional estimators. Add new estimator classes here (one line each).
-_REGISTRY: List[Type[BaseOnlineCovariance]] = [
+_REGISTRY: list[type[BaseOnlineCovariance]] = [
     EmpiricalCovariance,
     EwaCovariance,
     LedoitWolfCovariance,
@@ -28,16 +26,16 @@ _REGISTRY: List[Type[BaseOnlineCovariance]] = [
 ]
 
 
-def all_estimators() -> List[Type[BaseOnlineCovariance]]:
+def all_estimators() -> list[type[BaseOnlineCovariance]]:
     """Return the list of registered online covariance estimator classes."""
     return list(_REGISTRY)
 
 
-def estimator_names() -> List[str]:
+def estimator_names() -> list[str]:
     return [cls.__name__ for cls in _REGISTRY]
 
 
-def estimator_from_name(name: str) -> Type[BaseOnlineCovariance]:
+def estimator_from_name(name: str) -> type[BaseOnlineCovariance]:
     """Look up an estimator class by name (raises KeyError if unknown)."""
     for cls in _REGISTRY:
         if cls.__name__ == name:
