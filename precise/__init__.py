@@ -19,8 +19,8 @@ from __future__ import annotations
 from importlib.metadata import PackageNotFoundError, version
 
 from precise.base import BaseOnlineCovariance
-from precise.empirical import EmpiricalCovariance
 from precise.dynamic import DynamicCovariance
+from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
 from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance

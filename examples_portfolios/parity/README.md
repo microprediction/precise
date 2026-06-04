@@ -1,1 +1,0 @@
-Ideas for objective funtions
