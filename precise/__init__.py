@@ -32,7 +32,9 @@ from precise.huber import HuberCovariance
 from precise.keyed import DynamicUniverse, FixedUniverse, keyed
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.oas import OASCovariance
+from precise.assessment import all_assessors, assessor_from_name
 from precise.partialmoments import PartialMomentsCovariance
+from precise.recommend import covariance_features, suggest
 from precise.registry import all_estimators, estimator_from_name, estimator_names
 from precise.schurcov import SchurCovariance
 from precise.shrunk import ShrunkCovariance
@@ -67,5 +69,9 @@ __all__ = [
     "all_estimators",
     "estimator_from_name",
     "estimator_names",
+    "all_assessors",
+    "assessor_from_name",
+    "suggest",
+    "covariance_features",
     "__version__",
 ]
