@@ -59,6 +59,7 @@ target-version = ["py39"]
 [tool.ruff]
 line-length = 100
 target-version = "py39"
+extend-exclude = ["research/legacy_skatervaluation"]  # preserved legacy code, not maintained
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "UP"]
