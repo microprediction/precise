@@ -54,3 +54,13 @@ def test_schur_gamma_recovers_power_where_full_likelihood_fails():
     )
     assert power["gamma_0.5"] > power["full"]
     assert power["gamma_1.0"] == pytest.approx(power["full"], abs=0.2)  # gamma=1 == full likelihood
+
+
+def test_block_pseudo_likelihood_is_robust_where_full_fails():
+    # A useful Schur-style judge: a moderate-block pseudo-likelihood recovers power where the full
+    # likelihood collapses in the high-dim noisy-tail regime, using only small block inverses.
+    power = metric_power.pseudo_likelihood_power(
+        regime="noisy_tail", block_sizes=(5, None), p=60, bulk=10, n_test=40, trials=120, seed=0
+    )
+    assert power["pll_b5"] > power["full_loglik"]
+    assert power["pll_b60"] == pytest.approx(power["full_loglik"], abs=0.2)  # block=p == full

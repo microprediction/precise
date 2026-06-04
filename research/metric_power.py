@@ -358,6 +358,76 @@ def schur_power(p=120, g=6, rho=0.6, err_good=0.05, err_bad=0.20, sig_cross=0.18
     return {k: correct[k] / trials for k in keys}
 
 
+# ------------------------------------ Schur-style block pseudo-likelihood (a useful judge)
+def block_pseudo_loglik(cov, X, block_size):
+    """Composite (pseudo) likelihood: sum of Gaussian log-likelihoods on small contiguous blocks.
+
+    The full Gaussian likelihood factorizes through Schur complements into block conditionals;
+    dropping the cross-block conditioning gives this block-marginal pseudo-likelihood, which only
+    inverts ``block_size`` x ``block_size`` matrices. It is the *evaluation* analogue of the HRP /
+    Schur principle on the allocation side (Lopez de Prado 2016; Antonov, Lipton & Lopez de Prado
+    2024; Cotton 2024): do not invert the full ill-conditioned covariance. ``block_size == p``
+    recovers the full likelihood.
+    """
+    cov = np.asarray(cov, dtype=float)
+    p = len(cov)
+    total = 0.0
+    for s in range(0, p, block_size):
+        idx = slice(s, min(s + block_size, p))
+        c = _project_pd(cov[idx, idx])
+        r = X[:, idx]
+        b = c.shape[0]
+        _, logdet = np.linalg.slogdet(c)
+        quad = np.einsum("ij,jk,ik->i", r, np.linalg.inv(c), r)
+        total += float(np.mean(-0.5 * (b * np.log(2 * np.pi) + logdet + quad)))
+    return total
+
+
+def pseudo_likelihood_power(regime="noisy_tail", block_sizes=(3, 10, 30, None), p=150, bulk=20,
+                            sig_good=0.10, sig_bad=0.22, sig_tail=1.0, tail_level=0.05,
+                            eps_good=0.04, eps_bad=0.055, n_test=80, trials=250, seed=0):
+    """Power of the block pseudo-likelihood vs block size, against full likelihood and Frobenius.
+
+    ``regime="noisy_tail"`` (high-dim, full likelihood fails) or ``"clean"`` (well-specified,
+    full likelihood optimal). ``block_size=None`` means the full dimension (== full likelihood).
+    Returns ``{judge: power}``.
+    """
+    rng = np.random.default_rng(seed)
+    if regime == "clean":
+        p = min(p, 20)
+    bs = [p if b is None else b for b in block_sizes]
+    judges = ["frobenius", "full_loglik"] + [f"pll_b{b}" for b in bs]
+    correct = {j: 0 for j in judges}
+    tail = p - bulk
+    lam = np.concatenate([rng.uniform(2.0, 6.0, bulk), np.full(tail, tail_level)])
+
+    for _ in range(trials):
+        if regime == "noisy_tail":
+            q_mat, _ = np.linalg.qr(rng.standard_normal((p, p)))
+
+            def _est(sig, q_mat=q_mat):
+                bk = np.clip(lam[:bulk] * (1 + rng.normal(0, sig, bulk)), 0.05, None)
+                tt = np.maximum(tail_level * np.exp(rng.normal(0, sig_tail, tail)), 1e-4)
+                lm = np.concatenate([bk, tt])
+                return (q_mat * lm) @ q_mat.T, float(np.linalg.norm(bk - lam[:bulk]))
+
+            a, ea = _est(sig_good)
+            b_, eb = _est(sig_bad)
+            good, bad = (a, b_) if ea <= eb else (b_, a)
+            true_cov = (q_mat * lam) @ q_mat.T
+        else:  # clean, well-specified: gold ordering by exact KL
+            true_cov = _spd_factor(p, rng)
+            a, b_ = _perturb(true_cov, eps_good, rng), _perturb(true_cov, eps_bad, rng)
+            good, bad = (a, b_) if _kl(true_cov, a) <= _kl(true_cov, b_) else (b_, a)
+
+        X = rng.multivariate_normal(np.zeros(p), true_cov, size=n_test)
+        correct["frobenius"] += _frobenius(good, X) > _frobenius(bad, X)
+        correct["full_loglik"] += _loglik(good, X) > _loglik(bad, X)
+        for b in bs:
+            correct[f"pll_b{b}"] += block_pseudo_loglik(good, X, b) > block_pseudo_loglik(bad, X, b)
+    return {j: correct[j] / trials for j in judges}
+
+
 if __name__ == "__main__":
     pw, gap, grid = run()
     print(report(pw, gap, grid))
@@ -371,4 +441,10 @@ if __name__ == "__main__":
         print(f"  {judge:12}{power:>8.3f}")
     print("\nSchur-gamma likelihood judge (noisy cross-block regime; gamma=1 == full likelihood):")
     for judge, power in schur_power().items():
+        print(f"  {judge:12}{power:>8.3f}")
+    print("\nBlock pseudo-likelihood judge — noisy-tail high-dim (full likelihood fails):")
+    for judge, power in pseudo_likelihood_power(regime="noisy_tail").items():
+        print(f"  {judge:12}{power:>8.3f}")
+    print("\nBlock pseudo-likelihood judge — clean low-dim (full likelihood is optimal):")
+    for judge, power in pseudo_likelihood_power(regime="clean").items():
         print(f"  {judge:12}{power:>8.3f}")
