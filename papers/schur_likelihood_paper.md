@@ -180,6 +180,15 @@ correlations and the cross-block coupling is shared noise (`research/metric_powe
 cross-damping) / **0.71** (the principled `W_γ`) at the optimum versus **≈0.45** at `γ∈{0,1}`. The
 bias–variance dial of §4(2) is thus over the *estimate*, not the test sample.
 
+The variance half of this is now analytic. To first order the training-draw variance of the score
+gap is `Var(D) ≈ (2/n) tr((∇_S D · Σ_t)²)`, where `∇_S D` inherits the sensitivity of `W_γ` to the
+estimate. At `γ=1` that sensitivity is `∂Σ̂⁻¹ ∼ Σ̂⁻¹ ⊗ Σ̂⁻¹`, so `Var(D)` grows like `1/λ_min⁴`:
+numerically (`research/schur_spiked.py`) it runs `0 → 77` as the truth's condition number worsens
+`24 → 400`, while `γ=0.3` stays bounded (`0 → 5`). Damping caps the variance — the precise cure for
+the collapse. The *signal* half resists this linearization (it is second-order in the sampling noise
+— the shrinkage benefit), so `γ*` itself stays a nonlinear quantity, characterized numerically above
+rather than in closed form.
+
 **The Godambe boundary.** Whether `ℓ_γ` is even a valid estimating equation settles its status. The
 `γ`-Schur score `U_γ = ∇_Σ ℓ_γ` is unbiased at the truth — `E_t[U_γ(Σ_t)] = 0` — *only at the
 endpoints*: `γ=1` (the full Fisher score) and `γ=0` (the correctly specified block marginals, for
@@ -292,12 +301,13 @@ Results (reproducible; rankings are ensemble-dependent — see
 
 ## 10. Limitations and open problems
 
-- **Estimate-variance theorem.** §5 gives the exact test-sample discrimination SNR (where `γ=1` is
-  optimal) and the Godambe boundary (the score is unbiased only at `γ∈{0,1}`); the endpoint
-  efficiency loss is classical. What is still empirical is the *estimate-instability* SNR — the
-  variance of the score over training draws, driven by `∂W_γ/∂Σ̂ ∼ 1/λ_min²` at `γ=1` — whose
-  closed form under a spiked/Marčenko–Pastur model would turn the interior optimum (now demonstrated)
-  into a theorem and predict `γ*`.
+- **Closed-form `γ*`.** §5 gives the exact test-sample discrimination SNR (where `γ=1` is optimal),
+  the Godambe boundary (the score is unbiased only at `γ∈{0,1}`), and now the first-order
+  training-draw *variance*, verified to grow as `1/λ_min⁴` at `γ=1` and stay bounded for `γ<1`. The
+  remaining gap is the *signal* term: it is second-order in the sampling noise (the shrinkage
+  benefit), so first-order propagation predicts the variance but not `γ*`. A closed-form `γ*` under a
+  spiked/Marčenko–Pastur model therefore needs the beyond-first-order (exact Wishart-moment / large-
+  deviation) signal term; `γ*` is so far characterized only numerically (the interior optimum of §5).
 - **Compounded threshold.** §4 has the two-block `ρ²_max` PSD form and numerical evidence that the
   `K`-block threshold compounds along the chain, but not yet a closed-form chain formula.
 - **Optimal `γ`.** The evaluation/tempering optimum `γ*(p, n, spectrum, blocks)` is characterized only
