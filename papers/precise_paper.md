@@ -145,8 +145,16 @@ families, p=24, n=50, GMV assessor): the recommender attains **mean rank 3.22** 
 the best single fixed estimator (of 14), winning on 7 of 8 held-out families — *even with the
 un-tuned frozen heuristic ruleset*. It wins by the largest margins exactly where regime-adaptivity
 matters (`spiked`: 1.73 vs 5.60; `ar1_toeplitz`: 2.80 vs 6.73), confirming that the value comes from
-switching estimator by regime, which no fixed choice can do. A *trained* recommender and the
-real-equity-data holdout are the remaining steps.
+switching estimator by regime, which no fixed choice can do. A *trained* recommender is the remaining step.
+
+**Real-data holdout** (`research/oos_equity.py`, Ken French 100 portfolios, rolling minimum-variance
+OOS volatility, `p=100`, `n=60`, `p/n≈1.7`): the recommender selects shrinkage (annualized vol
+0.141, rank 2/14, vs 0.129 per-window oracle and 0.228 equal-weight), while the inverting estimators
+blow up (empirical 9.6, Tyler 1.3×10⁶). On a homogeneous high-dimensional universe the recommender
+*matches* the best fixed estimator rather than beating it — its switching advantage requires regime
+variation (the synthetic result above) — but it reliably picks the right family and avoids
+catastrophe with no hindsight. The acute high-dimensional regime (Russell-scale, `p≈2000`) is the
+natural next stress test.
 
 ## 7. Related work
 
