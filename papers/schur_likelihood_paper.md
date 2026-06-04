@@ -85,7 +85,7 @@ discard is dialed back in.
 **Three uses, only two of them well-behaved.** (a) *Score* a fixed estimate `Σ̂` by `ℓ_γ(Σ̂; S_test)`.
 (b) *Transform* a given `Σ̂` by replacing each conditional covariance with `S_k(γ) = (1−γ)Σ̂_kk + γ Ŝ_k`
 — a structured (block-conditional) **shrinkage** of the coupling toward block-diagonal with intensity
-`1−γ`, the basis-dependent counterpart of spectral shrinkage (§5); always PSD for `γ∈[0,1]` and the
+`1−γ`, the basis-dependent counterpart of spectral shrinkage (§6); always PSD for `γ∈[0,1]` and the
 operation `SchurCovariance` and Schur allocation perform. (c) *Estimate* `Σ` by maximizing
 `ℓ_γ(Σ; S)` — which §4 shows is **degenerate** for `γ<1`. The clean reading is that `ℓ_γ` is a
 scoring/transform device, not a free estimation objective.
@@ -138,15 +138,61 @@ at `γ=0.32`, not at `γ=0.28`). Three consequences, now established beyond the 
    a (mild, for `γ` near 1) bias toward inflation. Its advantage is variance: the full likelihood
    (`γ=1`) is properly centered but, through `Σ̂⁻¹` and `log det`, has exploding variance in high
    dimensions; damping trades a little properness for a large reduction in score variance. The
-   empirically optimal evaluation `γ` (§8) is the one whose bias²+variance for *ranking* is smallest.
+   empirically optimal evaluation `γ` (§5) is the one whose bias²+variance for *ranking* is smallest.
 
 3. **The usable range shrinks with coupling.** `γ_min(ρ²)` increases from `0` (weak coupling, any `γ`
    safe) to `1` (strong coupling, only the full likelihood stays PSD). This is the same near-singular
-   Schur-complement regime in which linear damping destabilizes and geodesic damping does not (§7) —
+   Schur-complement regime in which linear damping destabilizes and geodesic damping does not (§9) —
    two faces of one fact: strong coupling is where naïve interpolation of the conditioning is most
    dangerous.
 
-## 5. Schur damping is a structured shrinkage (and is complementary to spectral shrinkage)
+## 5. The discrimination efficiency, exactly, and the Godambe boundary
+
+§4(2) called `γ` a bias–variance dial on the scoring rule. This makes that statement exact, and
+locates — honestly — where the high-dimensional advantage actually comes from.
+
+**The `γ`-Schur operator.** The score is a quadratic form in the data,
+`ℓ_γ(Σ̂; x) = −½[ Ld_γ(Σ̂) + xᵀ W_γ(Σ̂) x ] + const`, where `W_γ(Σ̂) = Σ_k T_kᵀ S_k(γ)⁻¹ T_k` assembles
+the damped block conditionals (`T_k = [−γĜ_k, I, 0]` picks block `k` minus its `γ`-damped regression
+on earlier blocks) and `Ld_γ = Σ_k log det S_k(γ)`. At `γ=1`, `W_1(Σ̂) = Σ̂⁻¹` *exactly* (the
+block-LDLᵀ reconstruction of the precision; verified to `1e-15`). So the family deforms the precision
+continuously from `Σ̂⁻¹` (`γ=1`) to `block-diag(Σ̂_kk⁻¹)` (`γ=0`).
+
+**Discrimination SNR (exact, Gaussian).** For two estimates `A, B` and truth `Σ_t`, the per-test-sample
+score gap `d(x) = ℓ_γ(A;x) − ℓ_γ(B;x)` under `x ~ N(0, Σ_t)` has, by the Gaussian quadratic-form
+moments, `μ_γ = −½[ΔLd + tr(ΔW Σ_t)]` and `σ²_γ = ½ tr((ΔW Σ_t)²)`, with `ΔW = W_γ(A) − W_γ(B)`. Hence
+`n_test` samples rank `A` above `B` with probability `≈ Φ(√n_test · μ_γ/σ_γ)`: the per-sample SNR
+`μ_γ/σ_γ` *is* the discrimination efficiency (closed form matches Monte Carlo to three figures).
+
+**The honest twist — under test noise alone, `γ=1` is optimal.** This SNR holds the estimates fixed
+and averages over test draws. In that model `γ=1` maximizes the SNR in every regime we checked
+(well- and ill-conditioned candidates alike) — Neyman–Pearson — and damping only adds the §4 bias.
+**So the high-dimensional interior optimum is *not* a test-sample-noise effect.**
+
+**Where it does come from — estimate instability × shared unidentifiable structure.** The score
+depends on the estimate through `W_γ(Σ̂)`. At `γ=1`, `W_1 = Σ̂⁻¹` has sensitivity
+`∂Σ̂⁻¹ ∼ Σ̂⁻¹ ⊗ Σ̂⁻¹ ∼ 1/λ_min²`: when the estimates carry a shared, unidentifiable, ill-conditioned
+component (e.g. spurious noisy cross-block coupling), a fresh data draw moves `W_1` wildly and the
+score's verdict flips — power collapses to chance. Damping *bounds* that sensitivity (`W_γ` inverts
+only conditioning blocks). In the regime where the discriminating signal lives in the within-block
+correlations and the cross-block coupling is shared noise (`research/metric_power.py`,
+`research/schur_godambe.py`), an interior `γ` strictly beats both endpoints — power **0.84** (crude
+cross-damping) / **0.71** (the principled `W_γ`) at the optimum versus **≈0.45** at `γ∈{0,1}`. The
+bias–variance dial of §4(2) is thus over the *estimate*, not the test sample.
+
+**The Godambe boundary.** Whether `ℓ_γ` is even a valid estimating equation settles its status. The
+`γ`-Schur score `U_γ = ∇_Σ ℓ_γ` is unbiased at the truth — `E_t[U_γ(Σ_t)] = 0` — *only at the
+endpoints*: `γ=1` (the full Fisher score) and `γ=0` (the correctly specified block marginals, for
+their identified parameters). In the interior the expected score gradient is nonzero (verified:
+`‖∇ E ℓ_γ(Σ_t)‖ = 0` at `γ∈{0,1}` and grows through the interior), because the damped conditionals
+are misspecified — the inflation of §4. Standard (unbiased-estimating-function) Godambe theory thus
+applies only at the endpoints: `γ=0` carries the classical composite-likelihood efficiency loss
+`G_0 = H_0 J_0⁻¹ H_0 ⪯ I_full` (Varin–Reid–Firth 2011); `γ=1` is Fisher-efficient. The interior is
+neither an efficient estimator nor an unbiased score — it is a *tempering*, justified by the
+discrimination SNR above. This is the rigorous form of "`ℓ_γ` is a scoring/transform device, not a
+free estimation objective."
+
+## 6. Schur damping is a structured shrinkage (and is complementary to spectral shrinkage)
 
 The transform use (§3b) shrinks each conditional covariance from its full Schur complement `Ŝ_k`
 toward the unconditional block `Σ̂_kk` with intensity `1−γ`. Since `Ŝ_k ⪯ Σ̂_kk`, this *raises* the
@@ -157,7 +203,7 @@ Bouchaud & Potters 2017) regularize the *eigenvalues* (basis-free); Schur dampin
 *cross-block coupling* (basis-dependent). Both improve conditioning, along different geometry, and can
 be composed: `γ` is to the block-conditional factorization what shrinkage intensity is to the spectrum.
 
-## 6. The unifying role: one knob across many constructions
+## 7. The unifying role: one knob across many constructions
 
 The same `ℓ_γ` places a scattered set of objects on **two axes of the same block factorization**:
 
@@ -192,7 +238,7 @@ One sentence: **`γ` is one knob that, at its endpoints, recovers the joint like
 likelihood, block-Vecchia/GMRF likelihoods, MVO and HRP — and in its interior is the common bridge
 all of these lack.**
 
-## 7. Broad applicability
+## 8. Broad applicability
 
 The construction needs only three ingredients — a Gaussian (or Gaussian-pseudo) likelihood, a block
 partition, and the conditional/Schur factorization of §2 — so the coupling-strength knob is **generic
@@ -215,10 +261,10 @@ to Gaussian-block models**, not specific to covariance estimation or finance:
   alternative to the log score for any of the above — the use we test directly here.
 
 What we prove is the two-block characterization (§4) and demonstrate the covariance-evaluation case
-(§8); the wider applicability is a claim about the *mechanism* (damping a conditional factorization
+(§9); the wider applicability is a claim about the *mechanism* (damping a conditional factorization
 shared by all these models), flagged as such, not a measured result in each domain.
 
-## 8. Geometry, and results
+## 9. Geometry, and results
 
 **Linear vs geodesic damping.** Damping interpolates each conditional covariance between `Σ_kk` and
 `S_k`. Linear damping is `S_k(γ) = (1−γ)Σ_kk + γS_k`; **geodesic** damping moves along the
@@ -244,14 +290,16 @@ Results (reproducible; rankings are ensemble-dependent — see
   shrinkage stays at 0.141 (vs 0.129 oracle, 0.228 equal-weight). In high dimensions the reward is for
   *conditioning* — for not trusting the raw inverse, which is what `γ<1` does.
 
-## 9. Limitations and open problems
+## 10. Limitations and open problems
 
-- **Efficiency theorem.** §4 now covers vector and `K`-block partitions (predictive-law recovery,
-  canonical-correlation PSD threshold, compounding inflation, all verified). What remains is a
-  Godambe-information (composite-likelihood efficiency) statement for `ℓ_γ` relative to the full
-  likelihood under a spiked/Marčenko–Pastur model, and a closed-form characterization of the
-  *compounded* `K`-block PSD threshold (we have the two-block `ρ²_max` form and numerical evidence of
-  compounding, not yet a chain formula).
+- **Estimate-variance theorem.** §5 gives the exact test-sample discrimination SNR (where `γ=1` is
+  optimal) and the Godambe boundary (the score is unbiased only at `γ∈{0,1}`); the endpoint
+  efficiency loss is classical. What is still empirical is the *estimate-instability* SNR — the
+  variance of the score over training draws, driven by `∂W_γ/∂Σ̂ ∼ 1/λ_min²` at `γ=1` — whose
+  closed form under a spiked/Marčenko–Pastur model would turn the interior optimum (now demonstrated)
+  into a theorem and predict `γ*`.
+- **Compounded threshold.** §4 has the two-block `ρ²_max` PSD form and numerical evidence that the
+  `K`-block threshold compounds along the chain, but not yet a closed-form chain formula.
 - **Optimal `γ`.** The evaluation/tempering optimum `γ*(p, n, spectrum, blocks)` is characterized only
   empirically; a plug-in rule from the effective rank / coupling `ρ²` is open. (We are wary of a
   *trained* selector after the sibling recommender failed to generalize across novel generative
