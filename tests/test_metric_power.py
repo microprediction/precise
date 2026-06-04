@@ -33,3 +33,14 @@ def test_kdim_projection_power_increases_with_k():
     )
     assert power[None] >= power[1]
     assert "power" in metric_power.projection_report(power, gap, p=8)
+
+
+def test_full_likelihood_fails_under_high_dim_noisy_tail():
+    # The headline result: with an unidentifiable noisy tail, the full likelihood is swamped
+    # (~chance) while a moderate-k projection score keeps power on the recoverable bulk.
+    power = metric_power.proof_high_dim(
+        p=60, bulk=10, k_list=(5, None), n_test=40, trials=120, seed=0
+    )
+    assert power["loglik"] < 0.6  # full likelihood derailed by the tail
+    assert power["proj_k5"] > power["loglik"]  # moderate-k projection does better
+    assert power["proj_k60"] == pytest.approx(power["loglik"], abs=0.2)  # k=p behaves like loglik

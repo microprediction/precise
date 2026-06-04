@@ -250,6 +250,48 @@ def compute_scaling(ps=(50, 100, 200, 400), n_test=64, k=5, repeats=40, seed=0):
     return "\n".join(lines)
 
 
+# --------------------------------- proof: the full likelihood fails in high dims with a noisy tail
+def proof_high_dim(p=150, bulk=20, sig_bulk_good=0.10, sig_bulk_bad=0.22, sig_tail=1.0,
+                   tail_level=0.05, k_list=(2, 5, 10, 30, None), n_test=80, trials=300, seed=0):
+    """Show that the full likelihood loses power when the unidentifiable tail is noisy.
+
+    The genuine quality difference lives in ``bulk`` recoverable directions (the "good" estimate has
+    smaller bulk-eigenvalue error). Both estimates carry independent, *non-informative* noise in the
+    remaining ``p - bulk`` small-eigenvalue directions — the regime near ``p`` == sample size, where
+    the tail is unidentifiable. The full likelihood (and Stein) weight that tail most heavily via the
+    inverse/log-det, so they are swamped; moderate-k projection scoring and Frobenius, which avoid
+    inverting the full matrix, track the bulk.
+
+    Returns ``{judge_name: power}``.
+    """
+    rng = np.random.default_rng(seed)
+    tail = p - bulk
+    lam_true = np.concatenate([rng.uniform(2.0, 6.0, bulk), np.full(tail, tail_level)])
+    names = ["loglik", "stein", "frobenius"] + [f"proj_k{p if k is None else k}" for k in k_list]
+    correct = {m: 0 for m in names}
+
+    def _estimate(sig_bulk, Q):
+        b = np.clip(lam_true[:bulk] * (1 + rng.normal(0, sig_bulk, bulk)), 0.05, None)
+        t = np.maximum(tail_level * np.exp(rng.normal(0, sig_tail, tail)), 1e-4)  # noisy tail
+        lam = np.concatenate([b, t])
+        return (Q * lam) @ Q.T, float(np.linalg.norm(b - lam_true[:bulk]))
+
+    for _ in range(trials):
+        Q, _ = np.linalg.qr(rng.standard_normal((p, p)))
+        a_cov, err_a = _estimate(sig_bulk_good, Q)
+        b_cov, err_b = _estimate(sig_bulk_bad, Q)
+        good, bad = (a_cov, b_cov) if err_a <= err_b else (b_cov, a_cov)  # gold: smaller bulk err
+        X = rng.multivariate_normal(np.zeros(p), (Q * lam_true) @ Q.T, size=n_test)
+        correct["loglik"] += _loglik(good, X) > _loglik(bad, X)
+        correct["stein"] += _stein(good, X) > _stein(bad, X)
+        correct["frobenius"] += _frobenius(good, X) > _frobenius(bad, X)
+        for k in k_list:
+            kk = p if k is None else k
+            subs = _random_subspaces(p, kk, max(1, 60 // kk), rng)
+            correct[f"proj_k{kk}"] += _kproj_loglik(good, X, subs) > _kproj_loglik(bad, X, subs)
+    return {m: correct[m] / trials for m in names}
+
+
 if __name__ == "__main__":
     pw, gap, grid = run()
     print(report(pw, gap, grid))
@@ -258,3 +300,6 @@ if __name__ == "__main__":
     print(projection_report(ppw, pgap))
     print("\nPer-evaluation compute cost (full likelihood is O(p^3)):")
     print(compute_scaling())
+    print("\nHigh-dim proof — full likelihood vs moderate-k projections with a noisy tail:")
+    for judge, power in proof_high_dim().items():
+        print(f"  {judge:12}{power:>8.3f}")
