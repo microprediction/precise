@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 
 from precise import (
+    AdaptiveEwaCovariance,
     DCCCovariance,
     EmpiricalCovariance,
     EwaCovariance,
@@ -17,6 +18,8 @@ from precise import (
     HuberCovariance,
     LedoitWolfCovariance,
     OASCovariance,
+    ShrunkCovariance,
+    TylerCovariance,
     all_estimators,
     keyed,
 )
@@ -110,6 +113,72 @@ def test_oas_shrinks_toward_identity():
         ewa.partial_fit(row)
     # Shrinkage towards a scaled identity should not worsen conditioning.
     assert np.linalg.cond(oas.covariance_) <= np.linalg.cond(ewa.covariance_) * 1.05
+
+
+def test_shrunk_constant_correlation_preserves_variances():
+    rng = np.random.default_rng(43)
+    true = _spd(5, rng)
+    X = rng.multivariate_normal(np.zeros(5), true, size=4000)
+    shrunk = ShrunkCovariance(r=0.02, delta=0.5, target="constant_correlation")
+    ewa = EwaCovariance(r=0.02)
+    for row in X:
+        shrunk.partial_fit(row)
+        ewa.partial_fit(row)
+    # The constant-correlation target preserves the diagonal (variances), only pulls correlations.
+    assert np.allclose(np.diag(shrunk.covariance_), np.diag(ewa.covariance_), rtol=1e-6)
+    assert np.min(np.linalg.eigvalsh(shrunk.covariance_)) > 0
+
+
+def test_shrunk_identity_improves_conditioning():
+    rng = np.random.default_rng(44)
+    X = rng.multivariate_normal(np.zeros(8), _spd(8, rng), size=3000)
+    shrunk = ShrunkCovariance(r=0.02, delta=0.3, target="identity").fit(X)
+    ewa = EwaCovariance(r=0.02).fit(X)
+    assert np.linalg.cond(shrunk.covariance_) <= np.linalg.cond(ewa.covariance_)
+
+
+# --------------------------------------------------------------- adaptive
+def test_adaptive_tracks_regime_change_better_than_a_slow_fixed_rate():
+    # The point of adaptive forgetting: stay smooth (slow base rate) in calm periods, yet react
+    # quickly to a regime change. Against a slow fixed rate, integrated tracking error through the
+    # change should be lower. (A single end snapshot is the wrong metric for a noisier estimator.)
+    rng = np.random.default_rng(45)
+    calm = rng.multivariate_normal([0, 0], np.eye(2), size=3000)
+    jump = rng.multivariate_normal([0, 0], 16 * np.eye(2), size=120)
+
+    adaptive = AdaptiveEwaCovariance(r=0.01, max_r=0.3)  # slow base, adapts up on change
+    fixed = EwaCovariance(r=0.01)  # same slow rate, no adaptation
+    for est in (adaptive, fixed):
+        est.partial_fit(calm)
+
+    err_a, err_f = [], []
+    for row in jump:
+        adaptive.partial_fit(row)
+        fixed.partial_fit(row)
+        err_a.append(abs(np.mean(np.diag(adaptive.covariance_)) - 16.0))
+        err_f.append(abs(np.mean(np.diag(fixed.covariance_)) - 16.0))
+    assert np.mean(err_a) < np.mean(err_f)
+
+
+# --------------------------------------------------------------- Tyler
+def test_tyler_is_unit_diagonal_and_robust():
+    rng = np.random.default_rng(46)
+    corr = np.array([[1.0, 0.6], [0.6, 1.0]])
+    clean = rng.multivariate_normal([0, 0], corr, size=4000)
+    contaminated = clean.copy()
+    mask = rng.random(len(clean)) < 0.05
+    contaminated[mask] *= 30.0  # heavy outliers
+
+    tyler = TylerCovariance(r=0.02)
+    ewa = EwaCovariance(r=0.02)
+    for row in contaminated:
+        tyler.partial_fit(row)
+        ewa.partial_fit(row)
+
+    assert np.allclose(np.diag(tyler.covariance_), 1.0)  # reports a robust correlation
+    err_tyler = abs(tyler.correlation_[0, 1] - 0.6)
+    err_ewa = abs(ewa.correlation_[0, 1] - 0.6)
+    assert err_tyler < err_ewa  # robust correlation resists the outliers
 
 
 # --------------------------------------------------------------- DCC

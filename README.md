@@ -35,10 +35,13 @@ buffers. State is a plain dict, so you can checkpoint mid-stream with `get_state
 |---|---|
 | `EmpiricalCovariance` | running sample covariance (Welford) |
 | `EwaCovariance` | exponentially weighted (recency-biased) |
+| `AdaptiveEwaCovariance` | EWMA whose forgetting rate speeds up on regime change |
 | `LedoitWolfCovariance` | online Ledoit-Wolf shrinkage towards a scaled identity |
 | `OASCovariance` | online Oracle Approximating Shrinkage (often better-conditioned than LW) |
+| `ShrunkCovariance` | fixed-intensity shrinkage to identity **or** a constant-correlation target |
 | `PartialMomentsCovariance` | exponentially weighted partial-moment (semi-)covariance |
 | `HuberCovariance` | online robust estimator that downweights outliers |
+| `TylerCovariance` | recursive Tyler M-estimator — robust correlation/shape for elliptical data |
 | `GeodesicEwaCovariance` | recency-weighted update along the affine-invariant SPD geodesic |
 | `DCCCovariance` | dynamic conditional correlation — decouples volatility from correlation |
 | `FactorCovariance` | online low-rank + diagonal (approximate factor model); O(d·k) per step |

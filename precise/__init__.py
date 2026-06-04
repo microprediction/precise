@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version
 
+from precise.adaptive import AdaptiveEwaCovariance
 from precise.base import BaseOnlineCovariance
 from precise.conditional import ConditionalCovariance, from_skater
 from precise.dcc import DCCCovariance
@@ -32,6 +33,8 @@ from precise.ledoitwolf import LedoitWolfCovariance
 from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
 from precise.registry import all_estimators, estimator_from_name, estimator_names
+from precise.shrunk import ShrunkCovariance
+from precise.tyler import TylerCovariance
 
 try:
     __version__ = version("precise")
@@ -42,10 +45,13 @@ __all__ = [
     "BaseOnlineCovariance",
     "EmpiricalCovariance",
     "EwaCovariance",
+    "AdaptiveEwaCovariance",
     "LedoitWolfCovariance",
     "OASCovariance",
+    "ShrunkCovariance",
     "PartialMomentsCovariance",
     "HuberCovariance",
+    "TylerCovariance",
     "GeodesicEwaCovariance",
     "DCCCovariance",
     "FactorCovariance",
