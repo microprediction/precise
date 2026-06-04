@@ -46,3 +46,40 @@ def test_threshold_increases_with_coupling():
     # Stronger block coupling rho^2 -> larger usable-gamma floor (-> 1 as rho^2 -> 1).
     gmins = [thy._solve_spd_threshold(r) for r in (0.1, 0.4, 0.7, 0.95)]
     assert all(b > a for a, b in zip(gmins, gmins[1:]))
+
+
+def _rng(seed):
+    import numpy as np
+
+    return np.random.default_rng(seed)
+
+
+def test_general_recovers_predictive_law_and_closed_form_is_maximizer():
+    # Vector two-block: every block's conditional law is recovered, and the closed form is the
+    # maximizer of the exact expected gamma-Schur log-lik (local search finds nothing better).
+    import numpy as np
+
+    Sig_true = thy._random_spd(5, _rng(1))
+    for gamma in (1.0, 0.9, 0.7):
+        Sig = thy.closed_form_general(Sig_true, [3, 2], gamma)
+        assert thy._is_spd(Sig)
+        # effective regression == true regression; damped conditional cov == true Schur complement
+        tWW, tKW = Sig_true[:3, :3], Sig_true[3:, :3]
+        Bstar = tKW @ np.linalg.inv(tWW)
+        Sstar = Sig_true[3:, 3:] - Bstar @ tKW.T
+        cWW, cKW = Sig[:3, :3], Sig[3:, :3]
+        Geff = gamma * cKW @ np.linalg.inv(cWW)
+        Sg = Sig[3:, 3:] - gamma * cKW @ np.linalg.solve(cWW, cKW.T)
+        assert np.allclose(Geff, Bstar, atol=1e-6)
+        assert np.allclose(Sg, Sstar, atol=1e-6)
+        gap = thy._local_search_confirms(Sig_true, [3, 2], gamma, iters=2000)
+        assert gap <= 1e-6  # closed form is the (local) maximizer
+
+
+def test_general_psd_threshold_is_top_canonical_correlation():
+    # Two vector blocks: PSD boundary is governed by the LARGEST squared canonical correlation.
+    Sig_true = thy._random_spd(5, _rng(1))
+    rho2_max = thy.canonical_corr2(Sig_true, 3)[0]
+    gmin = thy._solve_spd_threshold(rho2_max)
+    assert thy._is_spd(thy.closed_form_general(Sig_true, [3, 2], gmin + 0.03))
+    assert not thy._is_spd(thy.closed_form_general(Sig_true, [3, 2], gmin - 0.03))

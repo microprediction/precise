@@ -107,8 +107,24 @@ numerically in `research/schur_likelihood_theory.py`):
 > `R²`). Below the threshold `γ_min(ρ²)` the free maximizer leaves the PSD cone.
 
 The numerics (`a=1, b⋆=0.8, s⋆=0.5`, so `ρ²=0.561`) show `β=0.800` and `S(γ)=0.500` for every `γ`
-while `Ĉ` runs `0.80 → 8.0` as `γ:1→0.1`, and the maximizer is PSD only above `γ_min = 0.660`. Three
-consequences, all general in mechanism even though proved here for two blocks:
+while `Ĉ` runs `0.80 → 8.0` as `γ:1→0.1`, and the maximizer is PSD only above `γ_min = 0.660`.
+
+**The general case** (verified in `research/schur_likelihood_theory.py` by an exact closed-form
+expected `ℓ_γ` and independent local search):
+
+> **Proposition (general blocks).** For an arbitrary ordered partition the population `ℓ_γ` maximizer
+> recovers *every block's true conditional law* — effective regression `G_k(γ) = B_k⋆`, damped
+> conditional covariance `S_k(γ) = S_k⋆` — for every `γ ∈ (0,1]`, and the implied joint covariance is
+> inflated *sequentially*: block `k`'s cross-block coupling scales by `1/γ` through the (already
+> inflated) conditioning covariance `Σ̂_{<k,<k}`. For **two vector blocks** the PSD condition is
+> exactly `γ² (1 − ρ²_max) > (1 − γ) ρ²_max`, where **`ρ²_max` is the largest squared canonical
+> correlation between the blocks** — the scalar `ρ²` generalized to the dominant coupling mode. For
+> `K` blocks the inflation, and hence the PSD threshold, **compound along the chain**.
+
+The verification confirms each clause: the recovered `(G_k(γ), S_k(γ))` equal the truth at every `γ`;
+the local search finds nothing above the closed form (max-gap `0`); and for a random vector two-block
+problem with `ρ²_max=0.115` the predicted threshold `γ_min=0.302` matches the exact PSD boundary (SPD
+at `γ=0.32`, not at `γ=0.28`). Three consequences, now established beyond the scalar case:
 
 1. **Damping is undone by rescaling.** `ℓ_γ` "knows" the true conditional distribution at any `γ`; it
    simply expresses it through a coefficient scaled by `1/γ`. So *fitting* `Σ` to maximize `ℓ_γ`
@@ -230,10 +246,12 @@ Results (reproducible; rankings are ensemble-dependent — see
 
 ## 9. Limitations and open problems
 
-- **Beyond two blocks.** §4 is exact for two scalar blocks; the general `K`-block, vector case is
-  argued by mechanism, not yet proved. A Godambe-information (composite-likelihood efficiency)
-  statement for `ℓ_γ` relative to the full likelihood under a spiked/Marčenko–Pastur model is the
-  natural next theorem.
+- **Efficiency theorem.** §4 now covers vector and `K`-block partitions (predictive-law recovery,
+  canonical-correlation PSD threshold, compounding inflation, all verified). What remains is a
+  Godambe-information (composite-likelihood efficiency) statement for `ℓ_γ` relative to the full
+  likelihood under a spiked/Marčenko–Pastur model, and a closed-form characterization of the
+  *compounded* `K`-block PSD threshold (we have the two-block `ρ²_max` form and numerical evidence of
+  compounding, not yet a chain formula).
 - **Optimal `γ`.** The evaluation/tempering optimum `γ*(p, n, spectrum, blocks)` is characterized only
   empirically; a plug-in rule from the effective rank / coupling `ρ²` is open. (We are wary of a
   *trained* selector after the sibling recommender failed to generalize across novel generative
