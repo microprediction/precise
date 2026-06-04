@@ -12,10 +12,19 @@ fitted out-of-sample over generated ensembles in ``research/``, will eventually 
 
 from __future__ import annotations
 
+from types import ModuleType
+
 import numpy as np
 
 from precise._conventions import as_rows
 from precise.registry import all_estimators
+
+# A frozen decision tree trained offline (research/train_recommender.py); numpy-only to walk.
+try:
+    import precise._recommender_model as _loaded
+    _MODEL: ModuleType | None = _loaded
+except ImportError:  # pragma: no cover - model is optional
+    _MODEL = None
 
 
 def covariance_features(X) -> dict:
@@ -70,6 +79,19 @@ def _scores(features: dict) -> dict:
     return score
 
 
+def _trained_weights(features: dict) -> dict:
+    """Walk the frozen decision tree (numpy only) → {estimator_name: leaf class count}."""
+    assert _MODEL is not None
+    x = np.asarray([features[k] for k in _MODEL.FEATURES])
+    xs = (x - np.asarray(_MODEL.MEAN)) / np.asarray(_MODEL.STD)
+    feat = _MODEL.FEATURE
+    node = 0
+    while feat[node] != -2:  # -2 marks a leaf
+        node = _MODEL.LEFT[node] if xs[feat[node]] <= _MODEL.THRESHOLD[node] else _MODEL.RIGHT[node]
+    counts = _MODEL.VALUE[node]
+    return {cls: counts[i] for i, cls in enumerate(_MODEL.CLASSES)}
+
+
 def suggest(X, top: int = 3) -> list:
     """Recommend estimator classes for data ``X``, best first.
 
@@ -77,9 +99,19 @@ def suggest(X, top: int = 3) -> list:
         for Est in suggest(returns):
             est = Est(); ...
 
-    Returns the top-``top`` :class:`~precise.base.BaseOnlineCovariance` subclasses by the frozen
-    heuristic ruleset applied to :func:`covariance_features`.
+    Uses the frozen trained recommender (a decision tree over :func:`covariance_features`, fitted
+    offline in ``research/train_recommender.py``) when present, breaking ties with the heuristic
+    ruleset; otherwise falls back to the heuristic alone. Returns the top-``top``
+    :class:`~precise.base.BaseOnlineCovariance` subclasses.
     """
-    score = _scores(covariance_features(X))
-    ranked = sorted(all_estimators(), key=lambda cls: -score[cls.__name__])
+    features = covariance_features(X)
+    heuristic = _scores(features)
+    if _MODEL is not None:
+        weights = _trained_weights(features)
+        ranked = sorted(
+            all_estimators(),
+            key=lambda cls: (-weights.get(cls.__name__, 0), -heuristic[cls.__name__]),
+        )
+    else:
+        ranked = sorted(all_estimators(), key=lambda cls: -heuristic[cls.__name__])
     return ranked[:top]

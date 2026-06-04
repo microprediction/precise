@@ -1,4 +1,5 @@
-# The Schur Likelihood: Regularized Block-Conditional Estimation and Evaluation of High-Dimensional Covariance
+# Schur Covariance Evaluation
+### A Principled Pseudo-Likelihood in High Dimensions
 
 **Peter Cotton** · *Draft* · microprediction/precise
 

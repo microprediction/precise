@@ -119,9 +119,10 @@ covariance, improving conditioning in high dimensions.
 Because no estimator dominates, we recommend one from *observable* sample features —
 `p`, `n`, `p/n`, effective rank, sphericity, condition number, off-diagonal mass, excess kurtosis —
 none of which require the unknown Σ (`covariance_features`). `suggest(X)` returns a ranked estimator
-list. The current ruleset is a transparent frozen heuristic (shrinkage/factor when `p/n` is large or
-ill-conditioned, robust under heavy tails, empirical otherwise), to be replaced by a recommender
-trained out-of-sample. The bake-off (`research/bakeoff.py`) already exhibits the regime-dependence
+list. A transparent heuristic provides a fallback; the shipped recommender is a **decision tree trained
+offline** (`research/train_recommender.py`) over synthetic regimes on the observable features and
+**frozen into the package as numpy-only arrays** — the humpday-style "train offline, ship a frozen
+model" pattern, so `suggest` needs no scikit-learn at runtime. The bake-off (`research/bakeoff.py`) already exhibits the regime-dependence
 that makes recommendation worthwhile: empirical wins clean stationary data, factor wins high-`p/n`,
 DCC wins regime change, Huber wins gross-outlier contamination.
 

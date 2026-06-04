@@ -41,6 +41,16 @@ def test_high_dimensional_prefers_shrinkage_or_factor():
     assert "EmpiricalCovariance" not in names[:2]  # the naive estimator is not top-ranked here
 
 
+def test_trained_model_ships_and_is_used():
+    from precise import recommend
+
+    assert recommend._MODEL is not None  # frozen decision tree ships with the package
+    rng = np.random.default_rng(5)
+    out = suggest(rng.standard_normal((80, 20)), top=3)
+    assert len(out) == 3
+    assert all(issubclass(c, BaseOnlineCovariance) for c in out)
+
+
 def test_heavy_tailed_prefers_robust():
     rng = np.random.default_rng(3)
     # heavy tails: Student-t with low dof
