@@ -327,6 +327,10 @@ def test_schur_gamma_interpolates_block_diagonal_to_full():
     # gamma=0 zeros the cross-block entries -> block-diagonal structure
     off = blockdiag.covariance_[:2, 2:]  # a cross-block sub-block (blocks of size 2)
     assert np.allclose(off, 0.0, atol=1e-8)
+    # the geodesic interpolation is well-defined and PD across gamma
+    geo = SchurCovariance(n_blocks=4, gamma=0.5, interpolation="geodesic").fit(X)
+    assert np.min(np.linalg.eigvalsh(geo.covariance_)) > 0
+    assert np.allclose(geo.covariance_, geo.covariance_.T)
 
 
 # --------------------------------------------------------------- linalg safety nets
