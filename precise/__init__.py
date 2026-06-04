@@ -23,6 +23,7 @@ from precise.adaptive import AdaptiveEwaCovariance
 from precise.base import BaseOnlineCovariance
 from precise.conditional import ConditionalCovariance, from_skater
 from precise.dcc import DCCCovariance
+from precise.diagonal import DiagonalCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
 from precise.factor import FactorCovariance
@@ -44,6 +45,7 @@ except PackageNotFoundError:  # running from a source checkout without install
 __all__ = [
     "BaseOnlineCovariance",
     "EmpiricalCovariance",
+    "DiagonalCovariance",
     "EwaCovariance",
     "AdaptiveEwaCovariance",
     "LedoitWolfCovariance",

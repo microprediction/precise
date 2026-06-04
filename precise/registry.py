@@ -10,6 +10,7 @@ from __future__ import annotations
 from precise.adaptive import AdaptiveEwaCovariance
 from precise.base import BaseOnlineCovariance
 from precise.dcc import DCCCovariance
+from precise.diagonal import DiagonalCovariance
 from precise.empirical import EmpiricalCovariance
 from precise.ewa import EwaCovariance
 from precise.factor import FactorCovariance
@@ -24,6 +25,7 @@ from precise.tyler import TylerCovariance
 # The shipped positional estimators. Add new estimator classes here (one line each).
 _REGISTRY: list[type[BaseOnlineCovariance]] = [
     EmpiricalCovariance,
+    DiagonalCovariance,
     EwaCovariance,
     AdaptiveEwaCovariance,
     LedoitWolfCovariance,
