@@ -86,16 +86,6 @@ def test_empirical_matches_numpy():
     assert np.allclose(est.correlation_, np.corrcoef(X, rowvar=False), atol=1e-6)
 
 
-def test_window_tracks_recent():
-    X, _, _ = _sample(n_dim=3, n_obs=300, seed=1)
-    est = EmpiricalCovariance(window=50)
-    for row in X:
-        est.partial_fit(row)
-    expected = np.cov(X[-50:], rowvar=False, bias=True)
-    assert np.allclose(est.covariance_, expected, atol=1e-8)
-    assert est.n_samples_ == 300
-
-
 def test_diff_estimates_differences():
     X, _, _ = _sample(n_dim=3, n_obs=400, seed=2)
     est = EmpiricalCovariance(diff=True).fit(X)

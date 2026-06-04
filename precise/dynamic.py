@@ -5,15 +5,15 @@ names enter and old ones leave between observations. :class:`DynamicCovariance` 
 observations as **dicts keyed by name** (river-style ``update(x)`` / ``learn_one(x)``) and
 tracks a covariance estimate whose dimension follows the live universe.
 
-It does so with a multi-universe strategy (ported and modernized from the original
-``SkaterCovariance``): each distinct key-set gets its own *universe* wrapping a positional
-estimator from this package over a fixed column ordering and a replay buffer. When the
-incoming keys change, a universe with enough overlap is **cloned and replayed** onto the
-surviving subset (so each pair's covariance is estimated over the window in which both were
-genuinely alive together); otherwise the universe accrues *staleness* and is eventually
-evicted. A full matrix is assembled per query by choosing, for each pair, the longest-lived
-non-stale universe containing both, filling gaps with the grand off-diagonal mean and
-projecting to the nearest positive-definite matrix.
+It maintains, for each distinct key-set seen, a *universe* wrapping a (truly online)
+positional estimator from this package over a fixed column ordering. A universe is updated
+whenever the incoming observation contains all of its keys; otherwise it accrues *staleness*
+and is eventually evicted (bounded by ``max_universes`` / ``max_staleness``). No replay
+buffers are kept — everything is online. A full matrix is assembled per query by choosing,
+for each pair, the longest-lived (and least stale) universe containing both, filling any
+gaps with the grand off-diagonal mean and projecting to the nearest positive-definite matrix.
+So when a variable drops out, that pair's covariance is still served from the long-lived
+universe that has it until a fresher universe overtakes it.
 
 Output is a dict-of-dicts (numpy only); :meth:`to_frame` returns a pandas ``DataFrame`` when
 the optional ``[pandas]`` extra is installed.
@@ -21,7 +21,6 @@ the optional ``[pandas]`` extra is installed.
 
 from __future__ import annotations
 
-import math
 from typing import Dict, List, Optional, Type
 
 import numpy as np
@@ -32,23 +31,16 @@ from precise.ewa import EwaCovariance
 
 
 class _Universe:
-    """A fixed set of keys with a wrapped positional estimator and a replay buffer."""
+    """A fixed set of keys with a wrapped online positional estimator. No buffer."""
 
-    def __init__(self, keys, factory, max_buffer: int = 500):
+    def __init__(self, keys, factory):
         self.keys: List[str] = list(keys)
         self.keys_set = set(self.keys)
         self.staleness = 0
         self.longevity = 0
-        self.cloned = False
-        self.max_buffer = max_buffer
-        self.buffer: List[dict] = []
-        self._factory = factory
         self._est: BaseOnlineCovariance = factory()
 
     def update(self, x: dict) -> None:
-        self.buffer.append(dict(x))
-        if len(self.buffer) > self.max_buffer:
-            self.buffer.pop(0)
         y = np.array([x[k] for k in self.keys], dtype=float)
         self._est.partial_fit(y)
         self.staleness = 0
@@ -58,22 +50,15 @@ class _Universe:
     def running_cov(self) -> Optional[np.ndarray]:
         return self._est.covariance_ if self._est.n_samples_ > 0 else None
 
-    def clone_and_replay(self, key_subset) -> "_Universe":
-        clone = _Universe(keys=key_subset, factory=self._factory, max_buffer=self.max_buffer)
-        for x in self.buffer:
-            clone.update({k: v for k, v in x.items() if k in clone.keys_set})
-        return clone
-
 
 class DynamicCovariance:
     """Online covariance over a universe whose variables enter and leave over time.
 
-    :param estimator:    A positional estimator class from this package to use within each
-                         universe (default :class:`~precise.ewa.EwaCovariance`).
-    :param max_universes:        Maximum number of universes to maintain concurrently.
-    :param max_staleness:        Drop a universe after this many updates without usable data.
-    :param min_longevity_for_clone:  Only clone (split) universes older than this.
-    :param estimator_kwargs:     Forwarded to ``estimator`` when instantiating each universe.
+    :param estimator:      A positional online estimator class to use within each universe
+                           (default :class:`~precise.ewa.EwaCovariance`).
+    :param max_universes:  Maximum number of universes to maintain concurrently.
+    :param max_staleness:  Drop a universe after this many updates without usable data.
+    :param estimator_kwargs:  Forwarded to ``estimator`` when instantiating each universe.
     """
 
     def __init__(
@@ -82,14 +67,12 @@ class DynamicCovariance:
         *,
         max_universes: int = 10,
         max_staleness: int = 50,
-        min_longevity_for_clone: int = 3,
         **estimator_kwargs,
     ):
         self.estimator = estimator
         self.estimator_kwargs = estimator_kwargs
         self.max_universes = max_universes
         self.max_staleness = max_staleness
-        self.min_longevity_for_clone = min_longevity_for_clone
         self.states: Dict[int, _Universe] = {}
         self.x: Optional[dict] = None
         self._counter = 0
@@ -108,22 +91,13 @@ class DynamicCovariance:
         self.x = dict(x)
         x_keys = set(x.keys())
 
-        for ndx, universe in list(self.states.items()):
+        for universe in self.states.values():
             if universe.keys_set.issubset(x_keys):
                 universe.update(x)
-            elif not universe.cloned and universe.longevity > self.min_longevity_for_clone:
-                overlap = universe.keys_set & x_keys
-                n_keys = len(universe.keys_set)
-                min_overlap = max(int(math.ceil(math.sqrt(n_keys))), 2, n_keys - 10)
-                if len(overlap) >= min_overlap:
-                    universe.cloned = True
-                    self._add_universe(universe.clone_and_replay(overlap))
-                else:
-                    universe.staleness += 1
             else:
                 universe.staleness += 1
 
-        # Evict stale universes.
+        # Evict universes that have gone stale.
         for ndx in [n for n, u in self.states.items() if u.staleness > self.max_staleness]:
             del self.states[ndx]
 
@@ -166,12 +140,11 @@ class DynamicCovariance:
                 candidates = [
                     u
                     for u in self.states.values()
-                    if u.staleness == 0
-                    and {ki, kj}.issubset(u.keys_set)
-                    and u.running_cov is not None
+                    if {ki, kj}.issubset(u.keys_set) and u.running_cov is not None
                 ]
                 if candidates:
-                    u = max(candidates, key=lambda u: u.longevity)
+                    # Prefer the longest-lived universe, breaking ties towards the freshest.
+                    u = max(candidates, key=lambda u: (u.longevity, -u.staleness))
                     a, b = u.keys.index(ki), u.keys.index(kj)
                     value = u.running_cov[a, b]
                     M[idx[ki], idx[kj]] = value

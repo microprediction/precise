@@ -1,65 +1,56 @@
-"""Robust online covariance using a Huber location estimate.
+"""Robust online covariance via an exponentially weighted Huber M-estimator.
 
-A rolling-window estimator that resists outliers by computing covariance entries as a
-robust (Huber M-estimator) location of the per-observation scatter products, rather than a
-plain average. The result is projected to the nearest positive-definite matrix. Numpy only.
+A truly online estimator (O(d^3) per step for the Mahalanobis weight, no stored window):
+each new observation is downweighted by its Mahalanobis distance under the current estimate
+before being folded into a recency-weighted mean and covariance, so isolated outliers cannot
+dominate. numpy only.
 """
 
 from __future__ import annotations
 
 import numpy as np
 
-from precise._linalg import huber_location, nearest_pos_def, to_symmetric
+from precise._linalg import try_invert
+from precise._state import emp_update, ewa_init
 from precise.base import BaseOnlineCovariance
 
 
 class HuberCovariance(BaseOnlineCovariance):
-    """Robust online covariance over a rolling window.
+    """Online robust covariance with Huber downweighting of outliers.
 
-    :param window:  Number of most-recent observations to estimate from.
-    :param c:       Huber tuning constant (in robust standard deviations); smaller is more robust.
-    :param diff:    If ``True``, estimate the covariance of first differences of the stream.
+    :param r:     Weight of the most recent observation (decay rate), in (0, 1].
+    :param c:     Mahalanobis cutoff (in standard deviations); observations beyond it are
+                  downweighted. Smaller ``c`` is more robust.
+    :param diff:  If ``True``, estimate the covariance of first differences of the stream.
     """
 
-    def __init__(self, window: int = 100, c: float = 1.345, diff: bool = False):
-        self.window = window
+    def __init__(self, r: float = 0.05, c: float = 2.5, diff: bool = False):
+        self.r = r
         self.c = c
         self.diff = diff
         super().__init__()
 
     def _init_state(self, n_dim: int) -> dict:
-        return {
-            "n_dim": n_dim,
-            "n_samples": 0,
-            "mean": np.zeros(n_dim),
-            "cov": np.eye(n_dim),
-            "buffer": [],
-        }
+        return ewa_init(n_dim, self.r)
 
     def _update_state(self, s: dict, x: np.ndarray) -> dict:
-        n_dim = s["n_dim"]
-        buffer = list(s["buffer"])
-        buffer.append(np.asarray(x, dtype=float).tolist())
-        if len(buffer) > self.window:
-            buffer = buffer[-self.window :]
-        rows = np.array(buffer, dtype=float)
-
-        if len(buffer) <= 2:
-            mean = rows.mean(axis=0)
-            cov = np.eye(n_dim)
-        else:
-            mean = huber_location(rows, c=self.c)
-            centered = rows - mean
-            # Robust location of the flattened scatter products x_k x_k^T.
-            scatter = (centered[:, :, None] * centered[:, None, :]).reshape(
-                len(buffer), n_dim * n_dim
-            )
-            cov = nearest_pos_def(to_symmetric(huber_location(scatter, c=self.c).reshape(n_dim, n_dim)))
-
+        if s["n_samples"] < s["n_burn"]:
+            out = emp_update(s, x)
+            out["r"], out["n_burn"] = s["r"], s["n_burn"]
+            return out
+        r = s["r"]
+        p = s["n_dim"]
+        delta = x - s["mean"]
+        # Multivariate Huber weight from the Mahalanobis distance under the current estimate.
+        maha2 = float(delta @ try_invert(s["cov"]) @ delta)
+        threshold = (self.c**2) * p
+        w = 1.0 if maha2 <= threshold else np.sqrt(threshold / maha2)
+        weighted = w * delta
         return {
-            "n_dim": n_dim,
+            "n_dim": p,
             "n_samples": s["n_samples"] + 1,
-            "mean": mean,
-            "cov": cov,
-            "buffer": buffer,
+            "mean": s["mean"] + r * weighted,
+            "cov": (1 - r) * s["cov"] + r * np.outer(weighted, weighted),
+            "r": r,
+            "n_burn": s["n_burn"],
         }

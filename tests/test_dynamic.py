@@ -57,14 +57,16 @@ def test_river_aliases():
     assert d.covariance == d.covariance_
 
 
-def test_overlap_clone_preserves_pairs():
+def test_history_preserved_on_member_drop():
     rng = np.random.default_rng(3)
-    d = DynamicCovariance(EmpiricalCovariance, min_longevity_for_clone=2, max_staleness=100)
+    d = DynamicCovariance(EmpiricalCovariance, max_staleness=100)
     for x in _stream(["A", "B", "C", "D", "E"], 40, rng):
         d.update(x)
-    # Drop one key -> high overlap -> should clone the survivors rather than discard history.
-    for x in _stream(["A", "B", "C", "D"], 40, rng):
+    # Drop one key. The long-lived ABCDE universe stays (within max_staleness) and keeps
+    # serving the surviving pairs while a fresh ABCD universe warms up.
+    for x in _stream(["A", "B", "C", "D"], 5, rng):
         d.update(x)
     cov = d.covariance_
     assert set(cov.keys()) == {"A", "B", "C", "D"}
-    assert len(d.states) >= 2, "an overlapping subset universe should have been cloned"
+    assert np.isfinite(cov["A"]["B"])
+    assert len(d.states) >= 2, "both the original and the new universe should be tracked"
