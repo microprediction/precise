@@ -314,6 +314,21 @@ def test_fixed_universe_impute_modes_agree_when_complete():
     assert np.allclose(cov_by_mode["ffill"], cov_by_mode["zero"])
 
 
+def test_schur_gamma_interpolates_block_diagonal_to_full():
+    from precise import EwaCovariance, SchurCovariance
+
+    rng = np.random.default_rng(5)
+    X = rng.multivariate_normal(np.zeros(8), _spd(8, rng), size=600)
+    full = SchurCovariance(n_blocks=4, gamma=1.0).fit(X)
+    blockdiag = SchurCovariance(n_blocks=4, gamma=0.0).fit(X)
+    ewa = EwaCovariance().fit(X)
+    # gamma=1 keeps cross-block coupling (matches plain EWA up to the PD projection)
+    assert np.allclose(full.covariance_, ewa.covariance_, atol=1e-6)
+    # gamma=0 zeros the cross-block entries -> block-diagonal structure
+    off = blockdiag.covariance_[:2, 2:]  # a cross-block sub-block (blocks of size 2)
+    assert np.allclose(off, 0.0, atol=1e-8)
+
+
 # --------------------------------------------------------------- linalg safety nets
 def test_nearest_pos_def_repairs_indefinite_matrix():
     from precise._linalg import is_positive_def, nearest_pos_def

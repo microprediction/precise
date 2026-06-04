@@ -34,6 +34,7 @@ from precise.ledoitwolf import LedoitWolfCovariance
 from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
 from precise.registry import all_estimators, estimator_from_name, estimator_names
+from precise.schurcov import SchurCovariance
 from precise.shrunk import ShrunkCovariance
 from precise.tyler import TylerCovariance
 
@@ -51,6 +52,7 @@ __all__ = [
     "LedoitWolfCovariance",
     "OASCovariance",
     "ShrunkCovariance",
+    "SchurCovariance",
     "PartialMomentsCovariance",
     "HuberCovariance",
     "TylerCovariance",
