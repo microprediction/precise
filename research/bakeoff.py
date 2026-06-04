@@ -21,6 +21,7 @@ from __future__ import annotations
 import numpy as np
 
 from precise import all_estimators
+from precise.assessment import all_assessors
 
 try:
     from randomcov import random_covariance_matrix
@@ -28,8 +29,6 @@ try:
     HAVE_RANDOMCOV = True
 except ImportError:  # pragma: no cover - exercised only when randomcov is installed
     HAVE_RANDOMCOV = False
-
-_NLL_CLIP = 1e3
 
 
 # ----------------------------------------------------------------- ground-truth covariances
@@ -52,11 +51,6 @@ def _three_factor(n, rng):
 def _ar1_toeplitz(n, rho=0.7):
     idx = np.arange(n)
     return rho ** np.abs(idx[:, None] - idx[None, :])
-
-
-def _correlation(cov):
-    d = np.sqrt(np.maximum(np.diag(cov), 1e-12))
-    return cov / np.outer(d, d)
 
 
 def _gaussian(cov, n, rng):
@@ -118,56 +112,61 @@ def build_scenarios(d=12, n=1500, n_test=500, seed=0):
 
 # ----------------------------------------------------------------- run + score
 def run(**kwargs):
-    """Return ``{estimator_name: {scenario_name: {metric: value}}}``."""
+    """Score every estimator on every scenario with the assessor registry.
+
+    Returns ``{estimator_name: {scenario_name: {assessor_name: score}}}`` (higher score = better).
+    """
     scs = build_scenarios(**kwargs)
+    assessors = all_assessors()
     results: dict = {Est.__name__: {} for Est in all_estimators()}
     for name, train, test, true_cov in scs:
-        true_corr = _correlation(true_cov)
         for Est in all_estimators():
-            est = Est().fit(train)
-            corr_err = np.linalg.norm(est.correlation_ - true_corr) / np.linalg.norm(true_corr)
-            cov_err = np.linalg.norm(est.covariance_ - true_cov) / np.linalg.norm(true_cov)
-            try:
-                nll = float(np.clip(-est.score(test), -_NLL_CLIP, _NLL_CLIP))
-            except Exception:
-                nll = _NLL_CLIP
-            results[Est.__name__][name] = {"corr_err": corr_err, "cov_err": cov_err, "nll": nll}
+            cov = Est().fit(train).covariance_
+            scores = {}
+            for a in assessors:
+                if a.usable(have_data=True, have_truth=True):
+                    try:
+                        scores[a.name] = float(a.score(cov, X_test=test, true_cov=true_cov))
+                    except Exception:
+                        scores[a.name] = -np.inf
+            results[Est.__name__][name] = scores
     return results
 
 
-def _mean(results, name, metric):
-    vals = [m[metric] for m in results[name].values() if np.isfinite(m[metric])]
-    return float(np.mean(vals)) if vals else float("inf")
+def _mean(results, name, assessor):
+    vals = [m[assessor] for m in results[name].values() if np.isfinite(m.get(assessor, np.nan))]
+    return float(np.mean(vals)) if vals else float("-inf")
 
 
-def leaderboard(results) -> str:
+def leaderboard(results, primary="SchurLikelihood") -> str:
     names = list(results)
     cells = list(next(iter(results.values())))
-    # Rank by the fair, scale-invariant correlation error within each scenario, then average.
+    # Rank by the primary assessor (higher score = better) within each scenario, then average.
     ranks = {nm: [] for nm in names}
     for key in cells:
-        order = sorted(names, key=lambda nm: results[nm][key]["corr_err"])
+        order = sorted(names, key=lambda nm: -results[nm][key].get(primary, -np.inf))
         for rank, nm in enumerate(order):
             ranks[nm].append(rank + 1)
     avg_rank = {nm: float(np.mean(ranks[nm])) for nm in names}
+    others = [a for a in next(iter(results.values()))[cells[0]] if a != primary][:2]
 
-    lines = [
-        f"{'estimator':26}{'avg_corr_rank':>14}{'corr_err':>10}{'cov_err':>10}{'nll':>9}",
-        "-" * 69,
-    ]
+    head = (
+        f"{'estimator':26}{'avg_rank':>10}{primary[:10]:>12}"
+        + "".join(f"{o[:10]:>12}" for o in others)
+    )
+    lines = [f"(ranked by {primary}; higher score = better)", head, "-" * len(head)]
     for nm in sorted(names, key=lambda n: avg_rank[n]):
-        lines.append(
-            f"{nm:26}{avg_rank[nm]:>14.2f}{_mean(results, nm, 'corr_err'):>10.3f}"
-            f"{_mean(results, nm, 'cov_err'):>10.3f}{_mean(results, nm, 'nll'):>9.2f}"
-        )
+        row = f"{nm:26}{avg_rank[nm]:>10.2f}{_mean(results, nm, primary):>12.3f}"
+        row += "".join(f"{_mean(results, nm, o):>12.3f}" for o in others)
+        lines.append(row)
     return "\n".join(lines)
 
 
-def per_scenario_winners(results) -> str:
+def per_scenario_winners(results, primary="SchurLikelihood") -> str:
     cells = list(next(iter(results.values())))
-    lines = ["", "Winner (lowest corr_err) per scenario:", "-" * 50]
+    lines = ["", f"Winner (highest {primary}) per scenario:", "-" * 50]
     for key in cells:
-        best = min(results, key=lambda nm: results[nm][key]["corr_err"])
+        best = max(results, key=lambda nm: results[nm][key].get(primary, -np.inf))
         lines.append(f"  {key:24} -> {best}")
     return "\n".join(lines)
 

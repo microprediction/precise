@@ -18,11 +18,15 @@ def test_bakeoff_runs_and_ranks_every_estimator():
     # Every estimator was scored on every scenario.
     scenarios = next(iter(results.values()))
     assert len(scenarios) >= 5
+    # Every estimate is scored by the assessor registry (assessor-name -> score).
+    from precise.assessment import all_assessors
+
+    assessor_names = {a.name for a in all_assessors()}
     for cells in results.values():
-        for metrics in cells.values():
-            assert {"corr_err", "cov_err", "nll"} <= set(metrics)
+        for scores in cells.values():
+            assert set(scores) <= assessor_names and len(scores) >= 3
 
     board = bakeoff.leaderboard(results)
-    assert "avg_corr_rank" in board
+    assert "avg_rank" in board
     assert "EmpiricalCovariance" in board
     assert "Winner" in bakeoff.per_scenario_winners(results)
