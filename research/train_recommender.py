@@ -61,6 +61,7 @@ def export(clf, mean, std):
     )
     lines = [
         docstring,
+        "# ruff: noqa: E501  (generated data tables: tree arrays are single long lines by design)",
         "",
         f"FEATURES = {FEATURES!r}",
         f"MEAN = {[round(float(v), 6) for v in mean]!r}",

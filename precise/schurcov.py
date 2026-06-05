@@ -24,8 +24,8 @@ class SchurCovariance(BaseOnlineCovariance):
     :param n_blocks:      Number of contiguous blocks to partition the variables into.
     :param gamma:         Cross-block shrinkage in [0, 1] (0 = block-diagonal, 1 = full covariance).
     :param interpolation: ``"linear"`` (damp cross-block entries by gamma) or ``"geodesic"``
-                          (interpolate block-diagonal → full along the affine-invariant SPD geodesic,
-                          which stays well-conditioned even when the coupling is strong).
+                          (interpolate block-diagonal → full along the affine-invariant SPD
+                          geodesic, which stays well-conditioned even when the coupling is strong).
     :param diff:          If ``True``, estimate the covariance of first differences of the stream.
     """
 
