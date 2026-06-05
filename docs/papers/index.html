@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>precise — papers</title>
+  <meta name="description" content="Working papers from the precise project on covariance/correlation estimation and evaluation.">
+  <link rel="stylesheet" href="../academic.css">
+  <style>
+    .site-nav{position:sticky;top:0;z-index:1000;background:#34495e;color:#fff;
+      padding:12px 24px;font-family:'Times New Roman',Times,serif;}
+    .site-nav-inner{max-width:900px;margin:0 auto;display:flex;
+      justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .site-nav a{color:#ecf0f1;text-decoration:none;} .site-nav a:hover{color:#fff;text-decoration:underline;}
+    .container{max-width:900px;}
+    .paper-card{border:1px solid var(--border);border-radius:4px;padding:20px;margin:20px 0;}
+    .paper-card h3{margin-top:0;}
+  </style>
+</head>
+<body>
+  <nav class="site-nav"><div class="site-nav-inner"><a href="../">&larr; precise</a>
+    <a href="https://github.com/microprediction/precise">GitHub</a></div></nav>
+
+  <div class="header"><div class="container">
+    <h1>Papers</h1>
+    <div class="subtitle">Working papers from the <code>precise</code> project</div>
+  </div></div>
+
+  <div class="container">
+    <div class="paper-card">
+      <h3><a href="schur-likelihood/">Schur Covariance Evaluation</a></h3>
+      <p class="text-muted" style="margin:4px 0 12px">A Principled Pseudo-Likelihood in High Dimensions · Peter Cotton</p>
+      <p>The Gaussian log-likelihood fails — below chance — at ranking covariance estimates in high
+      dimensions. We introduce the Schur pseudo-likelihood, a one-parameter family that damps the
+      cross-block coupling of the likelihood through its Schur complements, bridging the full and
+      block-diagonal likelihoods, and derive the optimal coupling strength in closed form.</p>
+      <p><a class="btn" href="schur-likelihood/">Read online</a>
+         <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a></p>
+    </div>
+
+    <p class="text-muted">More to come. The web editions are generated from their LaTeX sources
+    (<code>docs/build_paper.sh</code>), so they never drift from the PDF.</p>
+  </div>
+
+  <footer><div class="container"><p>precise &middot; MIT licensed &middot;
+    <a href="https://github.com/microprediction/precise">microprediction/precise</a></p></div></footer>
+</body>
+</html>

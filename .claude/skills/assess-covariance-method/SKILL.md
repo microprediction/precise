@@ -110,4 +110,4 @@ cross-asset correlation, and many pairwise comparisons. Consequently:
 - Experiments: `research/bakeoff.py`, `research/metric_power.py`, `research/oos.py`,
   `research/oos_equity.py`; Schur-likelihood theory: `research/schur_*.py`.
 - Background on why the high-dimensional likelihood fails and what to use instead:
-  <https://precise.microprediction.org/paper/>.
+  <https://precise.microprediction.org/papers/schur-likelihood/>.

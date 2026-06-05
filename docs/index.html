@@ -156,8 +156,8 @@ suggest(X, top=3)                    # recommend estimator classes from data fea
             <pre>γ* = (n−2) ρ² / [ (n−2) ρ² + (1 − ρ²) ]      (ρ² = block coupling, the conditional R²)</pre>
             <p>rising to 1 as the sample size or coupling grows, and to 0 as the coupling becomes
             noise. See the working paper,
-            <a href="paper/"><em>Schur Covariance Evaluation: A Principled Pseudo-Likelihood in High
-            Dimensions</em></a> (<a href="paper/">read online</a> ·
+            <a href="papers/schur-likelihood/"><em>Schur Covariance Evaluation: A Principled
+            Pseudo-Likelihood in High Dimensions</em></a> (<a href="papers/schur-likelihood/">read online</a> ·
             <a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a>).</p>
         </section>
 
@@ -170,6 +170,21 @@ suggest(X, top=3)                    # recommend estimator classes from data fea
                 <li><a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">Schur pseudo-likelihood paper (PDF)</a></li>
                 <li><a href="https://allocation.microprediction.org">allocation.microprediction.org</a> — portfolio / allocation (Schur-complementary; moved out of precise)</li>
             </ul>
+        </section>
+
+        <section class="section" id="skill">
+            <h2>Save the planet, one update at a time</h2>
+            <p>Online estimation does a constant amount of work per observation instead of recomputing
+            over a growing window — orders of magnitude less compute, and energy, over a long stream.
+            As a bonus, the <code>partial_fit</code> contract makes lookahead bias structurally hard: an
+            estimator only ever sees data up to the current observation, never the future. Drop the
+            <code>precise</code> skill into your own agent:</p>
+            <pre class="code-block" id="precise-skill-prompt"><code>Read https://raw.githubusercontent.com/microprediction/precise/main/SKILL.md
+and create a project skill from it.</code></pre>
+            <p style="text-align: center;">
+                <button class="btn" onclick="(function(){const t=document.getElementById('precise-skill-prompt').innerText;navigator.clipboard.writeText(t).then(()=>{event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy',1500);});})()">Copy</button>
+                <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/SKILL.md" target="_blank" rel="noopener">SKILL.md</a>
+            </p>
         </section>
     </div>
 
