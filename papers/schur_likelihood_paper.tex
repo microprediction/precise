@@ -6,6 +6,7 @@
 \usepackage[T1]{fontenc}
 % Times-like text and math; falls back gracefully if newtx is unavailable.
 \IfFileExists{newtxtext.sty}{\usepackage{newtxtext}\usepackage{newtxmath}}{\usepackage{lmodern}}
+\usepackage{natbib}
 \usepackage[hidelinks]{hyperref}
 
 \newcommand{\Shat}{\widehat{\Sigma}}
@@ -51,9 +52,9 @@ held-out data. For a zero-mean Gaussian,
 \]
 or, in terms of the sample covariance $S$ of a test set,
 $\ell(\Shat;S) = -\tfrac12\bigl(\logdet\Shat + \tr(\Shat^{-1}S)\bigr)$, which is proportional to the
-Wishart log-likelihood and, up to constants, to the negative Stein loss. The criterion is a strictly
-proper scoring rule and is the objective that maximum likelihood optimizes; in low dimensions it is
-the appropriate choice.
+Wishart log-likelihood and, up to constants, to the negative Stein loss \citep{james1961}. The
+criterion is a strictly proper scoring rule \citep{gneiting2007} and is the objective that maximum
+likelihood optimizes; in low dimensions it is the appropriate choice.
 
 Both terms are, however, controlled by the smallest eigenvalues of $\Shat$: the log-determinant is
 $\sum_i \log\lambda_i$, which diverges to $-\infty$ as any $\lambda_i\to 0$, and $\Shat^{-1}$ diverges
@@ -64,7 +65,7 @@ effect is pronounced. In a controlled experiment in which the correct ordering o
 known---the true Kullback--Leibler divergence is available because the population covariance is
 specified---the held-out likelihood selects the better estimate in approximately $45\%$ of trials,
 below the chance rate, whereas inversion-free criteria such as the Frobenius distance and the
-variogram score attain approximately $85\%$. This is the evaluation-side analogue of the instability
+variogram score \citep{scheuerer2015} attain approximately $85\%$. This is the evaluation-side analogue of the instability
 of the minimum-variance portfolio $w \propto \Shat^{-1}\mathbf{1}$, which fails through the same
 $\Shat^{-1}$ and the same eigenvalues. In both settings the remedy is to discount the raw inverse; the
 contribution of this paper is to do so continuously, through a single interpretable parameter, rather
@@ -81,8 +82,9 @@ conditional is Gaussian with covariance the Schur complement
 and mean $\mu_{k\mid<k} = \Sigma_{k,<k}\Sigma_{<k,<k}^{-1}x_{<k}$. Consequently
 $\logdet\Sigma = \sum_k \logdet S_k$, the quadratic form decomposes blockwise, and the likelihood is a
 sum of block-conditional terms, each of which inverts only the conditioning block $\Sigma_{<k,<k}$.
-This is the block Cholesky factorization, and it underlies the Vecchia approximation,
-Gaussian--Markov-random-field likelihoods, and nested-dissection elimination. No approximation has been
+This is the block Cholesky factorization, and it underlies the Vecchia approximation
+\citep{vecchia1988, katzfuss2021, pan2024}, Gaussian--Markov-random-field likelihoods
+\citep{rue2005}, and nested-dissection elimination \citep{george1973}. No approximation has been
 introduced; the likelihood has merely been rewritten in a form amenable to a single modification.
 
 \section{The Schur pseudo-likelihood}
@@ -99,7 +101,7 @@ and define the score
 $\ell_\gamma(\Sigma;x) = \sum_k \log \mathcal{N}\!\bigl(x_k;\,\mu_{k\mid<k}(\gamma),\,S_k(\gamma)\bigr)$.
 At $\gamma=1$ this is the exact joint likelihood. At $\gamma=0$ each block is scored under its
 unconditional covariance $\Sigma_{kk}$ with no reference to the others, which is the block-marginal
-composite likelihood (Besag, 1975; Lindsay, 1988; Varin, Reid \& Firth, 2011). For
+composite likelihood \citep{besag1975, lindsay1988, varin2011}. For
 $\gamma\in(0,1)$ the family modifies the block covariances rather than the data, inverts no matrix
 larger than a conditioning block, and is better conditioned than the full likelihood because damping
 raises the small eigenvalues. We refer to $\ell_\gamma$ as the Schur pseudo-likelihood.
@@ -149,7 +151,9 @@ threshold, compound along the conditioning chain.
 
 \section{Discrimination efficiency and the Godambe boundary}
 
-Write the score as a quadratic form,
+It is tempting to credit the interior optimum to the variance of the held-out score, but that
+attribution is mistaken, and separating the two sources of variability is what makes the mechanism
+clear. Write the score as a quadratic form,
 $\ell_\gamma(\Shat;x) = -\tfrac12\bigl(\mathrm{Ld}_\gamma + x^\top W_\gamma(\Shat)\,x\bigr)$, where
 $W_\gamma$ assembles the damped block conditionals and $W_1=\Shat^{-1}$. For two fixed estimates and a
 Gaussian test sample, the probability of ranking the better estimate above the worse is governed by a
@@ -184,7 +188,7 @@ eigenvalues of every block-sized inverse the score performs; it is a James--Stei
 blockwise to the conditioning. The operation is complementary to spectral shrinkage: Ledoit--Wolf and
 rotation-invariant estimators regularize the eigenvalues (basis-free), whereas Schur damping
 regularizes the cross-block coupling (basis-dependent). The two compose, and $\gamma$ is to the block
-factorization what the shrinkage intensity is to the spectrum.
+factorization what the shrinkage intensity \citep{ledoit2004, ledoit2012, bun2017} is to the spectrum.
 
 \section{A unifying view}
 
@@ -209,11 +213,11 @@ sparse conditioning & block-Vecchia / GMRF likelihood & (block-marginal, same co
 
 \noindent
 The portfolio entries are not analogical. Minimum-variance optimization is the dense-conditioning,
-$\gamma=1$ corner; hierarchical risk parity is the $\gamma=0$ corner; Schur complementary allocation
-(Cotton, 2024) interpolates them by damping the same Schur complement through the same $\gamma$. The
-Schur pseudo-likelihood is that construction applied to evaluation, and the reason an interior $\gamma$
-improves on the minimum-variance endpoint is the reason hierarchical risk parity is more stable than
-unconstrained mean--variance optimization.
+$\gamma=1$ corner; hierarchical risk parity \citep{lopezdeprado2016} is the $\gamma=0$ corner; Schur
+complementary allocation \citep{cotton2024} interpolates them by damping the same Schur complement
+through the same $\gamma$. The Schur pseudo-likelihood is that construction applied to evaluation, and
+the reason an interior $\gamma$ improves on the minimum-variance endpoint is the reason hierarchical
+risk parity is more stable than unconstrained mean--variance optimization \citep{antonov2024}.
 
 \section{Generality}
 
@@ -265,13 +269,7 @@ regime known to be fully reliable would contradict it.
 The original Schur complementary theory, of which this is the evaluation-side counterpart, was
 developed with the support of Intech Investments.
 
-\section*{References}
-
-\small\noindent
-L\'opez de Prado (2015, 2016); Antonov, Lipton \& L\'opez de Prado (2024); Cotton (2024,
-arXiv:2411.05807); Besag (1975); Lindsay (1988); Varin, Reid \& Firth (2011); Vecchia (1988);
-Katzfuss \& Guinness (2021); Pan et al.\ (2024); Rue \& Held (2005); George (1973); Ledoit \& Wolf
-(2004, 2012); Bun, Bouchaud \& Potters (2017); James \& Stein (1961); Gneiting \& Raftery (2007);
-Scheuerer \& Hamill (2015). Full annotated reference lists accompany the \texttt{precise} repository.
+\bibliographystyle{plainnat}
+\bibliography{refs}
 
 \end{document}
