@@ -27,6 +27,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
@@ -44,6 +46,7 @@ docs = ["mkdocs>=1.5", "mkdocs-material>=9.0"]
 Homepage = "https://github.com/microprediction/precise"
 Documentation = "https://microprediction.github.io/precise/"
 Repository = "https://github.com/microprediction/precise"
+Issues = "https://github.com/microprediction/precise/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["precise"]
