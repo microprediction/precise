@@ -4,7 +4,7 @@ All notable changes to `precise` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 [Semantic Versioning](https://semver.org/).
 
-## [1.0.0] — unreleased
+## [1.0.0] — 2026-06-05
 
 A ground-up rewrite: `precise` is now a focused library for **online (incremental) covariance and
 correlation estimation** — the online complement to `sklearn.covariance`.
