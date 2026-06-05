@@ -4,7 +4,11 @@
 
 **Online (incremental) covariance and correlation estimation** — the streaming complement to
 [`sklearn.covariance`](https://scikit-learn.org/stable/modules/covariance.html), whose estimators
-are batch-only and have no `partial_fit`. Pure Python + numpy; no other required dependencies.
+are batch-only and have no `partial_fit`. Pure Python + numpy; no other required dependencies. And
+because no estimator wins everywhere, `precise` also **assesses** an estimate and **recommends** one
+for your data (see [Assess &amp; recommend](#assess--recommend)).
+
+📖 Docs: **[precise.microprediction.org](https://precise.microprediction.org)**
 
 ```bash
 pip install precise
@@ -97,10 +101,29 @@ from precise import ConditionalCovariance, from_skater
 est = ConditionalCovariance(vol=from_skater(skaters.holt), corr=EwaCovariance(r=0.05))
 ```
 
+## Assess & recommend
+
+No estimator wins everywhere, so `precise` treats *judging* and *choosing* an estimate as
+first-class alongside producing one.
+
+```python
+from precise import all_assessors, suggest
+
+all_assessors()             # scoring rules: LogLikelihood, BlockPseudoLikelihood, SchurLikelihood,
+                            # SteinLoss, FrobeniusToTruth, GMVVariance, ... (higher = better)
+suggest(X, top=3)           # recommend estimator classes from observable features of X
+```
+
+`suggest` maps truth-free features of your data (p/n, effective rank, sphericity, condition number,
+off-diagonal mass, excess kurtosis) to an estimator, via a frozen, numpy-only decision tree. The
+**Schur pseudo-likelihood** — a one-parameter (`γ`) bridge between the full and block-diagonal
+Gaussian likelihoods — is both an assessor here and the subject of a
+[working paper](https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf).
+
 ## Related
 
 - **Generating** random covariance/correlation matrices to test against: [`randomcov`](https://github.com/microprediction/randomcov).
-- **Portfolio construction** (Schur-complementary allocation, HRP) moved to [`schur`](https://github.com/microprediction/schur); for production use the [skfolio](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) implementation is recommended.
+- **Portfolio construction** (Schur-complementary allocation, HRP) moved to [allocation.microprediction.org](https://allocation.microprediction.org); for production use the [skfolio](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) implementation is recommended.
 - A [Robust Portfolio Literature Reading List](https://github.com/microprediction/precise/blob/main/LITERATURE.md) lives in this repo.
 - Part of the [microprediction](https://github.com/microprediction/microprediction) project.
 
