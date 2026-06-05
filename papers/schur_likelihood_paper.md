@@ -18,7 +18,10 @@ worse than chance at ranking estimators; (ii) admits an exact characterization o
 worked model we verify numerically: it recovers the true predictive law for every `γ` but maps to an
 inflated covariance that leaves the positive-definite cone below a coupling-dependent threshold —
 pinning down precisely why `ℓ_γ` is a device for *scoring* or *transforming* a covariance rather than
-for estimating one by free maximization; and (iii) is **broadly applicable** — wherever a Gaussian
+for estimating one by free maximization, and for which the optimal trust has a closed form —
+`γ* = (n−2)ρ²/[(n−2)ρ²+(1−ρ²)]`, the *reliability* of the coupling (a Wiener/James–Stein shrinkage),
+rising to `1` as the sample size or coupling grows and to `0` as the coupling becomes noise; and
+(iii) is **broadly applicable** — wherever a Gaussian
 block likelihood is used (spatial statistics, graphical models, longitudinal data, any
 composite-likelihood setting), and even, via the identical algebra, in portfolio allocation, where the
 same `γ` interpolates hierarchical risk parity and minimum-variance optimization. We show in
@@ -145,6 +148,23 @@ at `γ=0.32`, not at `γ=0.28`). Three consequences, now established beyond the 
    Schur-complement regime in which linear damping destabilizes and geodesic damping does not (§9) —
    two faces of one fact: strong coupling is where naïve interpolation of the conditioning is most
    dangerous.
+
+**A closed-form `γ*`: the coupling reliability.** The same tractable model yields the *optimal* `γ`,
+not just the PSD range — for the well-behaved (predictive / estimator) use, where one damps the
+*estimated* coupling `γĜ_k` (the operation `SchurCovariance` and Schur allocation perform), rather
+than free-maximizing. Choose `γ` to minimize the expected test predictive residual. With the OLS
+coupling `b̂` (`E b̂ = b`, `Var b̂ = s / (a(n−2))`), the residual
+`R(γ) = [b²(1−γ)² + γ² Var b̂] a + s` is minimized at
+
+> `γ* = b² / (b² + Var b̂) = (n−2) ρ² / [ (n−2) ρ² + (1 − ρ²) ]`,  with `ρ² = b²a / (b²a + s)`,
+
+a **Wiener / James–Stein shrinkage of the coupling**: `γ*` is its *reliability*. It rises with both
+the sample size and the coupling strength — `γ*→1` (trust it → full likelihood) as `n→∞` or `ρ²→1`,
+`γ*→0` (ignore it → block-diagonal) as `ρ²→0`, and lies in the interior exactly when the coupling is
+*partially reliable*. This is the paper's thesis in closed form, verified against simulation
+(`research/schur_gamma_star.py`: e.g. `n=10, ρ²=0.3 → γ*=0.77`, matching the simulated argmin). It is
+the optimal `γ` for the *estimator*; the high-dimensional *discrimination* `γ*` (§5) is its harder,
+nonlinear cousin.
 
 ## 5. The discrimination efficiency, exactly, and the Godambe boundary
 
@@ -301,13 +321,14 @@ Results (reproducible; rankings are ensemble-dependent — see
 
 ## 10. Limitations and open problems
 
-- **Closed-form `γ*`.** §5 gives the exact test-sample discrimination SNR (where `γ=1` is optimal),
-  the Godambe boundary (the score is unbiased only at `γ∈{0,1}`), and now the first-order
-  training-draw *variance*, verified to grow as `1/λ_min⁴` at `γ=1` and stay bounded for `γ<1`. The
-  remaining gap is the *signal* term: it is second-order in the sampling noise (the shrinkage
-  benefit), so first-order propagation predicts the variance but not `γ*`. A closed-form `γ*` under a
-  spiked/Marčenko–Pastur model therefore needs the beyond-first-order (exact Wishart-moment / large-
-  deviation) signal term; `γ*` is so far characterized only numerically (the interior optimum of §5).
+- **Closed-form `γ*`.** For the *estimator/predictive* use this is now solved in the tractable
+  two-block model (§4): `γ* = (n−2)ρ²/[(n−2)ρ² + (1−ρ²)]`, the coupling reliability, verified against
+  simulation. For the high-dimensional *discrimination/scoring* use the picture is partial: §5 gives
+  the exact test-sample SNR (`γ=1` optimal), the Godambe boundary (unbiased only at `γ∈{0,1}`), and
+  the first-order training-draw *variance* (verified `1/λ_min⁴` blow-up at `γ=1`, bounded for `γ<1`).
+  The open gap is the discrimination *signal* term — second-order in the sampling noise (the shrinkage
+  benefit) — so a closed-form discrimination `γ*` needs beyond-first-order (exact Wishart-moment /
+  large-deviation) analysis; it is so far characterized only numerically (the interior optimum of §5).
 - **Compounded threshold.** §4 has the two-block `ρ²_max` PSD form and numerical evidence that the
   `K`-block threshold compounds along the chain, but not yet a closed-form chain formula.
 - **Optimal `γ`.** The evaluation/tempering optimum `γ*(p, n, spectrum, blocks)` is characterized only
