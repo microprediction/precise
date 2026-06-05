@@ -134,3 +134,9 @@ private_examples/*.py
 private_examples/*.csv
 
 .DS_Store
+
+# LaTeX build artifacts
+papers/*.aux
+papers/*.log
+papers/*.out
+papers/*.toc

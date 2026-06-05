@@ -1,0 +1,284 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+% Times-like text and math; falls back gracefully if newtx is unavailable.
+\IfFileExists{newtxtext.sty}{\usepackage{newtxtext}\usepackage{newtxmath}}{\usepackage{lmodern}}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\Shat}{\widehat{\Sigma}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\logdet}{\log\det}
+
+\title{\vspace{-2em}Schur Covariance Evaluation\\[0.3em]
+       \large A Principled Pseudo-Likelihood in High Dimensions}
+\author{Peter Cotton}
+\date{Draft --- \texttt{microprediction/precise}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Ask a covariance matrix how surprised it is by fresh data and you get the Gaussian likelihood --- the
+obvious, principled way to score an estimate. In high dimensions the obvious thing falls apart. The
+likelihood lives or dies on the smallest eigenvalues of the estimate, which are exactly the ones you
+cannot pin down when you have about as many variables as observations; so, as I will show, it ranks
+estimators worse than a coin flip. This paper is about a one-knob repair. The Gaussian likelihood
+factors, through Schur complements, into a sum of block-conditional pieces, and a single dial
+$\gamma$ damps how much each block is allowed to trust the others. At $\gamma=1$ you have the full
+likelihood; at $\gamma=0$ the block-diagonal (composite) likelihood that ignores the coupling
+altogether; in between, something better conditioned than either. I call it the \emph{Schur
+pseudo-likelihood}. It is the same Schur-complement dial that interpolates hierarchical risk parity
+and the minimum-variance portfolio --- borrowed from allocation and pointed at evaluation instead. I
+work out what $\gamma$ does exactly in a tractable case, where the best setting turns out to be the
+\emph{reliability} of the coupling (a Wiener / James--Stein shrinkage); I show where it helps and
+where it does not; and I try to be honest about which claims I can actually stand behind.
+\end{abstract}
+
+\section{The likelihood quietly fails}
+
+If you want to know whether a covariance estimate is any good, the textbook answer is to score it by
+the likelihood it assigns to held-out data. For a zero-mean Gaussian that is
+\[
+  \ell(\Shat;x) \;=\; -\tfrac12\bigl(\logdet\Shat + x^\top \Shat^{-1} x\bigr),
+\]
+or, averaging over a test sample and writing $S$ for the sample covariance,
+$\ell(\Shat;S) = -\tfrac12\bigl(\logdet\Shat + \tr(\Shat^{-1}S)\bigr)$ --- the same thing the Wishart
+likelihood and Stein's loss are measuring, dressed differently. It is a strictly proper scoring rule.
+It is what the maximum-likelihood estimator is built to optimize. By every classical argument it is
+the right answer, and in low dimensions it is.
+
+So here is the awkward part. Both terms above are run by the \emph{smallest} eigenvalues of $\Shat$:
+the log-determinant is $\sum_i \log\lambda_i$, which dives toward $-\infty$ as any $\lambda_i\to 0$,
+and $\Shat^{-1}$ blows up in the same limit. When the dimension $p$ is comparable to the sample size
+$n$ --- the regime everyone actually works in --- those small eigenvalues collapse toward zero and,
+worse, become statistically unidentifiable: the Mar\v{c}enko--Pastur bulk is noise pretending to be
+signal. The likelihood then stakes its entire verdict on the part of the spectrum it knows least
+about. You can guess how that goes.
+
+It is not subtle. In a controlled experiment where I know which of two estimates is genuinely better
+(I can compute the true Kullback--Leibler divergence, because I built the truth), the held-out
+likelihood picks the better one about $45\%$ of the time. A coin would do better. Inversion-free
+judges --- Frobenius distance, the variogram score --- sail along at around $85\%$. The likelihood, the
+one estimator we were told to trust, is the one that fails. This is the evaluation-side twin of
+Markowitz's ``error maximization'': the minimum-variance portfolio $w \propto \Shat^{-1}\mathbf{1}$
+falls apart for the very same reason, the very same $\Shat^{-1}$, the very same small eigenvalues. The
+cure, in both places, is to stop trusting the raw inverse. The question is how to stop trusting it
+\emph{by degrees}, with one interpretable knob, rather than throwing the coupling away entirely.
+
+\section{What the Schur complement is doing here}
+
+Nothing in this paper works without one exact fact, so let me state it carefully before I start
+bending it. Split the variables into $K$ ordered blocks, $x=(x_1,\dots,x_K)$. The joint density
+factors --- exactly, no approximation --- into a product of block conditionals,
+$p(x)=\prod_k p(x_k\mid x_{<k})$, and for a Gaussian each conditional is itself Gaussian with
+covariance the \emph{Schur complement}
+\[
+  S_k \;=\; \Sigma_{kk} - \Sigma_{k,<k}\,\Sigma_{<k,<k}^{-1}\,\Sigma_{<k,k}
+\]
+and mean $\mu_{k\mid<k} = \Sigma_{k,<k}\Sigma_{<k,<k}^{-1}x_{<k}$. So
+$\logdet\Sigma = \sum_k \logdet S_k$, the quadratic form splits block by block, and the whole
+likelihood is just a sum of block-conditional terms, each of which only ever inverts the conditioning
+block $\Sigma_{<k,<k}$. This is the block Cholesky factorization, and it is the engine underneath the
+Vecchia approximation, Gaussian--Markov-random-field likelihoods, and nested-dissection elimination.
+I have made no approximation; I have only rewritten the likelihood in a form that lets me reach in and
+turn down one thing.
+
+\section{One dial}
+
+Here is the dial. Damp the Schur complement, and the regression that comes with it, by a single number
+$\gamma\in[0,1]$:
+\[
+  S_k(\gamma) \;=\; \Sigma_{kk} - \gamma\,\Sigma_{k,<k}\Sigma_{<k,<k}^{-1}\Sigma_{<k,k}
+              \;=\; (1-\gamma)\,\Sigma_{kk} + \gamma\,S_k,
+  \qquad
+  \mu_{k\mid<k}(\gamma) = \gamma\,\Sigma_{k,<k}\Sigma_{<k,<k}^{-1}x_{<k},
+\]
+and score with the damped conditionals,
+$\ell_\gamma(\Sigma;x) = \sum_k \log \mathcal{N}\!\bigl(x_k;\,\mu_{k\mid<k}(\gamma),\,S_k(\gamma)\bigr)$.
+At $\gamma=1$ this is the exact joint likelihood again. At $\gamma=0$ each block is scored under its
+own unconditional covariance $\Sigma_{kk}$, with no reference to the others --- a product of block
+marginals, which is to say composite likelihood in the sense of Besag, Lindsay, and Varin--Reid--Firth.
+Everywhere in between is the new object, and the only one that changes the block covariances rather
+than the data: it inverts nothing larger than a conditioning block, and it is better conditioned than
+the full likelihood precisely because damping lifts the small eigenvalues that sank it. I call it the
+\emph{Schur pseudo-likelihood}.
+
+Let me be honest about what it is, because the honesty is load-bearing later. At $\gamma=1$ it is a
+normalized joint density. At $\gamma=0$ it is a composite likelihood: a sum of perfectly good
+component log-densities that does not itself integrate to one. For $\gamma$ in between, each term is
+still a genuine Gaussian log-density --- a strictly proper score on its own block --- but the damped
+conditionals are not mutually consistent; they are not the conditionals of any single joint Gaussian.
+So $\ell_\gamma$ is a \emph{pseudo}-likelihood, and that is the bargain: I trade the joint-density
+property for components that stay numerically sane. As we will see in a moment, you must not try to
+\emph{estimate} a covariance by maximizing it freely; it is a device for \emph{scoring} a covariance,
+or for damping one you already have.
+
+\section{What the dial actually does}
+
+I can say exactly what $\gamma$ does, at least in the smallest case that still has anything to say.
+Take two scalar blocks: $x_1\sim\mathcal{N}(0,a)$ and $x_2 = b\,x_1 + \varepsilon$ with
+$\varepsilon\sim\mathcal{N}(0,s)$, so the true law of $x_2$ given $x_1$ has slope $b$ and conditional
+variance $s$. Maximize the population $\ell_\gamma$ over candidate covariances and something
+slightly unsettling happens. The maximizer recovers the true predictive law for \emph{every}
+$\gamma$ --- the effective slope comes out to $b$ and the conditional variance to $s$ --- but the
+covariance it implies is inflated, with off-diagonal $\widehat{\Sigma}_{12} = \Sigma_{12}^\star/\gamma$.
+Push $\gamma$ down far enough and the implied matrix leaves the positive-definite cone altogether. The
+damping, in other words, gets undone by rescaling: a free fit simply scales its coupling up by
+$1/\gamma$ to compensate, and for strong enough coupling it scales right past a valid covariance. That
+is the precise reason $\ell_\gamma$ is no good as a free estimation objective, and is fine as a score
+or as a fixed transform --- both of which hold $\widehat{\Sigma}$ still instead of letting it absorb
+the dial.
+
+Now the part worth the trip. The thing $\gamma$ is really controlling is how much to trust the
+estimated coupling, and \emph{that} has a clean optimum. Fit the slope from $n$ samples by least
+squares; $\hat b$ is unbiased with variance $s/(a(n-2))$. Choosing $\gamma$ to minimize the expected
+predictive residual gives
+\[
+  \boxed{\;\gamma^\star \;=\; \frac{b^2}{\,b^2 + \operatorname{Var}\hat b\,}
+        \;=\; \frac{(n-2)\,\rho^2}{(n-2)\,\rho^2 + (1-\rho^2)}\;,\qquad
+        \rho^2 = \frac{b^2 a}{\,b^2 a + s\,}.}
+\]
+Read it and the whole thesis is sitting there. $\gamma^\star$ is the \emph{reliability} of the
+coupling --- a Wiener filter, a James--Stein shrinkage, whatever you like to call the signal-to-total
+ratio. It climbs to $1$ as the sample grows or the coupling strengthens (trust it; use the full
+likelihood) and falls to $0$ as the coupling dissolves into noise (ignore it; go block-diagonal), and
+it sits in the interior exactly when the coupling is worth something but not everything. I checked it
+against the simulated optimum and it lands; the vector version replaces $\rho^2$ with the largest
+squared canonical correlation between the blocks, and across $K$ blocks the inflation, and the
+positive-definite threshold, compound down the chain.
+
+\section{Why an interior $\gamma$ wins, and where it doesn't}
+
+It pays to be careful here, because the easy story is wrong. Write the score as a quadratic form,
+$\ell_\gamma(\widehat{\Sigma};x) = -\tfrac12\bigl(\mathrm{Ld}_\gamma + x^\top W_\gamma(\widehat{\Sigma})\,x\bigr)$,
+where $W_\gamma$ assembles the damped block conditionals and, at $\gamma=1$, is exactly
+$\widehat{\Sigma}^{-1}$. For two fixed estimates and a Gaussian test sample the probability of ranking
+the better one above the worse is governed by a per-sample signal-to-noise ratio, and that ratio --- I
+worked it out and checked it against Monte Carlo --- is \emph{maximized at $\gamma=1$}. Under
+test-sample noise alone, Neyman--Pearson wins and damping only adds bias. So the high-dimensional
+advantage is not a test-noise effect, and any paper that claims otherwise is hand-waving.
+
+Where it comes from is the instability of the \emph{estimate}. The score depends on $\widehat{\Sigma}$
+through $W_\gamma$, and at $\gamma=1$, $W_1=\widehat{\Sigma}^{-1}$ has a sensitivity that scales like
+$1/\lambda_{\min}^2$; the variance of the score gap across training draws then runs like
+$1/\lambda_{\min}^4$, which I can watch explode --- from essentially nothing to dozens --- as the truth
+gets more ill-conditioned, while a damped $\gamma$ keeps it bounded. When the discriminating signal
+lives in the within-block structure and the cross-block coupling is shared noise, an interior $\gamma$
+beats both ends outright (power around $0.84$ against $0.45$ at either extreme). The dial is a
+bias--variance knob, but over the \emph{estimate}, not the test point.
+
+One more honest line in the ledger. The estimating equation $\nabla_\Sigma \ell_\gamma$ is unbiased at
+the truth only at the two ends --- $\gamma=1$ (the Fisher score) and $\gamma=0$ (correct block
+marginals); in the interior it is biased, which is the inflation from two sections ago wearing a
+different hat. So the classical Godambe efficiency story applies only at the endpoints, and the
+interior is a \emph{tempering}, justified by the discrimination it buys rather than by being any kind
+of consistent estimator. That is the rigorous form of ``score with it, don't fit with it.''
+
+\section{It is a shrinkage, and a familiar one}
+
+The well-behaved use --- damp the coupling of a covariance you already have --- is just shrinkage,
+worth saying plainly. Each conditional covariance is pulled from its full Schur complement back toward
+the unconditional block, $S_k(\gamma)=(1-\gamma)\Sigma_{kk}+\gamma S_k$, with intensity $1-\gamma$.
+Since conditioning only ever shrinks variance, $S_k \preceq \Sigma_{kk}$, this raises the conditional
+covariance and lifts the small eigenvalues of every block-sized inverse the score has to perform. It
+is James--Stein applied blockwise to the conditioning. And it is orthogonal to the shrinkage everyone
+already knows: Ledoit--Wolf and the rotation-invariant estimators clean the \emph{eigenvalues},
+basis-free; this cleans the \emph{cross-block coupling}, basis-dependent. They compose. $\gamma$ is to
+the block factorization what shrinkage intensity is to the spectrum.
+
+\section{One knob, several familiar faces}
+
+The reason I think this is worth a paper rather than a footnote is that the same dial keeps turning up,
+and naming it organizes a surprising amount of scattered machinery onto two axes of one factorization.
+The first axis is \emph{which} earlier blocks each block conditions on --- the sparsity that Vecchia,
+GMRFs, banding and nested dissection all regularize along. The second is \emph{how strongly} that
+conditioning is trusted, which is $\gamma$, and which those methods do not have: they run at full trust
+and economize on structure. The two are orthogonal and compose.
+
+\begin{center}\small
+\begin{tabular}{lll}
+\hline
+ & $\gamma=1$ (full trust) & $\gamma=0$ (no trust)\\
+\hline
+dense conditioning & exact Gaussian likelihood; MVO $w\propto\Sigma^{-1}\mathbf 1$ & block composite likelihood; HRP\\
+sparse conditioning & block-Vecchia / GMRF likelihood & (block-marginal, same column)\\
+\hline
+\multicolumn{3}{l}{\emph{interior $\gamma$: the Schur pseudo-likelihood --- the bridge none of the above carries}}\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+The portfolio row is not an analogy. Minimum-variance optimization is $\gamma=1$ with full
+conditioning; hierarchical risk parity is the $\gamma=0$ corner; Schur complementary allocation
+interpolates them by damping the very same Schur complement with the very same $\gamma$. The Schur
+pseudo-likelihood is that construction transported from risk to evaluation --- identical algebra, new
+job --- and the reason an interior $\gamma$ beats the minimum-variance endpoint is the reason HRP is
+steadier than raw mean--variance.
+
+\section{It travels}
+
+Nothing above needed finance, or even covariance estimation in particular. The ingredients are a
+Gaussian (or Gaussian-pseudo) block likelihood and a partition, so the coupling-strength dial is
+generic to Gaussian-block models. In spatial statistics and Gaussian processes, where Vecchia and
+GMRFs already condition each site on a neighborhood, $\gamma$ adds a robustness knob on how far to
+trust those neighbors, orthogonal to the neighborhood choice. In Gaussian graphical models it tempers
+conditional-dependence strength between the full penalized likelihood and node-wise pseudo-likelihood.
+In longitudinal and state-space models, with time slices as blocks, it interpolates between treating
+slices independently and the full temporal joint. And anywhere composite likelihood is already used for
+tractability, $\gamma$ is the dial from composite back toward full. I want to be clear that this last
+paragraph is a claim about the mechanism, not a row of experiments; I have tested the
+covariance-evaluation case and am pointing at the rest.
+
+\section{Geometry, and what actually happened}
+
+Damping interpolates each conditional covariance between $\Sigma_{kk}$ and $S_k$, and the obvious
+straight line is not the only road. Moving instead along the affine-invariant SPD geodesic,
+$\Sigma_{\mathrm{BD}}\,\#_\gamma\,\Sigma = \Sigma_{\mathrm{BD}}^{1/2}(\Sigma_{\mathrm{BD}}^{-1/2}
+\Sigma\,\Sigma_{\mathrm{BD}}^{-1/2})^{\gamma}\Sigma_{\mathrm{BD}}^{1/2}$, lifts the small eigenvalues
+multiplicatively rather than additively. The two agree at the ends and to first order, and part ways
+near a singular Schur complement --- which is exactly the strong-coupling regime where it matters: the
+linear damping shows a power dip there and the geodesic one does not.
+
+As for results, the honest summary is three lines. The optimum in $\gamma$ moves with the regime: it
+climbs to $1$ when the coupling is trustworthy, falls to $0$ when it is noise, and in between an
+interior $\gamma$ strictly beats both ends, which is the bias--variance trade made visible. The
+geodesic variant is the safer default where the two interpolations diverge. And on real equity returns
+--- Ken French portfolios, rolling minimum-variance out-of-sample --- the estimators that invert a
+raw covariance blow up by orders of magnitude while well-conditioned shrinkage stays put; that is not a
+test of $\ell_\gamma$ as an equity estimator, and I will not pretend it is, but it is the same moral
+the likelihood teaches, paid out in basis points: in high dimensions you are rewarded for not trusting
+the raw inverse.
+
+\section{What I can't yet claim}
+
+The closed-form $\gamma^\star$ is real, but it is the \emph{estimator's} optimum --- the predictive,
+well-behaved use. The high-dimensional \emph{discrimination} optimum is only half pinned down: the
+variance term is first-order and I have it ($1/\lambda_{\min}^4$ at $\gamma=1$, bounded below it), but
+the signal term is second-order in the sampling noise --- it is the shrinkage benefit --- so a closed
+form for the discrimination $\gamma^\star$ wants the next order, and for now it is characterized only
+numerically. The compounded $K$-block positive-definite threshold I have as a two-block formula and as
+numerical evidence of compounding, not yet as a chain. Block ordering matters, as it does for Vecchia,
+and I have not chased the permutation question. And the thesis is falsifiable in the right way: the
+interior optimum should vanish whenever the coupling is fully reliable or pure noise, and an interior
+optimum in a regime known to be fully reliable would sink it.
+
+\section*{Acknowledgements}
+
+The original Schur complementary theory, of which this is the evaluation-side mirror, was developed
+with the support of Intech Investments.
+
+\section*{References}
+
+\small\noindent
+L\'opez de Prado (2015, 2016); Antonov, Lipton \& L\'opez de Prado (2024); Cotton (2024,
+arXiv:2411.05807); Besag (1975); Lindsay (1988); Varin, Reid \& Firth (2011); Vecchia (1988);
+Katzfuss \& Guinness (2021); Pan et al.\ (2024); Rue \& Held (2005); George (1973); Ledoit \& Wolf
+(2004, 2012); Bun, Bouchaud \& Potters (2017); James \& Stein (1961); Gneiting \& Raftery (2007);
+Scheuerer \& Hamill (2015). Full annotated lists accompany the \texttt{precise} repository.
+
+\end{document}
