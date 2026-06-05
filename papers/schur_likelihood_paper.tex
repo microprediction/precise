@@ -45,6 +45,21 @@ analysis does and does not establish.
 
 \section{The high-dimensional failure of the Gaussian likelihood}
 
+Covariance and precision matrices are the inputs to portfolio construction \citep{markowitz1952},
+risk measurement, Gaussian and graphical models, and linear discriminant analysis, and the quality of
+those downstream decisions is bounded by the quality of the estimate. The estimate is never observed
+against ground truth, so it must be judged by its performance on held-out data; how to do so reliably,
+and in particular in high dimensions, is the question of this paper.
+
+The motivation is not only diagnostic. A cheap and reliable out-of-sample score is what makes online
+adaptation feasible: in a streaming setting one can compare candidate estimators on recent held-out
+data and switch, blend, or retune them as the regime changes, rather than committing to a single
+estimator chosen offline. Because no estimator is uniformly best across dimension, spectrum, and tail
+behavior \citep{ledoit2004}, this selection is unavoidable, and it is only as good as the score that
+drives it. The choice of score is, moreover, known to matter for ranking whenever the target is
+observed only through a noisy proxy \citep{patton2011, laurent2013}; we show below that in high
+dimensions the standard score fails in precisely the regime where selection matters most.
+
 The conventional criterion for the quality of a covariance estimate is the likelihood it assigns to
 held-out data. For a zero-mean Gaussian,
 \[
