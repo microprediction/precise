@@ -44,7 +44,7 @@ docs = ["mkdocs>=1.5", "mkdocs-material>=9.0"]
 
 [project.urls]
 Homepage = "https://github.com/microprediction/precise"
-Documentation = "https://microprediction.github.io/precise/"
+Documentation = "https://precise.microprediction.org/"
 Repository = "https://github.com/microprediction/precise"
 Issues = "https://github.com/microprediction/precise/issues"
 
