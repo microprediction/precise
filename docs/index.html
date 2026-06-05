@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>precise — online covariance &amp; correlation estimation</title>
+    <meta name="description" content="precise: sklearn-style online (incremental) covariance and correlation estimators with a single partial_fit contract — the online complement to sklearn.covariance.">
+
+    <meta property="og:title" content="precise — online covariance & correlation estimation">
+    <meta property="og:description" content="Online (incremental) covariance/correlation estimators with a partial_fit contract; assessment and recommendation; the Schur pseudo-likelihood.">
+    <meta property="og:url" content="https://microprediction.github.io/precise/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="precise">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="stylesheet" href="academic.css">
+    <style>
+        .site-nav { position: sticky; top: 0; z-index: 1000; background: #34495e; color: white;
+            padding: 12px 24px; font-family: 'Times New Roman', Times, serif;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .site-nav-inner { max-width: 900px; margin: 0 auto; display: flex;
+            justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+        .site-nav-brand { color: white; text-decoration: none; font-weight: 700; font-size: 1.25em;
+            letter-spacing: 0.02em; }
+        .site-nav-links { display: flex; gap: 24px; }
+        .site-nav-links a { color: #ecf0f1; text-decoration: none; font-size: 1em; }
+        .site-nav-links a:hover { color: white; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="site-nav-inner">
+            <a class="site-nav-brand" href="./">precise</a>
+            <div class="site-nav-links">
+                <a href="#install">Install</a>
+                <a href="#quickstart">Quick start</a>
+                <a href="#estimators">Estimators</a>
+                <a href="#schur">Schur likelihood</a>
+                <a href="https://github.com/microprediction/precise">GitHub</a>
+                <a href="https://pypi.org/project/precise/">PyPI</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="header">
+        <div class="container">
+            <h1>precise</h1>
+            <div class="subtitle">Online (incremental) covariance &amp; correlation estimation —
+                the online complement to <code>sklearn.covariance</code></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="abstract">
+            <strong>precise</strong> is a small, numpy-only library of <em>online</em> covariance and
+            correlation estimators behind a single sklearn-style <code>partial_fit</code> contract.
+            Where <code>sklearn.covariance</code> estimators are batch-only, every estimator here
+            updates one observation at a time and exposes <code>covariance_</code>,
+            <code>correlation_</code>, <code>precision_</code> and <code>location_</code>. On top of
+            the estimators it adds a registry, river-style adapters for variables that enter and leave
+            a universe, a panel of <em>assessors</em> for judging an estimate, a recommender that
+            picks an estimator from observable data features, and the <em>Schur pseudo-likelihood</em>
+            — a one-parameter bridge between the full and block-diagonal Gaussian likelihoods.
+        </div>
+
+        <section class="section" id="install">
+            <h2>Install</h2>
+            <pre>pip install precise</pre>
+            <p class="text-muted">numpy is the only required dependency (tested on numpy 1.26 and
+                2.x, Python 3.9–3.13). Optional extras: <code>[pandas]</code> (DataFrame output for
+                the keyed adapters), <code>[research]</code>, <code>[dev]</code>.</p>
+        </section>
+
+        <section class="section" id="quickstart">
+            <h2>Quick start</h2>
+            <pre>import numpy as np
+from precise import EwaCovariance
+
+est = EwaCovariance(r=0.05)          # exponentially weighted, online
+for y in stream_of_vectors():        # y is a 1-D array, one observation
+    est.partial_fit(y)
+
+est.covariance_      # (d, d) ndarray, always symmetric PSD
+est.correlation_     # unit-diagonal correlation
+est.precision_       # inverse (when well-conditioned)
+est.location_        # running mean</pre>
+            <p>Every estimator follows the same contract, so a test harness (or your code) only needs
+            to look for <code>.fit</code> / <code>.partial_fit</code>. Discover them programmatically:</p>
+            <pre>from precise import all_estimators, estimator_from_name
+all_estimators()                     # list of estimator classes
+estimator_from_name("LedoitWolfCovariance")</pre>
+        </section>
+
+        <section class="section" id="estimators">
+            <h2>Estimators</h2>
+            <p>Fourteen truly-online estimators across families (no buffered recompute):</p>
+            <table>
+                <thead><tr><th>Class</th><th>Family</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><code>EmpiricalCovariance</code></td><td>sample</td><td>Welford running covariance</td></tr>
+                    <tr><td><code>DiagonalCovariance</code></td><td>sample</td><td>variances only</td></tr>
+                    <tr><td><code>EwaCovariance</code></td><td>weighted</td><td>exponentially weighted</td></tr>
+                    <tr><td><code>AdaptiveEwaCovariance</code></td><td>weighted</td><td>surprise-smoothed forgetting</td></tr>
+                    <tr><td><code>LedoitWolfCovariance</code></td><td>shrinkage</td><td>online linear shrinkage</td></tr>
+                    <tr><td><code>OASCovariance</code></td><td>shrinkage</td><td>oracle approximating shrinkage</td></tr>
+                    <tr><td><code>ShrunkCovariance</code></td><td>shrinkage</td><td>fixed-intensity target</td></tr>
+                    <tr><td><code>SchurCovariance</code></td><td>shrinkage</td><td>cross-block coupling damping (linear/geodesic)</td></tr>
+                    <tr><td><code>PartialMomentsCovariance</code></td><td>semi</td><td>downside / semi-covariance</td></tr>
+                    <tr><td><code>HuberCovariance</code></td><td>robust</td><td>online Huber M-estimator</td></tr>
+                    <tr><td><code>TylerCovariance</code></td><td>robust</td><td>recursive Tyler M-estimator</td></tr>
+                    <tr><td><code>GeodesicEwaCovariance</code></td><td>geometric</td><td>affine-invariant SPD geodesic step</td></tr>
+                    <tr><td><code>DCCCovariance</code></td><td>dynamic</td><td>decoupled vol &amp; correlation</td></tr>
+                    <tr><td><code>FactorCovariance</code></td><td>factor</td><td>low-rank + diagonal, O(d·k)/step</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section" id="dynamic">
+            <h2>Dynamic universes</h2>
+            <p>Finance rarely offers a fixed set of variables. The keyed adapters wrap <em>any</em>
+            positional estimator into a river-style one over named variables that enter and leave:</p>
+            <pre>from precise import keyed, EwaCovariance
+est = keyed(EwaCovariance(r=0.05))
+est.partial_fit({"AAPL": 0.01, "MSFT": -0.02})   # dict in, dict-of-dicts out
+est.covariance_["AAPL"]["MSFT"]</pre>
+            <p class="text-muted"><code>FixedUniverse</code> imputes missing keys;
+            <code>DynamicUniverse</code> handles staleness/longevity eviction and pairwise assembly
+            across changing key sets.</p>
+        </section>
+
+        <section class="section" id="assess">
+            <h2>Assess &amp; recommend</h2>
+            <p>Because no estimator dominates every regime, <code>precise</code> treats
+            <em>choosing</em> and <em>judging</em> an estimate as first-class:</p>
+            <pre>from precise import all_assessors, suggest
+all_assessors()                      # LogLikelihood, BlockPseudoLikelihood,
+                                     # SchurLikelihood, SteinLoss, ... (higher = better)
+suggest(X, top=3)                    # recommend estimator classes from data features</pre>
+            <p><code>suggest</code> maps observable, truth-free features (p/n, effective rank,
+            sphericity, condition number, off-diagonal mass, excess kurtosis) to an estimator via a
+            frozen, numpy-only decision tree.</p>
+        </section>
+
+        <section class="section" id="schur">
+            <h2>The Schur pseudo-likelihood</h2>
+            <p>The full Gaussian likelihood factorizes exactly, through Schur complements, into
+            block-conditional terms. A single <em>coupling-strength</em> parameter
+            <code>γ ∈ [0,1]</code> damps that conditioning, giving the <strong>Schur
+            pseudo-likelihood</strong> <code>ℓ<sub>γ</sub></code>: <code>γ=1</code> is the full
+            likelihood (fragile in high dimensions), <code>γ=0</code> is the block-diagonal /
+            composite likelihood (robust), and the interior is the bridge they lack. The same
+            <code>γ</code> damping of the same Schur complement is Schur complementary portfolio
+            allocation — interpolating hierarchical risk parity and minimum variance.</p>
+            <p>For the estimator/predictive use, the optimal trust has a closed form — the
+            <em>reliability</em> of the coupling (a Wiener / James–Stein shrinkage):</p>
+            <pre>γ* = (n−2) ρ² / [ (n−2) ρ² + (1 − ρ²) ]      (ρ² = block coupling, the conditional R²)</pre>
+            <p>rising to 1 as the sample size or coupling grows, and to 0 as the coupling becomes
+            noise. See the working paper:
+            <a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">
+            <em>Schur Covariance Evaluation: A Principled Pseudo-Likelihood in High Dimensions</em></a> (PDF).</p>
+        </section>
+
+        <section class="section" id="links">
+            <h2>Links</h2>
+            <ul>
+                <li><a href="https://pypi.org/project/precise/">PyPI</a> — <code>pip install precise</code></li>
+                <li><a href="https://github.com/microprediction/precise">GitHub repository</a></li>
+                <li><a href="https://github.com/microprediction/precise/blob/main/MIGRATING.md">Migrating from the 0.16.x skater API</a></li>
+                <li><a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">Schur pseudo-likelihood paper (PDF)</a></li>
+                <li><a href="https://github.com/microprediction/schur">schur</a> — portfolio / allocation (moved out of precise)</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>precise · MIT licensed · <a href="https://github.com/microprediction/precise">microprediction/precise</a></p>
+        </div>
+    </footer>
+</body>
+</html>
