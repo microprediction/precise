@@ -29,7 +29,7 @@ correlation estimation** — the online complement to `sklearn.covariance`.
 - **Breaking:** the functional "skater" API (`precise.skaters.*`) is removed — importing it now
   raises a pointer to `MIGRATING.md`.
 - **Breaking:** portfolio / manager / Schur **allocation** code moved to
-  [`schur`](https://github.com/microprediction/schur).
+  [`allocation`](https://github.com/microprediction/allocation).
 
 See `MIGRATING.md` for the upgrade path.
 

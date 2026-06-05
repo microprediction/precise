@@ -28,6 +28,27 @@ jobs:
       - name: Test
         run: pytest
 
+  docs-up-to-date:
+    # The web edition of the paper is generated from papers/schur_likelihood_paper.tex.
+    # Fail if the committed HTML is stale (i.e. the .tex changed but docs/build_paper.sh
+    # was not rerun). Pandoc is pinned so the regenerated output matches byte-for-byte.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: '3.9.0.2'
+      - name: Regenerate the web paper from LaTeX
+        run: ./docs/build_paper.sh
+      - name: Fail if the generated web paper is stale
+        run: |
+          if ! git diff --quiet -- docs/papers/schur-likelihood/index.html; then
+            echo "::error::docs/papers/schur-likelihood/index.html is out of date — run ./docs/build_paper.sh and commit."
+            git diff -- docs/papers/schur-likelihood/index.html | head -60
+            exit 1
+          fi
+          echo "web paper is in sync with the LaTeX source"
+
   test-minimal:
     # Verify the package imports and the full test suite passes with numpy only
     # (no pandas, no scikit-learn) — the lean-install promise.

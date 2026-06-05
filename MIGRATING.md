@@ -58,7 +58,7 @@ k = keyed(EwaCovariance(r=0.05))                 # FixedUniverse: fixed names, m
 
 All allocation/portfolio/manager code (`portfoliostatic`, `portfolioutil`, `managers`,
 `managerutil`, Schur-complementary allocation) has been **removed** from precise. It now lives at
-[microprediction/schur](https://github.com/microprediction/schur); for production use the
+[microprediction/allocation](https://github.com/microprediction/allocation) (allocation.microprediction.org); for production use the
 [skfolio](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) implementation is
 recommended. The pre-1.0 source remains in this repository's git history (see commit `3670edd`,
 the last commit before the 1.0 rewrite) if you need to reference the original implementations.

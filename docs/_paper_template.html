@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>$title$</title>
+$if(subtitle)$  <meta name="description" content="$subtitle$">
+$endif$  <meta property="og:title" content="$title$">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="../../academic.css">
+$math$
+  <style>
+    .site-nav{position:sticky;top:0;z-index:1000;background:#34495e;color:#fff;
+      padding:12px 24px;font-family:'Times New Roman',Times,serif;}
+    .site-nav-inner{max-width:820px;margin:0 auto;display:flex;
+      justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .site-nav a{color:#ecf0f1;text-decoration:none;}
+    .site-nav a:hover{color:#fff;text-decoration:underline;}
+    .container{max-width:820px;} .paper-meta{text-align:center;color:var(--muted);margin-bottom:8px;}
+    .katex-display{overflow-x:auto;overflow-y:hidden;}
+  </style>
+</head>
+<body>
+  <nav class="site-nav"><div class="site-nav-inner">
+    <a href="../../">&larr; precise</a><a href="../">papers</a>
+  </div></nav>
+  <div class="header"><div class="container">
+    <h1>$title$</h1>$if(subtitle)$<div class="subtitle">$subtitle$</div>$endif$
+  </div></div>
+  <div class="container">
+$if(author)$    <p class="paper-meta">$for(author)$$author$$sep$, $endfor$$if(date)$ &middot; $date$$endif$ &middot; <a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a></p>
+$endif$$if(abstract)$    <div class="abstract">$abstract$</div>
+$endif$
+$body$
+  </div>
+  <footer><div class="container"><p>precise &middot; MIT licensed &middot;
+    <a href="https://github.com/microprediction/precise">microprediction/precise</a></p></div></footer>
+</body>
+</html>

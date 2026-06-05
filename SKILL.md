@@ -46,7 +46,7 @@ Fetch the relevant one for copy-pasteable code and guardrails:
 In high dimensions (variables comparable to observations), **do not rank covariance estimates by the
 held-out Gaussian log-likelihood** — it is dominated by unidentifiable small eigenvalues and ranks below
 chance. Use inversion-free / block judges instead (see the scoring skill). Background:
-<https://precise.microprediction.org/paper/>.
+<https://precise.microprediction.org/papers/schur-likelihood/>.
 
 ## Reference
 
