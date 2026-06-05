@@ -1,0 +1,55 @@
+name: install-smoke
+
+# Installs precise FROM PyPI on a clean runner (no source checkout shadowing the import) and
+# exercises the published wheel. Three triggers:
+#   * workflow_dispatch — on demand (override the install spec, e.g. precise==1.0.0rc1)
+#   * schedule          — weekly drift canary: does `pip install precise` still work today?
+#   * workflow_run      — right after a successful deploy (validates each release)
+# Note: schedule/workflow_run only fire once this file is on the default branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      spec:
+        description: "pip install spec"
+        default: "precise --pre"
+  schedule:
+    - cron: "0 6 * * 1"   # Mondays 06:00 UTC
+  workflow_run:
+    workflows: ["deploy"]
+    types: [completed]
+
+defaults:
+  run:
+    shell: bash   # uniform across ubuntu/macos/windows runners
+
+jobs:
+  smoke:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.9", "3.11", "3.12", "3.13"]
+        include:
+          - os: macos-latest
+            python: "3.11"
+          - os: windows-latest
+            python: "3.11"
+    steps:
+      - name: Fetch the smoke script only (not the package source)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/smoke.py
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install precise from PyPI
+        run: |
+          python -m pip install --upgrade pip
+          SPEC="${{ github.event.inputs.spec || 'precise --pre' }}"
+          echo "installing: $SPEC"
+          python -m pip install $SPEC
+      - name: Smoke test the installed wheel
+        run: python .github/smoke.py

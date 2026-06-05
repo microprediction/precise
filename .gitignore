@@ -132,3 +132,5 @@ dmypy.json
 private_examples
 private_examples/*.py
 private_examples/*.csv
+
+.DS_Store

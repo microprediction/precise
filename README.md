@@ -1,82 +1,111 @@
-# precise [docs](https://microprediction.github.io/precise/) ![tests](https://github.com/microprediction/precise/workflows/tests/badge.svg) ![tests_312](https://github.com/microprediction/precise/workflows/tests_312/badge.svg) ![tests-sans-ppo](https://github.com/microprediction/precise/workflows/tests-sans-ppo/badge.svg)  ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+# precise
 
-What's here: 
+![ci](https://github.com/microprediction/precise/workflows/ci/badge.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)
 
-1. The [Robust Portfolio Literature Reading List](https://github.com/microprediction/precise/blob/main/LITERATURE.md) used by a [Portfolio Theory GPT](https://chatgpt.com/g/g-68bc49db00748191b65846ac348d0ca2-robust-portfolio-theory). 
+**Online (incremental) covariance and correlation estimation** — the streaming complement to
+[`sklearn.covariance`](https://scikit-learn.org/stable/modules/covariance.html), whose estimators
+are batch-only and have no `partial_fit`. Pure Python + numpy; no other required dependencies.
 
+```bash
+pip install precise
+```
 
-2. A collection of *online* (incremental) [covariance forecasting](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) and [portfolio construction](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) functions. See [docs](https://microprediction.github.io/precise/). 
+## Use
 
-3. I originally developed "Schur Complementary" portfolio construction in this repo, although subsequently worked with Hugo Delatte to put it in [SkFolio](https://skfolio.org/) and I recommend that implementation instead. Hugo has a nice [tutorial](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) also. Schur is a relatively new approach that leans on connection between top-down (hierarchical) and bottom-up (optimization) portfolio construction revealed by block matrix inversion. See my posts on the [methodology](https://www.linkedin.com/posts/petercotton_schur-complementary-portfolios-a-unification-activity-7000535020381552640-ZWej?utm_source=share&utm_medium=member_desktop) and its role in the [hijacking of the M6 contest](https://www.linkedin.com/posts/alexander-fleiss-70b49410_does-option-volume-predict-stock-direction-activity-7021134433344749569-bxx4?utm_source=share&utm_medium=member_desktop). 
- 
+```python
+from precise import EwaCovariance
 
-One observes that tools for portfolio construction might also be useful in [optimizing a portfolio of models](https://medium.com/geekculture/optimizing-a-portfolio-of-models-f1ed432d728b).
+est = EwaCovariance(r=0.05)
+for y in stream:            # y is a 1d observation; pass a 2d array for a batch
+    est.partial_fit(y)
 
-NEW: Some [slides](https://github.com/microprediction/precise/blob/main/academic/Schur_Complementary_Portfolios_CQF_Slides_Updated.pdf) for the CQF talk. 
+est.covariance_             # (n, n) ndarray
+est.correlation_            # unit-diagonal correlation
+est.precision_             # inverse covariance
+est.location_              # running mean
+est.fit(X)                 # sklearn-style batch drop-in (X is 2d)
+```
 
----
+Every estimator is **truly online** — a constant amount of work per observation, no growing
+buffers. State is a plain dict, so you can checkpoint mid-stream with `get_state()` / `set_state()`.
 
-<a href="https://medium.com/geekculture/schur-complementary-portfolios-fix-hierarchical-risk-parity-28b0efa1f35f">
-<img src="https://github.com/microprediction/precise/blob/main/docs/assets/images/schur_reaction.png" width="600"></a>
+## Estimators
 
----
+| Class | What it does |
+|---|---|
+| `EmpiricalCovariance` | running sample covariance (Welford) |
+| `EwaCovariance` | exponentially weighted (recency-biased) |
+| `AdaptiveEwaCovariance` | EWMA whose forgetting rate speeds up on regime change |
+| `LedoitWolfCovariance` | online Ledoit-Wolf shrinkage towards a scaled identity |
+| `OASCovariance` | online Oracle Approximating Shrinkage (often better-conditioned than LW) |
+| `ShrunkCovariance` | fixed-intensity shrinkage to identity **or** a constant-correlation target |
+| `PartialMomentsCovariance` | exponentially weighted partial-moment (semi-)covariance |
+| `HuberCovariance` | online robust estimator that downweights outliers |
+| `TylerCovariance` | recursive Tyler M-estimator — robust correlation/shape for elliptical data |
+| `GeodesicEwaCovariance` | recency-weighted update along the affine-invariant SPD geodesic |
+| `DCCCovariance` | dynamic conditional correlation — decouples volatility from correlation |
+| `FactorCovariance` | online low-rank + diagonal (approximate factor model); O(d·k) per step |
 
-# Usage 
-See the [docs](https://microprediction.github.io/precise/) but briefly ...
+```python
+from precise import all_estimators, estimator_from_name
+all_estimators()                          # the list of classes (a bake-off in one loop)
+estimator_from_name("LedoitWolfCovariance")
+```
 
-### Covariance estimation
-Here y is a vector:
+## Keyed / dynamic universes (river-style)
 
-    from precise.skaters.covariance.ewapm import ewa_pm_emp_scov_r005_n100 as f 
-    s = {}
-    for y in ys:
-        x, x_cov, s = f(s=s, y=y)
+In streaming/finance settings observations arrive as **dicts keyed by name**, and the set of names
+can change over time. `keyed(...)` decorates *any* of the estimators above to consume keyed dicts
+(river-style `update` / `learn_one`) and emit keyed output:
 
-This package contains lots of different "f"s. There is a [LISTING_OF_COV_SKATERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_COV_SKATERS.md) with links to the code. See the [covariance documentation](https://microprediction.github.io/precise/covariance.html).
+```python
+from precise import keyed, EwaCovariance
 
-### Portfolio weights
-Here y is a vector:
+d = keyed(EwaCovariance(r=0.05), dynamic=True)   # changing universe (DynamicUniverse)
+d.update({"AAPL": 0.01, "MSFT": -0.02})
+d.update({"MSFT": 0.00, "NVDA": 0.03})           # AAPL leaves, NVDA enters
+d.covariance_                                     # dict-of-dicts over the live universe
+d.to_frame()                                      # pandas DataFrame  (pip install precise[pandas])
 
-        from precise.skaters.managers.schurmanagers import schur_weak_pm_t0_d0_r025_n50_g100_long_manager as mgr
-        s = {}
-        for y in ys:
-            w, s = mgr(s=s, y=y)
+k = keyed(EwaCovariance(r=0.05))                  # fixed universe, imputes missing keys (FixedUniverse)
+```
 
-This package contains lots of "mgr"'s. There is a [LISTING_OF_MANAGERS](https://github.com/microprediction/precise/blob/main/LISTING_OF_MANAGERS.md) with links to respective code. See the [manager documentation](https://microprediction.github.io/precise/managers.html).
+`dynamic=False` (the default) gives a `FixedUniverse` (one wrapped estimator, missing keys imputed);
+`dynamic=True` gives a `DynamicUniverse` (a wrapped estimator per live key-set). Both work with any
+positional estimator — the adapter adds no covariance math of its own.
 
-# Install 
-Supported for Python 3.11 or earlier
+## Composing volatility × correlation
 
-    pip install precise 
-    
-or for latest:
+`H = D R D` is a composition, not a fixed algorithm. `ConditionalCovariance` lets you pick the
+per-series **volatility** model and the **correlation** estimator independently — `DCCCovariance` is
+just the EWMA/EWMA special case:
 
-    pip install git+https://github.com/microprediction/precise.git
- 
-Trouble? It probably isn't with precise per se. 
+```python
+from precise import ConditionalCovariance, EwaCovariance, LedoitWolfCovariance
 
-    pip install --upgrade pip
-    pip install --upgrade setuptools 
-    pip install --upgrade wheel
-    pip install --upgrade ecos   # <--- Try conda install ecos if this fails
-    pip install --upgrade osqp   # <-- Can be tricky on some systems see https://github.com/cvxpy/cvxpy/issues/1190#issuecomment-994613793
-    pip install --upgrade pyportfolioopt # <--- Skip if you don't plan to use it
-    pip install --upgrade riskparityportfolio
-    pip install --upgrade scipy
-    pip install --upgrade precise 
+est = ConditionalCovariance(vol=EwaCovariance(r=0.02),       # any estimator, used per series in 1-D
+                            corr=LedoitWolfCovariance(r=0.05))  # correlation from any estimator
+```
 
+The volatility model can also be any univariate model from
+[microprediction/skaters](https://github.com/microprediction/skaters) (Holt, Hosking, …) via
+`from_skater` — precise doesn't depend on it; the adapter is duck-typed:
 
-# Miscellaneous 
+```python
+import skaters
+from precise import ConditionalCovariance, from_skater
+est = ConditionalCovariance(vol=from_skater(skaters.holt), corr=EwaCovariance(r=0.05))
+```
 
- - Here is some related, and potentially related, [literature](https://github.com/microprediction/precise/blob/main/LITERATURE.md). 
- - This is a piece of the microprediction project aimed at creating millions of autonomous critters to distribute AI at low cost, should you ever care to [cite](https://github.com/microprediction/microprediction/blob/master/CITE.md) the same. The uses include mixtures of experts models for time-series analysis, buried in [timemachines](https://github.com/microprediction/timemachines/tree/main/timemachines/skatertools) somewhere. 
- - If you just want univariate calculations, and don't want numpy as a dependency, there is [momentum](https://github.com/microprediction/momentum). However if you want univariate forecasts of the variance of something, as distinct from mere online calculations of the same, you might be better served by the timemachines package. In particular I would suggest checking the [time-series elo ratings](https://microprediction.github.io/timeseries-elo-ratings/html_leaderboards/special-k_001.html) and the "special" category in particular, as various kinds of empirical moment time-series (volatility etc) are used to determine those ratings. 
- - The name of this package refers to precision matrices, not numerical precision. This isn't a source of high precision covariance *calculations* per se. The intent is more in forecasting future realized covariance, conscious of the noise in the empirical distribution. Perhaps I'll include some more numerically stable methods from [this survey](https://dbs.ifi.uni-heidelberg.de/files/Team/eschubert/publications/SSDBM18-covariance-authorcopy.pdf) to make the name more fitting. Pull requests are welcome!
- - The intent is that methods are parameter free. However some not-quite autonomous methods admit a few parameters (the factories). 
+## Related
 
+- **Generating** random covariance/correlation matrices to test against: [`randomcov`](https://github.com/microprediction/randomcov).
+- **Portfolio construction** (Schur-complementary allocation, HRP) moved to [`schur`](https://github.com/microprediction/schur); for production use the [skfolio](https://skfolio.org/auto_examples/clustering/plot_6_schur.html) implementation is recommended.
+- A [Robust Portfolio Literature Reading List](https://github.com/microprediction/precise/blob/main/LITERATURE.md) lives in this repo.
+- Part of the [microprediction](https://github.com/microprediction/microprediction) project.
 
-# Disclaimer 
-Not investment advice. Not M6 entry advice. Just a bunch of code subject to the MIT License disclaimers. 
+> Migrating from precise &lt; 1.0 (the functional "skater" API)? See [MIGRATING.md](https://github.com/microprediction/precise/blob/main/MIGRATING.md).
 
+## Disclaimer
 
-
+Not investment advice. Just code, subject to the MIT License.
