@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "precise"
-version = "1.0.0"
+version = "1.0.0rc1"
 description = "Online (incremental) covariance and correlation estimation — the online complement to sklearn.covariance"
 readme = "README.md"
 requires-python = ">=3.9"
