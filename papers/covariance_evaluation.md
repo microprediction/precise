@@ -70,33 +70,35 @@ Reproducible from `precise-lab` (`lab.run_experiment`, `lab.judge_power`, `lab.a
 
 **The best judge depends on the gold — "match the judge to the objective."** A judge's power is the
 probability that, from a single *finite* test sample, it orders a random pair of estimates the way the
-truth does (0.5 = chance). At c = p/n ≈ 1, n_test = 2p, pooled over generators [prelim]:
+truth does (0.5 = chance). At c = p/n ≈ 1, n_test = 2p, pooled over generators:
 
 | judge | gold = KL | gold = Frobenius | gold = GMV variance |
 |---|---|---|---|
-| LogLikelihood | **0.985** | 0.700 | 0.697 |
-| SteinLoss | **0.985** | 0.700 | 0.698 |
-| SchurLikelihood | 0.740 | **0.771** | 0.712 |
-| GMVVariance | 0.693 | 0.691 | **0.949** |
-| VariogramScore | 0.598 | 0.730 | 0.575 |
-| BlockPseudoLikelihood | 0.761 | 0.724 | 0.689 |
+| LogLikelihood | **0.984** | 0.651 | 0.637 |
+| SteinLoss | **0.984** | 0.651 | 0.638 |
+| SchurLikelihood | 0.647 | 0.774 | 0.628 |
+| VariogramScore | 0.600 | **0.794** | 0.600 |
+| GMVVariance | 0.636 | 0.637 | **0.962** |
+| BlockPseudoLikelihood | 0.700 | 0.720 | 0.598 |
 
 This *sharpens* findings #1 and #3. The held-out log-likelihood is the most powerful judge **only for
 the KL/density gold** — which is the same tail-dominated functional, so the agreement is partly
 built-in (with a large test set it reproduces the KL ordering at Spearman ≈ 1.0 even at c ≈ 1; the
-collapse is a *finite-test*, *practical-gold* phenomenon). Against the practically relevant golds —
-matrix recovery (Frobenius) and realized portfolio variance (GMV) — the inversion-heavy likelihood
-sheds power toward chance, while:
+loss of power is a *finite-test*, *practical-gold* phenomenon). Against the practically relevant golds
+— matrix recovery (Frobenius) and realized portfolio variance (GMV) — the likelihood's power **falls
+with the concentration** c = p/n (Frobenius 0.75 → 0.60, GMV 0.65 → 0.56 as c: 0.5 → 2), trending
+toward chance, while:
 
-- **GMVVariance** is the most powerful judge of the **allocation** gold (0.95) but weak elsewhere — a
+- **inversion-light judges win on matrix recovery and are flat in c**: VariogramScore (0.79) and
+  SchurLikelihood (0.77) lead; the likelihood (0.65) trails and degrades fastest with c;
+- **GMVVariance** is the dominant judge of the **allocation** gold (0.96) but weak elsewhere — a
   *rank-1 probe* (it only sees the `w ∝ Σ̂⁻¹1` direction), a failure mode distinct from
-  inverse-fragility;
-- **SchurLikelihood** is the best judge of **matrix recovery** and is never the worst on any gold —
-  the **robust default judge**, the evaluation-side counterpart of γ regularizing allocation.
+  inverse-fragility.
 
 So there is no gold-free "best scoring rule": the right judge is the assessor aligned with what you
-ultimately care about, and the Schur pseudo-likelihood is the safest choice when that is unknown or
-when you care about the matrix itself.
+ultimately care about. By worst-case power across the three golds the likelihood family is the most
+*balanced*, but on the practical (non-KL) objectives it is dominated — the Schur pseudo-likelihood is
+the safest choice when you care about the matrix itself or the objective is unknown.
 
 **Two distinct power-limiting axes.** (i) *Inverse-fragility* — log-likelihood/Stein collapse on
 top-spectrum golds in high dimension because their score is dominated by the unidentifiable

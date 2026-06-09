@@ -333,16 +333,19 @@ inverse-amplification asymmetry does \emph{not} compound down the tree. A single
 $\gamma$ (or the closed-form reliability) is therefore an adequate approximation across levels;
 per-level tuning is a refinement, not a necessity. [prelim; clean per-node recursive version pending]
 
-\subsection{Schur as the robust judge}
+\subsection{The best judge depends on the gold}
 Treating each assessor as a model-selection test, we measure its \emph{power}: the probability that,
 from a single finite test sample of size $n_{\text{test}}$, it orders a random pair of candidate
 estimates the way the truth does ($0.5$ = chance), against three notions of truth. The best judge is
-the one aligned with the chosen gold (Table~\ref{tab:power}, $c=p/n\approx1$, $n_{\text{test}}=2p$
-[prelim]): held-out log-likelihood for the KL/density gold, the GMV score for the allocation gold, and
-\emph{the Schur pseudo-likelihood for matrix recovery}. The log-likelihood is near-optimal only for
-its own (KL) gold and sheds power toward chance on the practical golds, exactly the high-dimensional
-failure that opens this paper; the Schur judge is never the worst and best recovers top-spectrum
-structure---the evaluation-side mirror of $\gamma$ regularizing allocation.
+the one aligned with the chosen gold (Table~\ref{tab:power}, $c=p/n\approx1$, $n_{\text{test}}=2p$):
+held-out log-likelihood for the KL/density gold, the GMV score for the allocation gold, and the
+inversion-free variogram score---with the Schur pseudo-likelihood close behind---for matrix recovery.
+The log-likelihood is near-optimal only for its own (KL) gold; on the practical golds its power falls
+with the concentration $c=p/n$ (matrix recovery $0.75\!\to\!0.60$, allocation $0.65\!\to\!0.56$ as
+$c:0.5\!\to\!2$), trending toward chance---the high-dimensional failure that opens this paper---while
+the inversion-light judges (variogram, Schur) stay markedly more powerful and flatter in $c$. There is
+no gold-free best judge; the Schur pseudo-likelihood is the safest default when matrix recovery is the
+target or the objective is unknown.
 
 \begin{table}[h]\centering\small
 \caption{Judge power $P(\text{order pair like truth})$ by gold criterion. $0.5=$ chance.}
@@ -351,11 +354,12 @@ structure---the evaluation-side mirror of $\gamma$ regularizing allocation.
 \toprule
 judge & gold $=$ KL & gold $=$ Frobenius & gold $=$ GMV var\\
 \midrule
-LogLikelihood     & \textbf{0.985} & 0.700 & 0.697\\
-SteinLoss         & \textbf{0.985} & 0.700 & 0.698\\
-SchurLikelihood   & 0.740 & \textbf{0.771} & 0.712\\
-GMVVariance       & 0.693 & 0.691 & \textbf{0.949}\\
-VariogramScore    & 0.598 & 0.730 & 0.575\\
+LogLikelihood         & \textbf{0.984} & 0.651 & 0.637\\
+SteinLoss             & \textbf{0.984} & 0.651 & 0.638\\
+SchurLikelihood       & 0.647 & 0.774 & 0.628\\
+VariogramScore        & 0.600 & \textbf{0.794} & 0.600\\
+GMVVariance           & 0.636 & 0.637 & \textbf{0.962}\\
+BlockPseudoLikelihood & 0.700 & 0.720 & 0.598\\
 \bottomrule
 \end{tabular}
 \end{table}
