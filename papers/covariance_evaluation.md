@@ -57,3 +57,59 @@ often it reproduces that ordering (its statistical power), using only a held-out
   out-of-sample variance results for HRP. [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4748151)
 - Cotton, P. (2024). *Schur Complementary Allocation: A Unification of Hierarchical Risk Parity and
   Minimum Variance Portfolios.* arXiv:2411.05807. [link](https://arxiv.org/abs/2411.05807)
+
+<!-- DRAFT addition for papers/covariance_evaluation.md. Append after the "Findings" list.
+     Numbers tagged [prelim] refresh when the full grids complete. -->
+
+## Large-scale corroboration with the shipped assessors (precise-lab)
+
+The findings above were re-tested at scale with the *shipped* `precise` assessors over a
+144-combination grid (4 generators × p ∈ {8…256} × n/p ∈ {½…16} × 200 reps), plus a
+Neyman–Pearson **judge-power** experiment and real data (Fama–French ff100/ff49, crypto, Polymarket).
+Reproducible from `precise-lab` (`lab.run_experiment`, `lab.judge_power`, `lab.assess_assessors`).
+
+**The best judge depends on the gold — "match the judge to the objective."** A judge's power is the
+probability that, from a single *finite* test sample, it orders a random pair of estimates the way the
+truth does (0.5 = chance). At c = p/n ≈ 1, n_test = 2p, pooled over generators [prelim]:
+
+| judge | gold = KL | gold = Frobenius | gold = GMV variance |
+|---|---|---|---|
+| LogLikelihood | **0.985** | 0.700 | 0.697 |
+| SteinLoss | **0.985** | 0.700 | 0.698 |
+| SchurLikelihood | 0.740 | **0.771** | 0.712 |
+| GMVVariance | 0.693 | 0.691 | **0.949** |
+| VariogramScore | 0.598 | 0.730 | 0.575 |
+| BlockPseudoLikelihood | 0.761 | 0.724 | 0.689 |
+
+This *sharpens* findings #1 and #3. The held-out log-likelihood is the most powerful judge **only for
+the KL/density gold** — which is the same tail-dominated functional, so the agreement is partly
+built-in (with a large test set it reproduces the KL ordering at Spearman ≈ 1.0 even at c ≈ 1; the
+collapse is a *finite-test*, *practical-gold* phenomenon). Against the practically relevant golds —
+matrix recovery (Frobenius) and realized portfolio variance (GMV) — the inversion-heavy likelihood
+sheds power toward chance, while:
+
+- **GMVVariance** is the most powerful judge of the **allocation** gold (0.95) but weak elsewhere — a
+  *rank-1 probe* (it only sees the `w ∝ Σ̂⁻¹1` direction), a failure mode distinct from
+  inverse-fragility;
+- **SchurLikelihood** is the best judge of **matrix recovery** and is never the worst on any gold —
+  the **robust default judge**, the evaluation-side counterpart of γ regularizing allocation.
+
+So there is no gold-free "best scoring rule": the right judge is the assessor aligned with what you
+ultimately care about, and the Schur pseudo-likelihood is the safest choice when that is unknown or
+when you care about the matrix itself.
+
+**Two distinct power-limiting axes.** (i) *Inverse-fragility* — log-likelihood/Stein collapse on
+top-spectrum golds in high dimension because their score is dominated by the unidentifiable
+small-eigenvalue tail; the Schur damping repairs this. (ii) *Probe rank* — GMV is a rank-1 probe and
+is therefore a weak *recovery* judge at every dimension, regardless of conditioning. These are
+orthogonal; only the first is a Schur-γ matter.
+
+**Estimator landscape (context).** Ranking estimators by realized GMV variance, the empirical
+covariance wins for n/p ≳ 4 and shrinkage/Schur win for n/p ≤ 1, the crossover tilting upward with p
+— textbook random-matrix behaviour, with `SchurCovariance(γ=½)` taking the moderate-/high-dimension
+low-sample cells [prelim]. `TylerCovariance` and `GeodesicEwaCovariance(r≥0.05)` are numerically
+unstable under single-row streaming (≈99% non-PD on crypto), recorded rather than hidden.
+
+**Real data.** The same rolling-window evaluation on Fama–French ff100/ff49 and on crypto / Polymarket
+panels (no known truth, so likelihood / GMV / variogram only) reproduces the regime ordering on the
+n/p axis recreated by sweeping universe size and window length. [prelim — full real-data tables pending]

@@ -266,6 +266,112 @@ that invert an unregularized covariance degrade by orders of magnitude while wel
 does not; this is not a test of $\ell_\gamma$ as an equity estimator, but it corroborates the central
 mechanism, namely that high-dimensional performance is governed by the conditioning of the inverse.
 
+
+% === precise-lab empirical addition ===
+% ====================================================================
+% DRAFT empirical addition for schur_likelihood_paper.tex
+% Insert inside / after \section{Interpolation geometry and empirical results}.
+% Numbers tagged [prelim] refresh when the full 28,800-cell grid completes.
+% Figures referenced live in papers/figures/ (copied from precise-lab/results/figures).
+% ====================================================================
+
+\subsection{A controlled estimator/evaluator grid}
+We sweep a $144$-combination grid: four ground-truth generators (\textsc{lkj}, \textsc{wishart},
+\textsc{residuals}, \textsc{walk}; the last two strongly spiked and near-singular respectively),
+dimension $p\in\{8,16,32,64,128,256\}$, and aspect ratio $n/p\in\{\tfrac12,1,2,4,8,16\}$, each at
+$200$ replications. Every one of $38$ online estimator configurations is streamed one observation at
+a time through \texttt{partial\_fit} and scored by all shipped assessors plus the exact gold
+$\mathrm{KL}(\Sigma\,\|\,\Shat)$. The setup is reproducible from \texttt{precise-lab}.
+
+\paragraph{The interpolant occupies the regime the theory predicts.}
+Ranking estimators by realized minimum-variance-portfolio variance, the winner is regime-dependent
+exactly as $\gamma^\star$ predicts (Fig.~\ref{fig:regime}). For $n/p\gtrsim 4$ the raw empirical
+covariance wins at every $p$; for $n/p\le 1$ the winner is a shrinkage or Schur estimator, and
+\emph{$\Shat^{\mathrm{Schur}}_{\gamma=1/2}$ itself wins the moderate-to-high-dimension, low-sample
+cells} (e.g.\ $p\in\{64,128\}$ at $n/p\le1$) [prelim]. The crossover boundary tilts upward with $p$:
+more directions to estimate require relatively more samples before the full covariance is trustworthy.
+
+\subsection{The optimal coupling trust is shared by evaluation and allocation}
+The tractable two-block model gives the closed form
+$\gamma^\star=(n-2)\rho^2/[(n-2)\rho^2+(1-\rho^2)]$, the reliability of the estimated coupling. The
+same quantity is optimal for the \emph{portfolio}: damping the cross-block entry of the sample
+covariance by $\gamma$ before forming $w\propto \Shat(\gamma)^{-1}\mathbf 1$ interpolates the
+inverse-variance/HRP allocation ($\gamma=0$) and the sample minimum-variance portfolio ($\gamma=1$),
+and the $\gamma$ minimizing realized variance tracks $\gamma^\star$:
+
+\begin{center}\small
+\begin{tabular}{rccc}
+\toprule
+$n$ & reliability $\gamma^\star$ & $\arg\min_\gamma$ residual (eval) & $\arg\min_\gamma$ GMV var (alloc)\\
+\midrule
+8   & 0.72 & 0.70 & 0.00 \\
+32  & 0.93 & 0.92 & 0.46 \\
+128 & 0.98 & 0.98 & 0.86 \\
+256 & 0.99 & 1.00 & 0.92 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Both optima rise from the HRP corner toward the full covariance as the coupling becomes
+reliable; $\mathrm{corr}(\arg\min\text{eval},\gamma^\star)=0.998$,
+$\mathrm{corr}(\arg\min\text{alloc},\gamma^\star)\approx0.90$--$0.97$. The single asymmetry is that
+\emph{allocation is the more conservative of the two}: because the portfolio passes the coupling
+through $\Shat^{-1}$, it amplifies the coupling's estimation noise more than the predictive residual
+does, so $\gamma^\star_{\text{alloc}}\le\gamma^\star_{\text{eval}}$ and at small $n$ the portfolio
+retreats fully to HRP while the likelihood still trusts a partial coupling. This identifies HRP as the
+reliability-$\to 0$ corner of the Schur family, and the minimum-variance portfolio as the
+reliability-$\to1$ corner, with the data-determined optimum in between.
+
+\paragraph{The relationship survives the hierarchy.}
+On a random asymmetric nested factor truth (depth $1$--$3$, $p=8$--$32$), with a single $\gamma$
+damping all cross-leaf-block entries, the evaluation-optimal and allocation-optimal $\gamma$ both
+climb together with sample size at every depth, and the gap between them stays small and bounded
+($\lesssim0.2$, mean $\approx0.10,0.18,0.01$ at depths $1,2,3$) with no monotone growth: the
+inverse-amplification asymmetry does \emph{not} compound down the tree. A single coupling-trust
+$\gamma$ (or the closed-form reliability) is therefore an adequate approximation across levels;
+per-level tuning is a refinement, not a necessity. [prelim; clean per-node recursive version pending]
+
+\subsection{Schur as the robust judge}
+Treating each assessor as a model-selection test, we measure its \emph{power}: the probability that,
+from a single finite test sample of size $n_{\text{test}}$, it orders a random pair of candidate
+estimates the way the truth does ($0.5$ = chance), against three notions of truth. The best judge is
+the one aligned with the chosen gold (Table~\ref{tab:power}, $c=p/n\approx1$, $n_{\text{test}}=2p$
+[prelim]): held-out log-likelihood for the KL/density gold, the GMV score for the allocation gold, and
+\emph{the Schur pseudo-likelihood for matrix recovery}. The log-likelihood is near-optimal only for
+its own (KL) gold and sheds power toward chance on the practical golds, exactly the high-dimensional
+failure that opens this paper; the Schur judge is never the worst and best recovers top-spectrum
+structure---the evaluation-side mirror of $\gamma$ regularizing allocation.
+
+\begin{table}[h]\centering\small
+\caption{Judge power $P(\text{order pair like truth})$ by gold criterion. $0.5=$ chance.}
+\label{tab:power}
+\begin{tabular}{lccc}
+\toprule
+judge & gold $=$ KL & gold $=$ Frobenius & gold $=$ GMV var\\
+\midrule
+LogLikelihood     & \textbf{0.985} & 0.700 & 0.697\\
+SteinLoss         & \textbf{0.985} & 0.700 & 0.698\\
+SchurLikelihood   & 0.740 & \textbf{0.771} & 0.712\\
+GMVVariance       & 0.693 & 0.691 & \textbf{0.949}\\
+VariogramScore    & 0.598 & 0.730 & 0.575\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]\centering
+  \includegraphics[width=0.8\linewidth]{figures/regime_GMVVariance.png}
+  \caption{Winning estimator by $(p,\,n/p)$ for realized minimum-variance-portfolio variance.
+  Empirical wins when well-sampled; shrinkage and $\Shat^{\mathrm{Schur}}_{\gamma=1/2}$ win when
+  undersampled. [prelim]}\label{fig:regime}
+\end{figure}
+\begin{figure}[h]\centering
+  \includegraphics[width=\linewidth]{figures/judge_power_by_gold.png}
+  \caption{Statistical power of each assessor vs concentration $c=p/n$, by gold criterion
+  ($n_{\text{test}}=2p$); $0.5$ is chance. [prelim]}
+\end{figure}
+
+% === end precise-lab addition ===
+
 \section{Limitations}
 
 The closed-form $\gamma^\star$ is established for the predictive (estimator) use in the two-block
