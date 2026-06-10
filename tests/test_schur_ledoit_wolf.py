@@ -8,7 +8,6 @@ damping gamma_ is a valid reliability that tracks the coupling.
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from precise import SchurLedoitWolfCovariance, all_estimators
 
@@ -33,15 +32,23 @@ def test_gamma_in_unit_interval_and_pd():
     assert np.all(np.linalg.eigvalsh(C) > 0)
 
 
-def test_gamma_rises_with_sample_size_when_coupling_is_real():
-    # more data => the cross-block coupling becomes more reliable => larger gamma_
-    gammas = []
-    for n in (300, 3000):
-        e = SchurLedoitWolfCovariance(n_blocks=3, r=0.005)
-        e.partial_fit(_block_data(n, seed=1))
-        _ = e.covariance_
-        gammas.append(e.gamma_)
-    assert gammas[1] > gammas[0]
+def _gamma(cross, r=0.02, n=2000):
+    e = SchurLedoitWolfCovariance(n_blocks=3, r=r)
+    e.partial_fit(_block_data(n, within=0.7, cross=cross, seed=1))
+    _ = e.covariance_
+    return e.gamma_
+
+
+def test_gamma_rises_with_coupling_strength():
+    # stronger true cross-block coupling => higher reliability => larger gamma_
+    # (the right invariant for an EWA estimator, whose effective sample is ~1/r, not n)
+    g = [_gamma(c) for c in (0.0, 0.1, 0.3, 0.6)]
+    assert g[0] < g[1] < g[2] < g[3]
+
+
+def test_gamma_rises_as_decay_shrinks():
+    # smaller r => larger effective sample => the coupling is more reliably estimated
+    assert _gamma(0.5, r=0.05) < _gamma(0.5, r=0.005)
 
 
 def test_gamma_low_when_coupling_is_noise():
