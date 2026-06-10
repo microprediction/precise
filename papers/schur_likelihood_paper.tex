@@ -132,6 +132,49 @@ full likelihood with $\gamma^\star=$ reliability.
   once well sampled.}\label{fig:select}
 \end{figure}
 
+\section{The same selector across domains}
+The minimum-variance portfolio is one instance of $w\propto\Sigma^{-1}\mathbf1$; forecast combination
+\citep{markowitz1952}, Gaussian-process regression, and Kalman filtering are others, and all are tuned
+by the same log-det-plus-quadratic likelihood---indeed scalable GPs already use the block-conditional
+(Vecchia) factorization \citep{vecchia1988,katzfuss2021} on which $\ell_\gamma$ is built. We therefore
+run the \emph{identical} selection experiment on residual panels from five domains: daily crypto
+returns; real numerical-weather forecast residuals (archived forecast minus ERA5 reanalysis) on a
+$323$-point CONUS grid; draws from a known block correlation and from a spatial Gaussian-process
+kernel; and the innovations of a stable vector autoregression (Kalman-style residuals). In every
+domain, when $n/p\le1$, selecting by the full likelihood gives higher out-of-sample combined-residual
+variance than selecting by the Schur pseudo-likelihood (Table~\ref{tab:domains},
+Figure~\ref{fig:domains}); the inverse-discounting scores cluster near the safe optimum. The gap is
+largest for the Gaussian-process field, whose smooth kernel is the most ill-conditioned, and mildest
+for the weather forecast residuals, which are noisier and less correlated than the underlying field.
+The pathology and its remedy are thus not financial: wherever a high-dimensional covariance is inverted
+to combine correlated signals, the full likelihood is a fragile selection criterion and a damped one is
+not.
+
+\begin{table}[h]\centering\small
+\caption{Ratio of out-of-sample combined-residual variance, full-likelihood selection over
+Schur-pseudo-likelihood selection, undersampled regime ($n/p\le1$). Greater than one means Schur
+selection is safer.}\label{tab:domains}
+\begin{tabular}{lc}
+\toprule
+domain & full-likelihood $/$ Schur \\
+\midrule
+Gaussian-process field            & 18.1\\
+VAR innovations (Kalman-style)    & 4.0\\
+crypto (portfolio)                & 2.7\\
+synthetic block correlation       & 2.7\\
+weather forecast residuals (CONUS)& 1.8\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]\centering
+  \includegraphics[width=\linewidth]{figures/generalize_domains.png}
+  \caption{The same selection experiment across five domains: out-of-sample combined-residual variance
+  (median, log) of the estimate selected by each scoring rule, versus aspect ratio. The full
+  likelihood is fragile when undersampled in every domain; inverse-discounting scores are not.}
+  \label{fig:domains}
+\end{figure}
+
 \section{Regularization and conditioning}
 The damping is a structured shrinkage: $S_k(\gamma)=(1-\gamma)R_{kk}+\gamma S_k$, a convex combination
 of positive-definite matrices, pulls each conditional covariance toward its unconditional block. This
