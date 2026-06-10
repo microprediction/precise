@@ -122,6 +122,31 @@ size of the edge.
   \label{fig:win}
 \end{figure}
 
+\section{Real data: recovering a proxy correlation}
+A correlation matrix has no observable truth, so a real-data test must choose a surrogate; we choose a
+recovery target rather than an out-of-sample-likelihood proxy, since the latter measures density, not
+recovery. Within each window we treat the correlation of \emph{hourly} returns (hundreds of
+observations) as a high-accuracy proxy for the latent correlation, and ask whether estimators fed only
+the window's \emph{daily} returns---the undersampled regime---recover it. Over $61$ weekly and monthly
+windows of $51$ liquid crypto assets, with many random sub-universes spanning aspect ratios
+$n/p\in[0.15,3.8]$, the interior-damped Schur estimate ($\gamma\approx0.5$) recovers the proxy
+correlation best at every aspect ratio (Fig.~\ref{fig:realized}). Under a window-clustered bootstrap it
+significantly outperforms the best shrinkage estimator (OAS, $\Delta\text{RMSE}=0.027$, $95\%$ CI
+$[0.019,0.036]$) and, by larger margins, both endpoints---the full likelihood / empirical correlation
+($\gamma=1$) and full decoupling ($\gamma=0$); it is the single best estimator in $57\%$ of windows.
+The optimal damping is interior and stable, $\gamma^\star\approx0.5$, as on synthetic data. The same
+estimator was \emph{not} best under an out-of-sample-likelihood criterion, a concrete instance of the
+recurring theme that the verdict follows the target. (Hourly sampling carries mild Epps attenuation,
+and crypto correlations are unusually strong; we report the recovery comparison, not a trading result.)
+
+\begin{figure}[h]\centering
+  \includegraphics[width=0.82\linewidth]{figures/corr_realized_crypto.png}
+  \caption{Correlation recovery on real crypto: off-diagonal RMSE against the hourly-realized proxy
+  truth, versus aspect ratio $n/p$. Interior-$\gamma$ Schur leads across the range; the full
+  likelihood ($\gamma=1$, $=$ empirical) and decoupling ($\gamma=0$, identity) trail.}
+  \label{fig:realized}
+\end{figure}
+
 \section{The matrix versus its inverse}
 The optimal damping inverts with the target. Recovering the correlation matrix wants large $\gamma$
 (trust the coupling); recovering its inverse---the partial correlations, the graphical structure---wants
