@@ -58,8 +58,8 @@ often it reproduces that ordering (its statistical power), using only a held-out
 - Cotton, P. (2024). *Schur Complementary Allocation: A Unification of Hierarchical Risk Parity and
   Minimum Variance Portfolios.* arXiv:2411.05807. [link](https://arxiv.org/abs/2411.05807)
 
-<!-- DRAFT addition for papers/covariance_evaluation.md. Append after the "Findings" list.
-     Numbers tagged [prelim] refresh when the full grids complete. -->
+<!-- Addition for papers/covariance_evaluation.md. Appended after the "Findings" list.
+     Final numbers from the completed 28,800-cell grid, judge-power, and real-data runs. -->>
 
 ## Large-scale corroboration with the shipped assessors (precise-lab)
 
@@ -107,11 +107,15 @@ is therefore a weak *recovery* judge at every dimension, regardless of condition
 orthogonal; only the first is a Schur-γ matter.
 
 **Estimator landscape (context).** Ranking estimators by realized GMV variance, the empirical
-covariance wins for n/p ≳ 4 and shrinkage/Schur win for n/p ≤ 1, the crossover tilting upward with p
-— textbook random-matrix behaviour, with `SchurCovariance(γ=½)` taking the moderate-/high-dimension
-low-sample cells [prelim]. `TylerCovariance` and `GeodesicEwaCovariance(r≥0.05)` are numerically
-unstable under single-row streaming (≈99% non-PD on crypto), recorded rather than hidden.
+covariance wins for n/p ≳ 4 and shrinkage estimators (OAS, Ledoit–Wolf, linear shrinkage) win for
+n/p ≤ 1, the crossover tilting upward with p — textbook random-matrix behaviour. `SchurCovariance` is
+*not* a winning point estimator on the synthetic grid (consistent with ℓ_γ being a scoring/regularizing
+device, not an estimation objective). `TylerCovariance` is non-PD in 100% of cells and
+`GeodesicEwaCovariance(r≥0.05)` in ~10%, with ~60% blown-up scores — recorded, not hidden.
 
 **Real data.** The same rolling-window evaluation on Fama–French ff100/ff49 and on crypto / Polymarket
 panels (no known truth, so likelihood / GMV / variogram only) reproduces the regime ordering on the
-n/p axis recreated by sweeping universe size and window length. [prelim — full real-data tables pending]
+n/p axis recreated by sweeping universe size and window length. Shrinkage (OAS, Ledoit–Wolf) wins the
+realized-GMV cells on ff100; on crypto and the ff49 industries the **block-diagonal Schur corner
+(γ=0)** wins a plurality — the reliability→0 regime expected for noisy, effectively under-sampled
+returns. Polymarket favours `DiagonalCovariance` (its log-odds-change panel is close to uncorrelated).

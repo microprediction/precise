@@ -273,7 +273,7 @@ mechanism, namely that high-dimensional performance is governed by the condition
 % ====================================================================
 % DRAFT empirical addition for schur_likelihood_paper.tex
 % Insert inside / after \section{Interpolation geometry and empirical results}.
-% Numbers tagged [prelim] refresh when the full 28,800-cell grid completes.
+% Final numbers from the completed 28,800-cell grid and judge-power runs.
 % Figures referenced live in papers/figures/ (copied from precise-lab/results/figures).
 % ====================================================================
 
@@ -285,13 +285,17 @@ $200$ replications. Every one of $38$ online estimator configurations is streame
 a time through \texttt{partial\_fit} and scored by all shipped assessors plus the exact gold
 $\mathrm{KL}(\Sigma\,\|\,\Shat)$. The setup is reproducible from \texttt{precise-lab}.
 
-\paragraph{The interpolant occupies the regime the theory predicts.}
+\paragraph{The regime structure the theory predicts.}
 Ranking estimators by realized minimum-variance-portfolio variance, the winner is regime-dependent
-exactly as $\gamma^\star$ predicts (Fig.~\ref{fig:regime}). For $n/p\gtrsim 4$ the raw empirical
-covariance wins at every $p$; for $n/p\le 1$ the winner is a shrinkage or Schur estimator, and
-\emph{$\Shat^{\mathrm{Schur}}_{\gamma=1/2}$ itself wins the moderate-to-high-dimension, low-sample
-cells} (e.g.\ $p\in\{64,128\}$ at $n/p\le1$) [prelim]. The crossover boundary tilts upward with $p$:
-more directions to estimate require relatively more samples before the full covariance is trustworthy.
+(Fig.~\ref{fig:regime}): for $n/p\gtrsim 4$ the raw empirical covariance wins at every $p$, while for
+$n/p\le 1$ the winners are shrinkage estimators (OAS, Ledoit--Wolf, linear shrinkage). The crossover
+boundary tilts upward with $p$---more directions to estimate require relatively more samples before
+the full covariance is trustworthy. Notably, $\Shat^{\mathrm{Schur}}_\gamma$ is \emph{not} a winning
+point estimator on this synthetic grid, consistent with the abstract's point that $\ell_\gamma$ is a
+scoring/regularization device rather than a free estimation objective. On real data the picture is
+sharper: the block-diagonal Schur corner $\gamma=0$ wins a plurality of the realized-GMV cells on
+crypto returns and the Ken French 49-industry portfolios, exactly where one expects the
+reliability$\to 0$ regime (noisy, effectively under-sampled returns) to favour decoupling.
 
 \subsection{The optimal coupling trust is shared by evaluation and allocation}
 The tractable two-block model gives the closed form
@@ -331,7 +335,11 @@ climb together with sample size at every depth, and the gap between them stays s
 ($\lesssim0.2$, mean $\approx0.10,0.18,0.01$ at depths $1,2,3$) with no monotone growth: the
 inverse-amplification asymmetry does \emph{not} compound down the tree. A single coupling-trust
 $\gamma$ (or the closed-form reliability) is therefore an adequate approximation across levels;
-per-level tuning is a refinement, not a necessity. [prelim; clean per-node recursive version pending]
+per-level tuning is a refinement, not a necessity. (A genuinely recursive per-node interpolant
+confirms this: the literal inverse-variance recursive bisection does \emph{not} reproduce the
+minimum-variance portfolio even at $\gamma=1$, whereas scaling each cross-block entry by $\gamma$
+raised to its tree separation is exact GMV at $\gamma=1$ and block-diagonal GMV at $\gamma=0$; under
+that compounding damping the eval/alloc gap is again small and non-monotone in depth.)
 
 \subsection{The best judge depends on the gold}
 Treating each assessor as a model-selection test, we measure its \emph{power}: the probability that,
@@ -343,7 +351,11 @@ inversion-free variogram score---with the Schur pseudo-likelihood close behind--
 The log-likelihood is near-optimal only for its own (KL) gold; on the practical golds its power falls
 with the concentration $c=p/n$ (matrix recovery $0.75\!\to\!0.60$, allocation $0.65\!\to\!0.56$ as
 $c:0.5\!\to\!2$), trending toward chance---the high-dimensional failure that opens this paper---while
-the inversion-light judges (variogram, Schur) stay markedly more powerful and flatter in $c$. There is
+the inversion-light judges (variogram, Schur) stay markedly more powerful and flatter in $c$. (This
+panel ranks the full estimator pool, an easier discrimination than the near-optimal pairs of the
+controlled experiment in the opening section, so the absolute powers here---likelihood $\approx0.6$
+rather than the below-chance $0.45$ of the harder task---are a conservative reading of the same
+effect.) There is
 no gold-free best judge; the Schur pseudo-likelihood is the safest default when matrix recovery is the
 target or the objective is unknown.
 
@@ -367,13 +379,13 @@ BlockPseudoLikelihood & 0.700 & 0.720 & 0.598\\
 \begin{figure}[h]\centering
   \includegraphics[width=0.8\linewidth]{figures/regime_GMVVariance.png}
   \caption{Winning estimator by $(p,\,n/p)$ for realized minimum-variance-portfolio variance.
-  Empirical wins when well-sampled; shrinkage and $\Shat^{\mathrm{Schur}}_{\gamma=1/2}$ win when
-  undersampled. [prelim]}\label{fig:regime}
+  Empirical wins when well-sampled ($n/p\gtrsim4$); shrinkage estimators win when undersampled
+  ($n/p\le1$); the crossover tilts upward with $p$.}\label{fig:regime}
 \end{figure}
 \begin{figure}[h]\centering
   \includegraphics[width=\linewidth]{figures/judge_power_by_gold.png}
   \caption{Statistical power of each assessor vs concentration $c=p/n$, by gold criterion
-  ($n_{\text{test}}=2p$); $0.5$ is chance. [prelim]}
+  ($n_{\text{test}}=2p$); $0.5$ is chance.}
 \end{figure}
 
 % === end precise-lab addition ===
