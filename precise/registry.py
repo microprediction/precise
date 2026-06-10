@@ -19,6 +19,7 @@ from precise.huber import HuberCovariance
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
+from precise.schur_ledoit_wolf import SchurLedoitWolfCovariance
 from precise.schurcov import SchurCovariance
 from precise.shrunk import ShrunkCovariance
 from precise.tyler import TylerCovariance
@@ -33,6 +34,7 @@ _REGISTRY: list[type[BaseOnlineCovariance]] = [
     OASCovariance,
     ShrunkCovariance,
     SchurCovariance,
+    SchurLedoitWolfCovariance,
     PartialMomentsCovariance,
     HuberCovariance,
     TylerCovariance,
