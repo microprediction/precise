@@ -15,7 +15,7 @@
 \newcommand{\logdet}{\log\det}
 
 \title{\vspace{-2em}Schur Pseudo-Likelihood\\[0.3em]
-       \large Estimating and Evaluating Correlation in High Dimensions}
+       \large Scoring and Regularizing Correlation in High Dimensions}
 \author{Peter Cotton}
 \date{Draft --- \texttt{microprediction/precise}}
 
@@ -25,30 +25,32 @@
 \begin{abstract}
 \noindent
 We introduce the \emph{Schur pseudo-likelihood}, a one-parameter family that damps the cross-block
-coupling of the Gaussian likelihood through its Schur complements, and use it to estimate and evaluate
-correlation matrices in high dimensions. The optimal damping has a closed form---the reliability of the
-coupling, a James--Stein shrinkage---and the empirically optimal setting tracks it, improving
-correlation recovery in the undersampled regime where the plain inverse is fragile.
+coupling of the Gaussian likelihood through its Schur complements, for \emph{scoring} and regularizing
+covariance and correlation estimates in high dimensions. The Gaussian log-likelihood is the standard
+criterion, but when the dimension rivals the sample size it is governed by the smallest,
+least-identifiable eigenvalues of the estimate, and as a criterion for ranking or selecting estimates
+it becomes unreliable; damping the coupling restores it. The optimal damping has a closed
+form---the reliability of the coupling, a James--Stein shrinkage. On real crypto returns, choosing a
+shrinkage estimate by the Schur pseudo-likelihood rather than by the full likelihood yields several-fold
+lower out-of-sample portfolio variance once the dimension rivals the sample size.
 \end{abstract}
 
-\section{Introduction}
-A correlation matrix is the hard part of a covariance matrix. Variances are a one-dimensional,
-per-series estimation problem; the high-dimensional difficulty---the near-singular spectrum and the
-unstable inverse that govern portfolio weights \citep{markowitz1952}, Gaussian and graphical models,
-and out-of-sample scoring---lives entirely in the correlation. Engle's dynamic conditional correlation
-separates the two for exactly this reason, and we follow suit, working on the correlation matrix $R$
-directly.
-
-The standard yardstick for a correlation estimate $\Rhat$ is the Gaussian log-likelihood it assigns to
-held-out data, $\ell(\Rhat) = -\tfrac12(\logdet\Rhat + \tr(\Rhat^{-1}S))$ for a test correlation $S$.
-Both terms are dominated by the smallest eigenvalues of $\Rhat$: $\logdet\Rhat=\sum_i\log\lambda_i$
-diverges as any $\lambda_i\to0$, and $\Rhat^{-1}$ diverges with it. When the dimension $p$ is
-comparable to the sample size $n$ those eigenvalues are unidentifiable (the Mar\v{c}enko--Pastur
-regime), so both the likelihood and the minimum-variance portfolio $w\propto\Rhat^{-1}\mathbf1$ are
-governed by the least reliable part of the spectrum \citep{ledoit2004,bun2017}. The remedy is to
-discount the raw inverse. We do so continuously, through a single interpretable parameter that damps
-the cross-block coupling, and show that its optimal value is the statistical reliability of that
-coupling.
+\section{The high-dimensional failure of the Gaussian likelihood}
+A correlation matrix is the hard part of a covariance matrix: variances are a one-dimensional,
+per-series problem, while the high-dimensional difficulty---the near-singular spectrum and the unstable
+inverse---lives in the correlation. The standard way to judge a correlation (or covariance) estimate
+$\Rhat$ is the log-likelihood it assigns to held-out data,
+$\ell(\Rhat) = -\tfrac12(\logdet\Rhat + \tr(\Rhat^{-1}S))$ for a test covariance $S$. Both terms are
+governed by the smallest eigenvalues of $\Rhat$: $\logdet\Rhat=\sum_i\log\lambda_i$ diverges as any
+$\lambda_i\to0$, and $\Rhat^{-1}$ diverges with it. When $p$ rivals $n$ those eigenvalues are
+unidentifiable (the Mar\v{c}enko--Pastur regime), so the likelihood is dominated by the least reliable
+part of the spectrum \citep{ledoit2004,bun2017}. As a \emph{criterion}, it then fails: in a controlled
+experiment in which the truth is known, the held-out likelihood ranks the better of two estimates below
+chance, whereas inversion-free criteria such as Frobenius distance and the variogram score
+\citep{scheuerer2015} exceed $80\%$. This is the evaluation-side analogue of the instability of the
+minimum-variance portfolio $w\propto\Rhat^{-1}\mathbf1$, which fails through the same inverse. The
+remedy is to discount that inverse---continuously, through one interpretable parameter, rather than by
+discarding the cross-block structure outright.
 
 \section{The Schur pseudo-likelihood}
 Partition the variables into $K$ ordered blocks. The Gaussian density factors exactly into block
@@ -58,116 +60,108 @@ conditionals, $p(x)=\prod_k p(x_k\mid x_{<k})$, each Gaussian with covariance th
   \qquad
   \mu_{k\mid<k} = R_{k,<k}R_{<k,<k}^{-1}x_{<k},
 \]
-so that $\logdet R=\sum_k\logdet S_k$ and the likelihood is a sum of block-conditional terms, each
-inverting only the conditioning block \citep{vecchia1988,katzfuss2021}. We damp the coupling---the
-Schur complement and its associated regression---by a parameter $\gamma\in[0,1]$,
+so $\logdet R=\sum_k\logdet S_k$ and the likelihood is a sum of block-conditional terms, each inverting
+only the conditioning block \citep{vecchia1988,katzfuss2021}. We damp the coupling by $\gamma\in[0,1]$,
 \[
   S_k(\gamma) = (1-\gamma)\,R_{kk} + \gamma\,S_k,
   \qquad
   \mu_{k\mid<k}(\gamma) = \gamma\,R_{k,<k}R_{<k,<k}^{-1}x_{<k},
 \]
-and define the score $\ell_\gamma(R;x)=\sum_k\log\mathcal N(x_k;\mu_{k\mid<k}(\gamma),S_k(\gamma))$. At
-$\gamma=1$ this is the exact joint likelihood; at $\gamma=0$ each block is scored under its
-unconditional correlation with no reference to the others---the block-diagonal composite likelihood
-\citep{besag1975,lindsay1988,varin2011}. Intermediate $\gamma$ inverts no block larger than the
-conditioning set and is better conditioned than the full likelihood. The same $\gamma$ interpolates an
-allocation rule, from hierarchical risk parity at $\gamma=0$ \citep{lopezdeprado2016} to the
-minimum-variance portfolio at $\gamma=1$ \citep{cotton2024}: damping the evaluation and damping the
-allocation are one control.
+and score $\ell_\gamma(R;x)=\sum_k\log\mathcal N(x_k;\mu_{k\mid<k}(\gamma),S_k(\gamma))$. At $\gamma=1$
+this is the exact joint likelihood; at $\gamma=0$ it is the block-diagonal composite likelihood
+\citep{besag1975,lindsay1988,varin2011}; intermediate $\gamma$ inverts no block larger than a
+conditioning set and is better conditioned. The same $\gamma$ interpolates an allocation rule, from
+hierarchical risk parity at $\gamma=0$ \citep{lopezdeprado2016} to minimum variance at $\gamma=1$
+\citep{cotton2024}.
 
 \section{The optimal damping is the coupling reliability}
-In a tractable two-block model---$x_1\sim\mathcal N(0,a)$ and $x_2=bx_1+\varepsilon$ with conditional
-$R^2$ equal to $\rho^2=b^2a/(b^2a+s)$---the damped estimate uses the shrunk coupling $\gamma\hat b$ from
-the ordinary least-squares estimate $\hat b$. Minimising the expected predictive residual gives a
-closed form,
+In a tractable two-block model---$x_2=bx_1+\varepsilon$ with conditional $R^2$ equal to
+$\rho^2$---minimising the expected predictive residual of the damped score gives a closed form,
 \[
   \gamma^\star \;=\; \frac{b^2}{b^2+\operatorname{Var}(\hat b)}
             \;=\; \frac{(n-2)\,\rho^2}{(n-2)\,\rho^2+(1-\rho^2)},
 \]
 the \emph{reliability} of the estimated coupling: a Wiener/James--Stein shrinkage
-\citep{james1961,ledoit2012}. It tends to $1$ as $n\to\infty$ or $\rho^2\to1$ (the coupling is
-trustworthy; use the full likelihood) and to $0$ as $\rho^2\to0$ (the coupling is noise; decouple),
-and is interior when the coupling is partially reliable. The maximiser of $\ell_\gamma$ recovers the
-true predictive law for every $\gamma$ while implying an inflated correlation, so $\ell_\gamma$ is a
-scoring and regularisation device, not a free estimation objective.
-
-\section{Correlation recovery}
-We draw true correlation matrices with a two-level block structure---within-block correlation fixed,
-between-block correlation $v$, the coupling the Schur complement damps---and sweep $v$ against the
-aspect ratio $n/p$ on a grid dense near unity, $200$ replications at $p=128$. For each cell we locate
-the $\gamma$ minimising off-diagonal recovery error.
-
-The optimal $\gamma^\star(v,n/p)$ (Figure~\ref{fig:gamma}) is essentially a function of the coupling
-strength: $\gamma^\star\approx0$ at $v=0$, $\approx\tfrac12$ at $v=0.1$, and $\approx1$ for
-$v\ge0.45$, dipping where samples are scarcest ($n/p=0.6$). This is the reliability law of the previous
-section, recovered across the plane. Ranking estimators by recovery error (Figure~\ref{fig:win}),
-interior-$\gamma$ Schur is best in the weak-coupling ($v\le0.2$), undersampled ($n/p\lesssim1.1$)
-quadrant; the empirical correlation wins once well sampled, and shrinkage wins the strong-coupling
-undersampled corner. A paired bootstrap over the replications confirms every Schur-winning cell at the
-$95\%$ level. The margins are largest at $v=0$, where damping exploits a coupling that is genuinely
-absent, and modest but significant for interior $\gamma$; the durable conclusion is the law, not the
-size of the edge.
+\citep{james1961,ledoit2012}. It tends to $1$ as $n\to\infty$ or $\rho^2\to1$ and to $0$ as
+$\rho^2\to0$, and is interior when the coupling is partially reliable. The empirical optimum tracks it:
+sweeping a synthetic block correlation's coupling strength $v$ against the aspect ratio $n/p$
+(Figure~\ref{fig:gamma}), the $\gamma$ minimising recovery error rises monotonically with $v$, from
+$0$ (no coupling) to $1$ (strong coupling), and dips where samples are scarcest---the reliability law,
+recovered across the plane.
 
 \begin{figure}[h]\centering
-  \includegraphics[width=0.86\linewidth]{figures/corr_gamma_star.png}
-  \caption{Optimal Schur $\gamma^\star$ for correlation recovery over coupling strength $v$ and aspect
-  ratio $n/p$ ($p=128$). It rises monotonically with $v$---the reliability law---and dips where
-  samples are scarcest.}\label{fig:gamma}
+  \includegraphics[width=0.84\linewidth]{figures/corr_gamma_star.png}
+  \caption{Optimal Schur $\gamma^\star$ over coupling strength $v$ and aspect ratio $n/p$ ($p=128$,
+  synthetic). It rises monotonically with $v$---the reliability law---and dips where samples are
+  scarcest.}\label{fig:gamma}
 \end{figure}
+
+\section{Selecting estimates in high dimensions: real data}
+The decisive test of a \emph{scoring rule} is whether the estimate it prefers generalizes. We test it
+on real daily crypto returns ($72$ liquid assets) with a same-frequency, disjoint-split design that
+avoids both look-ahead and the cross-frequency attenuation (Epps) that confounds naive
+hourly-versus-daily comparisons: within a window, days are partitioned at random into a training set
+(an estimate is built), a validation set (scoring rules choose among a shrinkage ladder
+$R_\delta=(1-\delta)R_{\text{emp}}+\delta I$), and a held-out test set. The external criterion is the
+realized variance of the minimum-variance portfolio formed from the selected estimate---neither scoring
+rule, so the comparison is not circular.
+
+We compare every scoring rule that is usable out of sample: the full likelihood ($\gamma=1$), the Schur
+pseudo-likelihood, the block/composite likelihood ($\gamma=0$), Stein loss, the variogram score, and---as
+a matched, non-circular benchmark, since validation and test are disjoint---the validation GMV variance
+itself. A clear split emerges (Figure~\ref{fig:select}). When $n/p\le1$ the \emph{inverse-heavy} scores
+select too little shrinkage and build fragile portfolios: the full likelihood and Stein loss give
+median out-of-sample variance roughly six times higher than the rest. The \emph{inverse-discounting}
+scores---the Schur pseudo-likelihood, the composite likelihood, and the matched GMV criterion---select
+near-optimally; Schur matches the composite likelihood (window-clustered bootstrap difference within
+$\pm0.01$) and comes within a few percent of the matched benchmark, while beating the full likelihood,
+Stein, and variogram with $95\%$ CIs excluding parity. All converge once $n/p>1.5$, where the full
+likelihood becomes reliable. That Schur \emph{ties} the composite endpoint here is the reliability law
+at work: crypto returns are dense and factor-driven, so for arbitrary blocks the coupling is barely
+reliable, $\gamma^\star$ is small, and the dial lands near $\gamma=0$. The interior-$\gamma$ advantage
+of Schur over the composite endpoint appears when the coupling is partially reliable---the synthetic
+regime of the previous section. The robust message is that discounting the inverse is what matters in
+high dimensions, and the Schur dial is the principled, closed-form way to do it, spanning composite and
+full likelihood with $\gamma^\star=$ reliability.
 
 \begin{figure}[h]\centering
-  \includegraphics[width=0.86\linewidth]{figures/corr_win_region.png}
-  \caption{Best correlation estimator by $(v,n/p)$; ``*'' marks a Schur win significant at $95\%$
-  (paired bootstrap). Interior-$\gamma$ Schur owns the weak-coupling, undersampled quadrant.}
-  \label{fig:win}
+  \includegraphics[width=0.78\linewidth]{figures/scoring_selection_crypto.png}
+  \caption{Real crypto. Out-of-sample minimum-variance-portfolio variance (median, log scale) of the
+  estimate \emph{selected} by each scoring rule, versus aspect ratio. Selecting by the Schur
+  pseudo-likelihood is several-fold safer than by the full likelihood when undersampled; they converge
+  once well sampled.}\label{fig:select}
 \end{figure}
 
-\section{Real data: recovering a proxy correlation}
-A correlation matrix has no observable truth, so a real-data test must choose a surrogate; we choose a
-recovery target rather than an out-of-sample-likelihood proxy, since the latter measures density, not
-recovery. Within each window we treat the correlation of \emph{hourly} returns (hundreds of
-observations) as a high-accuracy proxy for the latent correlation, and ask whether estimators fed only
-the window's \emph{daily} returns---the undersampled regime---recover it. Over $61$ weekly and monthly
-windows of $51$ liquid crypto assets, with many random sub-universes spanning aspect ratios
-$n/p\in[0.15,3.8]$, the interior-damped Schur estimate ($\gamma\approx0.5$) recovers the proxy
-correlation best at every aspect ratio (Fig.~\ref{fig:realized}). Under a window-clustered bootstrap it
-significantly outperforms the best shrinkage estimator (OAS, $\Delta\text{RMSE}=0.027$, $95\%$ CI
-$[0.019,0.036]$) and, by larger margins, both endpoints---the full likelihood / empirical correlation
-($\gamma=1$) and full decoupling ($\gamma=0$); it is the single best estimator in $57\%$ of windows.
-The optimal damping is interior and stable, $\gamma^\star\approx0.5$, as on synthetic data. The same
-estimator was \emph{not} best under an out-of-sample-likelihood criterion, a concrete instance of the
-recurring theme that the verdict follows the target. (Hourly sampling carries mild Epps attenuation,
-and crypto correlations are unusually strong; we report the recovery comparison, not a trading result.)
+\section{Regularization and conditioning}
+The damping is a structured shrinkage: $S_k(\gamma)=(1-\gamma)R_{kk}+\gamma S_k$, a convex combination
+of positive-definite matrices, pulls each conditional covariance toward its unconditional block. This
+raises the smallest eigenvalues and lowers the condition number relative to the full likelihood, and
+yields a usable inverse even when the empirical correlation is singular ($n<p$); the block-diagonal
+endpoint is positive definite whenever the blocks are. Where the linear interpolation can itself
+approach singularity---near a vanishing Schur complement under strong coupling---the affine-invariant
+SPD-geodesic interpolation lifts the small eigenvalues multiplicatively and stays well conditioned by
+construction. This conditioning is the method's general high-dimensional benefit: the same $\gamma$
+that maximises the pseudo-likelihood regularizes any downstream use of the inverse, the
+evaluation-side analogue of eigenvalue shrinkage \citep{ledoit2004,ledoit2012,bun2017}.
 
-\begin{figure}[h]\centering
-  \includegraphics[width=0.82\linewidth]{figures/corr_realized_crypto.png}
-  \caption{Correlation recovery on real crypto: off-diagonal RMSE against the hourly-realized proxy
-  truth, versus aspect ratio $n/p$. Interior-$\gamma$ Schur leads across the range; the full
-  likelihood ($\gamma=1$, $=$ empirical) and decoupling ($\gamma=0$, identity) trail.}
-  \label{fig:realized}
-\end{figure}
-
-\section{The matrix versus its inverse}
-The optimal damping inverts with the target. Recovering the correlation matrix wants large $\gamma$
-(trust the coupling); recovering its inverse---the partial correlations, the graphical structure---wants
-small $\gamma$, because the inverse amplifies coupling noise. The same estimate is near-best for the
-matrix and near-worst for its inverse. Inverse recovery is also structure-dependent: a
-block/equicorrelation truth has a near-diagonal precision (partial correlations of order $1/p$), so the
-zero-correlation baseline is unbeatable there for trivial reasons, whereas on truths with genuine graph
-structure estimation wins. On locally coupled, AR$(1)$-type precision the Schur estimate at
-$\gamma\approx0.75$ is the best edge-recovery rule at every coupling strength; on arbitrary sparse
-precision plain shrinkage wins, since contiguous-block damping cannot match an arbitrary graph. The
-recurring lesson is that ``best'' is undefined until the target is, and good scoring rules---the
-inversion-light variogram score for matrix recovery, the likelihood for density \citep{gneiting2007,
-scheuerer2015}---must be matched to it.
+\section{Scope: a scoring and regularization device, not a free estimator}
+The maximiser of $\ell_\gamma$ recovers the true predictive law for every $\gamma$ while implying an
+inflated correlation, so $\ell_\gamma$ is a scoring and regularization device, not an estimation
+objective. Used \emph{as} an estimator the same damping helps recovery only in its own regime---a
+genuinely block-structured correlation with partially-reliable coupling (synthetic), where interior
+$\gamma$ beats both endpoints---and not on dense, strongly factor-driven data such as crypto, where the
+empirical correlation recovers best and arbitrary block damping discards real signal. The optimal
+damping also inverts with the target: recovering the matrix wants large $\gamma$, recovering its inverse
+(partial correlations) wants small $\gamma$, because the inverse amplifies coupling noise. ``Best''
+is undefined until the target is named; the contribution here is a principled, closed-form dial that is
+right for scoring and regularizing the inverse-fragile, high-dimensional case.
 
 \section{Conclusion}
 The Schur pseudo-likelihood is a one-knob interpolation between decoupled and full Gaussian scoring
-whose optimal setting is the closed-form reliability of the cross-block coupling. On correlation
-matrices in high dimensions---the regime where the plain inverse is fragile---the empirically best
-damping tracks that reliability, and the interpolant improves recovery in the undersampled regime and,
-for locally structured precision, the recovery of the inverse. It is a regularised, better-conditioned
-likelihood for estimating and evaluating correlation when the dimension rivals the sample size.
+whose optimal setting is the closed-form reliability of the cross-block coupling. In high dimensions,
+where the Gaussian likelihood is dominated by unidentifiable small eigenvalues and fails as a criterion,
+it is a better-behaved, better-conditioned score: selecting estimates by it yields markedly safer
+out-of-sample portfolios on real data when the dimension rivals the sample size.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}
