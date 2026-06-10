@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from precise.adaptive import AdaptiveEwaCovariance
 from precise.base import BaseOnlineCovariance
+from precise.block_covariance import BlockCovariance
 from precise.dcc import DCCCovariance
 from precise.diagonal import DiagonalCovariance
 from precise.empirical import EmpiricalCovariance
@@ -27,6 +28,7 @@ from precise.tyler import TylerCovariance
 _REGISTRY: list[type[BaseOnlineCovariance]] = [
     EmpiricalCovariance,
     DiagonalCovariance,
+    BlockCovariance,
     EwaCovariance,
     AdaptiveEwaCovariance,
     LedoitWolfCovariance,

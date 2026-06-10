@@ -22,6 +22,7 @@ from importlib.metadata import PackageNotFoundError, version
 from precise.adaptive import AdaptiveEwaCovariance
 from precise.assessment import all_assessors, assessor_from_name
 from precise.base import BaseOnlineCovariance
+from precise.block_covariance import BlockCovariance
 from precise.conditional import ConditionalCovariance, from_skater
 from precise.dcc import DCCCovariance
 from precise.diagonal import DiagonalCovariance
@@ -49,6 +50,7 @@ __all__ = [
     "BaseOnlineCovariance",
     "EmpiricalCovariance",
     "DiagonalCovariance",
+    "BlockCovariance",
     "EwaCovariance",
     "AdaptiveEwaCovariance",
     "LedoitWolfCovariance",
