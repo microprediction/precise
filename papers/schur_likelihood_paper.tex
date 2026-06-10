@@ -17,7 +17,7 @@
 \theoremstyle{plain}\newtheorem{proposition}{Proposition}
 
 \title{\vspace{-2em}Schur Pseudo-Likelihood\\[0.3em]
-       \large A Principled Way to Evaluate Covariance in High Dimensions}
+       \large Estimating and Evaluating Correlation in High Dimensions}
 \author{Peter Cotton}
 \date{Draft --- \texttt{microprediction/precise}}
 
@@ -43,6 +43,21 @@ $\ell_\gamma$ is a scoring and regularization device rather than a free estimati
 characterize when an interior $\gamma$ improves discrimination, locate the high-dimensional advantage
 in the variance of the estimate rather than the test sample, and state precisely what the present
 analysis does and does not establish.
+
+\medskip\noindent\textbf{Correlation is where this bites.} Variances are a one-dimensional,
+per-series problem; the high-dimensional difficulty---the near-singular spectrum and the
+inverse-fragility above---lives entirely in the \emph{correlation} matrix, and the standard pipeline
+(Engle's DCC) estimates volatilities and correlations separately for exactly this reason. We therefore
+study correlation directly. Over a controlled grid (true coupling strength $v$ against aspect ratio
+$n/p$, dense near unity, $200$ replications) the empirically optimal $\gamma^\star$ for recovering the
+correlation matrix rises monotonically with $v$ from $0$ (no coupling: decouple) to $1$ (strong
+coupling: trust it), tracing the reliability law; interior-$\gamma$ Schur significantly (paired
+bootstrap) beats both shrinkage and the empirical correlation in the weak-coupling, undersampled
+quadrant, though the effect size is modest and is largest in its block-aligned best case. For the
+\emph{inverse} (partial correlations / graphical structure) the optimal damping inverts---one
+correlation estimate is near-best for the matrix and near-worst for its inverse---and recovery is
+structure-dependent: on locally-coupled (AR$(1)$) precision $\gamma\approx0.75$ Schur is the best
+edge-recovery estimator, while on diffuse precision the zero-correlation baseline is hard to beat.
 \end{abstract}
 
 \section{The high-dimensional failure of the Gaussian likelihood}
@@ -389,6 +404,65 @@ BlockPseudoLikelihood & 0.700 & 0.720 & 0.598\\
 \end{figure}
 
 % === end precise-lab addition ===
+
+\section{Correlation estimation: the natural home}
+The preceding regime and judging results are stated for covariance, but covariance estimation factors
+into an easy part and a hard part. The variances are a one-dimensional, per-series problem; the
+high-dimensional difficulty---the near-singular spectrum, the fragile inverse, the unidentifiable
+small eigenvalues---lives entirely in the correlation matrix. Engle's DCC exploits exactly this split,
+estimating volatilities and correlations on separate timescales. We therefore study the Schur dial
+directly on correlation, where (unlike covariance, on which it won no cell as a point estimator) it
+earns its keep.
+
+\subsection{The reliability surface}
+We draw true correlation matrices with a two-level block structure---within-block correlation fixed,
+\emph{between}-block correlation $v$ (the coupling the Schur complement damps)---and sweep $v$ against
+the aspect ratio $n/p$ on a grid dense near unity, $200$ replications, $p=128$. For each cell we locate
+the $\gamma$ minimising off-diagonal recovery error. The resulting $\gamma^\star(v,n/p)$ surface
+(Fig.~\ref{fig:corr-gamma}) rises monotonically with the coupling strength---$\gamma^\star\approx0$
+when $v=0$ (no coupling to trust; decouple), through $\approx0.5$ at $v=0.1$, to $\approx1$ for
+$v\ge0.45$ (strong coupling; use the full correlation)---and dips at the most undersampled corner
+($n/p=0.6$), exactly as the reliability $\rho^2/(\rho^2+\kappa c)$ predicts. This is the closed-form
+$\gamma^\star$ of the tractable model, recovered empirically across the plane.
+
+\begin{figure}[h]\centering
+  \includegraphics[width=0.92\linewidth]{figures/corr_gamma_star.png}
+  \caption{Optimal Schur $\gamma^\star$ for correlation recovery over (coupling $v$, aspect ratio
+  $n/p$), $p=128$. $\gamma^\star$ is essentially a function of the coupling strength---the reliability
+  law---near-flat in $n/p$ but dipping where samples are scarcest.}\label{fig:corr-gamma}
+\end{figure}
+
+\subsection{Where Schur wins, and by how much}
+Ranking estimators by off-diagonal recovery (Fig.~\ref{fig:corr-win}), interior-$\gamma$ Schur is the
+best estimator in the weak-coupling ($v\le0.2$), low-sample ($n/p\lesssim1.1$) quadrant; the empirical
+correlation takes over once well-sampled, and plain shrinkage owns the strong-coupling undersampled
+corner. A paired bootstrap over the $200$ seeds confirms every Schur-winning cell at the $95\%$ level.
+Two honest caveats temper this. The large-margin wins are at $v=0$, where Schur$(\gamma{=}0)$ is simply
+the block-diagonal estimate exploiting a coupling that is genuinely absent, with blocks aligned to the
+truth; the genuinely interior-$\gamma$ wins ($v=0.1$--$0.2$) are significant but small
+($\Delta\text{RMSE}\approx0.004$--$0.024$) and shrink quickly away from the corner. Schur is given its
+best case here---its block partition matches the data-generating blocks. The robust takeaway is the
+\emph{law} ($\gamma^\star=$ reliability), not a large performance edge.
+
+\begin{figure}[h]\centering
+  \includegraphics[width=0.92\linewidth]{figures/corr_win_region.png}
+  \caption{Best correlation estimator by $(v,n/p)$, $p=128$; ``*'' marks a Schur win significant at
+  $95\%$ (paired bootstrap). Schur(interior $\gamma$) owns the weak-coupling, undersampled
+  quadrant.}\label{fig:corr-win}
+\end{figure}
+
+\subsection{The matrix versus its inverse}
+The optimal damping \emph{inverts} with the target. For recovering the correlation matrix, $\gamma^\star$
+is large (trust the coupling); for recovering its inverse---partial correlations, the graphical
+structure---it is small, because the inverse amplifies coupling noise. The same correlation estimate
+is thus near-best for the matrix and near-worst for its inverse. Inverse recovery is moreover
+structure-dependent: on block/equicorrelation truths the precision is near-diagonal (partials $O(1/p)$)
+so the zero-correlation baseline wins trivially---an artifact of structureless truths---whereas on
+truths with genuine graph structure estimation beats it. There, $\mathrm{Schur}(\gamma\approx0.75)$ is
+the best edge-recovery estimator for \emph{locally}-coupled (AR$(1)$) precision at every coupling
+strength, while for arbitrary sparse precision plain shrinkage wins, since the contiguous-block damping
+does not match an arbitrary graph. The lesson is the recurring one: ``best'' is not defined until the
+target is, and the Schur dial helps the inverse only when the coupling is block- or locally-structured.
 
 \section{Limitations}
 
