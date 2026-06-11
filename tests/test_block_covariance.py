@@ -45,6 +45,20 @@ def test_state_is_subquadratic():
     assert "block_covs" in state and len(state["block_covs"]) == nb
 
 
+def test_precision_is_block_diagonal_inverse():
+    # precision_ must be the block-wise inverse: block-diagonal, PD, and P@C=I (not a dense inverse)
+    p, nb = 24, 4
+    e = BlockCovariance(n_blocks=nb, r=0.05).fit(_data(p=p))
+    P, C = e.precision_, e.covariance_
+    block_id = np.empty(p, dtype=int)
+    for bi, idx in enumerate(np.array_split(np.arange(p), nb)):
+        block_id[idx] = bi
+    off_block = block_id[:, None] != block_id[None, :]
+    assert np.all(P[off_block] == 0.0)                       # precision is block-diagonal
+    assert np.all(np.linalg.eigvalsh(P) > 0)                 # positive-definite
+    assert np.allclose(P @ C, np.eye(p), atol=1e-8)          # genuine inverse of the covariance
+
+
 def test_state_is_json_serializable_and_roundtrips():
     e = BlockCovariance(n_blocks=4).fit(_data())
     state = e.get_state()

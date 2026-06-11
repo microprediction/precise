@@ -60,11 +60,27 @@ class BlockCovariance(BaseOnlineCovariance):
             subs.append(ewa_update(sub, x[a:b]))
         return {**s, "n_samples": s["n_samples"] + 1, "subs": subs}
 
+    @staticmethod
+    def _pd_block(sub: dict) -> np.ndarray:
+        return make_pos_def(to_symmetric(np.asarray(sub["cov"], dtype=float)))
+
     def _state_to_cov(self, state: dict) -> np.ndarray:
         p = state["n_dim"]
         out = np.zeros((p, p))
         for sub, (a, b) in zip(state["subs"], state["slices"]):
-            out[a:b, a:b] = make_pos_def(to_symmetric(np.asarray(sub["cov"], dtype=float)))
+            out[a:b, a:b] = self._pd_block(sub)
+        return out
+
+    @property
+    def precision_(self) -> np.ndarray:
+        """Block-wise inverse: invert each (small) block and assemble block-diagonally, so the
+        precision is obtained in ``O(p*b^2)`` without ever forming or inverting the dense ``p x p``
+        matrix (the base class would densify and invert globally, ``O(p^3)``)."""
+        state = self._fitted_state()
+        p = state["n_dim"]
+        out = np.zeros((p, p))
+        for sub, (a, b) in zip(state["subs"], state["slices"]):
+            out[a:b, a:b] = np.linalg.inv(self._pd_block(sub))
         return out
 
     def _state_to_mean(self, state: dict) -> np.ndarray:
