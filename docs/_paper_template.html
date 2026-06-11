@@ -28,7 +28,7 @@ $math$
     <h1>$title$</h1>$if(subtitle)$<div class="subtitle">$subtitle$</div>$endif$
   </div></div>
   <div class="container">
-$if(author)$    <p class="paper-meta">$for(author)$$author$$sep$, $endfor$$if(date)$ &middot; $date$$endif$ &middot; <a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a></p>
+$if(author)$    <p class="paper-meta">$for(author)$$author$$sep$, $endfor$$if(date)$ &middot; $date$$endif$$if(pdfurl)$ &middot; <a href="$pdfurl$">PDF</a>$endif$</p>
 $endif$$if(abstract)$    <div class="abstract">$abstract$</div>
 $endif$
 $body$

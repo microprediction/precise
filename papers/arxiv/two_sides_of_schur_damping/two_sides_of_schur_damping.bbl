@@ -1,0 +1,81 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Antonov et~al.(2024)Antonov, Lipton, and L{\'o}pez~de
+  Prado]{antonov2024}
+Alexandre Antonov, Alexander Lipton, and Marcos L{\'o}pez~de Prado.
+\newblock Hierarchical risk parity: A closer look.
+\newblock Technical Report 4748151, SSRN, 2024.
+
+\bibitem[Chakraborty and Katzfuss(2025)]{chakraborty2025}
+Anirban Chakraborty and Matthias Katzfuss.
+\newblock Learning non-gaussian spatial distributions via bayesian transport
+  maps with parametric shrinkage.
+\newblock \emph{arXiv preprint arXiv:2409.19208}, 2025.
+
+\bibitem[Cotton(2024)]{cotton2024}
+Peter Cotton.
+\newblock Schur complementary portfolios.
+\newblock \emph{arXiv preprint arXiv:2411.05807}, 2024.
+
+\bibitem[Cotton(2025)]{cotton2025psl}
+Peter Cotton.
+\newblock Schur pseudo-likelihood: Scoring and regularizing correlation in high
+  dimensions, 2025.
+\newblock Note, \texttt{microprediction/precise}.
+
+\bibitem[Guinness(2018)]{guinness2018}
+Joseph Guinness.
+\newblock Permutation and grouping methods for sharpening gaussian process
+  approximations.
+\newblock \emph{Technometrics}, 60\penalty0 (4):\penalty0 415--429, 2018.
+
+\bibitem[James and Stein(1961)]{james1961}
+W.~James and Charles Stein.
+\newblock Estimation with quadratic loss.
+\newblock In \emph{Proceedings of the Fourth Berkeley Symposium on Mathematical
+  Statistics and Probability}, volume~1, pages 361--379, 1961.
+
+\bibitem[Katzfuss and Guinness(2021)]{katzfuss2021}
+Matthias Katzfuss and Joseph Guinness.
+\newblock A general framework for vecchia approximations of gaussian processes.
+\newblock \emph{Statistical Science}, 36\penalty0 (1):\penalty0 124--141, 2021.
+
+\bibitem[Katzfuss and Sch\"afer(2024)]{katzfuss2024}
+Matthias Katzfuss and Florian Sch\"afer.
+\newblock Scalable bayesian transport maps for high-dimensional non-gaussian
+  spatial fields.
+\newblock \emph{Journal of the American Statistical Association}, 119\penalty0
+  (546):\penalty0 1409--1423, 2024.
+
+\bibitem[Ledoit and Wolf(2004)]{ledoit2004}
+Olivier Ledoit and Michael Wolf.
+\newblock A well-conditioned estimator for large-dimensional covariance
+  matrices.
+\newblock \emph{Journal of Multivariate Analysis}, 88\penalty0 (2):\penalty0
+  365--411, 2004.
+
+\bibitem[Ledoit and Wolf(2012)]{ledoit2012}
+Olivier Ledoit and Michael Wolf.
+\newblock Nonlinear shrinkage estimation of large-dimensional covariance
+  matrices.
+\newblock \emph{The Annals of Statistics}, 40\penalty0 (2):\penalty0
+  1024--1060, 2012.
+
+\bibitem[L{\'o}pez~de Prado(2016)]{lopezdeprado2016}
+Marcos L{\'o}pez~de Prado.
+\newblock Building diversified portfolios that outperform out of sample.
+\newblock \emph{The Journal of Portfolio Management}, 42\penalty0 (4):\penalty0
+  59--69, 2016.
+
+\bibitem[Vecchia(1988)]{vecchia1988}
+Aldo~V. Vecchia.
+\newblock Estimation and model identification for continuous spatial processes.
+\newblock \emph{Journal of the Royal Statistical Society: Series B},
+  50\penalty0 (2):\penalty0 297--312, 1988.
+
+\end{thebibliography}
