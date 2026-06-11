@@ -49,417 +49,450 @@ Principled Pseudo-Likelihood in High Dimensions</div>
   <div class="container">
     <p class="paper-meta">Peter Cotton &middot; Draft —
 <code>microprediction/precise</code> &middot; <a href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a></p>
-    <div class="abstract"><p>The Gaussian log-likelihood is the standard
-criterion for scoring a covariance estimate, but in high dimensions it
-is governed by the smallest eigenvalues of the estimate—precisely the
-part of the spectrum that is unidentifiable when the dimension is
-comparable to the sample size—and we show that it ranks estimators below
-chance. We introduce the <em>Schur pseudo-likelihood</em>, a
-one-parameter family <span class="math inline">\ell_\gamma</span>, <span
-class="math inline">\gamma\in[0,1]</span>, obtained by damping the
+    <div class="abstract"><p>We introduce the <em>Schur
+pseudo-likelihood</em>, a one-parameter family that damps the
 cross-block coupling of the Gaussian likelihood through its Schur
-complements. At <span class="math inline">\gamma=1</span> the family is
-the exact joint likelihood; at <span class="math inline">\gamma=0</span>
-it is the block-diagonal (composite) likelihood; intermediate <span
-class="math inline">\gamma</span> yields a better-conditioned
-interpolant. The construction is the evaluation-side counterpart of
-Schur complementary portfolio allocation, which interpolates
-hierarchical risk parity and the minimum-variance portfolio through the
-same Schur-complement control. In a tractable two-block model we obtain
-the optimal coupling strength in closed form—it is the
-<em>reliability</em> of the coupling, a Wiener/James–Stein shrinkage—and
-show that the maximizer of <span class="math inline">\ell_\gamma</span>
-recovers the true predictive law for every <span
-class="math inline">\gamma</span> while implying an inflated covariance,
-which clarifies why <span class="math inline">\ell_\gamma</span> is a
-scoring and regularization device rather than a free estimation
-objective. We characterize when an interior <span
-class="math inline">\gamma</span> improves discrimination, locate the
-high-dimensional advantage in the variance of the estimate rather than
-the test sample, and state precisely what the present analysis does and
-does not establish.</p></div>
+complements, for <em>scoring</em> and regularizing covariance and
+correlation estimates in high dimensions. The Gaussian log-likelihood is
+the standard criterion, but when the dimension rivals the sample size it
+is governed by the smallest, least-identifiable eigenvalues of the
+estimate, and as a criterion for ranking or selecting estimates it
+becomes unreliable; damping the coupling restores it. The optimal
+damping has a closed form—the reliability of the coupling, a James–Stein
+shrinkage. On real crypto returns, choosing a shrinkage estimate by the
+Schur pseudo-likelihood rather than by the full likelihood yields
+several-fold lower out-of-sample portfolio variance once the dimension
+rivals the sample size.</p></div>
 
 <h2 id="the-high-dimensional-failure-of-the-gaussian-likelihood">The
 high-dimensional failure of the Gaussian likelihood</h2>
-<p>Covariance and precision matrices are the inputs to portfolio
-construction <span class="citation"
-data-cites="markowitz1952">(Markowitz 1952)</span>, risk measurement,
-Gaussian and graphical models, and linear discriminant analysis, and the
-quality of those downstream decisions is bounded by the quality of the
-estimate. The estimate is never observed against ground truth, so it
-must be judged by its performance on held-out data; how to do so
-reliably, and in particular in high dimensions, is the question of this
-paper.</p>
-<p>The motivation is not only diagnostic. A cheap and reliable
-out-of-sample score is what makes online adaptation feasible: in a
-streaming setting one can compare candidate estimators on recent
-held-out data and switch, blend, or retune them as the regime changes,
-rather than committing to a single estimator chosen offline. Because no
-estimator is uniformly best across dimension, spectrum, and tail
-behavior <span class="citation" data-cites="ledoit2004">(Ledoit and Wolf
-2004)</span>, this selection is unavoidable, and it is only as good as
-the score that drives it. The choice of score is, moreover, known to
-matter for ranking whenever the target is observed only through a noisy
-proxy <span class="citation" data-cites="patton2011 laurent2013">(Patton
-2011; Laurent et al. 2013)</span>; we show below that in high dimensions
-the standard score fails in precisely the regime where selection matters
-most.</p>
-<p>The conventional criterion for the quality of a covariance estimate
-is the likelihood it assigns to held-out data. For a zero-mean Gaussian,
-<span class="math display">\ell(\widehat{\Sigma};x) \;=\;
--\tfrac12\bigl(\log\det\widehat{\Sigma}+ x^\top \widehat{\Sigma}^{-1}
-x\bigr),</span> or, in terms of the sample covariance <span
-class="math inline">S</span> of a test set, <span
-class="math inline">\ell(\widehat{\Sigma};S) =
--\tfrac12\bigl(\log\det\widehat{\Sigma}+
-\operatorname{tr}(\widehat{\Sigma}^{-1}S)\bigr)</span>, which is
-proportional to the Wishart log-likelihood and, up to constants, to the
-negative Stein loss <span class="citation" data-cites="james1961">(James
-and Stein 1961)</span>. The criterion is a strictly proper scoring rule
-<span class="citation" data-cites="gneiting2007">(Gneiting and Raftery
-2007)</span> and is the objective that maximum likelihood optimizes; in
-low dimensions it is the appropriate choice.</p>
-<p>Both terms are, however, controlled by the smallest eigenvalues of
-<span class="math inline">\widehat{\Sigma}</span>: the log-determinant
-is <span class="math inline">\sum_i \log\lambda_i</span>, which diverges
-to <span class="math inline">-\infty</span> as any <span
-class="math inline">\lambda_i\to 0</span>, and <span
-class="math inline">\widehat{\Sigma}^{-1}</span> diverges in the same
-limit. When the dimension <span class="math inline">p</span> is
-comparable to the sample size <span class="math inline">n</span>, these
-eigenvalues concentrate near zero and become statistically
-unidentifiable (the Marčenko–Pastur regime), so the likelihood is
-determined largely by the least reliable part of the spectrum.
-Empirically the effect is pronounced. In a controlled experiment in
-which the correct ordering of two estimates is known—the true
-Kullback–Leibler divergence is available because the population
-covariance is specified—the held-out likelihood selects the better
-estimate in approximately <span class="math inline">45\%</span> of
-trials, below the chance rate, whereas inversion-free criteria such as
-the Frobenius distance and the variogram score <span class="citation"
-data-cites="scheuerer2015">(Scheuerer and Hamill 2015)</span> attain
-approximately <span class="math inline">85\%</span>. This is the
+<p>A correlation matrix is the hard part of a covariance matrix:
+variances are a one-dimensional, per-series problem, while the
+high-dimensional difficulty—the near-singular spectrum and the unstable
+inverse—lives in the correlation. The standard way to judge a
+correlation (or covariance) estimate <span
+class="math inline">\widehat{R}</span> is the log-likelihood it assigns
+to held-out data, <span class="math inline">\ell(\widehat{R}) =
+-\tfrac12(\log\det\widehat{R}+
+\operatorname{tr}(\widehat{R}^{-1}S))</span> for a test covariance <span
+class="math inline">S</span>. Both terms are governed by the smallest
+eigenvalues of <span class="math inline">\widehat{R}</span>: <span
+class="math inline">\log\det\widehat{R}=\sum_i\log\lambda_i</span>
+diverges as any <span class="math inline">\lambda_i\to0</span>, and
+<span class="math inline">\widehat{R}^{-1}</span> diverges with it. When
+<span class="math inline">p</span> rivals <span
+class="math inline">n</span> those eigenvalues are unidentifiable (the
+Marčenko–Pastur regime), so the likelihood is dominated by the least
+reliable part of the spectrum <span class="citation"
+data-cites="ledoit2004 bun2017">(Ledoit and Wolf 2004; Bun et al.
+2017)</span>. As a <em>criterion</em>, it then fails: in a controlled
+experiment in which the truth is known, the held-out likelihood ranks
+the better of two estimates below chance, whereas inversion-free
+criteria such as Frobenius distance and the variogram score <span
+class="citation" data-cites="scheuerer2015">(Scheuerer and Hamill
+2015)</span> exceed <span class="math inline">80\%</span>. This is the
 evaluation-side analogue of the instability of the minimum-variance
-portfolio <span class="math inline">w \propto
-\widehat{\Sigma}^{-1}\mathbf{1}</span>, which fails through the same
-<span class="math inline">\widehat{\Sigma}^{-1}</span> and the same
-eigenvalues. In both settings the remedy is to discount the raw inverse;
-the contribution of this paper is to do so continuously, through a
-single interpretable parameter, rather than by discarding the
-cross-block structure outright.</p>
-<h2 id="exact-schur-factorization">Exact Schur factorization</h2>
-<p>Partition the variables into <span class="math inline">K</span>
-ordered blocks, <span class="math inline">x=(x_1,\dots,x_K)</span>. The
-joint density factors exactly into a product of block conditionals,
-<span class="math inline">p(x)=\prod_k p(x_k\mid x_{&lt;k})</span>, and
-for a Gaussian each conditional is Gaussian with covariance the Schur
-complement <span class="math display">S_k \;=\; \Sigma_{kk} -
-\Sigma_{k,&lt;k}\,\Sigma_{&lt;k,&lt;k}^{-1}\,\Sigma_{&lt;k,k}</span> and
-mean <span class="math inline">\mu_{k\mid&lt;k} =
-\Sigma_{k,&lt;k}\Sigma_{&lt;k,&lt;k}^{-1}x_{&lt;k}</span>. Consequently
-<span class="math inline">\log\det\Sigma = \sum_k \log\det S_k</span>,
-the quadratic form decomposes blockwise, and the likelihood is a sum of
-block-conditional terms, each of which inverts only the conditioning
-block <span class="math inline">\Sigma_{&lt;k,&lt;k}</span>. This is the
-block Cholesky factorization, and it underlies the Vecchia approximation
-<span class="citation"
-data-cites="vecchia1988 katzfuss2021 pan2024">(Vecchia 1988; Katzfuss
-and Guinness 2021; Pan et al. 2024)</span>, Gaussian–Markov-random-field
-likelihoods <span class="citation" data-cites="rue2005">(Rue and Held
-2005)</span>, and nested-dissection elimination <span class="citation"
-data-cites="george1973">(George 1973)</span>. No approximation has been
-introduced; the likelihood has merely been rewritten in a form amenable
-to a single modification.</p>
+portfolio <span
+class="math inline">w\propto\widehat{R}^{-1}\mathbf1</span>, which fails
+through the same inverse. The remedy is to discount that
+inverse—continuously, through one interpretable parameter, rather than
+by discarding the cross-block structure outright.</p>
 <h2 id="the-schur-pseudo-likelihood">The Schur pseudo-likelihood</h2>
-<p>We damp the Schur complement, and the associated conditional
-regression, by a parameter <span
-class="math inline">\gamma\in[0,1]</span>: <span
-class="math display">S_k(\gamma) \;=\; \Sigma_{kk} -
-\gamma\,\Sigma_{k,&lt;k}\Sigma_{&lt;k,&lt;k}^{-1}\Sigma_{&lt;k,k}
-              \;=\; (1-\gamma)\,\Sigma_{kk} + \gamma\,S_k,
+<p>Partition the variables into <span class="math inline">K</span>
+ordered blocks. The Gaussian density factors exactly into block
+conditionals, <span class="math inline">p(x)=\prod_k p(x_k\mid
+x_{&lt;k})</span>, each Gaussian with covariance the Schur complement
+<span class="math display">S_k \;=\; R_{kk} -
+R_{k,&lt;k}\,R_{&lt;k,&lt;k}^{-1}\,R_{&lt;k,k},
+  \qquad
+  \mu_{k\mid&lt;k} = R_{k,&lt;k}R_{&lt;k,&lt;k}^{-1}x_{&lt;k},</span> so
+<span class="math inline">\log\det R=\sum_k\log\det S_k</span> and the
+likelihood is a sum of block-conditional terms, each inverting only the
+conditioning block <span class="citation"
+data-cites="vecchia1988 katzfuss2021">(Vecchia 1988; Katzfuss and
+Guinness 2021)</span>. We damp the coupling by <span
+class="math inline">\gamma\in[0,1]</span>, <span
+class="math display">S_k(\gamma) = (1-\gamma)\,R_{kk} + \gamma\,S_k,
   \qquad
   \mu_{k\mid&lt;k}(\gamma) =
-\gamma\,\Sigma_{k,&lt;k}\Sigma_{&lt;k,&lt;k}^{-1}x_{&lt;k},</span> and
-define the score <span class="math inline">\ell_\gamma(\Sigma;x) =
-\sum_k \log
-\mathcal{N}\!\bigl(x_k;\,\mu_{k\mid&lt;k}(\gamma),\,S_k(\gamma)\bigr)</span>.
-At <span class="math inline">\gamma=1</span> this is the exact joint
-likelihood. At <span class="math inline">\gamma=0</span> each block is
-scored under its unconditional covariance <span
-class="math inline">\Sigma_{kk}</span> with no reference to the others,
-which is the block-marginal composite likelihood <span class="citation"
+\gamma\,R_{k,&lt;k}R_{&lt;k,&lt;k}^{-1}x_{&lt;k},</span> and score <span
+class="math inline">\ell_\gamma(R;x)=\sum_k\log\mathcal
+N(x_k;\mu_{k\mid&lt;k}(\gamma),S_k(\gamma))</span>. At <span
+class="math inline">\gamma=1</span> this is the exact joint likelihood;
+at <span class="math inline">\gamma=0</span> it is the block-diagonal
+composite likelihood <span class="citation"
 data-cites="besag1975 lindsay1988 varin2011">(Besag 1975; Lindsay 1988;
-Varin et al. 2011)</span>. For <span
-class="math inline">\gamma\in(0,1)</span> the family modifies the block
-covariances rather than the data, inverts no matrix larger than a
-conditioning block, and is better conditioned than the full likelihood
-because damping raises the small eigenvalues. We refer to <span
-class="math inline">\ell_\gamma</span> as the Schur
-pseudo-likelihood.</p>
-<p>The nature of the object requires care, as it bears on the analysis
-below. At <span class="math inline">\gamma=1</span>, <span
-class="math inline">\ell_\gamma</span> is a normalized joint density; at
-<span class="math inline">\gamma=0</span> it is a composite likelihood,
-a sum of valid component log-densities that does not integrate to one.
-For <span class="math inline">\gamma\in(0,1)</span> each term remains a
-proper Gaussian log-density on its block, but the damped conditionals
-are mutually inconsistent—they are not the conditionals of any single
-joint Gaussian—so <span class="math inline">\ell_\gamma</span> is a
-pseudo-likelihood. As shown in the next section, <span
-class="math inline">\ell_\gamma</span> is therefore appropriate for
-scoring a covariance, or for damping a given one, but not for free
-maximization over <span class="math inline">\Sigma</span>.</p>
-<h2 id="behavior-in-a-tractable-model">Behavior in a tractable
-model</h2>
-<p>The action of <span class="math inline">\gamma</span> can be
-characterized exactly in the smallest informative case. Let <span
-class="math inline">x_1\sim\mathcal{N}(0,a)</span> and <span
-class="math inline">x_2 = b\,x_1 + \varepsilon</span> with <span
-class="math inline">\varepsilon\sim\mathcal{N}(0,s)</span>, so that the
-true conditional law of <span class="math inline">x_2</span> given <span
-class="math inline">x_1</span> has slope <span
-class="math inline">b</span> and conditional variance <span
-class="math inline">s</span>.</p>
-<div class="proposition">
-<p><strong>Proposition 1</strong> (Two-block model). <em>For every <span
-class="math inline">\gamma\in(0,1]</span> the maximizer of the
-population <span class="math inline">\ell_\gamma</span> recovers the
-true predictive law—the effective slope equals <span
-class="math inline">b</span> and the damped conditional variance equals
-<span class="math inline">s</span>—while the implied covariance is
-inflated, with off-diagonal <span
-class="math inline">\widehat{\Sigma}_{12}=\Sigma_{12}^\star/\gamma</span>.
-The implied covariance is positive definite if and only if <span
-class="math inline">\gamma^2(1-\rho^2) &gt; (1-\gamma)\rho^2</span>,
-where <span class="math inline">\rho^2 = b^2 a/(b^2 a + s)</span> is the
-conditional <span class="math inline">R^2</span>; below this threshold
-the free maximizer leaves the positive-definite cone.</em></p>
-</div>
-<p>The inflation is the key qualitative fact: a free fit compensates for
-the damping by scaling the coupling by <span
-class="math inline">1/\gamma</span>, and for sufficiently strong
-coupling this scaling produces a non-positive matrix. This is the
-precise sense in which <span class="math inline">\ell_\gamma</span>
-fails as a free estimation objective for <span
-class="math inline">\gamma&lt;1</span>, and it is consistent with use as
-a score or as a fixed transform, both of which hold <span
-class="math inline">\widehat{\Sigma}</span> fixed.</p>
-<p>The quantity that <span class="math inline">\gamma</span>
-controls—the degree of trust placed in the estimated coupling—admits a
-well-defined optimum. Estimating the slope from <span
-class="math inline">n</span> observations by least squares gives an
-unbiased <span class="math inline">\hat b</span> with variance <span
-class="math inline">s/(a(n-2))</span>. Minimizing the expected
-predictive residual over <span class="math inline">\gamma</span> yields
-<span class="math display">\gamma^\star \;=\; \frac{b^2}{\,b^2 +
-\operatorname{Var}\hat b\,}
-        \;=\; \frac{(n-2)\,\rho^2}{(n-2)\,\rho^2 + (1-\rho^2)}.</span>
-Thus <span class="math inline">\gamma^\star</span> is the reliability of
-the coupling, a Wiener/James–Stein shrinkage: it increases toward <span
-class="math inline">1</span> as the sample size or coupling strength
-grows and decreases toward <span class="math inline">0</span> as the
-coupling becomes uninformative, and is interior when the coupling is
-partially reliable. The closed form agrees with the simulated optimum.
-In the vector case <span class="math inline">\rho^2</span> is replaced
-by the largest squared canonical correlation between the blocks; across
-<span class="math inline">K</span> blocks the inflation, and the
-positive-definiteness threshold, compound along the conditioning
-chain.</p>
-<h2
-id="discrimination-efficiency-and-the-godambe-boundary">Discrimination
-efficiency and the Godambe boundary</h2>
-<p>It is tempting to credit the interior optimum to the variance of the
-held-out score, but that attribution is mistaken, and separating the two
-sources of variability is what makes the mechanism clear. Write the
-score as a quadratic form, <span
-class="math inline">\ell_\gamma(\widehat{\Sigma};x) =
--\tfrac12\bigl(\mathrm{Ld}_\gamma + x^\top
-W_\gamma(\widehat{\Sigma})\,x\bigr)</span>, where <span
-class="math inline">W_\gamma</span> assembles the damped block
-conditionals and <span
-class="math inline">W_1=\widehat{\Sigma}^{-1}</span>. For two fixed
-estimates and a Gaussian test sample, the probability of ranking the
-better estimate above the worse is governed by a per-sample
-signal-to-noise ratio, which is maximized at <span
-class="math inline">\gamma=1</span>; under test-sample noise alone the
-full likelihood is optimal, and damping introduces only bias. The
-high-dimensional advantage of an interior <span
-class="math inline">\gamma</span> is therefore not attributable to
-test-sample variance.</p>
-<p>The advantage arises from the variability of the estimate. The score
-depends on <span class="math inline">\widehat{\Sigma}</span> through
-<span class="math inline">W_\gamma</span>, and at <span
-class="math inline">\gamma=1</span> the sensitivity of <span
-class="math inline">W_1=\widehat{\Sigma}^{-1}</span> scales as <span
-class="math inline">1/\lambda_{\min}^2</span>; the variance of the score
-difference across training draws then scales as <span
-class="math inline">1/\lambda_{\min}^4</span>, which grows sharply as
-the population becomes ill-conditioned, whereas a damped <span
-class="math inline">\gamma</span> keeps it bounded. When the
-discriminating signal resides in the within-block structure and the
-cross-block coupling is shared noise, an interior <span
-class="math inline">\gamma</span> strictly improves on both endpoints (a
-ranking accuracy of approximately <span class="math inline">0.84</span>
-against <span class="math inline">0.45</span> at the extremes). The
-parameter is thus a bias–variance control over the estimate rather than
-over the test point.</p>
-<p>Finally, the estimating equation <span
-class="math inline">\nabla_\Sigma\ell_\gamma</span> is unbiased at the
-truth only at the endpoints—<span class="math inline">\gamma=1</span>
-(the Fisher score) and <span class="math inline">\gamma=0</span>
-(correctly specified block marginals)—and is biased in the interior,
-reflecting the inflation of the previous section. Classical Godambe
-efficiency therefore applies only at the endpoints, where <span
-class="math inline">\gamma=0</span> carries the standard
-composite-likelihood efficiency loss relative to the full likelihood;
-the interior is a tempering, justified by discrimination rather than by
-consistency. This formalizes the distinction between scoring with <span
-class="math inline">\ell_\gamma</span> and estimating with it.</p>
-<h2 id="damping-as-structured-shrinkage">Damping as structured
-shrinkage</h2>
-<p>The transform interpretation—damping the coupling of a given
-covariance—is a shrinkage. Each conditional covariance is shrunk from
-its full Schur complement toward the unconditional block, <span
-class="math inline">S_k(\gamma)=(1-\gamma)\Sigma_{kk}+\gamma S_k</span>,
-with intensity <span class="math inline">1-\gamma</span>. Since
-conditioning reduces variance, <span
-class="math inline">S_k\preceq\Sigma_{kk}</span>, this raises the
-conditional covariance and lifts the small eigenvalues of every
-block-sized inverse the score performs; it is a James–Stein shrinkage
-applied blockwise to the conditioning. The operation is complementary to
-spectral shrinkage: Ledoit–Wolf and rotation-invariant estimators
-regularize the eigenvalues (basis-free), whereas Schur damping
-regularizes the cross-block coupling (basis-dependent). The two compose,
-and <span class="math inline">\gamma</span> is to the block
-factorization what the shrinkage intensity <span class="citation"
-data-cites="ledoit2004 ledoit2012 bun2017">(Ledoit and Wolf 2004, 2012;
-Bun et al. 2017)</span> is to the spectrum.</p>
-<h2 id="a-unifying-view">A unifying view</h2>
-<p>The same control organizes several constructions onto two axes of the
-block factorization. The first axis is the conditioning structure—which
-earlier blocks each block conditions on—which the Vecchia approximation,
-Gaussian–Markov random fields, banding, and nested dissection regularize
-through sparsity at full coupling strength. The second axis is the
-coupling strength <span class="math inline">\gamma</span>, which those
-methods do not vary. The axes are orthogonal and compose.</p>
-<div class="center">
+Varin et al. 2011)</span>; intermediate <span
+class="math inline">\gamma</span> inverts no block larger than a
+conditioning set and is better conditioned. The same <span
+class="math inline">\gamma</span> interpolates an allocation rule, from
+hierarchical risk parity at <span class="math inline">\gamma=0</span>
+<span class="citation" data-cites="lopezdeprado2016">(López de Prado
+2016)</span> to minimum variance at <span
+class="math inline">\gamma=1</span> <span class="citation"
+data-cites="cotton2024">(Cotton 2024)</span>.</p>
+<h2 id="the-optimal-damping-is-the-coupling-reliability">The optimal
+damping is the coupling reliability</h2>
+<p>In a tractable two-block model—<span
+class="math inline">x_2=bx_1+\varepsilon</span> with conditional <span
+class="math inline">R^2</span> equal to <span
+class="math inline">\rho^2</span>—minimising the expected predictive
+residual of the damped score gives a closed form, <span
+class="math display">\gamma^\star \;=\;
+\frac{b^2}{b^2+\operatorname{Var}(\hat b)}
+            \;=\; \frac{(n-2)\,\rho^2}{(n-2)\,\rho^2+(1-\rho^2)},</span>
+the <em>reliability</em> of the estimated coupling: a Wiener/James–Stein
+shrinkage <span class="citation"
+data-cites="james1961 ledoit2012">(James and Stein 1961; Ledoit and Wolf
+2012)</span>. It tends to <span class="math inline">1</span> as <span
+class="math inline">n\to\infty</span> or <span
+class="math inline">\rho^2\to1</span> and to <span
+class="math inline">0</span> as <span
+class="math inline">\rho^2\to0</span>, and is interior when the coupling
+is partially reliable. The empirical optimum tracks it: sweeping a
+synthetic block correlation’s coupling strength <span
+class="math inline">v</span> against the aspect ratio <span
+class="math inline">n/p</span> (Figure <a href="#fig:gamma"
+data-reference-type="ref" data-reference="fig:gamma">1</a>), the <span
+class="math inline">\gamma</span> minimising recovery error rises
+monotonically with <span class="math inline">v</span>, from <span
+class="math inline">0</span> (no coupling) to <span
+class="math inline">1</span> (strong coupling), and dips where samples
+are scarcest—the reliability law, recovered across the plane.</p>
+<figure id="fig:gamma" data-latex-placement="h">
+<img src="figures/corr_gamma_star.png" style="width:84.0%" />
+<figcaption>Optimal Schur <span class="math inline">\gamma^\star</span>
+over coupling strength <span class="math inline">v</span> and aspect
+ratio <span class="math inline">n/p</span> (<span
+class="math inline">p=128</span>, synthetic). It rises monotonically
+with <span class="math inline">v</span>—the reliability law—and dips
+where samples are scarcest.</figcaption>
+</figure>
+<h2 id="selecting-estimates-in-high-dimensions-real-data">Selecting
+estimates in high dimensions: real data</h2>
+<p>The decisive test of a <em>scoring rule</em> is whether the estimate
+it prefers generalizes. We test it on real daily crypto returns (<span
+class="math inline">72</span> liquid assets) with a same-frequency,
+disjoint-split design that avoids both look-ahead and the
+cross-frequency (Epps) attenuation that confounds naive
+hourly-versus-daily comparisons: days are partitioned at random into a
+training set, a validation set (on which each scoring rule chooses among
+a <em>structurally diverse</em> pool of candidate estimates—empirical,
+identity, OAS, Ledoit–Wolf, factor models of several ranks, and
+block-Schur estimates), and a held-out test set. The external criterion
+is the realized variance of the minimum-variance portfolio formed from
+the selected estimate—neither scoring rule, so the comparison is not
+circular. We use a structural pool, not a one-dimensional shrinkage
+ladder, precisely so that “a good scoring rule” cannot reduce to “select
+more shrinkage.”</p>
+<p>A clear split emerges (Figure <a href="#fig:select"
+data-reference-type="ref" data-reference="fig:select">2</a>). When <span
+class="math inline">n/p\le1</span> the <em>inverse-heavy</em> scores
+select fragile estimates: the full likelihood and Stein loss give median
+out-of-sample variance roughly an order of magnitude higher than the
+rest, and tend to pick the raw empirical estimate. The
+<em>inverse-discounting</em> scores—the Schur pseudo-likelihood, the
+composite likelihood, and the matched GMV criterion—instead select a
+structurally sensible estimate (most often a low-rank factor model
+capturing the market factor) and cluster near the safe optimum. The
+honest qualifier is the baseline: against a parameter-free <em>batch
+Ledoit–Wolf</em> that uses no held-out selection at all, Schur-selection
+is a <em>tie</em> (within a few percent across the range). So the win is
+over the full likelihood—which fails as a high-dimensional
+criterion—rather than over good shrinkage; selecting by <span
+class="math inline">\ell_\gamma</span> does not beat simply shrinking
+well. What it shares with good shrinkage is exactly “discount the
+inverse,” and the Schur dial is the principled, closed-form way to do
+so. Whether that dial can be turned to <em>beat</em> structure-agnostic
+shrinkage is the subject of the next two sections.</p>
+<figure id="fig:select" data-latex-placement="h">
+<img src="figures/scoring_selection_crypto.png" style="width:78.0%" />
+<figcaption>Real crypto. Out-of-sample minimum-variance-portfolio
+variance (median, log scale) of the estimate <em>selected</em> by each
+scoring rule, versus aspect ratio. Selecting by the Schur
+pseudo-likelihood is several-fold safer than by the full likelihood when
+undersampled; they converge once well sampled.</figcaption>
+</figure>
+<h2 id="the-same-selector-across-domains">The same selector across
+domains</h2>
+<p>The minimum-variance portfolio is one instance of <span
+class="math inline">w\propto\Sigma^{-1}\mathbf1</span>; forecast
+combination <span class="citation" data-cites="markowitz1952">(Markowitz
+1952)</span>, Gaussian-process regression, and Kalman filtering are
+others, and all are tuned by the same log-det-plus-quadratic
+likelihood—indeed scalable GPs already use the block-conditional
+(Vecchia) factorization <span class="citation"
+data-cites="vecchia1988 katzfuss2021">(Vecchia 1988; Katzfuss and
+Guinness 2021)</span> on which <span
+class="math inline">\ell_\gamma</span> is built. We therefore run the
+<em>identical</em> selection experiment on residual panels from five
+domains: daily crypto returns; real numerical-weather forecast residuals
+(archived forecast minus ERA5 reanalysis) on a <span
+class="math inline">323</span>-point CONUS grid; draws from a known
+block correlation and from a spatial Gaussian-process kernel; and the
+innovations of a stable vector autoregression (Kalman-style residuals).
+In every domain, when <span class="math inline">n/p\le1</span>,
+selecting by the full likelihood gives higher out-of-sample
+combined-residual variance than selecting by the Schur pseudo-likelihood
+(Table <a href="#tab:domains" data-reference-type="ref"
+data-reference="tab:domains">1</a>, Figure <a href="#fig:domains"
+data-reference-type="ref" data-reference="fig:domains">3</a>)—by roughly
+an order of magnitude in every domain—while the inverse-discounting
+scores cluster near the safe optimum. As on crypto, the honest qualifier
+is that Schur-selection only <em>ties</em> a parameter-free batch
+Ledoit–Wolf (last column <span class="math inline">\approx1</span>): the
+win is over the full likelihood, not over good shrinkage. The pathology
+and its remedy are thus not financial: wherever a high-dimensional
+covariance is inverted to combine correlated signals, the full
+likelihood is a fragile selection criterion and any inverse-discounting
+choice—Schur or plain shrinkage—avoids it.</p>
+<div id="tab:domains">
 <table>
+<caption>Out-of-sample combined-residual-variance ratios, <span
+class="math inline">n/p\le1</span> (diverse candidate pool). Column 1:
+full-likelihood selection over Schur selection (<span
+class="math inline">\gg1</span>: the full likelihood fails). Column 2:
+parameter-free batch Ledoit–Wolf over Schur selection (<span
+class="math inline">\approx1</span>: Schur ties good
+shrinkage).</caption>
 <thead>
 <tr>
-<th style="text-align: left;"></th>
-<th style="text-align: left;"><span class="math inline">\gamma=1</span>
-(full trust)</th>
-<th style="text-align: left;"><span class="math inline">\gamma=0</span>
-(no trust)</th>
+<th style="text-align: left;">domain</th>
+<th style="text-align: center;">full-likelihood <span
+class="math inline">/</span> Schur</th>
+<th style="text-align: center;">batch Ledoit–Wolf <span
+class="math inline">/</span> Schur</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">dense conditioning</td>
-<td style="text-align: left;">exact Gaussian likelihood; MVO <span
-class="math inline">w\propto\Sigma^{-1}\mathbf 1</span></td>
-<td style="text-align: left;">block composite likelihood; HRP</td>
+<td style="text-align: left;">crypto (portfolio)</td>
+<td style="text-align: center;">12.7</td>
+<td style="text-align: center;">0.97</td>
 </tr>
 <tr>
-<td style="text-align: left;">sparse conditioning</td>
-<td style="text-align: left;">block-Vecchia / GMRF likelihood</td>
-<td style="text-align: left;">(block-marginal, same column)</td>
+<td style="text-align: left;">Gaussian-process field</td>
+<td style="text-align: center;">13.1</td>
+<td style="text-align: center;">0.95</td>
 </tr>
 <tr>
-<td colspan="3" style="text-align: left;">interior <span
-class="math inline">\gamma</span>: the Schur pseudo-likelihood, the
-interpolant absent from the above</td>
+<td style="text-align: left;">VAR innovations (Kalman-style)</td>
+<td style="text-align: center;">10.2</td>
+<td style="text-align: center;">1.02</td>
+</tr>
+<tr>
+<td style="text-align: left;">synthetic block correlation</td>
+<td style="text-align: center;">10.2</td>
+<td style="text-align: center;">1.01</td>
+</tr>
+<tr>
+<td style="text-align: left;">weather forecast residuals (CONUS)</td>
+<td style="text-align: center;">12.3</td>
+<td style="text-align: center;">0.86</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The portfolio entries are not analogical. Minimum-variance
-optimization is the dense-conditioning, <span
-class="math inline">\gamma=1</span> corner; hierarchical risk parity
-<span class="citation" data-cites="lopezdeprado2016">(López de Prado
-2016)</span> is the <span class="math inline">\gamma=0</span> corner;
-Schur complementary allocation <span class="citation"
-data-cites="cotton2024">(Cotton 2024)</span> interpolates them by
-damping the same Schur complement through the same <span
-class="math inline">\gamma</span>. The Schur pseudo-likelihood is that
-construction applied to evaluation, and the reason an interior <span
-class="math inline">\gamma</span> improves on the minimum-variance
-endpoint is the reason hierarchical risk parity is more stable than
-unconstrained mean–variance optimization <span class="citation"
-data-cites="antonov2024">(Antonov et al. 2024)</span>.</p>
-<h2 id="generality">Generality</h2>
-<p>The construction requires only a Gaussian (or Gaussian-pseudo) block
-likelihood and a partition, so the coupling-strength control applies to
-Gaussian-block models generally. In spatial statistics and
-Gaussian-process regression, where Vecchia and GMRF likelihoods
-condition each location on a neighborhood, <span
-class="math inline">\gamma</span> supplies a robustness control on the
-strength of that conditioning, orthogonal to the choice of neighborhood.
-In Gaussian graphical models it tempers conditional-dependence strength
-between the full penalized likelihood and node-wise pseudo-likelihood.
-In longitudinal and state-space models, with time slices as blocks, it
-interpolates between independent slices and the full temporal joint.
-Wherever composite likelihood is used for tractability, <span
-class="math inline">\gamma</span> provides a continuous path back toward
-the full likelihood. These are statements about the shared mechanism
-rather than empirical results; the covariance-evaluation case is the one
-studied directly here.</p>
-<h2 id="interpolation-geometry-and-empirical-results">Interpolation
-geometry and empirical results</h2>
-<p>Damping interpolates each conditional covariance between <span
-class="math inline">\Sigma_{kk}</span> and <span
-class="math inline">S_k</span> along a straight line. An alternative is
-the affine-invariant SPD geodesic, <span
-class="math inline">\Sigma_{\mathrm{BD}}\,\#_\gamma\,\Sigma =
-\Sigma_{\mathrm{BD}}^{1/2}(\Sigma_{\mathrm{BD}}^{-1/2}
-\Sigma\,\Sigma_{\mathrm{BD}}^{-1/2})^{\gamma}\Sigma_{\mathrm{BD}}^{1/2}</span>,
-which lifts small eigenvalues multiplicatively. The two interpolations
-agree at the endpoints and to first order and differ near a singular
-Schur complement; in that strong-coupling regime the linear
-interpolation exhibits a loss of discriminating power that the geodesic
-interpolation does not.</p>
-<p>The empirical findings are threefold. The optimal <span
-class="math inline">\gamma</span> is regime-dependent: it approaches
-<span class="math inline">1</span> when the coupling is reliable,
-approaches <span class="math inline">0</span> when it is noise, and is
-strictly interior—improving on both endpoints—when the coupling is
-partially reliable, consistent with the bias–variance account above. The
-geodesic variant is the more stable default where the two interpolations
-diverge. Finally, on real equity returns (Ken French portfolios, rolling
-minimum-variance out-of-sample variance), estimators that invert an
-unregularized covariance degrade by orders of magnitude while
-well-conditioned shrinkage does not; this is not a test of <span
-class="math inline">\ell_\gamma</span> as an equity estimator, but it
-corroborates the central mechanism, namely that high-dimensional
-performance is governed by the conditioning of the inverse.</p>
-<h2 id="limitations">Limitations</h2>
-<p>The closed-form <span class="math inline">\gamma^\star</span> is
-established for the predictive (estimator) use in the two-block model.
-The high-dimensional discrimination optimum is only partially resolved:
-the variance term is first-order and is given above (<span
-class="math inline">1/\lambda_{\min}^4</span> at <span
-class="math inline">\gamma=1</span>, bounded below it), but the signal
-term is second-order in the sampling noise, so a closed form for the
-discrimination <span class="math inline">\gamma^\star</span> requires a
-higher-order analysis and is at present available only numerically. The
-compounded <span class="math inline">K</span>-block
-positive-definiteness threshold is established as a two-block formula
-together with numerical evidence of compounding, not yet as a
-closed-form chain. The dependence on block ordering, as in Vecchia
-approximations, is not addressed here. The central claim is falsifiable:
-the interior optimum should disappear when the coupling is either fully
-reliable or pure noise, and an interior optimum in a regime known to be
-fully reliable would contradict it.</p>
-<h2 class="unnumbered" id="acknowledgements">Acknowledgements</h2>
-<p>The original Schur complementary theory, of which this is the
-evaluation-side counterpart, was developed with the support of Intech
-Investments.</p>
+<figure id="fig:domains" data-latex-placement="h">
+<img src="figures/generalize_domains.png" />
+<figcaption>The same selection experiment across five domains:
+out-of-sample combined-residual variance (median, log) of the estimate
+selected by each scoring rule, versus aspect ratio. The full likelihood
+is fragile when undersampled in every domain; inverse-discounting scores
+are not.</figcaption>
+</figure>
+<h2
+id="schurledoitwolf-an-analytic-optimal-coupling-damping">Schur–Ledoit–Wolf:
+an analytic optimal coupling damping</h2>
+<p>That Schur ties generic shrinkage but does not beat it suggests the
+dial has not been turned to its optimum—we used a fixed <span
+class="math inline">\gamma</span>. The fix is to estimate <span
+class="math inline">\gamma</span> the Ledoit–Wolf way. Shrinking the
+cross-block entries toward zero, the Frobenius-optimal keep fraction is,
+in closed form, <span class="math display">\gamma^\star \;=\;
+\frac{\sum_{\text{cross}}\sigma_{ij}^2}
+                          {\sum_{\text{cross}}\bigl(\sigma_{ij}^2+\operatorname{Var}(s_{ij})\bigr)}
+             \;=\; 1-\delta^{\mathrm{LW}}_{\text{cross}},</span>
+i.e. <em>Ledoit–Wolf shrinkage applied to the cross-block block
+alone</em>, whose keep fraction is exactly the coupling reliability of
+Section 3—now data-estimable, hence adaptive in <span
+class="math inline">n</span>. Estimating <span
+class="math inline">\operatorname{Var}(s_{ij})</span> by the empirical
+fourth moment gives <strong>Schur–LW</strong>; by the Gaussian
+finite-sample variance <span
+class="math inline">\operatorname{Var}(r_{ij})\approx(1+r_{ij}^2)/n</span>
+(less noisy at small <span class="math inline">n</span>, in the spirit
+of OAS <span class="citation" data-cites="bun2017">(Bun et al.
+2017)</span>) gives <strong>Schur–OAS</strong>.</p>
+<p>We test recovery on a structured correlation in the spirit of options
+grouped by underlying—<span class="math inline">G=10</span> groups of
+<span class="math inline">m=6</span> members, strong within-group and
+weak cross-group coupling—against a fair <em>block-aware</em>
+Ledoit–Wolf (shrinkage toward a block-constant target) as well as
+structure-agnostic shrinkage. The blocks are not assumed known: they are
+recovered by clustering the (shrunk) training correlation, the premise
+of hierarchical risk parity <span class="citation"
+data-cites="lopezdeprado2016">(López de Prado 2016)</span>, which
+succeeds almost perfectly here (adjusted Rand index <span
+class="math inline">\approx0.99</span> even at <span
+class="math inline">n/p=0.5</span>, so clustered blocks match the
+oracle). Table <a href="#tab:schurlw" data-reference-type="ref"
+data-reference="tab:schurlw">2</a> reports off-diagonal recovery
+error.</p>
+<div id="tab:schurlw">
+<table>
+<caption>Off-diagonal correlation-recovery RMSE (lower is better),
+grouped (options-by-underlying) structure. <span
+class="math inline">\widehat\gamma</span> is the data-estimated
+cross-block keep fraction; it rises with <span
+class="math inline">n</span>—the reliability law, learned from
+data.</caption>
+<thead>
+<tr>
+<th style="text-align: center;"><span
+class="math inline">n/p</span></th>
+<th style="text-align: center;"><span
+class="math inline">\widehat\gamma</span></th>
+<th style="text-align: center;">Schur–OAS</th>
+<th style="text-align: center;">Schur (fixed <span
+class="math inline">\gamma{=}\tfrac12</span>)</th>
+<th style="text-align: center;">block-aware LW</th>
+<th style="text-align: center;">batch LW</th>
+<th style="text-align: center;">empirical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">0.59</td>
+<td style="text-align: center;">0.118</td>
+<td style="text-align: center;"><strong>0.112</strong></td>
+<td style="text-align: center;">0.119</td>
+<td style="text-align: center;">0.145</td>
+<td style="text-align: center;">0.176</td>
+</tr>
+<tr>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">0.66</td>
+<td style="text-align: center;"><strong>0.095</strong></td>
+<td style="text-align: center;">0.106</td>
+<td style="text-align: center;">0.097</td>
+<td style="text-align: center;">0.111</td>
+<td style="text-align: center;">0.121</td>
+</tr>
+<tr>
+<td style="text-align: center;">2.0</td>
+<td style="text-align: center;">0.76</td>
+<td style="text-align: center;"><strong>0.073</strong></td>
+<td style="text-align: center;">0.103</td>
+<td style="text-align: center;">0.075</td>
+<td style="text-align: center;">0.081</td>
+<td style="text-align: center;">0.085</td>
+</tr>
+<tr>
+<td style="text-align: center;">4.0</td>
+<td style="text-align: center;">0.84</td>
+<td style="text-align: center;"><strong>0.056</strong></td>
+<td style="text-align: center;">0.105</td>
+<td style="text-align: center;">0.057</td>
+<td style="text-align: center;">0.059</td>
+<td style="text-align: center;">0.060</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The data-driven <span class="math inline">\widehat\gamma</span>
+climbs from <span class="math inline">0.59</span> to <span
+class="math inline">0.84</span> as <span class="math inline">n</span>
+grows—the reliability law, estimated rather than assumed—so Schur–OAS
+tracks the best estimator across the whole range, fixing the
+over-damping of a fixed <span class="math inline">\gamma</span> (stuck
+near <span class="math inline">0.10</span> once well sampled) while
+keeping its undersampled edge. It beats structure-agnostic shrinkage
+throughout and edges block-aware Ledoit–Wolf once adequately sampled,
+with clustered blocks performing as well as the oracle. Two honest
+caveats: the margin over block-aware Ledoit–Wolf is small (a few
+percent), so the result is “a principled, parameter-free analytic
+estimator competitive with the best block-aware shrinkage,” not a rout;
+and at the most undersampled corner (<span
+class="math inline">n/p=0.5</span>) the analytic <span
+class="math inline">\widehat\gamma</span> is slightly high, where a
+fixed smaller <span class="math inline">\gamma</span> still wins
+narrowly. The substance is that the coupling reliability—the paper’s
+<span class="math inline">\gamma^\star</span>—is a Ledoit–Wolf-style
+estimable quantity, turning the Schur dial into a closed-form,
+block-aware shrinkage estimator with no tuning.</p>
+<figure id="fig:schurlw" data-latex-placement="h">
+<img src="figures/known_blocks.png" style="width:82.0%" />
+<figcaption>Grouped (options-by-underlying) recovery. The analytic
+Schur–OAS/LW estimate (data-driven <span
+class="math inline">\widehat\gamma</span>) tracks the best estimator
+across aspect ratios, fixing the over-damping of a fixed <span
+class="math inline">\gamma</span>, and ties or edges block-aware
+Ledoit–Wolf; clustered blocks match the oracle.</figcaption>
+</figure>
+<h2 id="regularization-and-conditioning">Regularization and
+conditioning</h2>
+<p>The damping is a structured shrinkage: <span
+class="math inline">S_k(\gamma)=(1-\gamma)R_{kk}+\gamma S_k</span>, a
+convex combination of positive-definite matrices, pulls each conditional
+covariance toward its unconditional block. This raises the smallest
+eigenvalues and lowers the condition number relative to the full
+likelihood, and yields a usable inverse even when the empirical
+correlation is singular (<span class="math inline">n&lt;p</span>); the
+block-diagonal endpoint is positive definite whenever the blocks are.
+Where the linear interpolation can itself approach singularity—near a
+vanishing Schur complement under strong coupling—the affine-invariant
+SPD-geodesic interpolation lifts the small eigenvalues multiplicatively
+and stays well conditioned by construction. This conditioning is the
+method’s general high-dimensional benefit: the same <span
+class="math inline">\gamma</span> that maximises the pseudo-likelihood
+regularizes any downstream use of the inverse, the evaluation-side
+analogue of eigenvalue shrinkage <span class="citation"
+data-cites="ledoit2004 ledoit2012 bun2017">(Ledoit and Wolf 2004, 2012;
+Bun et al. 2017)</span>.</p>
+<h2 id="scope-and-honest-limits">Scope and honest limits</h2>
+<p>Three honest boundaries. First, as a <em>scoring rule</em> the
+contribution is sharp and robust: the full Gaussian likelihood fails as
+a high-dimensional selection criterion (an order of magnitude worse
+out-of-sample, across five domains), and <span
+class="math inline">\ell_\gamma</span>—like any inverse-discounting
+score—does not. But <span
+class="math inline">\ell_\gamma</span>-selection only <em>ties</em> a
+parameter-free batch Ledoit–Wolf; it does not beat good shrinkage.
+Second, as an <em>estimator</em>, fixed-<span
+class="math inline">\gamma</span> Schur is regime-specific, but the
+analytic <em>Schur–Ledoit–Wolf</em> of Section 6—closed-form <span
+class="math inline">\gamma^\star=</span> reliability—is a competitive,
+tuning-free block-aware shrinkage when the blocks are known or
+(equivalently here) discovered by clustering; on dense, unstructured
+data it simply reverts toward plain shrinkage. It is competitive with,
+not dominant over, the best block-aware shrinkage. Third, the optimal
+damping inverts with the target—recovering the matrix wants large <span
+class="math inline">\gamma</span>, recovering its inverse (partial
+correlations) wants small <span class="math inline">\gamma</span>—so
+“best” is undefined until the target is named. The durable contributions
+are the diagnosis, the closed-form reliability that unifies scoring,
+regularization, and allocation, and the resulting parameter-free
+Schur–Ledoit–Wolf estimator.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Schur pseudo-likelihood is a one-knob interpolation between
+decoupled and full Gaussian scoring whose optimal setting is the
+closed-form reliability of the cross-block coupling. In high dimensions
+the Gaussian likelihood is dominated by unidentifiable small eigenvalues
+and fails as a selection criterion—by an order of magnitude
+out-of-sample, across portfolios, weather forecast residuals,
+Gaussian-process fields, and Kalman-style innovations alike—while any
+inverse-discounting score avoids the failure. The same reliability that
+governs the score has a Ledoit–Wolf form, yielding a parameter-free,
+block-aware shrinkage estimator (Schur–Ledoit–Wolf) that adapts its
+coupling trust to the data and is competitive with the best block-aware
+shrinkage when structure is present or discovered. The honest summary is
+modest but unified: discount the inverse in high dimensions, do it by
+the coupling reliability, and the same closed form serves scoring,
+regularization, and allocation.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
-<div id="ref-antonov2024" class="csl-entry" role="listitem">
-Antonov, Alexandre, Alexander Lipton, and Marcos López de Prado. 2024.
-<em>Hierarchical Risk Parity: A Closer Look</em>. No. 4748151. SSRN.
-</div>
 <div id="ref-besag1975" class="csl-entry" role="listitem">
 Besag, Julian. 1975. <span>“Statistical Analysis of Non-Lattice
 Data.”</span> <em>Journal of the Royal Statistical Society: Series D
@@ -474,16 +507,6 @@ Theory.”</span> <em>Physics Reports</em> 666: 1–109.
 Cotton, Peter. 2024. <span>“Schur Complementary Portfolios.”</span>
 <em>arXiv Preprint arXiv:2411.05807</em>.
 </div>
-<div id="ref-george1973" class="csl-entry" role="listitem">
-George, Alan. 1973. <span>“Nested Dissection of a Regular Finite Element
-Mesh.”</span> <em>SIAM Journal on Numerical Analysis</em> 10 (2):
-345–63.
-</div>
-<div id="ref-gneiting2007" class="csl-entry" role="listitem">
-Gneiting, Tilmann, and Adrian E. Raftery. 2007. <span>“Strictly Proper
-Scoring Rules, Prediction, and Estimation.”</span> <em>Journal of the
-American Statistical Association</em> 102 (477): 359–78.
-</div>
 <div id="ref-james1961" class="csl-entry" role="listitem">
 James, W., and Charles Stein. 1961. <span>“Estimation with Quadratic
 Loss.”</span> <em>Proceedings of the Fourth Berkeley Symposium on
@@ -493,12 +516,6 @@ Mathematical Statistics and Probability</em> 1: 361–79.
 Katzfuss, Matthias, and Joseph Guinness. 2021. <span>“A General
 Framework for Vecchia Approximations of Gaussian Processes.”</span>
 <em>Statistical Science</em> 36 (1): 124–41.
-</div>
-<div id="ref-laurent2013" class="csl-entry" role="listitem">
-Laurent, Sébastien, Jeroen V. K. Rombouts, and Francesco Violante. 2013.
-<span>“On Loss Functions and Ranking Forecasting Performances of
-Multivariate Volatility Models.”</span> <em>Journal of Econometrics</em>
-173 (1): 1–10.
 </div>
 <div id="ref-ledoit2004" class="csl-entry" role="listitem">
 Ledoit, Olivier, and Michael Wolf. 2004. <span>“A Well-Conditioned
@@ -522,20 +539,6 @@ Management</em> 42 (4): 59–69.
 <div id="ref-markowitz1952" class="csl-entry" role="listitem">
 Markowitz, Harry. 1952. <span>“Portfolio Selection.”</span> <em>The
 Journal of Finance</em> 7 (1): 77–91.
-</div>
-<div id="ref-pan2024" class="csl-entry" role="listitem">
-Pan, Qilong, Sameh Abdulah, Marc G. Genton, and Ying Sun. 2024.
-<span>“Block Vecchia Approximation for Scalable and Efficient Gaussian
-Process Computations.”</span> <em>arXiv Preprint arXiv:2410.04477</em>.
-</div>
-<div id="ref-patton2011" class="csl-entry" role="listitem">
-Patton, Andrew J. 2011. <span>“Volatility Forecast Comparison Using
-Imperfect Volatility Proxies.”</span> <em>Journal of Econometrics</em>
-160 (1): 246–56.
-</div>
-<div id="ref-rue2005" class="csl-entry" role="listitem">
-Rue, Håvard, and Leonhard Held. 2005. <em>Gaussian Markov Random Fields:
-Theory and Applications</em>. Chapman; Hall/CRC.
 </div>
 <div id="ref-scheuerer2015" class="csl-entry" role="listitem">
 Scheuerer, Michael, and Thomas M. Hamill. 2015. <span>“Variogram-Based
