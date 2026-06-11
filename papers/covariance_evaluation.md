@@ -57,3 +57,65 @@ often it reproduces that ordering (its statistical power), using only a held-out
   out-of-sample variance results for HRP. [link](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4748151)
 - Cotton, P. (2024). *Schur Complementary Allocation: A Unification of Hierarchical Risk Parity and
   Minimum Variance Portfolios.* arXiv:2411.05807. [link](https://arxiv.org/abs/2411.05807)
+
+<!-- Addition for papers/covariance_evaluation.md. Appended after the "Findings" list.
+     Final numbers from the completed 28,800-cell grid, judge-power, and real-data runs. -->>
+
+## Large-scale corroboration with the shipped assessors (precise-lab)
+
+The findings above were re-tested at scale with the *shipped* `precise` assessors over a
+144-combination grid (4 generators × p ∈ {8…256} × n/p ∈ {½…16} × 200 reps), plus a
+Neyman–Pearson **judge-power** experiment and real data (Fama–French ff100/ff49, crypto, Polymarket).
+Reproducible from `precise-lab` (`lab.run_experiment`, `lab.judge_power`, `lab.assess_assessors`).
+
+**The best judge depends on the gold — "match the judge to the objective."** A judge's power is the
+probability that, from a single *finite* test sample, it orders a random pair of estimates the way the
+truth does (0.5 = chance). At c = p/n ≈ 1, n_test = 2p, pooled over generators:
+
+| judge | gold = KL | gold = Frobenius | gold = GMV variance |
+|---|---|---|---|
+| LogLikelihood | **0.984** | 0.651 | 0.637 |
+| SteinLoss | **0.984** | 0.651 | 0.638 |
+| SchurLikelihood | 0.647 | 0.774 | 0.628 |
+| VariogramScore | 0.600 | **0.794** | 0.600 |
+| GMVVariance | 0.636 | 0.637 | **0.962** |
+| BlockPseudoLikelihood | 0.700 | 0.720 | 0.598 |
+
+This *sharpens* findings #1 and #3. The held-out log-likelihood is the most powerful judge **only for
+the KL/density gold** — which is the same tail-dominated functional, so the agreement is partly
+built-in (with a large test set it reproduces the KL ordering at Spearman ≈ 1.0 even at c ≈ 1; the
+loss of power is a *finite-test*, *practical-gold* phenomenon). Against the practically relevant golds
+— matrix recovery (Frobenius) and realized portfolio variance (GMV) — the likelihood's power **falls
+with the concentration** c = p/n (Frobenius 0.75 → 0.60, GMV 0.65 → 0.56 as c: 0.5 → 2), trending
+toward chance, while:
+
+- **inversion-light judges win on matrix recovery and are flat in c**: VariogramScore (0.79) and
+  SchurLikelihood (0.77) lead; the likelihood (0.65) trails and degrades fastest with c;
+- **GMVVariance** is the dominant judge of the **allocation** gold (0.96) but weak elsewhere — a
+  *rank-1 probe* (it only sees the `w ∝ Σ̂⁻¹1` direction), a failure mode distinct from
+  inverse-fragility.
+
+So there is no gold-free "best scoring rule": the right judge is the assessor aligned with what you
+ultimately care about. By worst-case power across the three golds the likelihood family is the most
+*balanced*, but on the practical (non-KL) objectives it is dominated — the Schur pseudo-likelihood is
+the safest choice when you care about the matrix itself or the objective is unknown.
+
+**Two distinct power-limiting axes.** (i) *Inverse-fragility* — log-likelihood/Stein collapse on
+top-spectrum golds in high dimension because their score is dominated by the unidentifiable
+small-eigenvalue tail; the Schur damping repairs this. (ii) *Probe rank* — GMV is a rank-1 probe and
+is therefore a weak *recovery* judge at every dimension, regardless of conditioning. These are
+orthogonal; only the first is a Schur-γ matter.
+
+**Estimator landscape (context).** Ranking estimators by realized GMV variance, the empirical
+covariance wins for n/p ≳ 4 and shrinkage estimators (OAS, Ledoit–Wolf, linear shrinkage) win for
+n/p ≤ 1, the crossover tilting upward with p — textbook random-matrix behaviour. `SchurCovariance` is
+*not* a winning point estimator on the synthetic grid (consistent with ℓ_γ being a scoring/regularizing
+device, not an estimation objective). `TylerCovariance` is non-PD in 100% of cells and
+`GeodesicEwaCovariance(r≥0.05)` in ~10%, with ~60% blown-up scores — recorded, not hidden.
+
+**Real data.** The same rolling-window evaluation on Fama–French ff100/ff49 and on crypto / Polymarket
+panels (no known truth, so likelihood / GMV / variogram only) reproduces the regime ordering on the
+n/p axis recreated by sweeping universe size and window length. Shrinkage (OAS, Ledoit–Wolf) wins the
+realized-GMV cells on ff100; on crypto and the ff49 industries the **block-diagonal Schur corner
+(γ=0)** wins a plurality — the reliability→0 regime expected for noisy, effectively under-sampled
+returns. Polymarket favours `DiagonalCovariance` (its log-odds-change panel is close to uncorrelated).
