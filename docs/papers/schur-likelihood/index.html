@@ -64,6 +64,25 @@ Schur pseudo-likelihood rather than by the full likelihood yields
 several-fold lower out-of-sample portfolio variance once the dimension
 rivals the sample size.</p></div>
 
+<blockquote>
+<p><em>Note (added 2026, retained as a historical record).</em> The
+held-out-likelihood-versus-Schur <em>selection</em> contrast of
+Sections 4–5 does not survive scrutiny. In controlled follow-up
+experiments the full likelihood’s poor showing there is an artifact of
+judging by portfolio <em>variance</em> rather than by likelihood
+(objective mismatch), not a failure of the likelihood as a criterion:
+restricted to well-conditioned candidates and judged on its own terms it
+is in fact the better selector, and—contrary to a suspicion we briefly
+held—it does not select ill-conditioned estimates (the held-out
+likelihood penalises them). Two further corrections: the
+Schur–Ledoit–Wolf estimator of Section 6, as implemented, is cross-block
+<em>entry</em> shrinkage (a Schäfer–Strimmer-style operation), not the
+structured Schur damping it is named for; and that structured damping is
+viable only with a regularised hedge. The durable contributions are the
+closed-form reliability <span class="math inline">\gamma^\star</span>
+(Section 3) and the estimator family. See the companion note <em>Two
+Sides of Schur Damping</em> for the corrected and unified account.</p>
+</blockquote>
 <h2 id="the-high-dimensional-failure-of-the-gaussian-likelihood">The
 high-dimensional failure of the Gaussian likelihood</h2>
 <p>A correlation matrix is the hard part of a covariance matrix:
@@ -504,8 +523,9 @@ Bun, Joël, Jean-Philippe Bouchaud, and Marc Potters. 2017.
 Theory.”</span> <em>Physics Reports</em> 666: 1–109.
 </div>
 <div id="ref-cotton2024" class="csl-entry" role="listitem">
-Cotton, Peter. 2024. <span>“Schur Complementary Portfolios.”</span>
-<em>arXiv Preprint arXiv:2411.05807</em>.
+Cotton, Peter. 2024. <span>“Schur Complementary Allocation: A
+Unification of Hierarchical Risk Parity and Minimum Variance
+Portfolios.”</span> <em>arXiv Preprint arXiv:2411.05807</em>.
 </div>
 <div id="ref-james1961" class="csl-entry" role="listitem">
 James, W., and Charles Stein. 1961. <span>“Estimation with Quadratic
