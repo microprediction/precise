@@ -98,14 +98,17 @@ class="citation" data-cites="chakraborty2025">Chakraborty and Katzfuss
 those conditionals toward a parametric base, learning the strength by
 empirical Bayes.</p>
 <p>On the <strong>portfolio</strong> side, Schur-complementary
-allocation <span class="citation" data-cites="cotton2024">(Cotton
-2024)</span> damps the off-diagonal coupling of the covariance through
-its Schur complements by a parameter <span
-class="math inline">\gamma</span>, recovering hierarchical risk parity
-<span class="citation" data-cites="lopezdeprado2016">(López de Prado
-2016)</span> at <span class="math inline">\gamma=0</span> and the
-minimum-variance portfolio at <span
-class="math inline">\gamma=1</span>.</p>
+allocation—introduced in 2022 <span class="citation"
+data-cites="cotton2022">(Cotton 2022)</span> and developed in <span
+class="citation" data-cites="cotton2024">Cotton (2024)</span>—damps the
+off-diagonal coupling of the covariance through its Schur complements by
+a parameter <span class="math inline">\gamma</span>, recovering
+hierarchical risk parity <span class="citation"
+data-cites="lopezdeprado2016">(López de Prado 2016)</span> at <span
+class="math inline">\gamma=0</span> and the minimum-variance portfolio
+at <span class="math inline">\gamma=1</span>. The dial thus predates the
+spatial shrinkage work below by some two years, the two having developed
+independently.</p>
 <p>This note shows the two are the same Schur damping, with the same
 closed-form optimal <span class="math inline">\gamma</span>, and that
 each community has supplied a piece the other was missing.</p>
@@ -115,9 +118,9 @@ object: one Schur complement, two readings</h2>
 partition the variables into a block <span class="math inline">k</span>
 and a conditioning set <span class="math inline">c</span> (its spatial
 neighbours, or the other assets). The Schur complement <span
-class="math display">\mathsf S_k \;=\;
-R_{kk}-R_{kc}R_{cc}^{-1}R_{ck}</span> carries the same algebra into two
-meanings.</p>
+class="math display">\label{eq:schur}
+  \mathsf S_k \;=\; R_{kk}-R_{kc}R_{cc}^{-1}R_{ck}</span> carries the
+same algebra into two meanings.</p>
 <p><strong>Weather (a pseudo-likelihood term).</strong> <span
 class="math inline">\mathsf S_k</span> is the covariance of block <span
 class="math inline">k</span> <em>conditional</em> on <span
@@ -148,21 +151,24 @@ class="math inline">b_k</span>: a conditional variance for the
 statistician, a hedged residual risk for the investor.</p>
 <h5 id="a-two-variable-example.">A two-variable example.</h5>
 <p>Take two standardized variables with correlation <span
-class="math inline">\rho</span>. The Schur complement is then the scalar
-<span class="math inline">\mathsf S=1-\rho^2</span>. To the statistician
-it is the variance of variable 2 conditional on variable 1, <span
+class="math inline">\rho</span>. The Schur complement <a
+href="#eq:schur" data-reference-type="eqref"
+data-reference="eq:schur">[eq:schur]</a> is the scalar <span
+class="math inline">\mathsf S=1-\rho^2</span>. To the statistician it is
+the variance of variable 2 conditional on variable 1, <span
 class="math inline">\operatorname{Var}(y_2\mid y_1)=1-\rho^2</span>—the
 term the pseudo-likelihood scores. To the investor it is the variance of
 variable 2 <em>net of its hedge</em> by variable 1: with optimal hedge
 ratio <span class="math inline">b=\rho</span>, the residual <span
 class="math inline">y_2-b\,y_1</span> has variance <span
 class="math inline">1-\rho^2</span>, the risk that remains after the
-hedge. The number is the same in both readings. Damping the complement,
-as in the next section, gives <span class="math inline">\mathsf
-S(\gamma)=(1-\gamma)\cdot 1+\gamma(1-\rho^2)=1-\gamma\,\rho^2</span>: at
-<span class="math inline">\gamma=1</span> the full hedge / full
-conditioning, at <span class="math inline">\gamma=0</span> none (the
-marginal variance, an unhedged position), and at <span
+hedge. Identical number, two stories. Damping <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a> gives
+<span class="math inline">\mathsf S(\gamma)=(1-\gamma)\cdot
+1+\gamma(1-\rho^2)=1-\gamma\,\rho^2</span>: at <span
+class="math inline">\gamma=1</span> the full hedge / full conditioning,
+at <span class="math inline">\gamma=0</span> none (the marginal
+variance, an unhedged position), and at <span
 class="math inline">\gamma=\gamma^\star</span> a residual risk that
 trusts the estimated coupling only as far as it is reliable. The
 pseudo-likelihood and the portfolio read the same <span
@@ -175,7 +181,8 @@ so <span class="math inline">b_k</span> and <span
 class="math inline">\mathsf S_k</span> overfit—and both apply the same
 cure, a convex damping by <span
 class="math inline">\gamma\in[0,1]</span>: <span
-class="math display">b_k(\gamma)=\gamma\,b_k,\qquad \mathsf
+class="math display">\label{eq:damp}
+  b_k(\gamma)=\gamma\,b_k,\qquad \mathsf
 S_k(\gamma)=(1-\gamma)\,R_{kk}+\gamma\,\mathsf S_k.</span> At <span
 class="math inline">\gamma=1</span> this is full conditioning—the exact
 Gaussian likelihood, the minimum-variance portfolio. At <span
@@ -183,29 +190,52 @@ class="math inline">\gamma=0</span> it ignores the coupling—the
 block-diagonal composite likelihood, hierarchical risk parity.
 Intermediate <span class="math inline">\gamma</span> trusts the
 estimated cross-coupling only partway. The weather and portfolio
-extremes are the <em>same</em> two endpoints of this damping.</p>
+extremes are the <em>same</em> two endpoints of <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a>.</p>
 <p>The optimal <span class="math inline">\gamma</span> has a closed
 form. For a single coupling of conditional <span
 class="math inline">R^2</span> equal to <span
 class="math inline">\rho^2</span> estimated from <span
 class="math inline">n</span> points, minimizing expected error gives the
-<em>reliability</em> <span
-class="math display">\gamma^\star=\frac{(n-2)\rho^2}{(n-2)\rho^2+(1-\rho^2)},</span>
-a Wiener/James–Stein shrinkage <span class="citation"
+<em>reliability</em> <span class="math display">\label{eq:gstar}
+  \gamma^\star=\frac{(n-2)\rho^2}{(n-2)\rho^2+(1-\rho^2)},</span> a
+Wiener/James–Stein shrinkage <span class="citation"
 data-cites="james1961 ledoit2012">(James and Stein 1961; Ledoit and Wolf
 2012)</span> that tends to <span class="math inline">1</span> as data
 accrues or coupling strengthens and to <span
-class="math inline">0</span> when the coupling is unreliable.
-Equivalently, applied to the cross-block entries, it is the Ledoit–Wolf
-shrinkage intensity restricted to those entries <span class="citation"
-data-cites="ledoit2004">(Ledoit and Wolf 2004)</span>—“how much of the
-estimated coupling to keep.” So the quantity that tells a weather model
-how far to trust a neighbour regression is the quantity that tells a
-portfolio how far to tilt from risk parity toward minimum variance. We
-have not found this equivalence stated in either literature: the spatial
-line treats the damping as a prior to be fitted and the allocation line
-treats it as a portfolio dial to be chosen, and neither remarks that it
-is, in closed form, the same reliability <span
+class="math inline">0</span> when the coupling is unreliable. The
+shrinkage <em>intensity</em> <span
+class="math inline">\gamma^\star</span> is classical—an analytic,
+target-specific shrinkage of the kind <span class="citation"
+data-cites="ledoit2004">Ledoit and Wolf (2004)</span> and <span
+class="citation" data-cites="schafer2005">Schäfer and Strimmer
+(2005)</span> derive for covariances and for (partial) correlations.
+What is particular to the Schur reading is not the intensity but the
+<em>operation</em> it scales. It is <em>not</em> the raw off-diagonal
+entries shrunk elementwise toward zero; it is the conditional regression
+<span class="math inline">b_k</span> and its Schur complement <span
+class="math inline">\mathsf S_k</span>, damped through <a
+href="#eq:damp" data-reference-type="eqref"
+data-reference="eq:damp">[eq:damp]</a>—a structured,
+positive-definiteness-preserving shrinkage of the <em>conditional</em>.
+Damping <span class="math inline">b_k</span> by <span
+class="math inline">\gamma</span> scales the cross-covariance by <span
+class="math inline">\gamma</span> but also adjusts the within-block term
+(for two unit-variance variables it sends <span
+class="math inline">R\mapsto\bigl[\begin{smallmatrix}1&amp;\gamma\rho\\\gamma\rho&amp;1-\gamma(1-\gamma)\rho^2\end{smallmatrix}\bigr]</span>,
+not <span
+class="math inline">\bigl[\begin{smallmatrix}1&amp;\gamma\rho\\\gamma\rho&amp;1\end{smallmatrix}\bigr]</span>),
+so it is genuinely different from the elementwise off-diagonal shrinkage
+of <span class="citation" data-cites="schafer2005">Schäfer and Strimmer
+(2005)</span>. That operation is exactly the Vecchia
+neighbour-conditioning and, read the other way, the hedged residual risk
+of an allocation. So the quantity that tells a weather model how far to
+trust a neighbour regression is the quantity that tells a portfolio how
+far to tilt from risk parity toward minimum variance. We have not found
+this equivalence stated in either literature: the spatial line treats
+the damping as a prior to be fitted and the allocation line treats it as
+a portfolio dial to be chosen, and neither remarks that it is, in closed
+form, the same reliability <span
 class="math inline">\gamma^\star</span>. That identity is the
 observation of this note; the shrinkage itself is classical.</p>
 <p>A candid note on the oversight. The Schur pseudo-likelihood and its
@@ -213,15 +243,16 @@ closed-form reliability were introduced by the present author in a
 precursor <span class="citation" data-cites="cotton2025psl">(Cotton
 2025)</span>, which did cite the Vecchia factorization—but only as a
 computational device for the block-conditional likelihood, without
-recognizing that the damping is a <em>regularized</em> Vecchia
-conditioning, nor its place in the scalable-Gaussian-process literature,
-nor that the same reliability is precisely the knob of
-Schur-complementary allocation. (We have since learned that ShrinkTM
-<span class="citation" data-cites="chakraborty2025">(Chakraborty and
-Katzfuss 2025)</span> was independently arriving at the conditional
-shrinkage at the same time, from the spatial side.) That these were one
-object went unnoticed when the first note was written; surfacing it is
-the purpose of this one.</p>
+recognizing that the damping <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a> is a
+<em>regularized</em> Vecchia conditioning, nor its place in the
+scalable-Gaussian-process literature, nor that the same reliability is
+precisely the knob of Schur-complementary allocation. (We have since
+learned that ShrinkTM <span class="citation"
+data-cites="chakraborty2025">(Chakraborty and Katzfuss 2025)</span> was
+independently arriving at the conditional shrinkage at the same time,
+from the spatial side.) That these were one object went unnoticed when
+the first note was written; surfacing it is the purpose of this one.</p>
 <h2 id="what-each-side-already-solved">What each side already
 solved</h2>
 <p>Read as one operation, the two literatures are complementary rather
@@ -230,7 +261,9 @@ href="#tab:sides" data-reference-type="ref"
 data-reference="tab:sides">1</a>).</p>
 <div id="tab:sides">
 <table>
-<caption>The same Schur damping, as developed on each side.</caption>
+<caption>The same Schur damping <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a>, as
+developed on each side.</caption>
 <thead>
 <tr>
 <th style="text-align: left;"></th>
@@ -281,23 +314,29 @@ class="math inline">p=10^5</span>, and an empirical-Bayes machine for
 <em>learning</em> the damping toward a fitted base <span
 class="citation" data-cites="chakraborty2025">(Chakraborty and Katzfuss
 2025)</span>. The allocation side contributes the <em>closed form</em>
-<span class="math inline">\gamma^\star</span> and the recognition that
-the same <span class="math inline">\gamma</span> is an investment
-decision, not only a regularizer. Neither side had both.</p>
+<a href="#eq:gstar" data-reference-type="eqref"
+data-reference="eq:gstar">[eq:gstar]</a> and the recognition that the
+same <span class="math inline">\gamma</span> is an investment decision,
+not only a regularizer. Neither side had both.</p>
 <p>The two sides also shrink toward different <em>targets</em>, and the
-difference reflects what each can trust. A spatial field has a credible
-parametric model—a smooth Matérn covariance—so there is real structure
-to shrink toward, and ShrinkTM centers its prior there. Financial
-returns have no such trustworthy parametric covariance; the founding
-premise of hierarchical risk parity is precisely that estimated
-cross-correlations are largely noise, so the safe prior is independence
-(<span class="math inline">\rho=0</span>, the <span
-class="math inline">\gamma=0</span> / HRP limit). The spatial road
-therefore centers on a base GP while the allocation road errs toward
-zero coupling, each leaning on the prior its data warrants. The damping
-and its optimal intensity <span class="math inline">\gamma^\star</span>
-are the same; only the prior they lean on differs, in the direction each
-domain’s experience warrants.</p>
+asymmetry is not arbitrary: each shrinks toward the structure it can
+trust. A spatial field has a credible parametric model—a smooth Matérn
+covariance—so there is real structure to believe in, and ShrinkTM
+rationally centers its prior there. Financial returns have no such
+trustworthy parametric covariance; the founding premise of hierarchical
+risk parity is precisely that estimated cross-correlations are largely
+noise, so the safe, strong prior is independence (<span
+class="math inline">\rho=0</span>, the <span
+class="math inline">\gamma=0</span> / HRP limit). Where weather has
+structure to believe, finance has structure to doubt—so it is
+unsurprising, in hindsight, that the spatial road centers on a base GP
+while the allocation road errs toward zero coupling. The operation <a
+href="#eq:damp" data-reference-type="eqref"
+data-reference="eq:damp">[eq:damp]</a> and its optimal intensity <a
+href="#eq:gstar" data-reference-type="eqref"
+data-reference="eq:gstar">[eq:gstar]</a> are the same; only the prior
+they lean on differs, in the direction each domain’s experience
+warrants.</p>
 <h2 id="an-example-importing-vecchia-into-allocation">An example:
 importing Vecchia into allocation</h2>
 <p>The clearest way to show the connection is useful is to carry a tool
@@ -310,9 +349,10 @@ conjecture.</p>
 <p>We apply Vecchia conditioning to daily asset returns—a setting with
 no parametric base, using a correlation-based neighbour ordering of the
 kind the spatial literature adopts when Euclidean distance is
-unavailable—and compare three settings of the damping: undamped (<span
-class="math inline">\gamma=1</span>, plain Vecchia / minimum-variance
-conditioning), the closed-form reliability <span
+unavailable—and compare three settings of the damping <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a>:
+undamped (<span class="math inline">\gamma=1</span>, plain Vecchia /
+minimum-variance conditioning), the closed-form reliability <span
 class="math inline">\gamma^\star</span>, and a single intensity tuned on
 a held-out split (the spatial community’s <em>fit-the-shrinkage</em>
 instinct). The external criterion is out-of-sample log-likelihood, swept
@@ -409,9 +449,9 @@ class="math inline">n/p=0.5</span>, the gap vanishing by <span
 class="math inline">n/p=3</span> as the conditioning becomes reliable
 (<span class="math inline">\bar\gamma^\star\to1</span>). So the spatial
 idea of regularizing the Vecchia conditional transfers intact to
-returns, with no parametric base. Second, a single <em>fitted</em>
-intensity beats the per-point closed form at every ratio: here the
-spatial instinct corrects the financial one, since <span
+returns, with no parametric base. Second—and this is the spatial
+community teaching the financial one—a single <em>fitted</em> intensity
+beats the per-point closed form at every ratio: <span
 class="math inline">\gamma^\star</span> systematically under-damps
 (<span
 class="math inline">\bar\gamma^\star&gt;\gamma_{\text{tuned}}</span>
@@ -424,61 +464,92 @@ never forms the dense matrix, verified to reproduce the batch estimate
 to machine precision—so the borrowed tool also fits the online,
 large-<span class="math inline">p</span> setting in which allocation
 actually operates.</p>
+<h2 id="the-reverse-import-robustifying-the-hedge">The reverse import:
+robustifying the hedge</h2>
+<p>The transfer also runs the other way. The damping <a href="#eq:damp"
+data-reference-type="eqref" data-reference="eq:damp">[eq:damp]</a> can
+be used as an <em>estimator</em>— form each block’s hedge <span
+class="math inline">b_k</span> and Schur complement <span
+class="math inline">\mathsf S_k</span>, damp by <span
+class="math inline">\gamma^\star</span>, and reassemble the implied
+positive-definite covariance—rather than by shrinking entries. Applied
+naively, with <span class="math inline">b_k=R_{cc}^{-1}R_{ck}</span>,
+this structured estimator is <em>worse</em> than elementwise entry
+shrinkage and blows up when <span class="math inline">n\approx p</span>
+(on a grouped recovery task its out-of-sample log-likelihood degrades to
+<span class="math inline">-3.5\times10^{7}</span> at <span
+class="math inline">n/p=1</span>), because the structured operation
+inherits precisely the unstable inverse <span
+class="math inline">R_{cc}^{-1}</span> the exercise is trying to avoid.
+The allocation side’s standard fix for an unstable hedge— a regularized
+(ridge / shrunk) regression in place of the raw inverse—repairs it.
+Computing <span class="math inline">b_k</span> through a
+Ledoit–Wolf-shrunk conditioning block removes the blow-up and makes the
+structured estimator the <em>best</em> on out-of-sample likelihood,
+beating both entry shrinkage and a block-aware Ledoit–Wolf at every
+aspect ratio (e.g. <span class="math inline">-11.5</span> vs. <span
+class="math inline">-11.8</span> vs. <span
+class="math inline">-20.6</span> nats at <span
+class="math inline">n/p=1</span>); entry shrinkage remains marginally
+better on raw correlation recovery—a clean match of operation to
+objective. So the structured Schur damping is viable after all,
+<em>given</em> the allocation side’s robust hedge; it ships as
+<code>SchurConditionalCovariance</code> alongside the entry-shrinkage
+<code>SchurLedoitWolfCovariance</code> in <code>precise</code>. This is
+the mirror of Section 5: there the spatial habit of <em>fitting</em> the
+intensity instructed finance; here the financial habit of
+<em>regularizing a hedge</em> rescues the spatial-style structured
+estimator.</p>
 <h2 id="discussion">Discussion</h2>
-<p>The correspondence is the contribution. Hierarchical risk parity and
-the minimum-variance portfolio are the <span
+<p>The point is the correspondence itself. That hierarchical risk parity
+and the minimum-variance portfolio are the <span
 class="math inline">\gamma=0</span> and <span
 class="math inline">\gamma=1</span> ends of the very damping that a
-weather model applies to stay estimable, built from the same Schur
-complement and the same convex combination (the damping), read once as a
-conditional variance and once as a residual risk. Practical consequences
-run both ways. Allocation can borrow the spatial machinery:
-neighbour/cluster orderings and empirical-Bayes-fitted damping in place
-of a fixed <span class="math inline">\gamma</span>. Spatial modeling can
-borrow the allocation reading: the closed-form reliability as a
-tuning-free initializer, and the reminder that the damping is a decision
-with a cost, not merely a prior. The reverse transfer may extend to
-<em>analysis</em> and not only to algorithms: the allocation literature
-has begun to characterize the <span class="math inline">\gamma=0</span>
-endpoint in closed form—<span class="citation"
-data-cites="antonov2024">Antonov et al. (2024)</span> give an analytical
-account of hierarchical risk parity’s diversification and risk
-behaviour—and because that endpoint is exactly the block-diagonal
-(independent-blocks) limit of the Vecchia pseudo-likelihood (the <span
-class="math inline">\gamma=0</span> damping), such results are
-candidates to carry over to the spatial side, which has no comparable
-closed-form characterization of that limit. We can only conjecture this,
-but the identity makes it a concrete question rather than an analogy.
-And both sit on one online primitive—a Schur complement of a few
-neighbour blocks, damped by a reliability—maintainable incrementally in
-<span class="math inline">O(p\,m^2)</span>. This is the form in which
-the online covariance library <code>precise</code><a href="#fn1"
+weather model applies to stay estimable is not a metaphor—it is the same
+Schur complement <a href="#eq:schur" data-reference-type="eqref"
+data-reference="eq:schur">[eq:schur]</a> and the same convex combination
+<a href="#eq:damp" data-reference-type="eqref"
+data-reference="eq:damp">[eq:damp]</a>, read once as a conditional
+variance and once as a residual risk. Practical consequences run both
+ways. Allocation can borrow the spatial machinery: neighbour/cluster
+orderings and empirical-Bayes-fitted damping in place of a fixed <span
+class="math inline">\gamma</span>. Spatial modeling can borrow the
+allocation reading: the closed-form reliability as a tuning-free
+initializer, and the reminder that the damping is a decision with a
+cost, not merely a prior. And both sit on one online primitive—a Schur
+complement of a few neighbour blocks, damped by a
+reliability—maintainable incrementally in <span
+class="math inline">O(p\,m^2)</span>. This is the form in which the
+online covariance library <code>precise</code><a href="#fn1"
 class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
 serves both: its block-covariance and Schur–Ledoit–Wolf estimators
 maintain exactly these damped neighbour-block Schur complements in a
 single streaming pass, so weather and portfolios run on the same code.
 The experiment of Section 5 is built on it.</p>
-<p>The bridge is itself a Schur complement. Within finance the same
-parameter <span class="math inline">\gamma</span> already reaches across
-one divide—from Markowitz’s minimum-variance portfolio at <span
-class="math inline">\gamma=1</span> to hierarchical risk parity at <span
-class="math inline">\gamma=0</span>. This note follows the same
-complement across a wider gap, from finance to meteorology, where it
-serves equally as the conditional variance of a Gaussian field.</p>
+<p>It is fitting that the bridge is a Schur complement. Within finance
+the same parameter <span class="math inline">\gamma</span> already
+reaches across one divide—from Markowitz’s minimum-variance portfolio at
+<span class="math inline">\gamma=1</span> to hierarchical risk parity at
+<span class="math inline">\gamma=0</span>. This note only follows the
+identical complement across a wider gap, from finance to meteorology,
+where it had been waiting all along as the conditional variance of a
+Gaussian field.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
-<div id="ref-antonov2024" class="csl-entry" role="listitem">
-Antonov, Alexandre, Alexander Lipton, and Marcos López de Prado. 2024.
-<em>Hierarchical Risk Parity: A Closer Look</em>. No. 4748151. SSRN.
-</div>
 <div id="ref-chakraborty2025" class="csl-entry" role="listitem">
 Chakraborty, Anirban, and Matthias Katzfuss. 2025. <span>“Learning
 Non-Gaussian Spatial Distributions via Bayesian Transport Maps with
 Parametric Shrinkage.”</span> <em>arXiv Preprint arXiv:2409.19208</em>.
 </div>
+<div id="ref-cotton2022" class="csl-entry" role="listitem">
+Cotton, Peter. 2022. <em>Schur Complementary Portfolios: A Unification
+of Machine Learning and Optimization-Based Allocation</em>. Geek Culture
+(Medium).
+</div>
 <div id="ref-cotton2024" class="csl-entry" role="listitem">
-Cotton, Peter. 2024. <span>“Schur Complementary Portfolios.”</span>
-<em>arXiv Preprint arXiv:2411.05807</em>.
+Cotton, Peter. 2024. <span>“Schur Complementary Allocation: A
+Unification of Hierarchical Risk Parity and Minimum Variance
+Portfolios.”</span> <em>arXiv Preprint arXiv:2411.05807</em>.
 </div>
 <div id="ref-cotton2025psl" class="csl-entry" role="listitem">
 Cotton, Peter. 2025. <em>Schur Pseudo-Likelihood: Scoring and
@@ -519,6 +590,12 @@ Annals of Statistics</em> 40 (2): 1024–60.
 López de Prado, Marcos. 2016. <span>“Building Diversified Portfolios
 That Outperform Out of Sample.”</span> <em>The Journal of Portfolio
 Management</em> 42 (4): 59–69.
+</div>
+<div id="ref-schafer2005" class="csl-entry" role="listitem">
+Schäfer, Juliane, and Korbinian Strimmer. 2005. <span>“A Shrinkage
+Approach to Large-Scale Covariance Matrix Estimation and Implications
+for Functional Genomics.”</span> <em>Statistical Applications in
+Genetics and Molecular Biology</em> 4 (1): Article 32.
 </div>
 <div id="ref-vecchia1988" class="csl-entry" role="listitem">
 Vecchia, Aldo V. 1988. <span>“Estimation and Model Identification for
