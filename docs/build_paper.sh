@@ -11,13 +11,14 @@ root="$(dirname "$here")"
 # build_one <tex-basename> <out-slug> <title> <subtitle>
 # The PDF lives next to the .tex in papers/ and is linked from the web header.
 # The source keeps numbered equation environments (for the arXiv/PDF edition); for the
-# web we strip them to unnumbered \[ \] display math, which KaTeX renders cleanly. The
-# prose refers to equations descriptively, so no cross-references break in the process.
+# web, docs/_webtex.py reproduces LaTeX's equation numbering: \label{eq:X} becomes a
+# KaTeX \tag{n}, every \eqref{eq:X} in the prose resolves to (n), and the equation
+# environments become \[ \] display math, which KaTeX renders cleanly.
 build_one() {
   local tex="$1" slug="$2" title="$3" subtitle="$4"
   local pdfurl="https://github.com/microprediction/precise/blob/main/papers/${tex}.pdf"
   local websrc; websrc="$(mktemp)"
-  sed -e 's/\\begin{equation}/\\[/g' -e 's/\\end{equation}/\\]/g' "$root/papers/${tex}.tex" > "$websrc"
+  python3 "$here/_webtex.py" "$root/papers/${tex}.tex" "$websrc"
   mkdir -p "$here/papers/$slug"
   pandoc "$websrc" \
     --from=latex \
