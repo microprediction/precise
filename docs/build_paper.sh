@@ -31,6 +31,13 @@ build_one() {
     --metadata pdfurl="$pdfurl" \
     -o "$here/papers/$slug/index.html"
   rm -f "$websrc"
+  # copy any figures the generated page references next to the web edition
+  local figs
+  figs="$(grep -o 'src="figures/[^"]*"' "$here/papers/$slug/index.html" | sed 's|src="figures/||; s|"||' | sort -u || true)"
+  if [ -n "$figs" ]; then
+    mkdir -p "$here/papers/$slug/figures"
+    for f in $figs; do cp "$root/papers/figures/$f" "$here/papers/$slug/figures/$f"; done
+  fi
   echo "wrote docs/papers/$slug/index.html (generated from papers/${tex}.tex)"
 }
 
