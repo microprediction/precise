@@ -138,7 +138,7 @@ const NODES = [
  {id:"antonov2024", label:"Antonov et al 2024", year:2024, c:"portfolio", url:"https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4748151", note:"HRP, a closer look."},
  {id:"elw2019", label:"DCC-NL Engle–Ledoit–Wolf ⚠", year:2019, c:"portfolio", url:"https://doi.org/10.1080/07350015.2017.1345683", note:"Large dynamic correlation by nonlinear shrinkage: the industrial competitor at p≈1000s."},
 
- {id:"kfac2015", label:"KFAC 2015", year:2015, c:"ml", url:"https://arxiv.org/abs/1503.05671", note:"Block Fisher approximation: γ=0-flavored preconditioning; 'damped KFAC' is an unnamed cousin."},
+ {id:"kfac2015", label:"KFAC 2015", year:2015, c:"ml", url:"https://arxiv.org/abs/1503.05671", note:"Martens–Grosse: the natural gradient is the min-variance operation on the GRADIENT covariance. Block-diagonal/tridiagonal inverse-Fisher = binary γ∈{0,1} coupling choices; its 'damping' (λI) is spectrum loading, not coupling attenuation. The interior dial is unoccupied."},
  {id:"tp2014", label:"Student-t processes ⚠", year:2014, c:"ml", url:"https://arxiv.org/abs/1402.4306", note:"Heavy-tailed GP; a damped t-Vecchia is an open combination."},
 
  {id:"gr2007", label:"Gneiting–Raftery 2007", year:2007, c:"eval", url:"https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf", note:"Proper scoring rules: the frame for 'interior γ is improper but more powerful'."},
@@ -208,7 +208,7 @@ const EDGES = [
  {s:"hrp2016", t:"antonov2024", type:"lineage"}, {s:"antonov2024", t:"mograby2025", type:"lineage"},
  {s:"lw2012", t:"elw2019", type:"lineage"},
  {s:"elw2019", t:"hub", type:"contrast", label:"industrial rival at p≈1000s"},
- {s:"kfac2015", t:"hub", type:"identity", label:"damped block Fisher: unnamed cousin"},
+ {s:"kfac2015", t:"hub", type:"endpoint", label:"binary coupling choices on the gradient covariance; the dial itself is absent"},
  {s:"tp2014", t:"hub", type:"gap", label:"damped t-Vecchia: open"},
  {s:"gr2007", t:"hub", type:"contrast", label:"interior γ is an improper score, on purpose"},
  {s:"gr2007", t:"vario2015", type:"lineage"}, {s:"patton2011", t:"hub", type:"lineage", label:"proxy-truth methodology"},
