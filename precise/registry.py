@@ -18,6 +18,7 @@ from precise.factor import FactorCovariance
 from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance
 from precise.ledoitwolf import LedoitWolfCovariance
+from precise.nonlinear_shrinkage import NonlinearShrinkageCovariance
 from precise.oas import OASCovariance
 from precise.partialmoments import PartialMomentsCovariance
 from precise.schur_conditional import SchurConditionalCovariance
@@ -36,6 +37,7 @@ _REGISTRY: list[type[BaseOnlineCovariance]] = [
     LedoitWolfCovariance,
     OASCovariance,
     ShrunkCovariance,
+    NonlinearShrinkageCovariance,
     SchurCovariance,
     SchurConditionalCovariance,
     SchurLedoitWolfCovariance,
