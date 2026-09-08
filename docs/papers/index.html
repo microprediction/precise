@@ -52,6 +52,20 @@
     </div>
 
     <div class="paper-card">
+      <h3><a href="online-spectral-calibration/">Spectral Calibration Without a Split</a></h3>
+      <p class="text-muted" style="margin:4px 0 12px">Learning Covariance Eigenvalue Corrections One Observation at a Time &middot; Peter Cotton</p>
+      <p>Cross-validated covariance cleaning must partition a sample to learn what variance belongs
+      to an empirical eigenvector. In a stream it need not: the basis carried forward from past data
+      is already out of sample with respect to the next observation, so the arrow of time supplies
+      the split for free, and every observation labels every eigenvalue at once. We give the
+      conditional identity and the exact Frobenius decomposition behind it, a one-pass estimator
+      costing O(p²) per observation, and an honest account of what learning the correction buys —
+      adaptivity, and only adaptivity.</p>
+      <p><a class="btn" href="online-spectral-calibration/">Read online</a>
+         <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/papers/online_spectral_calibration.pdf">PDF</a></p>
+    </div>
+
+    <div class="paper-card">
       <h3><a href="../maps/">Literature maps</a></h3>
       <p class="text-muted" style="margin:4px 0 12px">Interactive companions to the papers</p>
       <p>How the methods relate to neighboring research, drawn as graphs &mdash; solid edges are

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Spectral Calibration Without a Split</title>
+  <meta name="description" content="Learning Covariance Eigenvalue
+Corrections One Observation at a Time">
+  <meta property="og:title" content="Spectral Calibration Without a
+Split">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="../../academic.css">
+<script defer=""
+src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+<script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+</script>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
+  <style>
+    .site-nav{position:sticky;top:0;z-index:1000;background:#34495e;color:#fff;
+      padding:12px 24px;font-family:'Times New Roman',Times,serif;}
+    .site-nav-inner{max-width:820px;margin:0 auto;display:flex;
+      justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .site-nav a{color:#ecf0f1;text-decoration:none;}
+    .site-nav a:hover{color:#fff;text-decoration:underline;}
+    .container{max-width:820px;} .paper-meta{text-align:center;color:var(--muted);margin-bottom:8px;}
+    .katex-display{overflow-x:auto;overflow-y:hidden;}
+  </style>
+</head>
+<body>
+  <nav class="site-nav"><div class="site-nav-inner">
+    <a href="../../">&larr; precise</a><a href="../">papers</a>
+  </div></nav>
+  <div class="header"><div class="container">
+    <h1>Spectral Calibration Without a
+Split</h1><div class="subtitle">Learning Covariance Eigenvalue
+Corrections One Observation at a Time</div>
+  </div></div>
+  <div class="container">
+    <p class="paper-meta">Peter Cotton &middot; Note —
+<code>microprediction/precise</code> &middot; <a href="https://github.com/microprediction/precise/blob/main/papers/online_spectral_calibration.pdf">PDF</a></p>
+    <div class="abstract"><p>Cross-validated covariance cleaning
+estimates the variance belonging to an empirical eigenvector by
+projecting held-out data onto it. It is a batch procedure: the sample
+must be partitioned, and the partition costs data and invites a choice
+about how to split. In a stream no partition is needed. The eigenvector
+basis carried forward from all past data is, by construction, out of
+sample with respect to the observation about to arrive, so the arrow of
+time supplies the split for free—and supplies it at every step, for
+every eigenvector at once. We record the conditional identity this rests
+on, an exact decomposition of the instantaneous Frobenius error showing
+that predicting squared projections optimizes the same objective as
+learning the covariance within the chosen basis, and the one-pass
+estimator that follows: <span class="math inline">O(p^2)</span> per
+observation plus an eigendecomposition every <span
+class="math inline">K</span> steps, with the eigenvalues tracked between
+refreshes by the same exponential recursion the covariance itself obeys,
+at <span class="math inline">O(p)</span>. The identity is not new—it is
+what makes cross-validated cleaning work—but we have not found its
+sequential use recorded, and it removes the reason such methods have
+been confined to batch settings. Experiments in five regimes separate
+what this buys from what it costs: against exponentially weighted linear
+shrinkage the learned calibration is fifteen to twenty percent better
+wherever the dependence structure actually changes, and worse wherever
+it does not—by a factor of twenty against an expanding-sample analytical
+shrinker on a static spectrum. We also report a negative result:
+conditioning the learned map on the global shape of the spectrum, which
+we expected to matter, does not.</p></div>
+
+<h2 id="the-gap">The gap</h2>
+<p>Nonlinear shrinkage of a covariance spectrum—moving each sample
+eigenvalue by its own amount while keeping the sample eigenvectors—has
+an analytical solution under equally weighted, identically distributed
+observations <span class="citation"
+data-cites="ledoitpeche2011 ledoitwolf2020analytical">(Ledoit and Péché
+2011; Ledoit and Wolf 2020)</span>, and a random-matrix counterpart in
+the rotationally invariant estimators <span class="citation"
+data-cites="bun2017cleaning">(Bun et al. 2017)</span>. Both derivations
+assume a fixed population covariance observed through sampling noise.
+Financial dependence is not fixed: it drifts, and it is dominated by
+common modes whose strength varies. <span class="citation"
+data-cites="manolakis2026">Manolakis et al. (2026)</span> make this the
+explicit motivation for replacing the analytical singular-value map with
+a learned one, fixing the empirical basis from theory so that only the
+part where the derivation is known to fail is learned. Their map is
+trained offline, on a corpus.</p>
+<p>The weighted case has since been worked out analytically: <span
+class="citation" data-cites="oriol2024weighted">Oriol (2024)</span> give
+non-linear shrinkage formulas for weighted sample covariances, the
+exponentially weighted case explicitly. That is the principled route for
+a recency-weighted analytical cleaner, and it is worth taking. The
+question here is a different one—whether the correction can be
+<em>learned from the stream itself</em>, with bounded state, no corpus
+and no pretraining.</p>
+<h2 id="the-identity">The identity</h2>
+<p>Let <span class="math inline">\mathcal F_{t-1}</span> denote
+everything observable before time <span class="math inline">t</span>,
+and let <span class="math inline">U_{t-1} = [u_1 \cdots u_p]</span> be
+an orthonormal basis computed entirely from <span
+class="math inline">\mathcal F_{t-1}</span>. Suppose <span
+class="math inline">\mathbb E[x_t \mid \mathcal F_{t-1}] = 0</span> and
+<span class="math inline">\operatorname{Cov}(x_t \mid \mathcal F_{t-1})
+= \Sigma_t</span>. Project the new observation, <span
+class="math display">z_t = U_{t-1}^\top x_t .</span> Because <span
+class="math inline">u_i</span> is <span class="math inline">\mathcal
+F_{t-1}</span>-measurable it passes through the conditional expectation,
+giving <span class="math display">\tag{1}
+  \mathbb E\!\left[z_{i,t}^2 \mid \mathcal F_{t-1}\right] \;=\; u_i^\top
+\Sigma_t\, u_i ,</span> which is exactly the variance a cleaned spectrum
+must assign to that empirical eigenvector. One observation supplies a
+noisy but conditionally unbiased label for <em>every</em> eigenvalue
+simultaneously. Equation (1) requires neither Gaussianity nor
+stationarity; it is a statement about conditioning, and the only
+structural demand is that <span class="math inline">U_{t-1}</span> not
+be built using <span class="math inline">x_t</span>.</p>
+<p>That the squared projections are the right thing to predict follows
+from an exact decomposition. For any orthogonal <span
+class="math inline">U</span>, any <span class="math inline">d \in
+\mathbb R^p</span>, and <span class="math inline">z = U^\top x</span>,
+<span class="math display">\tag{2}
+  \bigl\| U \operatorname{diag}(d) U^\top - x x^\top \bigr\|_F^2
+   \;=\; \sum_i \bigl(d_i - z_i^2\bigr)^2 \;+\; \underbrace{\sum_{i \neq
+j} z_i^2 z_j^2}_{\text{free of } d} .</span> The Frobenius norm is
+invariant under orthogonal conjugation, and <span
+class="math inline">U^\top ( U \operatorname{diag}(d) U^\top - xx^\top )
+U = \operatorname{diag}(d) - z z^\top</span>, whose diagonal entries are
+<span class="math inline">d_i - z_i^2</span> and whose off-diagonal
+entries are <span class="math inline">-z_i z_j</span>. So learning to
+predict squared projections minimizes, term for term, the same
+instantaneous objective as learning the covariance matrix within the
+chosen basis. The residual term is the price of holding the eigenvectors
+fixed, and no choice of <span class="math inline">d</span> can touch
+it.</p>
+<p>Neither statement is new. Equation (1) is what makes cross-validated
+cleaning work: <span class="citation" data-cites="bartz2016">Bartz
+(2016)</span> estimates cleaned eigenvalues by projecting held-out folds
+onto eigenvectors fitted on the remainder, and <span class="citation"
+data-cites="lamrani2025holdout">Lamrani et al. (2025)</span> analyze how
+such a sample should optimally be split, finding the train–test ratio
+should scale as the square root of the dimension. The observation we
+have not found recorded is that in a streaming setting the split need
+not be constructed at all. Every arriving observation is already held
+out with respect to the basis carried forward, so the data cost of
+cross-validation—the reason one must decide how much sample to
+sacrifice—simply does not arise. What was a design choice becomes a
+property of the arrow of time.</p>
+<h2 id="the-estimator">The estimator</h2>
+<p>State: a running mean <span class="math inline">m</span>, an
+exponentially weighted second moment <span class="math inline">S</span>,
+a basis <span class="math inline">U</span>, a spectrum <span
+class="math inline">\lambda</span>, and the accumulators of a
+calibration map <span class="math inline">f</span>. On observing <span
+class="math inline">x_t</span>, with weight <span
+class="math inline">w</span>: <span class="math display">\begin{align*}
+  \delta &amp;= x_t - m, \qquad z = U^\top \delta, \\
+  &amp;\text{train } f \text{ on the pairs } (\text{features}_i,\;
+z_i^2), \\
+  \lambda &amp;\leftarrow (1-w)\lambda + w z^2, \\
+  m &amp;\leftarrow m + w\delta, \qquad S \leftarrow (1-w) S + w\,
+\delta \delta^\top,
+\end{align*}</span> refreshing <span class="math inline">(\lambda,
+U)</span> from an eigendecomposition of <span
+class="math inline">S</span> every <span class="math inline">K</span>
+observations, and reporting <span class="math inline">\hat\Sigma_t = U
+\operatorname{diag}\bigl(f(\lambda)\bigr) U^\top</span>. The ordering
+matters: the labels are formed against the basis and the mean that
+predate <span class="math inline">x_t</span>, which is what makes (1)
+apply.</p>
+<p>The <span class="math inline">\lambda</span> recursion is not an
+approximation. For a basis held fixed between refreshes, <span
+class="math display">u_i^\top S_t u_i = (1-w)\, u_i^\top S_{t-1} u_i + w
+\bigl(u_i^\top \delta\bigr)^2 ,</span> so the exponentially weighted
+Rayleigh quotient obeys the same recursion as the covariance and is
+available at <span class="math inline">O(p)</span> from projections
+already computed. Only the basis needs an eigendecomposition. The
+per-observation cost is therefore <span
+class="math inline">O(p^2)</span>—the projection and the outer-product
+update—plus <span class="math inline">O(p^3/K)</span> amortized, and
+nothing grows with elapsed stream length. Stale eigenvectors are the
+price: they bound how quickly the estimator can follow a rotation of the
+true eigenbasis.</p>
+<h2 id="what-has-to-be-learned">What has to be learned</h2>
+<p>The map <span class="math inline">f</span> must be positive, must
+treat equal eigenvalues equally, and must forget. We use kernel-weighted
+running averages over a fixed grid of feature centers—a Nadaraya–Watson
+estimator with exponential forgetting—so that the prediction is a ratio
+of two nonnegative accumulators. It is positive because the labels are
+squares, it pools directions with identical features by construction,
+and it forgets at a controlled rate. A few dozen bins suffice; nothing
+here needs a neural framework.</p>
+<p>The design question is what to index the map by. Three choices
+separate cleanly: <em>rank</em>, the position of an eigenvalue in the
+sorted spectrum; <em>eigenvalue</em>, its observed size relative to the
+mean, on a log scale; and <em>shared</em>, the observed size together
+with a global summary of the spectrum’s shape (we use the dispersion of
+the log spectrum). Rank calibration can memorize a useful spectral
+profile; the concern is that it will keep imposing that profile after
+the structure generating it is gone, since the position of an eigenvalue
+says nothing about whether it still refers to anything.</p>
+<h2 id="experiments">Experiments</h2>
+<p>Gaussian streams in <span class="math inline">p = 32</span>
+dimensions, <span class="math inline">6000</span> observations, eight
+seeds, exponential weight <span class="math inline">r = 0.02</span>,
+basis refreshed every <span class="math inline">10</span> observations,
+calibration forgetting <span class="math inline">\rho = 0.02</span>,
+scoring from observation <span class="math inline">1000</span> onward.
+The metric is mean squared Frobenius error divided by the squared norm
+of the truth; lower is better. Five regimes: an isotropic covariance; a
+broad, static population spectrum; an abrupt rotation of the factor
+directions at the midpoint; a factor structure that disappears at the
+midpoint; and one in which the factor structure and its absence
+alternate repeatedly, the only regime in which a spectral shape
+<em>recurs</em> and can therefore be recalled.</p>
+<p>We compare against an uncleaned exponentially weighted covariance,
+the linear shrinkers <code>LedoitWolf</code> and <code>OAS</code> at the
+same decay, and the analytical nonlinear shrinker of <span
+class="citation" data-cites="ledoitwolf2020analytical">Ledoit and Wolf
+(2020)</span> over an expanding sample.</p>
+<table>
+<caption>Mean squared Frobenius error relative to the squared norm of
+the truth; lower is better, best in each row in bold. Eight seeds, <span
+class="math inline">p=32</span>, <span class="math inline">6000</span>
+observations each.</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">uncleaned</th>
+<th colspan="2" style="text-align: center;">linear, weighted</th>
+<th style="text-align: right;">nonlinear, expanding</th>
+<th colspan="3" style="text-align: center;">learned calibration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><span>2-2</span>(lr)<span>3-4</span>(lr)<span>5-5</span>(lr)<span>6-8</span>
+regime</td>
+<td style="text-align: right;">raw EW</td>
+<td style="text-align: right;">Ledoit–Wolf</td>
+<td style="text-align: right;">OAS</td>
+<td style="text-align: right;">analytical NLS</td>
+<td style="text-align: right;">rank</td>
+<td style="text-align: right;">eigenvalue</td>
+<td style="text-align: right;">shared</td>
+</tr>
+<tr>
+<td style="text-align: left;">isotropic</td>
+<td style="text-align: right;">0.340</td>
+<td style="text-align: right;"><strong>0.0007</strong></td>
+<td style="text-align: right;"><strong>0.0007</strong></td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0026</td>
+<td style="text-align: right;">0.0018</td>
+<td style="text-align: right;">0.0018</td>
+</tr>
+<tr>
+<td style="text-align: left;">broad spectrum</td>
+<td style="text-align: right;">0.206</td>
+<td style="text-align: right;">0.204</td>
+<td style="text-align: right;">0.199</td>
+<td style="text-align: right;"><strong>0.0072</strong></td>
+<td style="text-align: right;">0.135</td>
+<td style="text-align: right;">0.147</td>
+<td style="text-align: right;">0.147</td>
+</tr>
+<tr>
+<td style="text-align: left;">factor rotation</td>
+<td style="text-align: right;">0.243</td>
+<td style="text-align: right;">0.238</td>
+<td style="text-align: right;">0.231</td>
+<td style="text-align: right;">0.206</td>
+<td style="text-align: right;">0.191</td>
+<td style="text-align: right;"><strong>0.186</strong></td>
+<td style="text-align: right;">0.186</td>
+</tr>
+<tr>
+<td style="text-align: left;">factors vanish</td>
+<td style="text-align: right;">0.299</td>
+<td style="text-align: right;">0.127</td>
+<td style="text-align: right;">0.124</td>
+<td style="text-align: right;">0.239</td>
+<td style="text-align: right;">0.105</td>
+<td style="text-align: right;"><strong>0.103</strong></td>
+<td style="text-align: right;">0.103</td>
+</tr>
+<tr>
+<td style="text-align: left;">regimes alternate</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">0.131</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: right;">0.217</td>
+<td style="text-align: right;">0.114</td>
+<td style="text-align: right;">0.109</td>
+<td style="text-align: right;"><strong>0.109</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Three things are worth reading off, one of them negative.</p>
+<p><em>Learning buys adaptivity, and only adaptivity.</em> On the three
+non-stationary regimes the calibrated estimators beat both linear
+shrinkers by fifteen to twenty percent—<span
+class="math inline">0.186</span> against <span
+class="math inline">0.231</span> under a rotation, <span
+class="math inline">0.103</span> against <span
+class="math inline">0.124</span> when the factor structure dies, <span
+class="math inline">0.109</span> against <span
+class="math inline">0.128</span> under alternation. On the two static
+regimes they lose, and against the expanding-sample analytical shrinker
+on a broad static spectrum they lose by a factor of twenty (<span
+class="math inline">0.147</span> against <span
+class="math inline">0.0072</span>). This is the expected shape of the
+trade and it is worth stating plainly: the learned map is paying, in
+variance, for an adaptivity that a static problem does not reward. An
+estimator that does not know which regime it is in cannot have both.</p>
+<p><em>Rank calibration remembers, and that cuts both ways.</em>
+Indexing by spectral position is the best learned variant on the static
+broad spectrum (<span class="math inline">0.135</span> against <span
+class="math inline">0.147</span>), where a stable profile is worth
+memorizing, and the worst on every regime where the structure changes.
+Conditioning on the observed eigenvalue instead removes that failure at
+a modest cost elsewhere, which is what one would hope: an eigenvalue’s
+size still refers to something after the structure that produced it is
+gone, whereas its rank does not.</p>
+<p><em>Global shape conditioning does not help.</em> We expected the
+third variant—indexing the map by the observed eigenvalue <em>and</em> a
+summary of the spectrum’s overall shape—to dominate the second, on the
+reasoning that it could recall a calibration when a shape recurred. It
+does not. The two agree to three decimal places in every regime,
+including the alternating one built specifically to reward recall.
+Diagnostically the reason is visible: the shape statistic ranges over
+roughly <span class="math inline">0.3</span>–<span
+class="math inline">1.1</span> <em>across</em> these regimes but moves
+only about <span class="math inline">0.4</span> <em>within</em> any
+single stream, so the discriminating variation is between problems
+rather than along a trajectory, and a map that one estimator carries
+through one stream never sees enough of the axis to use it. We report
+this as a negative result rather than tuning until it disappears.</p>
+<h2 id="relation-to-prior-work-and-what-this-is-not">Relation to prior
+work, and what this is not</h2>
+<p>The analytical line <span class="citation"
+data-cites="ledoitpeche2011 ledoitwolf2020analytical bun2017cleaning">(Ledoit
+and Péché 2011; Ledoit and Wolf 2020; Bun et al. 2017)</span> derives
+the map rather than learning it, and is the right default whenever its
+assumptions hold; the expanding-sample column above shows how much it
+wins by when they do, and how badly it fails when they do not. The
+cross-validation line <span class="citation"
+data-cites="bartz2016 lamrani2025holdout">(Bartz 2016; Lamrani et al.
+2025)</span> uses the same identity as we do but must construct its
+split. <span class="citation" data-cites="oriol2024weighted">Oriol
+(2024)</span> extends the analytical treatment to weighted samples and
+is the principled way to build a recency-weighted analytical cleaner;
+substituting a moment-matched effective sample size into an equally
+weighted formula, as is sometimes done, is a scalar approximation that
+does not encode the weight distribution. <span class="citation"
+data-cites="manolakis2026">Manolakis et al. (2026)</span> learn the
+singular-value map, as we do, but offline and for the rectangular
+cross-covariance problem. For that problem the corresponding sequential
+label is immediate, <span class="math inline">(u_i^\top x_t)(v_i^\top
+y_t)</span>, though assembling a valid joint covariance additionally
+requires compatibility with the marginal blocks: an arbitrary
+cross-block correction need not preserve positive semidefiniteness.</p>
+<p>Incremental eigenspace tracking is a separate and well-developed
+literature <span class="citation" data-cites="weng2003ccipca">(Weng et
+al. 2003)</span>; we take the basis by periodic refresh, which is crude,
+and a better tracker would directly relax the one cost we
+identified.</p>
+<h2 id="limitations">Limitations</h2>
+<p>The labels are severely noisy: under Gaussianity <span
+class="math inline">z_i^2</span> has variance <span
+class="math inline">2(u_i^\top \Sigma u_i)^2</span>, so a single
+observation carries roughly one effective bit per direction and the
+map’s forgetting rate trades adaptation against that noise. The
+eigenvector basis is refreshed rather than tracked, which bounds
+adaptation to abrupt rotation. All evidence here is synthetic and
+Gaussian, and the regimes were constructed by us to separate the failure
+modes we suspected; there is no real equity study, and the advantage
+over linear shrinkage is confined to the non-stationary regimes, which
+are exactly the ones a sceptic would say we chose. The open question is
+not whether spectral cleaning can be made online. It plainly can. It is
+how calibration information should be shared across directions and
+forgotten as the spectrum changes, and the negative result on shape
+conditioning above says the obvious first answer is not the right
+one.</p>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="list">
+<div id="ref-bartz2016" class="csl-entry" role="listitem">
+Bartz, Daniel. 2016. <span>“Cross-Validation Based Nonlinear
+Shrinkage.”</span> <em>arXiv Preprint arXiv:1611.00798</em>.
+</div>
+<div id="ref-bun2017cleaning" class="csl-entry" role="listitem">
+Bun, Joël, Jean-Philippe Bouchaud, and Marc Potters. 2017.
+<span>“Cleaning Large Correlation Matrices: Tools from Random Matrix
+Theory.”</span> <em>Physics Reports</em> 666: 1–109.
+</div>
+<div id="ref-lamrani2025holdout" class="csl-entry" role="listitem">
+Lamrani, Lamia, Christian Bongiorno, and Marc Potters. 2025.
+<span>“Optimal Data Splitting for Holdout Cross-Validation in Large
+Covariance Matrix Estimation.”</span> <em>arXiv Preprint
+arXiv:2503.15186</em>.
+</div>
+<div id="ref-ledoitpeche2011" class="csl-entry" role="listitem">
+Ledoit, Olivier, and Sandrine Péché. 2011. <span>“Eigenvectors of Some
+Large Sample Covariance Matrix Ensembles.”</span> <em>Probability Theory
+and Related Fields</em> 151: 233–64.
+</div>
+<div id="ref-ledoitwolf2020analytical" class="csl-entry"
+role="listitem">
+Ledoit, Olivier, and Michael Wolf. 2020. <span>“Analytical Nonlinear
+Shrinkage of Large-Dimensional Covariance Matrices.”</span> <em>The
+Annals of Statistics</em> 48 (5): 3043–65.
+</div>
+<div id="ref-manolakis2026" class="csl-entry" role="listitem">
+Manolakis, Efstratios, Christian Bongiorno, and Rosario Nunzio Mantegna.
+2026. <span>“Physics-Informed Singular-Value Learning for
+Cross-Covariances Forecasting in Financial Markets.”</span> <em>Finance
+Research Letters</em> 110: 110602.
+</div>
+<div id="ref-oriol2024weighted" class="csl-entry" role="listitem">
+Oriol, Benoit. 2024. <span>“Asymptotic Non-Linear Shrinkage and
+Eigenvector Overlap for Weighted Sample Covariance.”</span> <em>arXiv
+Preprint arXiv:2410.14420</em>.
+</div>
+<div id="ref-weng2003ccipca" class="csl-entry" role="listitem">
+Weng, Juyang, Yilu Zhang, and Wey-Shiuan Hwang. 2003. <span>“Candid
+Covariance-Free Incremental Principal Component Analysis.”</span>
+<em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>
+25 (8): 1034–40.
+</div>
+</div>
+  </div>
+  <footer><div class="container"><p>precise &middot; MIT licensed &middot;
+    <a href="https://github.com/microprediction/precise">microprediction/precise</a></p></div></footer>
+</body>
+</html>

@@ -48,3 +48,7 @@ build_one schur_likelihood_paper schur-likelihood \
 build_one two_sides_of_schur_damping two-sides-of-schur-damping \
   "Two Sides of Schur Damping" \
   "High-Dimensional Pseudo-Likelihoods and Portfolio Allocation"
+
+build_one online_spectral_calibration online-spectral-calibration \
+  "Spectral Calibration Without a Split" \
+  "Learning Covariance Eigenvalue Corrections One Observation at a Time"
