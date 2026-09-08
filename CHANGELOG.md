@@ -12,6 +12,12 @@ All notable changes to `precise` are documented here. The format follows
   target; this moves each one separately while keeping the sample eigenvectors, and stays finite and
   invertible when `p > n`. Accumulation is a plain Welford update (O(p^2)/step, no window); the
   spectral work is lazy, in `_state_to_cov`, and memoized per state.
+- `WindowedNonlinearShrinkageCovariance`: the same map over a rolling window of the last `W`
+  observations. A window is the forgetting variant that keeps the asymptotics *exact* — equal
+  weights inside the window are precisely the sample they describe, with `n = W` — where an
+  exponential decay would need the weighted theory rather than a moment-matched effective sample
+  size. Bounded state, O(p^2) add-and-drop per step. `research/forgetting.py` scores the two
+  against each other.
 
 ## [1.0.0] — 2026-06-05
 

@@ -44,6 +44,7 @@ buffers. State is a plain dict, so you can checkpoint mid-stream with `get_state
 | `OASCovariance` | online Oracle Approximating Shrinkage (often better-conditioned than LW) |
 | `ShrunkCovariance` | fixed-intensity shrinkage to identity **or** a constant-correlation target |
 | `NonlinearShrinkageCovariance` | analytical *nonlinear* spectrum shrinkage — each eigenvalue moved separately, sample eigenvectors kept |
+| `WindowedNonlinearShrinkageCovariance` | the same map over a rolling window — forgets, and equal weights keep the asymptotics exact |
 | `PartialMomentsCovariance` | exponentially weighted partial-moment (semi-)covariance |
 | `HuberCovariance` | online robust estimator that downweights outliers |
 | `TylerCovariance` | recursive Tyler M-estimator — robust correlation/shape for elliptical data |

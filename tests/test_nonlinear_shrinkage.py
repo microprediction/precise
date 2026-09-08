@@ -141,3 +141,59 @@ def test_rank_deficient_stream_degrades_gracefully():
     assert lam[3] > 0.1, "the four real directions must survive"
     # And the informative part is genuinely cleaned, not passed through untouched.
     assert not np.allclose(C, sample, atol=1e-8)
+
+
+# --------------------------------------------------------------- the rolling-window counterpart
+
+
+def test_window_matches_an_explicit_recomputation():
+    # The rolling sums are maintained by add-and-drop; they must agree with the covariance of the
+    # last `window` rows computed from scratch.
+    from precise import WindowedNonlinearShrinkageCovariance
+
+    W = 40
+    X = _draw(_bulk_cov(5), 300)
+    est = WindowedNonlinearShrinkageCovariance(window=W).fit(X)
+    cov, n = est._spectrum_inputs(est._state)
+    assert n == W - 1
+    assert np.allclose(cov, np.cov(X[-W:], rowvar=False, bias=True), atol=1e-10)
+    assert np.allclose(est.location_, X[-W:].mean(axis=0), atol=1e-10)
+    assert est.n_samples_ == 300, "n_samples_ counts the stream, not the window"
+
+
+def test_add_and_drop_does_not_drift_over_a_long_stream():
+    # Cancellation accumulates in a running add-and-drop. Over many windows the maintained sums
+    # must still match a from-scratch recomputation, which is what the periodic refresh buys.
+    from precise import WindowedNonlinearShrinkageCovariance
+
+    W = 25
+    rng = np.random.default_rng(8)
+    # A large offset is the hostile case for cancellation in a running add-and-drop.
+    X = rng.standard_normal((4000, 4)) * 1e4 + 1e6
+    est = WindowedNonlinearShrinkageCovariance(window=W).fit(X)
+    cov, _ = est._spectrum_inputs(est._state)
+    expected = np.cov(X[-W:], rowvar=False, bias=True)
+    assert np.allclose(cov, expected, rtol=1e-6), "rolling sums drifted from the truth"
+
+
+def test_window_forgets_a_regime_the_expanding_estimator_remembers():
+    from precise import WindowedNonlinearShrinkageCovariance
+
+    W, p = 120, 8
+    old, new = _bulk_cov(p, seed=1), _market_cov(p, seed=2)
+    X = np.vstack([_draw(old, 600, seed=1), _draw(new, 600, seed=2)])
+
+    windowed = WindowedNonlinearShrinkageCovariance(window=W).fit(X)
+    expanding = NonlinearShrinkageCovariance().fit(X)
+    # After a full window of the new regime, the window should describe it and nothing else.
+    assert _rel_err(windowed.covariance_, new) < _rel_err(windowed.covariance_, old)
+    assert _rel_err(windowed.covariance_, new) < _rel_err(expanding.covariance_, new)
+
+
+def test_window_larger_than_the_stream_matches_the_expanding_estimator():
+    from precise import WindowedNonlinearShrinkageCovariance
+
+    X = _draw(_bulk_cov(6), 200)
+    windowed = WindowedNonlinearShrinkageCovariance(window=10_000).fit(X)
+    expanding = NonlinearShrinkageCovariance().fit(X)
+    assert np.allclose(windowed.covariance_, expanding.covariance_, atol=1e-10)

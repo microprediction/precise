@@ -121,7 +121,38 @@ def nonlinear_shrinkage_spectrum(lam: np.ndarray, n: int) -> np.ndarray | None:
     return np.concatenate([np.full(p - k, dtilde0), dtilde1])
 
 
-class NonlinearShrinkageCovariance(BaseOnlineCovariance):
+class _LazySpectrumCovariance(BaseOnlineCovariance):
+    """Shared plumbing: shrink the spectrum lazily on read, and memoize the result per state.
+
+    Subclasses accumulate however they like and report ``(covariance, sample size)`` through
+    :meth:`_spectrum_inputs`; the eigendecomposition happens here, once per state, so that reading
+    ``covariance_``, ``correlation_`` and ``precision_`` in turn does not decompose three times.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._cleaned_for: dict | None = None
+        self._cleaned: np.ndarray | None = None
+
+    def _spectrum_inputs(self, state: dict) -> tuple[np.ndarray, int]:
+        raise NotImplementedError
+
+    def _state_to_cov(self, state: dict) -> np.ndarray:
+        # Every update returns a fresh state dict, so identity is a sound memo key.
+        if state is self._cleaned_for and self._cleaned is not None:
+            return self._cleaned
+        cov, n = self._spectrum_inputs(state)
+        cleaned = _shrink(cov, n)
+        self._cleaned_for, self._cleaned = state, cleaned
+        return cleaned
+
+    def set_state(self, state: dict | None) -> _LazySpectrumCovariance:
+        self._cleaned_for = self._cleaned = None
+        super().set_state(state)
+        return self
+
+
+class NonlinearShrinkageCovariance(_LazySpectrumCovariance):
     """Online covariance with analytically nonlinearly shrunk eigenvalues (Ledoit-Wolf 2020).
 
     Keeps the sample eigenvectors and remaps the eigenvalues individually. Unlike the linear
@@ -129,14 +160,17 @@ class NonlinearShrinkageCovariance(BaseOnlineCovariance):
     spectrum and the sample size — and it stays finite and invertible when ``p > n``, where the
     sample covariance is singular.
 
+    The sample expands over the whole stream, so ``q = p/n`` falls towards zero and the shrinkage
+    correctly fades: on a genuinely stationary stream this converges on
+    :class:`~precise.empirical.EmpiricalCovariance`, which is the right answer there and the wrong
+    one under drift. :class:`WindowedNonlinearShrinkageCovariance` is the forgetting counterpart.
+
     :param diff:  If ``True``, estimate the covariance of first differences of the stream.
     """
 
     def __init__(self, diff: bool = False):
         self.diff = diff
         super().__init__()
-        self._cleaned_for: dict | None = None
-        self._cleaned: np.ndarray | None = None
 
     def _init_state(self, n_dim: int) -> dict:
         return emp_init(n_dim)
@@ -144,18 +178,100 @@ class NonlinearShrinkageCovariance(BaseOnlineCovariance):
     def _update_state(self, state: dict, x: np.ndarray) -> dict:
         return emp_update(state, x)
 
-    def _state_to_cov(self, state: dict) -> np.ndarray:
-        # State dicts are rebuilt by every update, so identity is a sound memo key.
-        if state is self._cleaned_for and self._cleaned is not None:
-            return self._cleaned
-        cov = _shrink(np.asarray(state["cov"], dtype=float), int(state["n_samples"]) - 1)
-        self._cleaned_for, self._cleaned = state, cov
-        return cov
+    def _spectrum_inputs(self, state: dict) -> tuple[np.ndarray, int]:
+        return np.asarray(state["cov"], dtype=float), int(state["n_samples"]) - 1
 
-    def set_state(self, state: dict | None) -> NonlinearShrinkageCovariance:
-        self._cleaned_for = self._cleaned = None
-        super().set_state(state)
-        return self
+
+class WindowedNonlinearShrinkageCovariance(_LazySpectrumCovariance):
+    """Nonlinear shrinkage over a rolling window of the last ``window`` observations.
+
+    The forgetting counterpart to :class:`NonlinearShrinkageCovariance`, and the reason it is a
+    window rather than an exponential decay: the Ledoit-Wolf asymptotics describe an *equally
+    weighted* sample of size ``n``, and a rolling window is exactly that, with ``n = window``.
+    Nothing about the map is approximated. Substituting an "effective sample size" for
+    exponentially decaying weights would be a different matter -- the whole weight distribution
+    enters the limiting spectrum, not just its second moment, so a moment match there is an
+    approximation wearing an equivalence's clothes. The weighted theory that does it properly is
+    Oriol, arXiv:2410.14420.
+
+    The pairing is the point. A short window is what tracks drift, but on its own it is too noisy
+    and ill-conditioned to use; the shrinkage is what makes a short window affordable, and
+    ``q = p/window`` becomes an explicit dial rather than a quantity drifting towards zero. Against
+    that, if the covariance really is stationary then a window is pure variance for no bias
+    reduction and the expanding estimator strictly dominates.
+
+    ``research/forgetting.py`` scores both. Measured there: under drift the window wins by a wide
+    margin (roughly 3-4x lower error than the expanding estimator when factor structure rotates or
+    dies), on static spectra it loses by 3-5x, and cleaning the window's spectrum beats leaving it
+    raw at *every* window length -- by 20x at W=60 -- so a cleaned short window outperforms a raw
+    window four times longer. Which regime your data is in is the empirical question; the default
+    below is one trading year.
+
+    :param window:  Number of most recent observations to estimate from.
+    :param diff:    If ``True``, estimate the covariance of first differences of the stream.
+    """
+
+    def __init__(self, window: int = 250, diff: bool = False):
+        self.window = window
+        self.diff = diff
+        super().__init__()
+
+    def _init_state(self, n_dim: int) -> dict:
+        w = max(int(self.window), 2)
+        return {
+            "n_dim": int(n_dim),
+            "n_samples": 0,
+            "window": w,
+            "fill": 0,  # observations currently in the buffer
+            "pos": 0,  # next slot to write
+            "buf": np.zeros((w, n_dim)),
+            "s1": np.zeros(n_dim),  # running sum over the window
+            "s2": np.zeros((n_dim, n_dim)),  # running sum of outer products over the window
+        }
+
+    def _update_state(self, state: dict, x: np.ndarray) -> dict:
+        w, fill, pos = int(state["window"]), int(state["fill"]), int(state["pos"])
+        buf = state["buf"]
+        s1, s2 = state["s1"], state["s2"]
+
+        if fill == w:  # evict the observation leaving the window
+            old = buf[pos]
+            s1 = s1 - old
+            s2 = s2 - np.outer(old, old)
+        else:
+            fill += 1
+        buf[pos] = x  # in place: the buffer is bounded, and the state dict below is still fresh
+        s1 = s1 + x
+        s2 = s2 + np.outer(x, x)
+        pos = (pos + 1) % w
+
+        n_samples = int(state["n_samples"]) + 1
+        if n_samples % w == 0:
+            # Add-and-drop accumulates cancellation error over a long stream. Recomputing from the
+            # buffer costs O(window * p^2) but happens once per window, so it is O(p^2) amortized --
+            # the same order as the update it corrects.
+            live = buf[:fill]
+            s1, s2 = live.sum(axis=0), live.T @ live
+
+        return {
+            "n_dim": state["n_dim"],
+            "n_samples": n_samples,
+            "window": w,
+            "fill": fill,
+            "pos": pos,
+            "buf": buf,
+            "s1": s1,
+            "s2": s2,
+        }
+
+    def _state_to_mean(self, state: dict) -> np.ndarray:
+        return np.asarray(state["s1"], dtype=float) / max(int(state["fill"]), 1)
+
+    def _spectrum_inputs(self, state: dict) -> tuple[np.ndarray, int]:
+        fill = max(int(state["fill"]), 1)
+        mean = np.asarray(state["s1"], dtype=float) / fill
+        cov = np.asarray(state["s2"], dtype=float) / fill - np.outer(mean, mean)
+        return cov, fill - 1
 
 
 def _shrink(cov: np.ndarray, n: int) -> np.ndarray:
