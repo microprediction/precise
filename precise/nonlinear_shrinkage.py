@@ -207,6 +207,15 @@ class WindowedNonlinearShrinkageCovariance(_LazySpectrumCovariance):
     window four times longer. Which regime your data is in is the empirical question; the default
     below is one trading year.
 
+    One caveat that squared error cannot show, measured in ``research/turnover.py``: the boundary is
+    hard, so a shock is paid for twice -- once on arrival and again exactly ``window`` periods later
+    when it drops out and the estimate jumps back for no reason. Minimum-variance turnover spikes
+    over 12x at that offset, where an exponentially weighted estimator of matched effective memory
+    shows nothing. Under Gaussian draws the window's average turnover is still the lower of the two,
+    but the echo is charged per shock: at t(4) innovations the window is already the churnier, and
+    at t(3) it is 15% churnier with worse realized risk. If you trade on the estimate and your
+    returns have tails, weigh that against the accuracy.
+
     :param window:  Number of most recent observations to estimate from.
     :param diff:    If ``True``, estimate the covariance of first differences of the stream.
     """

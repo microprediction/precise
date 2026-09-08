@@ -17,7 +17,9 @@ All notable changes to `precise` are documented here. The format follows
   weights inside the window are precisely the sample they describe, with `n = W` — where an
   exponential decay would need the weighted theory rather than a moment-matched effective sample
   size. Bounded state, O(p^2) add-and-drop per step. `research/forgetting.py` scores the two
-  against each other.
+  against each other; `research/turnover.py` scores what squared error cannot see — the window's
+  hard boundary echoes every shock one window later, which costs churn that grows with tail
+  weight.
 
 ## [1.0.0] — 2026-06-05
 
