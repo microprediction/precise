@@ -39,11 +39,18 @@ the projections we already compute. Refreshing the basis every ``K`` observation
 O(p^2 + p^3/K) amortized. Stale eigenvectors are the price, and they bound how fast the estimator
 can follow an abrupt rotation.
 
-**The open question** is not whether spectral cleaning can be online -- it plainly can -- but how to
-share and forget calibration information as the spectrum changes. Calibrating against rank position
-remembers a useful spectral shape but keeps imposing it after that shape is gone; calibrating
-against the observed eigenvalue is more robust to that but gives up some of the gain elsewhere. The
-scenarios below are built to separate those failures.
+**What the measurements say, up front.** The construction works: it beats an uncleaned
+exponentially weighted covariance everywhere and exponentially weighted linear shrinkage on every
+regime where the dependence changes. But it is beaten, on every one of those regimes, by something
+much simpler -- putting the *analytical* map on a rolling window (``NLS window 250`` below).
+Learning the correction from the stream is feasible and cheap; on these scenarios it is not
+necessary, because the cheap analytical route already captures the adaptivity that motivated it.
+The learned map comes closest on the fastest-drifting regime, which is the direction any case for it
+would have to be made in.
+
+Calibrating against rank position remembers a useful spectral shape but keeps imposing it after that
+shape is gone; calibrating against the observed eigenvalue is more robust to that but gives up some
+of the gain elsewhere. The scenarios below are built to separate those failures.
 
     python research/spectral_calibration.py
 """
@@ -57,6 +64,7 @@ from precise import (
     LedoitWolfCovariance,
     NonlinearShrinkageCovariance,
     OASCovariance,
+    WindowedNonlinearShrinkageCovariance,
 )
 
 # --------------------------------------------------------------------------- the online calibrator
@@ -223,7 +231,8 @@ def _estimators(r, refresh, rho):
         "Raw EW": lambda: EwaCovariance(r=r),
         "LedoitWolf": lambda: LedoitWolfCovariance(r=r),
         "OAS": lambda: OASCovariance(r=r),
-        "NonlinearShrinkage": NonlinearShrinkageCovariance,
+        "NLS expanding": NonlinearShrinkageCovariance,
+        "NLS window 250": lambda: WindowedNonlinearShrinkageCovariance(window=250),
         "rank calib": lambda: CalibratedSpectrumCovariance(r, refresh, "rank", rho),
         "eigenvalue calib": lambda: CalibratedSpectrumCovariance(r, refresh, "eigenvalue", rho),
         "shared calib": lambda: CalibratedSpectrumCovariance(r, refresh, "shared", rho),

@@ -34,12 +34,14 @@ and the one-pass estimator that follows: $O(p^2)$ per observation plus an eigend
 $K$ steps, with the eigenvalues tracked between refreshes by the same exponential recursion the
 covariance itself obeys, at $O(p)$. The identity is not new---it is what makes cross-validated
 cleaning work---but we have not found its sequential use recorded, and it removes the reason such
-methods have been confined to batch settings. Experiments in five regimes separate what
-this buys from what it costs: against exponentially weighted linear shrinkage the learned
-calibration is fifteen to twenty percent better wherever the dependence structure actually changes,
-and worse wherever it does not---by a factor of twenty against an expanding-sample analytical
-shrinker on a static spectrum. We also report a negative result: conditioning the learned map on the
-global shape of the spectrum, which we expected to matter, does not.
+methods have been confined to batch settings. Experiments in five regimes then say something we did not
+expect and report rather than bury: while the learned calibration beats an uncleaned exponentially
+weighted covariance everywhere and exponentially weighted linear shrinkage wherever the dependence
+actually changes, it is beaten on every one of those regimes by a much simpler alternative---putting
+the \emph{analytical} map on a rolling window, where equal weights make the asymptotics exact with
+$n = W$. Learning the correction from the stream is cheap and sound; on these scenarios it is not
+necessary. We also report that conditioning the learned map on the global shape of the spectrum,
+which we expected to matter, does not.
 \end{abstract}
 
 \section{The gap}
@@ -159,33 +161,41 @@ We compare against an uncleaned exponentially weighted covariance, the linear sh
 \begin{table}[ht]
 \centering
 \small
-\begin{tabular}{lrrrrrrr}
+\begin{tabular}{lrrrrrrrr}
 \toprule
- & uncleaned & \multicolumn{2}{c}{linear, weighted} & nonlinear, expanding & \multicolumn{3}{c}{learned calibration} \\
-\cmidrule(lr){2-2}\cmidrule(lr){3-4}\cmidrule(lr){5-5}\cmidrule(lr){6-8}
-regime & raw EW & Ledoit--Wolf & OAS & analytical NLS & rank & eigenvalue & shared \\
+ & uncleaned & \multicolumn{2}{c}{linear, weighted} & \multicolumn{2}{c}{analytical nonlinear} & \multicolumn{3}{c}{learned calibration} \\
+\cmidrule(lr){2-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-9}
+regime & raw EW & L--W & OAS & expanding & window & rank & eigenvalue & shared \\
 \midrule
-isotropic         & 0.340 & \textbf{0.0007} & \textbf{0.0007} & 0.0007          & 0.0026 & 0.0018          & 0.0018 \\
-broad spectrum    & 0.206 & 0.204           & 0.199           & \textbf{0.0072} & 0.135  & 0.147           & 0.147  \\
-factor rotation   & 0.243 & 0.238           & 0.231           & 0.206           & 0.191  & \textbf{0.186}  & 0.186  \\
-factors vanish    & 0.299 & 0.127           & 0.124           & 0.239           & 0.105  & \textbf{0.103}  & 0.103  \\
-regimes alternate & 0.330 & 0.131           & 0.128           & 0.217           & 0.114  & 0.109           & \textbf{0.109} \\
+isotropic         & 0.340 & \textbf{0.0007} & \textbf{0.0007} & 0.0007          & 0.0049          & 0.0026 & 0.0018 & 0.0018 \\
+broad spectrum    & 0.206 & 0.204           & 0.199           & \textbf{0.0072} & 0.066           & 0.135  & 0.147  & 0.147  \\
+factor rotation   & 0.243 & 0.238           & 0.231           & 0.206           & \textbf{0.067}  & 0.191  & 0.186  & 0.186  \\
+factors vanish    & 0.299 & 0.127           & 0.124           & 0.239           & \textbf{0.059}  & 0.105  & 0.103  & 0.103  \\
+regimes alternate & 0.330 & 0.131           & 0.128           & 0.217           & \textbf{0.104}  & 0.114  & 0.109  & 0.109  \\
 \bottomrule
 \end{tabular}
 \caption{Mean squared Frobenius error relative to the squared norm of the truth; lower is better,
-best in each row in bold. Eight seeds, $p=32$, $6000$ observations each.}
+best in each row in bold. Eight seeds, $p=32$, $6000$ observations each. The windowed
+column uses $W=250$; the learned columns use the same exponential weight $r=0.02$ as the linear
+shrinkers.}
 \end{table}
 
-Three things are worth reading off, one of them negative.
+Three things are worth reading off. The first is not the result we expected.
 
-\emph{Learning buys adaptivity, and only adaptivity.} On the three non-stationary regimes the
-calibrated estimators beat both linear shrinkers by fifteen to twenty percent---$0.186$ against
-$0.231$ under a rotation, $0.103$ against $0.124$ when the factor structure dies, $0.109$ against
-$0.128$ under alternation. On the two static regimes they lose, and against the expanding-sample
-analytical shrinker on a broad static spectrum they lose by a factor of twenty ($0.147$ against
-$0.0072$). This is the expected shape of the trade and it is worth stating plainly: the learned map
-is paying, in variance, for an adaptivity that a static problem does not reward. An estimator that
-does not know which regime it is in cannot have both.
+\emph{The learned correction is dominated by a simpler analytical one.} On every regime where the
+dependence changes, applying the analytical map to a rolling window beats every learned variant---
+$0.067$ against $0.186$ under a rotation, $0.059$ against $0.103$ when the factor structure dies,
+$0.104$ against $0.109$ under alternation. The learned calibration does what we set out to show it
+could: it beats an uncleaned exponentially weighted covariance everywhere, and beats exponentially
+weighted linear shrinkage by fifteen to twenty percent on exactly the non-stationary regimes that
+motivated it. But linear shrinkage was the wrong bar. Once the analytical nonlinear map is given a
+sample it can forget---and a rolling window gives it one without approximating anything, since equal
+weights inside a window of length $W$ are exactly the sample the asymptotics describe---the cheap
+route captures the adaptivity that the learned route was introduced to supply. We report this
+because it is the finding, not because it flatters the construction. The gap narrows to five percent
+on the fastest-drifting regime, which is the only direction in which a case for learning could be
+rebuilt: the window's advantage should shrink as the drift rate approaches the window length, and
+that is where a learned map, which need not commit to a timescale in advance, has somewhere to go.
 
 \emph{Rank calibration remembers, and that cuts both ways.} Indexing by spectral position is the
 best learned variant on the static broad spectrum ($0.135$ against $0.147$), where a stable profile
@@ -203,7 +213,6 @@ $0.3$--$1.1$ \emph{across} these regimes but moves only about $0.4$ \emph{within
 so the discriminating variation is between problems rather than along a trajectory, and a map that
 one estimator carries through one stream never sees enough of the axis to use it. We report this as
 a negative result rather than tuning until it disappears.
-
 
 \section{Relation to prior work, and what this is not}
 
@@ -231,9 +240,12 @@ The labels are severely noisy: under Gaussianity $z_i^2$ has variance $2(u_i^\to
 a single observation carries roughly one effective bit per direction and the map's forgetting rate
 trades adaptation against that noise. The eigenvector basis is refreshed rather than tracked, which
 bounds adaptation to abrupt rotation. All evidence here is synthetic and Gaussian, and the regimes were
-constructed by us to separate the failure modes we suspected; there is no real equity study, and
-the advantage over linear shrinkage is confined to the non-stationary regimes, which are exactly the
-ones a sceptic would say we chose. The open question is not whether spectral cleaning can be made online. It plainly
+constructed by us to separate the failure modes we suspected; there is no real equity study. And on
+those regimes the construction does not win: a rolling window carrying the analytical map beats it
+wherever the dependence drifts, which is the case the learned map was meant to answer. What survives
+is the identity, the fact that a stream needs no split to exploit it, and an estimator cheap enough
+that the question can be revisited on real data, at drift rates faster than a window can follow. The
+open question is not whether spectral cleaning can be made online. It plainly
 can. It is how calibration information should be shared across directions and forgotten as the
 spectrum changes, and the negative result on shape conditioning above says the obvious first answer
 is not the right one.

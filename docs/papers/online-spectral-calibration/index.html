@@ -70,14 +70,17 @@ refreshes by the same exponential recursion the covariance itself obeys,
 at <span class="math inline">O(p)</span>. The identity is not new—it is
 what makes cross-validated cleaning work—but we have not found its
 sequential use recorded, and it removes the reason such methods have
-been confined to batch settings. Experiments in five regimes separate
-what this buys from what it costs: against exponentially weighted linear
-shrinkage the learned calibration is fifteen to twenty percent better
-wherever the dependence structure actually changes, and worse wherever
-it does not—by a factor of twenty against an expanding-sample analytical
-shrinker on a static spectrum. We also report a negative result:
-conditioning the learned map on the global shape of the spectrum, which
-we expected to matter, does not.</p></div>
+been confined to batch settings. Experiments in five regimes then say
+something we did not expect and report rather than bury: while the
+learned calibration beats an uncleaned exponentially weighted covariance
+everywhere and exponentially weighted linear shrinkage wherever the
+dependence actually changes, it is beaten on every one of those regimes
+by a much simpler alternative—putting the <em>analytical</em> map on a
+rolling window, where equal weights make the asymptotics exact with
+<span class="math inline">n = W</span>. Learning the correction from the
+stream is cheap and sound; on these scenarios it is not necessary. We
+also report that conditioning the learned map on the global shape of the
+spectrum, which we expected to matter, does not.</p></div>
 
 <h2 id="the-gap">The gap</h2>
 <p>Nonlinear shrinkage of a covariance spectrum—moving each sample
@@ -232,25 +235,29 @@ class="citation" data-cites="ledoitwolf2020analytical">Ledoit and Wolf
 <caption>Mean squared Frobenius error relative to the squared norm of
 the truth; lower is better, best in each row in bold. Eight seeds, <span
 class="math inline">p=32</span>, <span class="math inline">6000</span>
-observations each.</caption>
+observations each. The windowed column uses <span
+class="math inline">W=250</span>; the learned columns use the same
+exponential weight <span class="math inline">r=0.02</span> as the linear
+shrinkers.</caption>
 <thead>
 <tr>
 <th style="text-align: left;"></th>
 <th style="text-align: right;">uncleaned</th>
 <th colspan="2" style="text-align: center;">linear, weighted</th>
-<th style="text-align: right;">nonlinear, expanding</th>
+<th colspan="2" style="text-align: center;">analytical nonlinear</th>
 <th colspan="3" style="text-align: center;">learned calibration</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td
-style="text-align: left;"><span>2-2</span>(lr)<span>3-4</span>(lr)<span>5-5</span>(lr)<span>6-8</span>
+style="text-align: left;"><span>2-2</span>(lr)<span>3-4</span>(lr)<span>5-6</span>(lr)<span>7-9</span>
 regime</td>
 <td style="text-align: right;">raw EW</td>
-<td style="text-align: right;">Ledoit–Wolf</td>
+<td style="text-align: right;">L–W</td>
 <td style="text-align: right;">OAS</td>
-<td style="text-align: right;">analytical NLS</td>
+<td style="text-align: right;">expanding</td>
+<td style="text-align: right;">window</td>
 <td style="text-align: right;">rank</td>
 <td style="text-align: right;">eigenvalue</td>
 <td style="text-align: right;">shared</td>
@@ -261,6 +268,7 @@ regime</td>
 <td style="text-align: right;"><strong>0.0007</strong></td>
 <td style="text-align: right;"><strong>0.0007</strong></td>
 <td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0049</td>
 <td style="text-align: right;">0.0026</td>
 <td style="text-align: right;">0.0018</td>
 <td style="text-align: right;">0.0018</td>
@@ -271,6 +279,7 @@ regime</td>
 <td style="text-align: right;">0.204</td>
 <td style="text-align: right;">0.199</td>
 <td style="text-align: right;"><strong>0.0072</strong></td>
+<td style="text-align: right;">0.066</td>
 <td style="text-align: right;">0.135</td>
 <td style="text-align: right;">0.147</td>
 <td style="text-align: right;">0.147</td>
@@ -281,8 +290,9 @@ regime</td>
 <td style="text-align: right;">0.238</td>
 <td style="text-align: right;">0.231</td>
 <td style="text-align: right;">0.206</td>
+<td style="text-align: right;"><strong>0.067</strong></td>
 <td style="text-align: right;">0.191</td>
-<td style="text-align: right;"><strong>0.186</strong></td>
+<td style="text-align: right;">0.186</td>
 <td style="text-align: right;">0.186</td>
 </tr>
 <tr>
@@ -291,8 +301,9 @@ regime</td>
 <td style="text-align: right;">0.127</td>
 <td style="text-align: right;">0.124</td>
 <td style="text-align: right;">0.239</td>
+<td style="text-align: right;"><strong>0.059</strong></td>
 <td style="text-align: right;">0.105</td>
-<td style="text-align: right;"><strong>0.103</strong></td>
+<td style="text-align: right;">0.103</td>
 <td style="text-align: right;">0.103</td>
 </tr>
 <tr>
@@ -301,29 +312,40 @@ regime</td>
 <td style="text-align: right;">0.131</td>
 <td style="text-align: right;">0.128</td>
 <td style="text-align: right;">0.217</td>
+<td style="text-align: right;"><strong>0.104</strong></td>
 <td style="text-align: right;">0.114</td>
 <td style="text-align: right;">0.109</td>
-<td style="text-align: right;"><strong>0.109</strong></td>
+<td style="text-align: right;">0.109</td>
 </tr>
 </tbody>
 </table>
-<p>Three things are worth reading off, one of them negative.</p>
-<p><em>Learning buys adaptivity, and only adaptivity.</em> On the three
-non-stationary regimes the calibrated estimators beat both linear
-shrinkers by fifteen to twenty percent—<span
-class="math inline">0.186</span> against <span
-class="math inline">0.231</span> under a rotation, <span
-class="math inline">0.103</span> against <span
-class="math inline">0.124</span> when the factor structure dies, <span
-class="math inline">0.109</span> against <span
-class="math inline">0.128</span> under alternation. On the two static
-regimes they lose, and against the expanding-sample analytical shrinker
-on a broad static spectrum they lose by a factor of twenty (<span
-class="math inline">0.147</span> against <span
-class="math inline">0.0072</span>). This is the expected shape of the
-trade and it is worth stating plainly: the learned map is paying, in
-variance, for an adaptivity that a static problem does not reward. An
-estimator that does not know which regime it is in cannot have both.</p>
+<p>Three things are worth reading off. The first is not the result we
+expected.</p>
+<p><em>The learned correction is dominated by a simpler analytical
+one.</em> On every regime where the dependence changes, applying the
+analytical map to a rolling window beats every learned variant— <span
+class="math inline">0.067</span> against <span
+class="math inline">0.186</span> under a rotation, <span
+class="math inline">0.059</span> against <span
+class="math inline">0.103</span> when the factor structure dies, <span
+class="math inline">0.104</span> against <span
+class="math inline">0.109</span> under alternation. The learned
+calibration does what we set out to show it could: it beats an uncleaned
+exponentially weighted covariance everywhere, and beats exponentially
+weighted linear shrinkage by fifteen to twenty percent on exactly the
+non-stationary regimes that motivated it. But linear shrinkage was the
+wrong bar. Once the analytical nonlinear map is given a sample it can
+forget—and a rolling window gives it one without approximating anything,
+since equal weights inside a window of length <span
+class="math inline">W</span> are exactly the sample the asymptotics
+describe—the cheap route captures the adaptivity that the learned route
+was introduced to supply. We report this because it is the finding, not
+because it flatters the construction. The gap narrows to five percent on
+the fastest-drifting regime, which is the only direction in which a case
+for learning could be rebuilt: the window’s advantage should shrink as
+the drift rate approaches the window length, and that is where a learned
+map, which need not commit to a timescale in advance, has somewhere to
+go.</p>
 <p><em>Rank calibration remembers, and that cuts both ways.</em>
 Indexing by spectral position is the best learned variant on the static
 broad spectrum (<span class="math inline">0.135</span> against <span
@@ -385,14 +407,17 @@ map’s forgetting rate trades adaptation against that noise. The
 eigenvector basis is refreshed rather than tracked, which bounds
 adaptation to abrupt rotation. All evidence here is synthetic and
 Gaussian, and the regimes were constructed by us to separate the failure
-modes we suspected; there is no real equity study, and the advantage
-over linear shrinkage is confined to the non-stationary regimes, which
-are exactly the ones a sceptic would say we chose. The open question is
-not whether spectral cleaning can be made online. It plainly can. It is
-how calibration information should be shared across directions and
-forgotten as the spectrum changes, and the negative result on shape
-conditioning above says the obvious first answer is not the right
-one.</p>
+modes we suspected; there is no real equity study. And on those regimes
+the construction does not win: a rolling window carrying the analytical
+map beats it wherever the dependence drifts, which is the case the
+learned map was meant to answer. What survives is the identity, the fact
+that a stream needs no split to exploit it, and an estimator cheap
+enough that the question can be revisited on real data, at drift rates
+faster than a window can follow. The open question is not whether
+spectral cleaning can be made online. It plainly can. It is how
+calibration information should be shared across directions and forgotten
+as the spectrum changes, and the negative result on shape conditioning
+above says the obvious first answer is not the right one.</p>
 <div id="refs" class="references csl-bib-body hanging-indent"
 role="list">
 <div id="ref-bartz2016" class="csl-entry" role="listitem">
