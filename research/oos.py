@@ -82,7 +82,12 @@ ENSEMBLES = {
 if HAVE_RANDOMCOV:  # pragma: no cover
     for _m in ("lkj", "wishart", "residuals"):
         ENSEMBLES[f"randomcov_{_m}"] = (
-            (lambda p, rng, m=_m: np.asarray(random_covariance_matrix(n=p, corr_method=m))),
+            # Pass rng through. Without it these three draw from randomcov's own global state,
+            # which makes every study on this module irreproducible whenever randomcov happens to
+            # be installed -- including the frozen recommender, which is meant to be regenerable.
+            (lambda p, rng, m=_m: np.asarray(
+                random_covariance_matrix(n=p, corr_method=m, rng=rng)
+            )),
             False,
         )
 
