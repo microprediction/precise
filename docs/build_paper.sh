@@ -47,14 +47,9 @@ build_one() {
     mkdir -p "$here/papers/$slug/figures"
     for f in $figs; do cp "$root/papers/figures/$f" "$here/papers/$slug/figures/$f"; done
   fi
-  # The site hosts the PDF, so refresh the committed copy from the local build when there is
-  # one. A fresh clone has no PDF under papers/ (gitignored as a build artifact there) and keeps
-  # the committed docs/ copy, which is why the copy is conditional rather than required.
-  if [ -f "$root/${reldir}/${tex}.pdf" ]; then
-    cp "$root/${reldir}/${tex}.pdf" "$here/papers/$slug/${tex}.pdf"
-  elif [ ! -f "$here/papers/$slug/${tex}.pdf" ]; then
-    echo "  WARNING: no PDF at ${reldir}/${tex}.pdf and none committed under docs/; PDF link will 404"
-  fi
+  # The site serves the PDF itself rather than linking a code host, so publish it beside the web
+  # edition. Both copies are tracked; this keeps the published one from drifting from its source.
+  cp "$root/${reldir}/${tex}.pdf" "$here/papers/$slug/${tex}.pdf"
   echo "wrote docs/papers/$slug/index.html (generated from ${reldir}/${tex}.tex)"
 }
 
