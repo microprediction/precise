@@ -623,6 +623,43 @@ Joël Bun, Romain Allez, Jean-Philippe Bouchaud, Marc Potters
 We investigate the problem of estimating a given real symmetric signal matrix C from a noisy observation matrix M in the limit of large dimension. We consider the case where the noisy measurement M comes either from an arbitrary additive or multiplicative rotational invariant perturbation. We establish, using the Replica method, the asymptotic global law estimate for three general classes of noisy matrices, significantly extending previously obtained results. We give exact results concerning the asymptotic deviations (called overlaps) of the perturbed eigenvectors away from the true ones, and we explain how to use these overlaps to "clean" the noisy eigenvalues of M. We provide some numerical checks for the different estimators proposed in this paper and we also make the connection with some well known results of Bayesian statistics
 
 
+## Analytical Nonlinear Shrinkage of Large-Dimensional Covariance Matrices [pdf](https://www.ledoit.net/athena.pdf)
+Olivier Ledoit and Michael Wolf. Annals of Statistics 48(5), 3043-3065, 2020.
+
+Nonlinear shrinkage of the sample eigenvalues without any numerical optimization: a kernel estimate
+of the sample spectral density and its Hilbert transform give the shrunk eigenvalues in closed form,
+about a thousand times faster than the earlier QuEST inversion and with no loss of accuracy. Each
+eigenvalue is moved by a different amount -- large ones down, small ones up -- while the sample
+eigenvectors are kept. The paper also gives the p > n case explicitly, where the null eigenvalues
+take a common positive value, so the estimate stays invertible when the sample covariance is not.
+Implemented in `precise` as `NonlinearShrinkageCovariance`; the map reads only the running
+eigenvalues and the observation count, so it runs off an online accumulator with no window.
+
+
+## Asymptotic non-linear shrinkage and eigenvector overlap for weighted sample covariance [arxiv](https://arxiv.org/abs/2410.14420)
+Benoit Oriol
+
+Computes asymptotic non-linear shrinkage formulas for covariance and precision matrix estimators
+built from *weighted* sample covariances, together with the joint sample-population eigenvector
+overlap distribution, in the spirit of Ledoit and Peche. The exponentially weighted case is worked
+out explicitly and an algorithm is given to compute the formulas numerically; robustness to
+heavy-tailed distributions is tested experimentally. This is the theory an exponentially weighted
+nonlinear shrinker needs: substituting a moment-matched "effective sample size" into an equally
+weighted cleaner is only a scalar approximation to the weight distribution, not the weighted result.
+
+
+## Physics-Informed Singular-Value Learning for Cross-Covariances Forecasting in Financial Markets [arxiv](https://arxiv.org/abs/2601.07687)
+Efstratios Manolakis, Christian Bongiorno, Rosario Nunzio Mantegna. Finance Research Letters 110, 110602, 2026.
+
+Targets the *cross*-covariance between two asset sets rather than in-sample cleaning. The empirical
+singular-vector basis is fixed from theory and only the singular-value map is learned, on the
+argument that the analytical cleaners are derived under stationarity and bounded-spectrum
+assumptions that equity returns violate through dependence drift and macroscopic common modes -- so
+the network can only correct the part where the analytical derivation is known to fail. Reported to
+remain stable in regimes where analytical cross-covariance estimation deteriorates with universe
+size.
+
+
 ## Estimating covariance matrices for portfolio optimization [pdf](http://www.gcoqueret.com/files/Estim_cov.pdf)
 GUILLAUME COQUERET AND VINCENT MILHAU
 

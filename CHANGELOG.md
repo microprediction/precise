@@ -4,6 +4,23 @@ All notable changes to `precise` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- `NonlinearShrinkageCovariance`: online analytical **nonlinear** shrinkage of the covariance
+  spectrum (Ledoit & Wolf 2020). The zoo's linear shrinkers pull every eigenvalue towards a common
+  target; this moves each one separately while keeping the sample eigenvectors, and stays finite and
+  invertible when `p > n`. Accumulation is a plain Welford update (O(p^2)/step, no window); the
+  spectral work is lazy, in `_state_to_cov`, and memoized per state.
+- `WindowedNonlinearShrinkageCovariance`: the same map over a rolling window of the last `W`
+  observations. A window is the forgetting variant that keeps the asymptotics *exact* — equal
+  weights inside the window are precisely the sample they describe, with `n = W` — where an
+  exponential decay would need the weighted theory rather than a moment-matched effective sample
+  size. Bounded state, O(p^2) add-and-drop per step. `research/forgetting.py` scores the two
+  against each other; `research/turnover.py` scores what squared error cannot see — the window's
+  hard boundary echoes every shock one window later, which costs churn that grows with tail
+  weight.
+
 ## [1.0.0] — 2026-06-05
 
 A ground-up rewrite: `precise` is now a focused library for **online (incremental) covariance and
