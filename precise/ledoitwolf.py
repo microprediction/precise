@@ -13,6 +13,10 @@ import numpy as np
 from precise._state import emp_update, ewa_init
 from precise.base import BaseOnlineCovariance
 
+# How far above the running mean dispersion a single observation may count. Loose enough that
+# Gaussian draws are untouched, tight enough that a fat tail cannot saturate the intensity.
+_OUTLIER_CAP = 10.0
+
 
 class LedoitWolfCovariance(BaseOnlineCovariance):
     """Online Ledoit-Wolf shrinkage covariance.
@@ -41,6 +45,13 @@ class LedoitWolfCovariance(BaseOnlineCovariance):
         delta = x - s["mean"]
         scatter = np.outer(delta, delta)
         q = np.sum((scatter - s["cov"]) ** 2) / p  # squared dispersion of this scatter
+        # q grows like the fourth power of the observation, so under heavy tails a single draw can
+        # dwarf the running mean, and pi_bar drives the shrinkage intensity straight to 1: the
+        # estimate collapses to a scaled identity and stops estimating. Winsorize each draw's
+        # contribution at a multiple of the running mean. Gaussian data almost never reaches the
+        # cap, so the intensity there is unchanged.
+        if s["pi_bar"] > 0:
+            q = min(q, _OUTLIER_CAP * s["pi_bar"])
         return {
             "n_dim": p,
             "n_samples": s["n_samples"] + 1,
