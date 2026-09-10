@@ -367,3 +367,37 @@ def test_keyed_matches_positional_estimator_exactly():
     for r in rows:
         k.update({"A": r[0], "B": r[1], "C": r[2]})
     assert np.allclose(k.get_cov(["A", "B", "C"]), pos.covariance_, atol=1e-10)
+
+
+def test_ledoit_wolf_does_not_collapse_under_heavy_tails():
+    # q, the per-observation dispersion, grows like the fourth power of the observation, so one
+    # fat-tailed draw can dwarf the running mean and drive the shrinkage intensity to 1. The
+    # estimate then collapses to a scaled identity: it stops estimating, and reports a covariance
+    # with no structure in it at all. Measured before the winsorization, t(3) innovations left
+    # 0.088 of the structure standing.
+    import numpy as np
+
+    from precise import LedoitWolfCovariance
+
+    rng = np.random.default_rng(1)
+    loadings = np.linalg.qr(rng.standard_normal((32, 32)))[0][:, :3] * 1.2
+    cov = loadings @ loadings.T + np.diag(0.3 + 0.4 * rng.random(32))
+    chol = np.linalg.cholesky(cov)
+
+    retained = {}
+    for df in (None, 3):
+        est = LedoitWolfCovariance(r=2 / 251)
+        draw = np.random.default_rng(5)
+        for _ in range(3000):
+            z = draw.standard_normal(32)
+            if df is not None:  # multivariate t, rescaled to leave the covariance unchanged
+                z = z * np.sqrt(df / draw.chisquare(df)) * np.sqrt((df - 2) / df)
+            est.partial_fit(chol @ z)
+        estimate = est.covariance_
+        isotropic = np.trace(estimate) / 32 * np.eye(32)
+        retained[df] = float(
+            np.linalg.norm(estimate - isotropic) / np.linalg.norm(estimate)
+        )
+
+    assert retained[3] > 0.3, f"collapsed towards a scaled identity under t(3): {retained[3]:.3f}"
+    assert retained[3] > 0.7 * retained[None], "heavy tails should not cost most of the structure"
