@@ -34,7 +34,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from precise._state import emp_init, emp_update
+from precise._state import emp_init, emp_update, ewa_init, ewa_update
 from precise.base import BaseOnlineCovariance
 
 _SQRT5 = float(np.sqrt(5.0))
@@ -281,6 +281,63 @@ class WindowedNonlinearShrinkageCovariance(_LazySpectrumCovariance):
         mean = np.asarray(state["s1"], dtype=float) / fill
         cov = np.asarray(state["s2"], dtype=float) / fill - np.outer(mean, mean)
         return cov, fill - 1
+
+
+def effective_sample_size(r: float) -> float:
+    """Effective sample size of an exponentially weighted mean with decay ``r``.
+
+    For normalized geometric weights ``w_k = r(1-r)^k`` the usual moment-based measure is
+    ``(sum w)^2 / sum w^2 = (2-r)/r``. Note what this is not: matching one moment of the weight
+    distribution does not make the exponentially weighted covariance behave like an equally
+    weighted sample of that size. The whole weight distribution enters the limiting spectrum.
+    """
+    return (2.0 - r) / r
+
+
+class EwaNonlinearShrinkageCovariance(_LazySpectrumCovariance):
+    """Nonlinear spectrum shrinkage over an exponentially weighted sample.
+
+    The second forgetting variant, and the approximate one. Ledoit-Wolf's asymptotics describe an
+    *equally weighted* sample of size ``n``, which is what
+    :class:`WindowedNonlinearShrinkageCovariance` supplies exactly. Here the map is instead applied
+    to an exponentially weighted covariance at ``n = (2-r)/r``, its effective sample size, and that
+    substitution is a moment match rather than an equivalence: the shape of the weight distribution
+    enters the limiting spectrum, not only its second moment. Oriol (arXiv:2410.14420) derives the
+    weighted formulas properly, and a future estimator built on them would supersede this one.
+
+    It ships anyway, because exactness is not the only axis. A window has a hard boundary, so an
+    observation enters the estimate on arrival and leaves it exactly ``W`` steps later, and a shock
+    is therefore paid for twice: the second rebalance prompted by nothing happening. Exponential
+    decay has no such discontinuity. In ``research/turnover.py``, with effective memory matched so
+    the comparison measures the boundary rather than the memory, both react identically to a shock
+    on arrival and only the window rebalances again a window later, spiking over 12x. Aggregate
+    turnover follows the tail weight: under Gaussian draws the window is the cheaper of the two, at
+    t(4) innovations they cross, and at t(3) the window is 15% churnier with worse realized risk.
+
+    So: prefer the window when accuracy against the truth is what matters and the data is
+    well-behaved, and prefer this when the estimate is traded and returns have tails.
+
+    :param r:     Weight of the most recent observation (decay rate), in (0, 1].
+    :param diff:  If ``True``, estimate the covariance of first differences of the stream.
+    """
+
+    def __init__(self, r: float = 0.05, diff: bool = False):
+        self.r = r
+        self.diff = diff
+        super().__init__()
+
+    def _init_state(self, n_dim: int) -> dict:
+        return ewa_init(n_dim, self.r)
+
+    def _update_state(self, state: dict, x: np.ndarray) -> dict:
+        return ewa_update(state, x)
+
+    def _spectrum_inputs(self, state: dict) -> tuple[np.ndarray, int]:
+        # Early in the stream the accumulator has seen fewer observations than the decay's
+        # asymptotic effective sample, and during burn-in it is a plain empirical average, so the
+        # honest sample size is the smaller of the two.
+        n_eff = min(float(state["n_samples"]), effective_sample_size(float(state["r"])))
+        return np.asarray(state["cov"], dtype=float), int(n_eff) - 1
 
 
 def _shrink(cov: np.ndarray, n: int) -> np.ndarray:

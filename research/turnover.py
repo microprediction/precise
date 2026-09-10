@@ -44,35 +44,12 @@ from __future__ import annotations
 import numpy as np
 
 from precise import (
-    EwaCovariance,
+    EwaNonlinearShrinkageCovariance,
     LedoitWolfCovariance,
     NonlinearShrinkageCovariance,
     OASCovariance,
     WindowedNonlinearShrinkageCovariance,
 )
-from precise.nonlinear_shrinkage import _shrink
-
-
-class EwaNonlinearShrinkage:
-    """Contrast arm, not shipped: EW accumulator cleaned with an effective sample size.
-
-    The substitution is an approximation -- the whole weight distribution enters the limiting
-    spectrum, not just its second moment -- which is why the package ships a window instead. It is
-    here because approximate and smooth may beat exact and jumpy once turnover is priced.
-    """
-
-    def __init__(self, r: float):
-        self.r = r
-        self.n_eff = int((2 - r) / r)
-        self._est = EwaCovariance(r=r)
-
-    def partial_fit(self, x):
-        self._est.partial_fit(x)
-        return self
-
-    @property
-    def covariance_(self) -> np.ndarray:
-        return _shrink(self._est.covariance_, self.n_eff - 1)
 
 
 def matched_decay(window: int) -> float:
@@ -108,7 +85,7 @@ def impulse_response(p=32, window=250, n=1400, shock_at=700, shock_size=8.0, see
         chol = np.linalg.cholesky(cov)
         arms = {
             names[0]: WindowedNonlinearShrinkageCovariance(window=window),
-            names[1]: EwaNonlinearShrinkage(r),
+            names[1]: EwaNonlinearShrinkageCovariance(r=r),
         }
         prev = dict.fromkeys(names)
         for t in range(n):
@@ -159,7 +136,7 @@ def portfolio(p=32, n=4000, seeds=3, burn=800, window=250, bps=10.0, df=None):
             "NLS expanding": NonlinearShrinkageCovariance(),
             "LedoitWolf": LedoitWolfCovariance(r=r),
             "OAS": OASCovariance(r=r),
-            "EW-NLS n_eff": EwaNonlinearShrinkage(r),
+            "EW-NLS n_eff": EwaNonlinearShrinkageCovariance(r=r),
             f"NLS window W={window}": WindowedNonlinearShrinkageCovariance(window=window),
         }
         prev, risk, turn = dict.fromkeys(names), {nm: [] for nm in names}, {nm: [] for nm in names}

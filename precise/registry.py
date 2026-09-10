@@ -19,6 +19,7 @@ from precise.geodesic import GeodesicEwaCovariance
 from precise.huber import HuberCovariance
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.nonlinear_shrinkage import (
+    EwaNonlinearShrinkageCovariance,
     NonlinearShrinkageCovariance,
     WindowedNonlinearShrinkageCovariance,
 )
@@ -42,6 +43,7 @@ _REGISTRY: list[type[BaseOnlineCovariance]] = [
     ShrunkCovariance,
     NonlinearShrinkageCovariance,
     WindowedNonlinearShrinkageCovariance,
+    EwaNonlinearShrinkageCovariance,
     SchurCovariance,
     SchurConditionalCovariance,
     SchurLedoitWolfCovariance,

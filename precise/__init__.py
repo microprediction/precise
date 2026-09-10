@@ -34,6 +34,7 @@ from precise.huber import HuberCovariance
 from precise.keyed import DynamicUniverse, FixedUniverse, keyed
 from precise.ledoitwolf import LedoitWolfCovariance
 from precise.nonlinear_shrinkage import (
+    EwaNonlinearShrinkageCovariance,
     NonlinearShrinkageCovariance,
     WindowedNonlinearShrinkageCovariance,
 )
@@ -64,6 +65,7 @@ __all__ = [
     "ShrunkCovariance",
     "NonlinearShrinkageCovariance",
     "WindowedNonlinearShrinkageCovariance",
+    "EwaNonlinearShrinkageCovariance",
     "SchurCovariance",
     "SchurConditionalCovariance",
     "SchurLedoitWolfCovariance",
