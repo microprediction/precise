@@ -139,4 +139,9 @@ private_examples/*.csv
 papers/*.aux
 papers/*.log
 papers/*.out
+papers/*/*.aux
+papers/*/*.log
+papers/*/*.out
+papers/*/*.bbl
+papers/*/*.blg
 papers/*.toc

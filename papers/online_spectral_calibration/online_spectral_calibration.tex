@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[T1]{fontenc}
+\IfFileExists{newtxtext.sty}{\usepackage{newtxtext}\usepackage{newtxmath}}{\usepackage{lmodern}}
+\usepackage{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\Fp}{\mathcal F_{t-1}}
+\newcommand{\Ee}{\mathbb E}
+
+\title{\vspace{-2em}Spectral Calibration Without a Split\\[0.3em]
+       \large Learning covariance eigenvalue corrections one observation at a time}
+\author{Peter Cotton}
+\date{Note --- \texttt{microprediction/precise}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Cross-validated covariance cleaning estimates the variance belonging to an empirical eigenvector by
+projecting held-out data onto it. It is a batch procedure: the sample must be partitioned, and the
+partition costs data and invites a choice about how to split. In a stream no partition is needed.
+The eigenvector basis carried forward from all past data is, by construction, out of sample with
+respect to the observation about to arrive, so the arrow of time supplies the split for free---and
+supplies it at every step, for every eigenvector at once. We record the conditional identity this
+rests on, an exact decomposition of the instantaneous Frobenius error showing that predicting
+squared projections optimizes the same objective as learning the covariance within the chosen basis,
+and the one-pass estimator that follows: $O(p^2)$ per observation plus an eigendecomposition every
+$K$ steps, with the eigenvalues tracked between refreshes by the same exponential recursion the
+covariance itself obeys, at $O(p)$. The identity is not new---it is what makes cross-validated
+cleaning work---but we have not found its sequential use recorded, and it removes the reason such
+methods have been confined to batch settings. Experiments in five regimes then say something we did not
+expect and report rather than bury: while the learned calibration beats an uncleaned exponentially
+weighted covariance everywhere and exponentially weighted linear shrinkage wherever the dependence
+actually changes, it is beaten on every one of those regimes by a much simpler alternative---putting
+the \emph{analytical} map on a rolling window, where equal weights make the asymptotics exact with
+$n = W$. Learning the correction from the stream is cheap and sound; on these scenarios it is not
+necessary. We also report that conditioning the learned map on the global shape of the spectrum,
+which we expected to matter, does not.
+\end{abstract}
+
+\section{The gap}
+
+Nonlinear shrinkage of a covariance spectrum---moving each sample eigenvalue by its own amount while
+keeping the sample eigenvectors---has an analytical solution under equally weighted, identically
+distributed observations \citep{ledoitpeche2011,ledoitwolf2020analytical}, and a random-matrix
+counterpart in the rotationally invariant estimators \citep{bun2017cleaning}. Both derivations assume
+a fixed population covariance observed through sampling noise. Financial dependence is not fixed: it
+drifts, and it is dominated by common modes whose strength varies. \citet{manolakis2026} make this
+the explicit motivation for replacing the analytical singular-value map with a learned one, fixing
+the empirical basis from theory so that only the part where the derivation is known to fail is
+learned. Their map is trained offline, on a corpus.
+
+The weighted case has since been worked out analytically: \citet{oriol2024weighted} give non-linear
+shrinkage formulas for weighted sample covariances, the exponentially weighted case explicitly. That
+is the principled route for a recency-weighted analytical cleaner, and it is worth taking. The
+question here is a different one---whether the correction can be \emph{learned from the stream
+itself}, with bounded state, no corpus and no pretraining.
+
+\section{The identity}
+
+Let $\Fp$ denote everything observable before time $t$, and let $U_{t-1} = [u_1 \cdots u_p]$ be an
+orthonormal basis computed entirely from $\Fp$. Suppose $\Ee[x_t \mid \Fp] = 0$ and
+$\operatorname{Cov}(x_t \mid \Fp) = \Sigma_t$. Project the new observation,
+\[
+  z_t = U_{t-1}^\top x_t .
+\]
+Because $u_i$ is $\Fp$-measurable it passes through the conditional expectation, giving
+\begin{equation}\label{eq:label}
+  \Ee\!\left[z_{i,t}^2 \mid \Fp\right] \;=\; u_i^\top \Sigma_t\, u_i ,
+\end{equation}
+which is exactly the variance a cleaned spectrum must assign to that empirical eigenvector. One
+observation supplies a noisy but conditionally unbiased label for \emph{every} eigenvalue
+simultaneously. Equation \eqref{eq:label} requires neither Gaussianity nor stationarity; it is a
+statement about conditioning, and the only structural demand is that $U_{t-1}$ not be built using
+$x_t$.
+
+That the squared projections are the right thing to predict follows from an exact decomposition. For
+any orthogonal $U$, any $d \in \mathbb R^p$, and $z = U^\top x$,
+\begin{equation}\label{eq:frob}
+  \bigl\| U \operatorname{diag}(d) U^\top - x x^\top \bigr\|_F^2
+   \;=\; \sum_i \bigl(d_i - z_i^2\bigr)^2 \;+\; \underbrace{\sum_{i \neq j} z_i^2 z_j^2}_{\text{free of } d} .
+\end{equation}
+The Frobenius norm is invariant under orthogonal conjugation, and
+$U^\top ( U \operatorname{diag}(d) U^\top - xx^\top ) U = \operatorname{diag}(d) - z z^\top$, whose
+diagonal entries are $d_i - z_i^2$ and whose off-diagonal entries are $-z_i z_j$. So learning to
+predict squared projections minimizes, term for term, the same instantaneous objective as learning
+the covariance matrix within the chosen basis. The residual term is the price of holding the
+eigenvectors fixed, and no choice of $d$ can touch it.
+
+Neither statement is new. Equation \eqref{eq:label} is what makes cross-validated cleaning work:
+\citet{bartz2016} estimates cleaned eigenvalues by projecting held-out folds onto eigenvectors fitted
+on the remainder, and \citet{lamrani2025holdout} analyze how such a sample should optimally be split,
+finding the train--test ratio should scale as the square root of the dimension. The observation we
+have not found recorded is that in a streaming setting the split need not be constructed at all.
+Every arriving observation is already held out with respect to the basis carried forward, so the
+data cost of cross-validation---the reason one must decide how much sample to sacrifice---simply does
+not arise. What was a design choice becomes a property of the arrow of time.
+
+\section{The estimator}
+
+State: a running mean $m$, an exponentially weighted second moment $S$, a basis $U$, a spectrum
+$\lambda$, and the accumulators of a calibration map $f$. On observing $x_t$, with weight $w$:
+\begin{align*}
+  \delta &= x_t - m, \qquad z = U^\top \delta, \\
+  &\text{train } f \text{ on the pairs } (\text{features}_i,\; z_i^2), \\
+  \lambda &\leftarrow (1-w)\lambda + w z^2, \\
+  m &\leftarrow m + w\delta, \qquad S \leftarrow (1-w) S + w\, \delta \delta^\top,
+\end{align*}
+refreshing $(\lambda, U)$ from an eigendecomposition of $S$ every $K$ observations, and reporting
+$\hat\Sigma_t = U \operatorname{diag}\bigl(f(\lambda)\bigr) U^\top$. The ordering matters: the labels
+are formed against the basis and the mean that predate $x_t$, which is what makes \eqref{eq:label}
+apply.
+
+The $\lambda$ recursion is not an approximation. For a basis held fixed between refreshes,
+\[
+  u_i^\top S_t u_i = (1-w)\, u_i^\top S_{t-1} u_i + w \bigl(u_i^\top \delta\bigr)^2 ,
+\]
+so the exponentially weighted Rayleigh quotient obeys the same recursion as the covariance and is
+available at $O(p)$ from projections already computed. Only the basis needs an eigendecomposition.
+The per-observation cost is therefore $O(p^2)$---the projection and the outer-product
+update---plus $O(p^3/K)$ amortized, and nothing grows with elapsed stream length. Stale eigenvectors
+are the price: they bound how quickly the estimator can follow a rotation of the true eigenbasis.
+
+\section{What has to be learned}
+
+The map $f$ must be positive, must treat equal eigenvalues equally, and must forget. We use
+kernel-weighted running averages over a fixed grid of feature centers---a Nadaraya--Watson estimator
+with exponential forgetting---so that the prediction is a ratio of two nonnegative accumulators. It
+is positive because the labels are squares, it pools directions with identical features by
+construction, and it forgets at a controlled rate. A few dozen bins suffice; nothing here needs a
+neural framework.
+
+The design question is what to index the map by. Three choices separate cleanly:
+\emph{rank}, the position of an eigenvalue in the sorted spectrum; \emph{eigenvalue}, its observed
+size relative to the mean, on a log scale; and \emph{shared}, the observed size together with a
+global summary of the spectrum's shape (we use the dispersion of the log spectrum). Rank calibration
+can memorize a useful spectral profile; the concern is that it will keep imposing that profile after
+the structure generating it is gone, since the position of an eigenvalue says nothing about whether
+it still refers to anything.
+
+\section{Experiments}
+
+Gaussian streams in $p = 32$ dimensions, $6000$ observations, eight seeds, exponential weight
+$r = 0.02$, basis refreshed every $10$ observations, calibration forgetting $\rho = 0.02$, scoring
+from observation $1000$ onward. The metric is mean squared Frobenius error divided by the squared
+norm of the truth; lower is better. Five regimes: an isotropic covariance; a broad, static
+population spectrum; an abrupt rotation of the factor directions at the midpoint; a factor structure
+that disappears at the midpoint; and one in which the factor structure and its absence alternate
+repeatedly, the only regime in which a spectral shape \emph{recurs} and can therefore be recalled.
+
+We compare against an uncleaned exponentially weighted covariance, the linear shrinkers
+\texttt{LedoitWolf} and \texttt{OAS} at the same decay, and the analytical nonlinear shrinker of
+\citet{ledoitwolf2020analytical} over an expanding sample.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & uncleaned & \multicolumn{2}{c}{linear, weighted} & \multicolumn{2}{c}{analytical nonlinear} & \multicolumn{3}{c}{learned calibration} \\
+\cmidrule(lr){2-2}\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-9}
+regime & raw EW & L--W & OAS & expanding & window & rank & eigenvalue & shared \\
+\midrule
+isotropic         & 0.340 & \textbf{0.0007} & \textbf{0.0007} & 0.0007          & 0.0049          & 0.0026 & 0.0018 & 0.0018 \\
+broad spectrum    & 0.206 & 0.204           & 0.199           & \textbf{0.0072} & 0.066           & 0.135  & 0.147  & 0.147  \\
+factor rotation   & 0.243 & 0.238           & 0.231           & 0.206           & \textbf{0.067}  & 0.191  & 0.186  & 0.186  \\
+factors vanish    & 0.299 & 0.127           & 0.124           & 0.239           & \textbf{0.059}  & 0.105  & 0.103  & 0.103  \\
+regimes alternate & 0.330 & 0.131           & 0.128           & 0.217           & \textbf{0.104}  & 0.114  & 0.109  & 0.109  \\
+\bottomrule
+\end{tabular}
+\caption{Mean squared Frobenius error relative to the squared norm of the truth; lower is better,
+best in each row in bold. Eight seeds, $p=32$, $6000$ observations each. The windowed
+column uses $W=250$; the learned columns use the same exponential weight $r=0.02$ as the linear
+shrinkers.}
+\end{table}
+
+Three things are worth reading off. The first is not the result we expected.
+
+\emph{The learned correction is dominated by a simpler analytical one.} On every regime where the
+dependence changes, applying the analytical map to a rolling window beats every learned variant---
+$0.067$ against $0.186$ under a rotation, $0.059$ against $0.103$ when the factor structure dies,
+$0.104$ against $0.109$ under alternation. The learned calibration does what we set out to show it
+could: it beats an uncleaned exponentially weighted covariance everywhere, and beats exponentially
+weighted linear shrinkage by fifteen to twenty percent on exactly the non-stationary regimes that
+motivated it. But linear shrinkage was the wrong bar. Once the analytical nonlinear map is given a
+sample it can forget---and a rolling window gives it one without approximating anything, since equal
+weights inside a window of length $W$ are exactly the sample the asymptotics describe---the cheap
+route captures the adaptivity that the learned route was introduced to supply. We report this
+because it is the finding, not because it flatters the construction. The gap narrows to five percent
+on the fastest-drifting regime, which is the only direction in which a case for learning could be
+rebuilt: the window's advantage should shrink as the drift rate approaches the window length, and
+that is where a learned map, which need not commit to a timescale in advance, has somewhere to go.
+
+\emph{Rank calibration remembers, and that cuts both ways.} Indexing by spectral position is the
+best learned variant on the static broad spectrum ($0.135$ against $0.147$), where a stable profile
+is worth memorizing, and the worst on every regime where the structure changes. Conditioning on the
+observed eigenvalue instead removes that failure at a modest cost elsewhere, which is what one would
+hope: an eigenvalue's size still refers to something after the structure that produced it is gone,
+whereas its rank does not.
+
+\emph{Global shape conditioning does not help.} We expected the third variant---indexing the map by
+the observed eigenvalue \emph{and} a summary of the spectrum's overall shape---to dominate the
+second, on the reasoning that it could recall a calibration when a shape recurred. It does not. The
+two agree to three decimal places in every regime, including the alternating one built specifically
+to reward recall. Diagnostically the reason is visible: the shape statistic ranges over roughly
+$0.3$--$1.1$ \emph{across} these regimes but moves only about $0.4$ \emph{within} any single stream,
+so the discriminating variation is between problems rather than along a trajectory, and a map that
+one estimator carries through one stream never sees enough of the axis to use it. We report this as
+a negative result rather than tuning until it disappears.
+
+\section{Relation to prior work, and what this is not}
+
+The analytical line \citep{ledoitpeche2011,ledoitwolf2020analytical,bun2017cleaning} derives the map
+rather than learning it, and is the right default whenever its assumptions hold; the expanding-sample
+column above shows how much it wins by when they do, and how badly it fails when they do not. The
+cross-validation line \citep{bartz2016,lamrani2025holdout} uses the same identity as we do but must
+construct its split. \citet{oriol2024weighted} extends the analytical treatment to weighted samples
+and is the principled way to build a recency-weighted analytical cleaner; substituting a
+moment-matched effective sample size into an equally weighted formula, as is sometimes done, is a
+scalar approximation that does not encode the weight distribution. \citet{manolakis2026} learn the
+singular-value map, as we do, but offline and for the rectangular cross-covariance problem. For that
+problem the corresponding sequential label is immediate,
+$(u_i^\top x_t)(v_i^\top y_t)$, though assembling a valid joint covariance additionally requires
+compatibility with the marginal blocks: an arbitrary cross-block correction need not preserve
+positive semidefiniteness.
+
+Incremental eigenspace tracking is a separate and well-developed literature
+\citep{weng2003ccipca}; we take the basis by periodic refresh, which is crude, and a better tracker
+would directly relax the one cost we identified.
+
+\section{Limitations}
+
+The labels are severely noisy: under Gaussianity $z_i^2$ has variance $2(u_i^\top \Sigma u_i)^2$, so
+a single observation carries roughly one effective bit per direction and the map's forgetting rate
+trades adaptation against that noise. The eigenvector basis is refreshed rather than tracked, which
+bounds adaptation to abrupt rotation. All evidence here is synthetic and Gaussian, and the regimes were
+constructed by us to separate the failure modes we suspected; there is no real equity study. And on
+those regimes the construction does not win: a rolling window carrying the analytical map beats it
+wherever the dependence drifts, which is the case the learned map was meant to answer. What survives
+is the identity, the fact that a stream needs no split to exploit it, and an estimator cheap enough
+that the question can be revisited on real data, at drift rates faster than a window can follow. The
+open question is not whether spectral cleaning can be made online. It plainly
+can. It is how calibration information should be shared across directions and forgotten as the
+spectrum changes, and the negative result on shape conditioning above says the obvious first answer
+is not the right one.
+
+\bibliographystyle{plainnat}
+\bibliography{../refs}  % shared across manuscripts
+
+\end{document}
