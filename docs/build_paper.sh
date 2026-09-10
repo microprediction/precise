@@ -30,6 +30,7 @@ build_one() {
   mkdir -p "$here/papers/$slug"
   pandoc "$websrc" \
     --from=latex \
+    --wrap=none \
     --katex \
     --citeproc --bibliography="$root/papers/refs.bib" \
     --shift-heading-level-by=1 \

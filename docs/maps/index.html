@@ -7,19 +7,31 @@
   <meta name="description" content="Interactive literature maps from the precise project: how the methods relate to neighboring research, and where the open gaps are.">
   <link rel="stylesheet" href="../academic.css">
   <style>
-    .site-nav{position:sticky;top:0;z-index:1000;background:#34495e;color:#fff;
-      padding:12px 24px;font-family:'Times New Roman',Times,serif;}
-    .site-nav-inner{max-width:900px;margin:0 auto;display:flex;
-      justify-content:space-between;gap:16px;flex-wrap:wrap;}
-    .site-nav a{color:#ecf0f1;text-decoration:none;} .site-nav a:hover{color:#fff;text-decoration:underline;}
     .container{max-width:900px;}
     .map-card{border:1px solid var(--border);border-radius:4px;padding:20px;margin:20px 0;}
     .map-card h3{margin-top:0;}
   </style>
 </head>
 <body>
-  <nav class="site-nav"><div class="site-nav-inner"><a href="../">&larr; precise</a>
-    <a href="https://github.com/microprediction/precise">GitHub</a></div></nav>
+  <nav class="site-nav"><div class="site-nav-inner">
+    <a class="site-nav-brand" href="/">precise</a>
+    <div class="site-nav-links">
+      <span class="menu"><span class="menu-label" tabindex="0">Docs</span><span class="drop">
+        <a href="/#install">Install</a>
+        <a href="/#quickstart">Quick start</a>
+        <a href="/#estimators">Estimators</a>
+      </span></span>
+      <span class="menu"><span class="menu-label" tabindex="0">Papers</span><span class="drop">
+        <a href="/papers/">All papers</a>
+        <a href="/papers/online-spectral-calibration/">Spectral Calibration Without a Split</a>
+        <a href="/papers/schur-likelihood/">Schur Covariance Evaluation</a>
+        <a href="/papers/two-sides-of-schur-damping/">Two Sides of Schur Damping</a>
+      </span></span>
+      <a href="/maps/">Maps</a>
+      <a href="https://github.com/microprediction/precise">GitHub</a>
+      <a href="https://pypi.org/project/precise/">PyPI</a>
+    </div>
+  </div></nav>
 
   <div class="header"><div class="container">
     <h1>Literature maps</h1>
