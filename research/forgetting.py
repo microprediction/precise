@@ -20,11 +20,12 @@ Three questions, and the scenarios are built to separate them.
    and ill-conditioned on its own. We score each window's covariance twice -- once cleaned, once
    raw -- so the claim is tested rather than assumed.
 
-A fourth arm is included for contrast and not shipped: an exponentially weighted accumulator cleaned
-with an "effective sample size" ``n_eff = (2-r)/r``. That substitution is an approximation rather
-than an equivalence -- the whole weight distribution enters the limiting spectrum, not just its
-second moment -- which is why the shipped forgetting variant is a window, where equal weights make
-``n = W`` exact. See Oriol, arXiv:2410.14420, for the weighted theory done properly.
+A fourth arm is :class:`~precise.nonlinear_shrinkage.EwaNonlinearShrinkageCovariance`, which cleans
+an exponentially weighted accumulator at ``n_eff = (2-r)/r``. That substitution is an approximation
+rather than an equivalence, since the whole weight distribution enters the limiting spectrum and not
+just its second moment (Oriol, arXiv:2410.14420, derives the weighted formulas properly). It scores
+worse than the window on this page. It ships regardless, because a window pays for every shock twice
+and this does not; see ``research/turnover.py``.
 
     python research/forgetting.py
 """
@@ -35,30 +36,14 @@ import numpy as np
 
 from precise import (
     EmpiricalCovariance,
-    EwaCovariance,
+    EwaNonlinearShrinkageCovariance,
     LedoitWolfCovariance,
     NonlinearShrinkageCovariance,
     OASCovariance,
     WindowedNonlinearShrinkageCovariance,
 )
-from precise.nonlinear_shrinkage import _shrink
 
 WINDOWS = (60, 125, 250, 500)
-
-
-class _EwaNeffShrinkage:
-    """Contrast arm: EW accumulator cleaned with an effective sample size. Not shipped."""
-
-    def __init__(self, r: float = 0.02):
-        self.r, self._est = r, EwaCovariance(r=r)
-
-    def partial_fit(self, x):
-        self._est.partial_fit(x)
-        return self
-
-    @property
-    def covariance_(self) -> np.ndarray:
-        return _shrink(self._est.covariance_, int((2 - self.r) / self.r) - 1)
 
 
 def _orthonormal(p, rng):
@@ -93,7 +78,7 @@ def _arms(r):
         "NLS (exp)": NonlinearShrinkageCovariance(),
         "LedoitWolf": LedoitWolfCovariance(r=r),
         "OAS": OASCovariance(r=r),
-        "EWA-NLS n_eff": _EwaNeffShrinkage(r),
+        "EWA-NLS n_eff": EwaNonlinearShrinkageCovariance(r=r),
     }
     for w in WINDOWS:
         arms[f"NLS W={w}"] = WindowedNonlinearShrinkageCovariance(window=w)

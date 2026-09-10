@@ -197,3 +197,83 @@ def test_window_larger_than_the_stream_matches_the_expanding_estimator():
     windowed = WindowedNonlinearShrinkageCovariance(window=10_000).fit(X)
     expanding = NonlinearShrinkageCovariance().fit(X)
     assert np.allclose(windowed.covariance_, expanding.covariance_, atol=1e-10)
+
+
+# ------------------------------------------------------- the exponentially weighted counterpart
+
+
+def test_effective_sample_size_matches_the_moment_definition():
+    from precise.nonlinear_shrinkage import effective_sample_size
+
+    for r in (0.01, 0.02, 0.05, 0.2):
+        # (sum w)^2 / sum w^2 for normalized geometric weights w_k = r(1-r)^k.
+        k = np.arange(200_000)
+        w = r * (1 - r) ** k
+        assert np.isclose(effective_sample_size(r), w.sum() ** 2 / (w**2).sum(), rtol=1e-6)
+
+
+def test_effective_sample_is_capped_by_observations_actually_seen():
+    from precise import EwaNonlinearShrinkageCovariance
+    from precise.nonlinear_shrinkage import effective_sample_size
+
+    est = EwaNonlinearShrinkageCovariance(r=0.02)  # asymptotic n_eff = 99
+    X = _draw(_bulk_cov(5), 400)
+    est.partial_fit(X[:20])
+    assert est._spectrum_inputs(est._state)[1] == 19, "early on, n_eff is what has been seen"
+    est.partial_fit(X[20:])
+    assert est._spectrum_inputs(est._state)[1] == int(effective_sample_size(0.02)) - 1
+
+
+def test_exponential_decay_does_not_echo_a_shock_the_way_a_window_does():
+    # The reason this estimator ships despite being the approximate one. A window has a hard
+    # boundary, so one shock is paid for twice: on arrival, and again exactly W steps later when it
+    # drops out and the estimate snaps back for no reason in the world. Effective memory is matched,
+    # (2-r)/r == W, so this measures the boundary rather than the memory. What is measured is how
+    # far the estimate itself moves per step; portfolio turnover is a downstream consequence of that
+    # and a much noisier way to see it.
+    from precise import EwaNonlinearShrinkageCovariance, WindowedNonlinearShrinkageCovariance
+
+    p, W, seeds = 12, 50, 3
+    n, shock_at = 5 * W + 60, 3 * W
+    r = 2.0 / (W + 1)
+    moved = {"window": np.zeros(n), "ewa": np.zeros(n)}
+
+    for seed in range(seeds):
+        rng = np.random.default_rng(60 + seed)
+        chol = np.linalg.cholesky(_bulk_cov(p, seed=seed))
+        arms = {"window": WindowedNonlinearShrinkageCovariance(window=W),
+                "ewa": EwaNonlinearShrinkageCovariance(r=r)}
+        prev = {k: None for k in arms}
+        for t in range(n):
+            x = chol @ rng.standard_normal(p)
+            if t == shock_at:
+                x = x * 10.0
+            for name, est in arms.items():
+                est.partial_fit(x)
+                cov = est.covariance_
+                if prev[name] is not None:
+                    moved[name][t] += (
+                        np.linalg.norm(cov - prev[name]) / np.linalg.norm(cov) / seeds
+                    )
+                prev[name] = cov
+
+    quiet = {k: np.median(v[shock_at - 2 * W : shock_at - 5]) for k, v in moved.items()}
+    arrival = {k: v[shock_at] / quiet[k] for k, v in moved.items()}
+    echo = {k: v[shock_at + W - 1 : shock_at + W + 2].max() / quiet[k] for k, v in moved.items()}
+
+    assert arrival["window"] > 3.0 and arrival["ewa"] > 3.0, "both must react to the shock itself"
+    assert echo["window"] > 10.0, f"the window must echo at +W (got {echo['window']:.1f}x)"
+    assert echo["ewa"] < 3.0, f"exponential decay must not echo (got {echo['ewa']:.1f}x)"
+    assert echo["window"] > 5.0 * echo["ewa"]
+
+
+def test_shrinkage_improves_on_the_raw_exponentially_weighted_covariance():
+    from precise import EwaCovariance, EwaNonlinearShrinkageCovariance
+
+    p, n = 40, 1500
+    C0 = _market_cov(p)
+    X, X_out = _draw(C0, n), _draw(C0, 2000, seed=99)
+    shrunk = EwaNonlinearShrinkageCovariance(r=0.02).fit(X).covariance_
+    raw = EwaCovariance(r=0.02).fit(X).covariance_
+    assert _nll(shrunk, X_out) < _nll(raw, X_out)
+    assert np.linalg.cond(shrunk) < np.linalg.cond(raw)

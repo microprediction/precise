@@ -20,6 +20,11 @@ All notable changes to `precise` are documented here. The format follows
   against each other; `research/turnover.py` scores what squared error cannot see — the window's
   hard boundary echoes every shock one window later, which costs churn that grows with tail
   weight.
+- `EwaNonlinearShrinkageCovariance`: the same map over an exponentially weighted sample, at
+  `n_eff = (2-r)/r`. Statistically the approximate one — matching one moment of the weight
+  distribution is not an equivalence, and Oriol (arXiv:2410.14420) derives the weighted formulas
+  properly — but it has no window boundary, so it does not pay for a shock twice.
+  `research/turnover.py` measures the difference.
 
 ## [1.0.0] — 2026-06-05
 
