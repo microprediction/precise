@@ -53,7 +53,7 @@
     <h1>Spectral Calibration Without a Split</h1><div class="subtitle">Learning Covariance Eigenvalue Corrections One Observation at a Time</div>
   </div></div>
   <div class="container">
-    <p class="paper-meta">Peter Cotton &middot; Note — <code>microprediction/precise</code> &middot; <a href="https://github.com/microprediction/precise/blob/main/papers/online_spectral_calibration/online_spectral_calibration.pdf">PDF</a></p>
+    <p class="paper-meta">Peter Cotton &middot; Note — <code>microprediction/precise</code> &middot; <a href="online_spectral_calibration.pdf">PDF</a></p>
     <div class="abstract"><p>Cross-validated covariance cleaning learns the variance belonging to an empirical eigenvector by projecting held-out data onto it, which requires partitioning a sample. A stream needs no partition. The eigenvector basis carried forward from past data is already out of sample with respect to the observation about to arrive, so every observation labels every eigenvalue at once. We give the conditional identity this rests on and the one-pass estimator that follows, which costs <span class="math inline">O(p^2)</span> per observation and keeps bounded state. In five regimes the learned calibration beats an uncleaned exponentially weighted covariance everywhere, and a simpler estimator beats it wherever dependence drifts: the analytical map applied to a rolling window, where equal weights make the asymptotics exact with <span class="math inline">n = W</span>.</p></div>
 
 <h2 id="the-gap">The gap</h2>
