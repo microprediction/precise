@@ -7,19 +7,31 @@
   <meta name="description" content="Working papers from the precise project on covariance/correlation estimation and evaluation.">
   <link rel="stylesheet" href="../academic.css">
   <style>
-    .site-nav{position:sticky;top:0;z-index:1000;background:#34495e;color:#fff;
-      padding:12px 24px;font-family:'Times New Roman',Times,serif;}
-    .site-nav-inner{max-width:900px;margin:0 auto;display:flex;
-      justify-content:space-between;gap:16px;flex-wrap:wrap;}
-    .site-nav a{color:#ecf0f1;text-decoration:none;} .site-nav a:hover{color:#fff;text-decoration:underline;}
     .container{max-width:900px;}
     .paper-card{border:1px solid var(--border);border-radius:4px;padding:20px;margin:20px 0;}
     .paper-card h3{margin-top:0;}
   </style>
 </head>
 <body>
-  <nav class="site-nav"><div class="site-nav-inner"><a href="../">&larr; precise</a>
-    <a href="https://github.com/microprediction/precise">GitHub</a></div></nav>
+  <nav class="site-nav"><div class="site-nav-inner">
+    <a class="site-nav-brand" href="/">precise</a>
+    <div class="site-nav-links">
+      <span class="menu"><span class="menu-label" tabindex="0">Docs</span><span class="drop">
+        <a href="/#install">Install</a>
+        <a href="/#quickstart">Quick start</a>
+        <a href="/#estimators">Estimators</a>
+      </span></span>
+      <span class="menu"><span class="menu-label" tabindex="0">Papers</span><span class="drop">
+        <a href="/papers/">All papers</a>
+        <a href="/papers/online-spectral-calibration/">Spectral Calibration Without a Split</a>
+        <a href="/papers/schur-likelihood/">Schur Covariance Evaluation</a>
+        <a href="/papers/two-sides-of-schur-damping/">Two Sides of Schur Damping</a>
+      </span></span>
+      <a href="/maps/">Maps</a>
+      <a href="https://github.com/microprediction/precise">GitHub</a>
+      <a href="https://pypi.org/project/precise/">PyPI</a>
+    </div>
+  </div></nav>
 
   <div class="header"><div class="container">
     <h1>Papers</h1>
@@ -35,7 +47,7 @@
       cross-block coupling of the likelihood through its Schur complements, bridging the full and
       block-diagonal likelihoods, and derive the optimal coupling strength in closed form.</p>
       <p><a class="btn" href="schur-likelihood/">Read online</a>
-         <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/papers/schur_likelihood_paper.pdf">PDF</a></p>
+         <a class="btn btn-secondary" href="schur-likelihood/schur_likelihood_paper.pdf">PDF</a></p>
     </div>
 
     <div class="paper-card">
@@ -48,7 +60,7 @@
       the damping is at once a James–Stein shrinkage and a Ledoit–Wolf intensity, and note what each
       literature has supplied that the other lacks.</p>
       <p><a class="btn" href="two-sides-of-schur-damping/">Read online</a>
-         <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/papers/two_sides_of_schur_damping.pdf">PDF</a></p>
+         <a class="btn btn-secondary" href="two-sides-of-schur-damping/two_sides_of_schur_damping.pdf">PDF</a></p>
     </div>
 
     <div class="paper-card">
@@ -62,7 +74,7 @@
       costing O(p²) per observation, and the result we did not expect: the learned correction is
       beaten, wherever dependence drifts, by putting the analytical map on a rolling window.</p>
       <p><a class="btn" href="online-spectral-calibration/">Read online</a>
-         <a class="btn btn-secondary" href="https://github.com/microprediction/precise/blob/main/papers/online_spectral_calibration/online_spectral_calibration.pdf">PDF</a></p>
+         <a class="btn btn-secondary" href="online-spectral-calibration/online_spectral_calibration.pdf">PDF</a></p>
     </div>
 
     <div class="paper-card">

@@ -24,12 +24,13 @@ build_one() {
   else
     src="$root/papers/${tex}.tex"; reldir="papers"
   fi
-  local pdfurl="https://github.com/microprediction/precise/blob/main/${reldir}/${tex}.pdf"
+  local pdfurl="${tex}.pdf"   # site-hosted, beside this paper's web edition
   local websrc; websrc="$(mktemp)"
   python3 "$here/_webtex.py" "$src" "$websrc"
   mkdir -p "$here/papers/$slug"
   pandoc "$websrc" \
     --from=latex \
+    --wrap=none \
     --katex \
     --citeproc --bibliography="$root/papers/refs.bib" \
     --shift-heading-level-by=1 \
@@ -45,6 +46,14 @@ build_one() {
   if [ -n "$figs" ]; then
     mkdir -p "$here/papers/$slug/figures"
     for f in $figs; do cp "$root/papers/figures/$f" "$here/papers/$slug/figures/$f"; done
+  fi
+  # The site hosts the PDF, so refresh the committed copy from the local build when there is
+  # one. A fresh clone has no PDF under papers/ (gitignored as a build artifact there) and keeps
+  # the committed docs/ copy, which is why the copy is conditional rather than required.
+  if [ -f "$root/${reldir}/${tex}.pdf" ]; then
+    cp "$root/${reldir}/${tex}.pdf" "$here/papers/$slug/${tex}.pdf"
+  elif [ ! -f "$here/papers/$slug/${tex}.pdf" ]; then
+    echo "  WARNING: no PDF at ${reldir}/${tex}.pdf and none committed under docs/; PDF link will 404"
   fi
   echo "wrote docs/papers/$slug/index.html (generated from ${reldir}/${tex}.tex)"
 }

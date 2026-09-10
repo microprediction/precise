@@ -7,15 +7,6 @@
     <meta name="description" content="Schur Damping: Research Directions — an interactive map of the connected literatures (Vecchia approximations, composite likelihood, Cholesky regressions, shrinkage, robust covariance, PD completion, portfolio construction). Dashed red edges are open research directions.">
     <link rel="stylesheet" href="../../academic.css">
     <style>
-        .site-nav { position: sticky; top: 0; z-index: 1000; background: #34495e; color: white;
-            padding: 12px 24px; font-family: 'Times New Roman', Times, serif;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .site-nav-inner { max-width: 1100px; margin: 0 auto; display: flex;
-            justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
-        .site-nav-brand { color: white; text-decoration: none; font-weight: 700; font-size: 1.25em; }
-        .site-nav-links { display: flex; gap: 24px; }
-        .site-nav-links a { color: #ecf0f1; text-decoration: none; }
-        .site-nav-links a:hover { color: white; text-decoration: underline; }
         #map-wrap { max-width: 1100px; margin: 0 auto; padding: 16px; }
         #graph { width: 100%; height: 760px; border: 1px solid #ddd; background: #fdfdfc; border-radius: 4px; }
         .legend { font-size: 0.85em; color: #444; display: flex; flex-wrap: wrap; gap: 14px 22px; margin: 10px 0; }
@@ -31,15 +22,25 @@
     </style>
 </head>
 <body>
-<nav class="site-nav"><div class="site-nav-inner">
-    <a class="site-nav-brand" href="../../">precise</a>
+  <nav class="site-nav"><div class="site-nav-inner">
+    <a class="site-nav-brand" href="/">precise</a>
     <div class="site-nav-links">
-        <a href="../">Maps</a>
-        <a href="../../papers/">Papers</a>
-        <a href="https://github.com/microprediction/precise">GitHub</a>
-        <a href="https://pypi.org/project/precise/">PyPI</a>
+      <span class="menu"><span class="menu-label" tabindex="0">Docs</span><span class="drop">
+        <a href="/#install">Install</a>
+        <a href="/#quickstart">Quick start</a>
+        <a href="/#estimators">Estimators</a>
+      </span></span>
+      <span class="menu"><span class="menu-label" tabindex="0">Papers</span><span class="drop">
+        <a href="/papers/">All papers</a>
+        <a href="/papers/online-spectral-calibration/">Spectral Calibration Without a Split</a>
+        <a href="/papers/schur-likelihood/">Schur Covariance Evaluation</a>
+        <a href="/papers/two-sides-of-schur-damping/">Two Sides of Schur Damping</a>
+      </span></span>
+      <a href="/maps/">Maps</a>
+      <a href="https://github.com/microprediction/precise">GitHub</a>
+      <a href="https://pypi.org/project/precise/">PyPI</a>
     </div>
-</div></nav>
+  </div></nav>
 
 <div id="map-wrap">
     <h1>Schur Damping: Research Directions</h1>

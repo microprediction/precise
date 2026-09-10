@@ -297,3 +297,46 @@ footer a {
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
 .p-0 { padding: 0; }
+/* ---------------------------------------------------------------------------
+   Canonical site header. One block, byte-identical on every page of the site
+   (style/site_conventions.md, hard rule of 2026-08-27), which is why the hrefs
+   are root-absolute: the site is served at the domain root, so the same block
+   works at every directory depth. Grouped under labelled dropdowns rather than
+   a flat link bar. Light-only, like the rest of this sheet: no dark mode.
+   --------------------------------------------------------------------------- */
+.site-nav { position: sticky; top: 0; z-index: 1000; background: var(--header-bg); color: #fff;
+            padding: 12px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+.site-nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; gap: 24px; }
+.site-nav-brand { color: #fff; text-decoration: none; font-weight: 700; font-size: 1.25em; }
+.site-nav-links { display: flex; align-items: center; gap: 24px; margin-left: auto; }
+.site-nav a { color: #ecf0f1; text-decoration: none; }
+.site-nav a:hover { color: #fff; text-decoration: underline; }
+
+/* Dropdowns: span.menu > span.menu-label + span.drop, opened on hover and on
+   focus-within. The label carries tabindex="0" so focus-within is actually
+   reachable from the keyboard — the links inside are display:none until then,
+   and a hidden link cannot take focus to open its own menu. */
+.site-nav .menu { position: relative; display: inline-block; }
+.site-nav .menu-label { color: #ecf0f1; cursor: default; }
+.site-nav .menu-label::after { content: " \25be"; font-size: .8em; }
+.site-nav .menu:hover > .menu-label,
+.site-nav .menu:focus-within > .menu-label { color: #fff; }
+.site-nav .drop { display: none; position: absolute; left: 0; top: 100%; margin-top: 10px;
+                  background: var(--header-bg); border: 1px solid rgba(255, 255, 255, .18);
+                  border-radius: 4px; padding: 8px 0; min-width: 240px;
+                  box-shadow: 0 6px 18px rgba(0, 0, 0, .22); }
+.site-nav .menu:hover > .drop,
+.site-nav .menu:focus-within > .drop { display: block; }
+.site-nav .drop a { display: block; padding: 7px 16px; white-space: nowrap; }
+.site-nav .drop a:hover { background: rgba(255, 255, 255, .10); color: #fff;
+                          text-decoration: none; }
+
+@media (max-width: 768px) {
+  .site-nav-inner { flex-wrap: wrap; gap: 14px; }
+  .site-nav-links { margin-left: 0; flex-wrap: wrap; gap: 16px; }
+  .site-nav .drop { position: static; display: block; margin: 6px 0 0; border: 0;
+                    box-shadow: none; padding: 0; min-width: 0; background: transparent; }
+  .site-nav .drop a { padding: 4px 0 4px 14px; }
+  .site-nav .menu-label::after { content: ""; }
+}
