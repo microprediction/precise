@@ -1,8 +1,0 @@
-# PDFs are build artifacts here; the site hosts the published copies, which are committed
-# under docs/ (see microprediction/style, site_conventions.md — the gitignore asymmetry is
-# deliberate: build artifact in papers/, site content in docs/).
-*.pdf
-
-# Exempt: these have no source in this repo, so they are not regenerable and are kept.
-!Schur_Complementary_Portfolios_*.pdf
-!arxiv/**/*.pdf
