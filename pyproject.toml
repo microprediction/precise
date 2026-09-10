@@ -69,7 +69,12 @@ select = ["E", "W", "F", "I", "B", "UP"]
 ignore = ["E741"]  # ambiguous variable names (i, l) are fine in math code
 
 [tool.mypy]
-python_version = "3.9"
+# The *type-checking* target, not the supported runtime: `requires-python` still admits 3.9, and
+# ruff's target-version = "py39" is what keeps 3.9-incompatible syntax out of the tree. Two lower
+# bounds force this value. mypy no longer accepts a target below 3.10 ("Python 3.9 is not
+# supported"), and numpy's bundled stubs use PEP 695 `type` statements, which mypy parses against
+# the *target* version and rejects below 3.12. Anything lower fails before our code is checked.
+python_version = "3.12"
 ignore_missing_imports = true
 warn_unused_ignores = true
 
