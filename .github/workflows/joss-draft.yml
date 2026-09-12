@@ -4,7 +4,7 @@ name: joss-draft
 # resolves to nothing is caught here rather than by a JOSS editor. The artifact is the draft.
 on:
   push:
-    paths: [paper.md, paper.bib, .github/workflows/joss-draft.yml]
+    paths: [papers/joss/**, .github/workflows/joss-draft.yml]
   workflow_dispatch:
 
 jobs:
@@ -16,8 +16,8 @@ jobs:
         uses: openjournals/openjournals-draft-action@master
         with:
           journal: joss
-          paper-path: paper.md
+          paper-path: papers/joss/paper.md
       - uses: actions/upload-artifact@v4
         with:
           name: paper
-          path: paper.pdf
+          path: papers/joss/paper.pdf
