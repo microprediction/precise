@@ -89,7 +89,7 @@ def manager_regressor_frame(elos):
             for wd in name_words:
                 for r_old, r_new in MODEL_KEY_REPLACEMENTS.items():
                     wd = wd.replace(r_old, r_new)
-                wd_head = re.search("[^\d]*", wd).group()
+                wd_head = re.search("[^\\d]*", wd).group()
                 if wd == wd_head:
                     if wd not in MODEL_KEYS_NOT_USED:
                         categorical.add(wd_head)
@@ -111,7 +111,7 @@ def manager_regressor_frame(elos):
                 if wd in categorical:
                     pair = (wd+'_hot',1)
                 else:
-                    wd_head = re.search("[^\d]*", wd).group()
+                    wd_head = re.search("[^\\d]*", wd).group()
                     if wd_head in categorical:
                         pair = (wd+'_hot',1)
                     elif wd_head in ordinal:
