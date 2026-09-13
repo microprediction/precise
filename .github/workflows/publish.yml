@@ -1,0 +1,76 @@
+name: Publish to PyPI
+
+# Fires when a GitHub release is published. Build and test-install happen before anything is
+# uploaded, so a wheel that cannot be installed never reaches PyPI. Authentication is trusted
+# publishing (OIDC) rather than a stored token, which is why the publish job needs id-token: write
+# and an environment; PyPI must have a publisher configured for this repository, workflow and
+# environment name for the upload to be accepted.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      test_pypi:
+        description: 'Deploy to Test PyPI instead of PyPI'
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      - name: Build package
+        run: python -m build
+      - name: Check package
+        run: twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  test-install:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Test installation from wheel
+        run: |
+          pip install dist/*.whl
+          python -c "import precise; print(f'precise {precise.__version__} installed')"
+          python -c "from precise import all_estimators; print(f'{len(all_estimators())} estimators')"
+
+  publish:
+    needs: [build, test-install]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.test_pypi == 'true' && 'test-pypi' || 'pypi' }}
+      url: ${{ github.event.inputs.test_pypi == 'true' && 'https://test.pypi.org/p/precise' || 'https://pypi.org/p/precise' }}
+    permissions:
+      id-token: write  # mandatory for trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Publish to Test PyPI
+        if: github.event.inputs.test_pypi == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+      - name: Publish to PyPI
+        if: github.event.inputs.test_pypi != 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
