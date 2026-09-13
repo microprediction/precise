@@ -4,7 +4,7 @@ All notable changes to `precise` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.1.0] — 2026-09-13
 
 ### Added
 - `NonlinearShrinkageCovariance`: online analytical **nonlinear** shrinkage of the covariance
@@ -25,6 +25,31 @@ All notable changes to `precise` are documented here. The format follows
   distribution is not an equivalence, and Oriol (arXiv:2410.14420) derives the weighted formulas
   properly — but it has no window boundary, so it does not pay for a shock twice.
   `research/turnover.py` measures the difference.
+- A JOSS paper under `papers/joss/`, and the note *Spectral Calibration Without a Split* under
+  `papers/online_spectral_calibration/`.
+
+### Fixed
+- `LedoitWolfCovariance` collapsed to a scaled identity under heavy tails. `pi_bar` averages a
+  quantity growing like the fourth power of the observation, so one fat-tailed draw could pin the
+  shrinkage intensity at 1 and leave the estimate with no off-diagonals: at t(3) innovations it
+  retained 0.088 of the covariance structure where OAS retained 0.543. Each observation's
+  contribution is now winsorized at ten times the running mean, which leaves Gaussian behaviour
+  unchanged to three decimals and takes t(3) retention to 0.409.
+- The frozen recommender was inert. `sklearn`'s `tree_.value` holds class proportions, and the
+  exporter cast them with `int()`, flooring every value under 1.0 to zero — 46 of 47 nodes carried
+  no weight, so `suggest()` had been ranking on the heuristic ruleset alone. The model now covers
+  19 of 20 estimators (it was 9), and two training runs produce a byte-identical artifact.
+- Training was irreproducible whenever `randomcov` was installed: three generative ensembles in
+  `research/oos.py` ignored the `rng` they were passed and drew from global state.
+- The training grid stopped at `n/p = 3`, so every data-rich low-dimensional problem was
+  extrapolation. It now spans `p` from 5 to 60 and `n/p` from 0.5 to 25.
+- A malformed generated model can no longer break `import precise`.
+
+### Changed
+- `suggest()`'s safe default moves from `LedoitWolfCovariance` to `NonlinearShrinkageCovariance`,
+  which has the best mean rank of any single fixed choice over eleven ensembles and seven `(p, n)`
+  regimes. It is not uniformly best: at `p` close to `n` it ranks 9.41 and the trained model is
+  worth far more there, which is why the model still leads and this only breaks ties.
 
 ## [1.0.0] — 2026-06-05
 
