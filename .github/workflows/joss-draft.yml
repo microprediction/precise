@@ -1,0 +1,23 @@
+name: joss-draft
+
+# Compiles paper.md to a PDF whenever it changes, so a broken bibliography or a citation that
+# resolves to nothing is caught here rather than by a JOSS editor. The artifact is the draft.
+on:
+  push:
+    paths: [papers/joss/**, .github/workflows/joss-draft.yml]
+  workflow_dispatch:
+
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build draft PDF
+        uses: openjournals/openjournals-draft-action@master
+        with:
+          journal: joss
+          paper-path: papers/joss/paper.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paper
+          path: papers/joss/paper.pdf
