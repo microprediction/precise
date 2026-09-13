@@ -60,7 +60,7 @@ if using_matplotlib:
             normalized_moments = dict([(k, v / moments['g000']) for k, v in moments.items()])
             moment_plot(moments=normalized_moments, sty=sty)
 
-        plt.title('Portfolio variance as $\gamma$ is varied')
+        plt.title('Portfolio variance as $\\gamma$ is varied')
         full_xlabel = xlabel + ' benefit=' + str(round(np.mean(bps))) + ' bps'
         plt.xlabel(full_xlabel)
         plt.show()
