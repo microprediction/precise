@@ -68,8 +68,14 @@ def _scores(features: dict) -> dict:
     heavy_tailed = features["avg_excess_kurtosis"] > 1.0
 
     if high_dim or ill_conditioned:
-        for nm in ("FactorCovariance", "LedoitWolfCovariance", "OASCovariance",
-                   "ShrunkCovariance", "SchurCovariance", "NonlinearShrinkageCovariance"):
+        for nm in (
+            "FactorCovariance",
+            "LedoitWolfCovariance",
+            "OASCovariance",
+            "ShrunkCovariance",
+            "SchurCovariance",
+            "NonlinearShrinkageCovariance",
+        ):
             score[nm] += 2.0
     else:
         for nm in ("EmpiricalCovariance", "EwaCovariance"):

@@ -55,7 +55,12 @@ class TylerCovariance(BaseOnlineCovariance):
         C = (1 - lr) * C + lr * p * np.outer(dev, dev) / q  # direction-only contribution
         C = p * C / np.trace(C)  # fix the scale: trace == p
         return {
-            "n_dim": p, "n_samples": n, "mean": mean, "C": C, "r": s["r"], "n_burn": s["n_burn"],
+            "n_dim": p,
+            "n_samples": n,
+            "mean": mean,
+            "C": C,
+            "r": s["r"],
+            "n_burn": s["n_burn"],
         }
 
     def _state_to_cov(self, state: dict) -> np.ndarray:

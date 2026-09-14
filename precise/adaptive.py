@@ -44,7 +44,10 @@ class AdaptiveEwaCovariance(BaseOnlineCovariance):
         if s["n_samples"] < s["n_burn"]:
             out = emp_update(s, x)
             out["r"], out["n_burn"], out["max_r"], out["sbar"] = (
-                s["r"], s["n_burn"], s["max_r"], s["sbar"],
+                s["r"],
+                s["n_burn"],
+                s["max_r"],
+                s["sbar"],
             )
             return out
         p = s["n_dim"]

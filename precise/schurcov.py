@@ -29,8 +29,14 @@ class SchurCovariance(BaseOnlineCovariance):
     :param diff:          If ``True``, estimate the covariance of first differences of the stream.
     """
 
-    def __init__(self, r: float = 0.05, n_blocks: int = 4, gamma: float = 0.5,
-                 interpolation: str = "linear", diff: bool = False):
+    def __init__(
+        self,
+        r: float = 0.05,
+        n_blocks: int = 4,
+        gamma: float = 0.5,
+        interpolation: str = "linear",
+        diff: bool = False,
+    ):
         self.r = r
         self.n_blocks = n_blocks
         self.gamma = gamma
