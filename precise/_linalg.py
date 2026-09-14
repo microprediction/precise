@@ -20,9 +20,22 @@ def to_symmetric(a: np.ndarray) -> np.ndarray:
 
 
 def cov_to_corrcoef(a: np.ndarray) -> np.ndarray:
-    """Normalize a covariance matrix to a correlation matrix (unit diagonal)."""
-    variances = np.diagonal(a)
-    denominator = np.sqrt(variances[np.newaxis, :] * variances[:, np.newaxis]) + EPS
+    """Normalize a covariance matrix to a correlation matrix (unit diagonal).
+
+    The guard against a zero variance is relative, not additive. ``sqrt(v_i v_j) + EPS`` adds a
+    constant with units of variance to a quantity with units of variance, so it stops being
+    negligible exactly when the data is small: at variances of 1e-12 the additive 1e-12 halved
+    every entry, and the diagonal -- which is one by definition -- came back as 0.5. At 1e-13 it
+    came back as 0.09, and a true correlation of 0.5 read as 0.045.
+
+    Flooring each variance at a fraction of the largest keeps the unit diagonal at every scale and
+    still avoids dividing by a genuinely zero variance.
+    """
+    variances = np.asarray(np.diagonal(a), dtype=float)
+    largest = float(variances.max()) if variances.size else 0.0
+    floor = EPS * largest if largest > 0.0 else EPS
+    safe = np.clip(variances, floor, None)
+    denominator = np.sqrt(safe[np.newaxis, :] * safe[:, np.newaxis])
     return a / denominator
 
 
@@ -58,10 +71,29 @@ def nearest_pos_def(a: np.ndarray) -> np.ndarray:
 
 
 def make_pos_def(a: np.ndarray, eps: float = 1e-8) -> np.ndarray:
-    """Cheap symmetrize-and-floor: clip eigenvalues up to ``eps``. Always SPD."""
+    """Cheap symmetrize-and-floor: clip eigenvalues up to ``eps`` times the largest. Always SPD.
+
+    The floor is *relative*. An absolute one has units of variance, so it silently decides the
+    answer whenever the data is small: at a data scale of 1e-6 the true variances are around
+    1e-12, every eigenvalue is below an absolute 1e-8, and this returned ``1e-8 * I`` -- an
+    estimate up to nine thousand times too large that carries no correlation information at all.
+    Block, Schur, SchurLedoitWolf and Geodesic all did exactly that.
+
+    Worse in one case. GeodesicEwaCovariance interpolates toward ``np.outer(delta, delta)``, whose
+    other ``p - 1`` eigenvalues are zero and were floored here to 1e-8. Because the rank-one
+    direction rotates every step, no direction was ever sustained and the estimate collapsed onto
+    the floor: measured, a true trace of 9.49 became 2.4e-06 within about forty observations and
+    stayed there, giving a variance forecast seven million times too small.
+
+    Relative to the largest eigenvalue, the floor is scale-equivariant: multiply the data by ``c``
+    and the estimate multiplies by ``c**2``, as a covariance must. A matrix with no positive
+    eigenvalue at all has no scale to be relative to, so it falls back to the absolute value.
+    """
     a = to_symmetric(a)
     evals, evecs = np.linalg.eigh(a)
-    evals = np.clip(evals, eps, None)
+    largest = float(evals[-1]) if evals.size else 0.0
+    floor = eps * largest if largest > 0.0 else eps
+    evals = np.clip(evals, floor, None)
     return to_symmetric((evecs * evals) @ evecs.T)
 
 
