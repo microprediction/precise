@@ -141,10 +141,7 @@ class BaseOnlineCovariance:
         """Return the current state as a plain, JSON-friendly dict (or None if unfitted)."""
         if self._state is None:
             return None
-        return {
-            k: (v.tolist() if isinstance(v, np.ndarray) else v)
-            for k, v in self._state.items()
-        }
+        return {k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in self._state.items()}
 
     def set_state(self, state: dict | None) -> BaseOnlineCovariance:
         """Restore state previously produced by :meth:`get_state`."""

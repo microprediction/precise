@@ -53,7 +53,7 @@ class SchurLedoitWolfCovariance(BaseOnlineCovariance):
         # State holds only plain accumulators (roundtrip-safe); the block mask is derived
         # from n_dim and n_blocks on demand, exactly as SchurCovariance does.
         s = ewa_init(n_dim, self.r)
-        s["pi_cross"] = 0.0                       # EWA mean cross-block scatter dispersion
+        s["pi_cross"] = 0.0  # EWA mean cross-block scatter dispersion
         return s
 
     def _update_state(self, s: dict, x: np.ndarray) -> dict:
@@ -65,7 +65,7 @@ class SchurLedoitWolfCovariance(BaseOnlineCovariance):
         cross = self._cross_mask(s["n_dim"])
         delta = x - s["mean"]
         scatter = np.outer(delta, delta)
-        q = float(np.sum(((scatter - s["cov"]) ** 2)[cross]))   # cross-block dispersion, this step
+        q = float(np.sum(((scatter - s["cov"]) ** 2)[cross]))  # cross-block dispersion, this step
         return {
             "n_dim": s["n_dim"],
             "n_samples": s["n_samples"] + 1,
@@ -79,7 +79,7 @@ class SchurLedoitWolfCovariance(BaseOnlineCovariance):
     def _state_to_cov(self, state: dict) -> np.ndarray:
         cov = np.asarray(state["cov"], dtype=float)
         cross = self._cross_mask(state["n_dim"])
-        m2 = float(np.sum((cov ** 2)[cross]))               # ~ sum (sigma^2 + Var) over cross
+        m2 = float(np.sum((cov**2)[cross]))  # ~ sum (sigma^2 + Var) over cross
         b2 = float(state.get("pi_cross", 0.0)) * state["r"]  # ~ sum Var(s) over cross (eff n ~ 1/r)
         gamma = float(np.clip(1.0 - b2 / m2, 0.0, 1.0)) if m2 > 0 else 1.0
         self.gamma_ = gamma

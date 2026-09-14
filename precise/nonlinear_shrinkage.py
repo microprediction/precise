@@ -43,6 +43,15 @@ _SQRT5 = float(np.sqrt(5.0))
 # branch (which needs sqrt(5)*h < 1), and the density estimate is not informative anyway.
 _MIN_OBS = 12
 
+# Eigenvalues below this fraction of the largest are treated as null. See the tolerance comment in
+# `nonlinear_shrinkage_spectrum`: the kernel divides by the eigenvalue, so "small enough to ignore"
+# is set by that inversion, not by the precision of the representation.
+_NULL_EIGENVALUE_RATIO = float(np.sqrt(np.finfo(float).eps))
+
+# Bounds on shrunk-trace over raw-trace before the map is rejected as having failed. Wide, because
+# genuine shrinkage does move the trace; the failure being caught moves it by a factor of 1e-9.
+_TRACE_TOLERANCE = (0.5, 2.0)
+
 
 def nonlinear_shrinkage_spectrum(lam: np.ndarray, n: int) -> np.ndarray | None:
     """Map sample eigenvalues to nonlinearly shrunk ones. ``lam`` ascending, ``n`` observations.
@@ -66,7 +75,22 @@ def nonlinear_shrinkage_spectrum(lam: np.ndarray, n: int) -> np.ndarray | None:
         return None
     h = n ** (-1.0 / 3.0)  # kernel bandwidth exponent, eq. (4.9)
 
-    tol = lam[-1] * p * np.finfo(float).eps
+    # Machine epsilon is the wrong scale here, and using it shipped a silent failure. The kernel
+    # divides by the eigenvalue twice -- `H = h * lam` sets the bandwidth, and both `x` and
+    # `hf / H` are scaled by it -- so an eigenvalue far below the bulk does not merely contribute
+    # little, it contributes ~1/lam to the Hilbert transform of *every* other eigenvalue and drives
+    # the whole shrunk spectrum to zero. A relative eigenvalue of 1e-15 is excluded by an
+    # epsilon-scaled tolerance, but one of 1e-10 survives it and collapses the estimate.
+    #
+    # That band is reachable from ordinary data rather than from contrived spectra: one series
+    # quoted in basis points among percents is a variance ratio of 1e-8, and a hedged pair is
+    # smaller still. Measured, a p=10 stream with one column scaled by 1e-4 returned a covariance
+    # with 1e-9 of the correct trace.
+    #
+    # sqrt(eps) is the conventional floor for a quantity a method inverts, and it sits an order of
+    # magnitude clear of the band where the kernel estimate degrades. Directions below it carry no
+    # variance worth estimating and stay null, exactly as the p > n nulls do.
+    tol = lam[-1] * max(p * np.finfo(float).eps, _NULL_EIGENVALUE_RATIO)
     k = min(int(np.count_nonzero(lam > tol)), n)
     if k < 1:
         return None
@@ -347,5 +371,15 @@ def _shrink(cov: np.ndarray, n: int) -> np.ndarray:
     lam, evecs = lam[order], evecs[:, order]
     dtilde = nonlinear_shrinkage_spectrum(lam, n)
     if dtilde is None or not np.all(np.isfinite(dtilde)) or np.any(dtilde < 0):
+        return cov
+
+    # Trace check, because the failure this catches is finite, non-negative and therefore passes
+    # every test above. Shrinkage redistributes eigenvalues -- pulling the top down and lifting the
+    # bulk -- but it does not change the total by an order of magnitude; Ledoit-Wolf's map is
+    # asymptotically trace-preserving. A shrunk spectrum summing to a thousandth of the raw one is
+    # not a shrinkage estimate, it is the kernel having divided by something it should have
+    # excluded, and returning the unshrunk covariance is strictly better than returning that.
+    raw, shrunk = float(np.sum(lam)), float(np.sum(dtilde))
+    if raw > 0 and not (_TRACE_TOLERANCE[0] * raw <= shrunk <= _TRACE_TOLERANCE[1] * raw):
         return cov
     return (evecs * dtilde) @ evecs.T

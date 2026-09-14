@@ -73,9 +73,9 @@ class SchurConditionalCovariance(BaseOnlineCovariance):
         rij = R[cross]
         if rij.size == 0:
             return 1.0
-        var_g = (1.0 + rij ** 2) / n_eff
-        num = float(np.clip(rij ** 2 - var_g, 0.0, None).sum())
-        den = float((rij ** 2).sum())
+        var_g = (1.0 + rij**2) / n_eff
+        num = float(np.clip(rij**2 - var_g, 0.0, None).sum())
+        den = float((rij**2).sum())
         return float(np.clip(num / den, 0.0, 1.0)) if den > 0 else 0.0
 
     def _state_to_cov(self, state: dict) -> np.ndarray:
@@ -93,14 +93,14 @@ class SchurConditionalCovariance(BaseOnlineCovariance):
         Rg[a0:b0, a0:b0] = R[a0:b0, a0:b0]
         for k in range(1, len(sl)):
             ak, bk = sl[k]
-            pa, pb = 0, ak                          # condition on all previous variables
+            pa, pb = 0, ak  # condition on all previous variables
             Rcc = R[pa:pb, pa:pb]
             ridge = float(np.clip((pb - pa) / n_eff, 0.0, 0.9))  # ~ conditioning_dim / n_eff
             Rcc_reg = (1.0 - ridge) * Rcc + ridge * np.diag(np.diag(Rcc))
             Rck = R[pa:pb, ak:bk]
             Rkk = R[ak:bk, ak:bk]
-            b = np.linalg.solve(Rcc_reg + 1e-10 * np.eye(pb - pa), Rck)   # robust (ridge) hedge
-            S = make_pos_def(to_symmetric(Rkk - Rck.T @ b))              # conditional covariance
+            b = np.linalg.solve(Rcc_reg + 1e-10 * np.eye(pb - pa), Rck)  # robust (ridge) hedge
+            S = make_pos_def(to_symmetric(Rkk - Rck.T @ b))  # conditional covariance
             bg = gamma * b
             Sg = (1.0 - gamma) * Rkk + gamma * S
             Rprev = Rg[pa:pb, pa:pb]
@@ -108,4 +108,4 @@ class SchurConditionalCovariance(BaseOnlineCovariance):
             Rg[pa:pb, ak:bk] = Rg[ak:bk, pa:pb].T
             Rg[ak:bk, ak:bk] = Sg + bg.T @ Rprev @ bg
         Rg = make_pos_def(to_symmetric(Rg))
-        return Rg * np.outer(d, d)                                       # back to covariance
+        return Rg * np.outer(d, d)  # back to covariance

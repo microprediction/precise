@@ -55,8 +55,11 @@ class BlockCovariance(BaseOnlineCovariance):
     def _update_state(self, s: dict, x: np.ndarray) -> dict:
         subs = []
         for sub, (a, b) in zip(s["subs"], s["slices"]):
-            sub = {**sub, "mean": np.asarray(sub["mean"], dtype=float),
-                   "cov": np.asarray(sub["cov"], dtype=float)}
+            sub = {
+                **sub,
+                "mean": np.asarray(sub["mean"], dtype=float),
+                "cov": np.asarray(sub["cov"], dtype=float),
+            }
             subs.append(ewa_update(sub, x[a:b]))
         return {**s, "n_samples": s["n_samples"] + 1, "subs": subs}
 
@@ -113,11 +116,23 @@ class BlockCovariance(BaseOnlineCovariance):
         n_samples, r, n_burn = int(state["n_samples"]), float(state["r"]), int(state["n_burn"])
         slices = [(int(a), int(b)) for a, b in state["slices"]]
         subs = [
-            {"n_dim": b - a, "n_samples": n_samples, "r": r, "n_burn": n_burn,
-             "mean": np.asarray(m, dtype=float), "cov": np.asarray(c, dtype=float)}
+            {
+                "n_dim": b - a,
+                "n_samples": n_samples,
+                "r": r,
+                "n_burn": n_burn,
+                "mean": np.asarray(m, dtype=float),
+                "cov": np.asarray(c, dtype=float),
+            }
             for (a, b), m, c in zip(slices, state["block_means"], state["block_covs"])
         ]
-        self._state = {"n_dim": int(state["n_dim"]), "n_samples": n_samples, "r": r,
-                       "n_burn": n_burn, "slices": slices, "subs": subs}
+        self._state = {
+            "n_dim": int(state["n_dim"]),
+            "n_samples": n_samples,
+            "r": r,
+            "n_burn": n_burn,
+            "slices": slices,
+            "subs": subs,
+        }
         self.n_features_in_ = int(state["n_dim"])
         return self

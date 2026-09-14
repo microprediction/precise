@@ -74,8 +74,7 @@ class _KeyedAdapter:
     @staticmethod
     def _as_dict_of_dicts(matrix, keys) -> dict[str, dict[str, float]]:
         return {
-            ki: {kj: float(matrix[i, j]) for j, kj in enumerate(keys)}
-            for i, ki in enumerate(keys)
+            ki: {kj: float(matrix[i, j]) for j, kj in enumerate(keys)} for i, ki in enumerate(keys)
         }
 
     # --- fitted attributes (keyed output) ---
