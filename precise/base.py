@@ -141,21 +141,46 @@ class BaseOnlineCovariance:
         return self.precision_
 
     # ----------------------------------------------------------- scoring
+    def _modeled_rows(self, X) -> np.ndarray:
+        """Map rows in the input space of ``fit`` to the space the estimate describes.
+
+        With ``diff=True`` the estimate is of first differences, so a batch of levels is
+        differenced within itself: ``n`` rows give ``n - 1`` differences. Scoring raw levels
+        against a difference model made the answer depend on arbitrary price origins.
+        """
+        rows = self._check_n_features(as_rows(X), expected=len(self.location_))
+        if getattr(self, "diff", False):
+            if len(rows) < 2:
+                raise ValueError(
+                    f"{type(self).__name__} was fitted with diff=True, so mahalanobis and score "
+                    "take levels, as fit does, and difference them within the batch; pass at "
+                    "least two consecutive rows."
+                )
+            rows = np.diff(rows, axis=0)
+        return rows
+
+    def _mahalanobis(self, rows: np.ndarray) -> np.ndarray:
+        centered = rows - self.location_
+        return np.einsum("ij,jk,ik->i", centered, self.precision_, centered)
+
     def mahalanobis(self, X) -> np.ndarray:
-        """Squared Mahalanobis distance of each row of ``X`` from ``location_``."""
-        location = self.location_
-        rows = self._check_n_features(as_rows(X), expected=len(location))
-        prec = self.precision_
-        centered = rows - location
-        return np.einsum("ij,jk,ik->i", centered, prec, centered)
+        """Squared Mahalanobis distance of each row of ``X`` from ``location_``.
+
+        ``X`` is in the same space as for ``fit``. With ``diff=True`` that means levels, and the
+        distances are those of the ``len(X) - 1`` first differences within ``X``.
+        """
+        return self._mahalanobis(self._modeled_rows(X))
 
     def score(self, X, y=None) -> float:
-        """Mean Gaussian log-likelihood of the rows of ``X`` under the fitted estimate."""
-        rows = self._check_n_features(as_rows(X), expected=len(self.location_))
-        prec = self.precision_
-        _, logdet = np.linalg.slogdet(prec)
+        """Mean Gaussian log-likelihood of the rows of ``X`` under the fitted estimate.
+
+        ``X`` is in the same space as for ``fit``. With ``diff=True`` that means levels, and the
+        score is the mean over the ``len(X) - 1`` first differences within ``X``.
+        """
+        rows = self._modeled_rows(X)
+        _, logdet = np.linalg.slogdet(self.precision_)
         p = rows.shape[1]
-        quad = self.mahalanobis(rows)
+        quad = self._mahalanobis(rows)
         ll = 0.5 * logdet - 0.5 * quad - 0.5 * p * np.log(2 * np.pi)
         return float(np.mean(ll))
 
