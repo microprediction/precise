@@ -62,7 +62,7 @@ class BaseOnlineCovariance:
     def partial_fit(self, X, y=None) -> BaseOnlineCovariance:
         """Update the estimate with one observation (1d) or a batch of rows (2d)."""
         self._validate_params()
-        rows = self._check_n_features(as_rows(X))
+        rows = self._check_finite(self._check_n_features(as_rows(X)))
         use_diff = getattr(self, "diff", False)
         for x in rows:
             if use_diff:
@@ -96,6 +96,22 @@ class BaseOnlineCovariance:
                 f"{type(self).__name__} has {expected} features but got rows with {width}. The "
                 "positional estimators have a fixed dimension; use keyed(...) for a changing "
                 "universe."
+            )
+        return rows
+
+    def _check_finite(self, rows: np.ndarray) -> np.ndarray:
+        """Return ``rows`` if every value is finite, else raise before any state is touched.
+
+        One NaN or inf used to enter the running moments and stay there for good: the estimate
+        stayed non-finite (or failed later inside a decomposition) however much clean data
+        followed. Missing values need an explicit policy; the keyed adapters provide imputation.
+        """
+        bad = ~np.isfinite(rows)
+        if bad.any():
+            i, j = (int(v) for v in np.argwhere(bad)[0])
+            raise ValueError(
+                f"{type(self).__name__}: observations must be finite, got {rows[i, j]} in row {i}, "
+                f"column {j}. Nothing was updated."
             )
         return rows
 

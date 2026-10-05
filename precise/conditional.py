@@ -133,7 +133,7 @@ class ConditionalCovariance(BaseOnlineCovariance):
     def partial_fit(self, X, y=None) -> ConditionalCovariance:
         # Check the whole batch first: a short row used to update the correlation model and some
         # volatility models before failing, leaving the sub-models out of step.
-        for x in self._check_n_features(as_rows(X)):
+        for x in self._check_finite(self._check_n_features(as_rows(X))):
             if self._state is None:
                 d = len(x)
                 self.n_features_in_ = d
