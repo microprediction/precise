@@ -76,11 +76,22 @@ class SchurLedoitWolfCovariance(BaseOnlineCovariance):
             "pi_cross": (1 - r) * s["pi_cross"] + r * q,
         }
 
+    @staticmethod
+    def _cross_sampling_variance(state: dict) -> float:
+        """Estimated sum of ``Var(s_ij)`` over the cross-block entries of the EWA covariance.
+
+        ``pi_cross`` tracks the prequential dispersion ``(scatter_t - cov_{t-1})^2``, which holds
+        both the observation variance ``v`` and the sampling variance of ``cov_{t-1}``. For the
+        stationary recursion ``Var(s) = r v / (2 - r)`` and ``E[q] = 2 v / (2 - r)``, so
+        ``Var(s) = (r / 2) E[q]``. (``r * pi_cross`` counted the sampling variance twice.)
+        """
+        return 0.5 * float(state["r"]) * float(state.get("pi_cross", 0.0))
+
     def _state_to_cov(self, state: dict) -> np.ndarray:
         cov = np.asarray(state["cov"], dtype=float)
         cross = self._cross_mask(state["n_dim"])
         m2 = float(np.sum((cov**2)[cross]))  # ~ sum (sigma^2 + Var) over cross
-        b2 = float(state.get("pi_cross", 0.0)) * state["r"]  # ~ sum Var(s) over cross (eff n ~ 1/r)
+        b2 = self._cross_sampling_variance(state)  # ~ sum Var(s) over cross
         gamma = float(np.clip(1.0 - b2 / m2, 0.0, 1.0)) if m2 > 0 else 1.0
         self.gamma_ = gamma
         out = cov.copy()

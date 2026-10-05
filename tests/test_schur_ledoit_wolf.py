@@ -58,3 +58,23 @@ def test_gamma_low_when_coupling_is_noise():
     e.partial_fit(rng.standard_normal((2000, 12)))
     _ = e.covariance_
     assert e.gamma_ < 0.5
+
+
+def test_cross_block_sampling_variance_is_calibrated():
+    # The damping is gamma = 1 - b2 / m2, where b2 estimates the sampling variance of the EWA
+    # cross-block covariance. It was r * pi_cross, but pi_cross is a prequential dispersion that
+    # already contains that sampling variance, so b2 came out twice the truth and gamma was too
+    # small (0.20 against 0.60 at correlation 0.2, r=0.05). For the stationary recursion
+    # Var(s) = (r/2) E[pi]. Compare b2 with the variance of the final estimate across many
+    # independent paths. (#95)
+    rng = np.random.default_rng(1)
+    r, rho, paths, steps = 0.1, 0.2, 1000, 120
+    final, b2 = [], []
+    for _ in range(paths):
+        z = rng.standard_normal((steps, 2))
+        x = np.c_[z[:, 0], rho * z[:, 0] + np.sqrt(1 - rho**2) * z[:, 1]]
+        state = SchurLedoitWolfCovariance(r=r, n_blocks=2).fit(x)._state
+        final.append(state["cov"][0, 1])
+        b2.append(SchurLedoitWolfCovariance._cross_sampling_variance(state) / 2)  # two entries
+    ratio = np.mean(b2) / np.var(final)
+    assert 0.8 < ratio < 1.25, f"estimated / actual sampling variance = {ratio:.3f}"
