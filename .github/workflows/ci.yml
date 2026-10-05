@@ -25,8 +25,9 @@ jobs:
         run: ruff check precise tests research
       - name: Type check
         run: mypy precise
-      - name: Test
-        run: pytest
+      - name: Test, with a coverage floor
+        # The README's coverage badge states this floor, so it stays true while main is green.
+        run: pytest --cov=precise --cov-report=term --cov-fail-under=95
 
   docs-up-to-date:
     # The web editions of the papers are generated from their LaTeX sources in papers/.

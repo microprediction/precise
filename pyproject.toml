@@ -39,7 +39,7 @@ dependencies = ["numpy>=1.21"]
 pandas = ["pandas>=1.3"]                                  # DataFrame output for the keyed adapters
 skaters = ["skaters>=0.1"]                                # univariate vol models for ConditionalCovariance (from_skater)
 research = ["randomcov>=0.1", "pandas>=1.3"]              # benchmark bake-offs in research/ (not shipped)
-dev = ["pytest>=7", "ruff>=0.4", "black>=24.0", "mypy>=1.8", "pandas>=1.3", "build", "scikit-learn>=1.1"]
+dev = ["pytest>=7", "pytest-cov>=4", "ruff>=0.4", "black>=24.0", "mypy>=1.8", "pandas>=1.3", "build", "scikit-learn>=1.1"]
 docs = ["mkdocs>=1.5", "mkdocs-material>=9.0"]
 
 [project.urls]

@@ -73,8 +73,8 @@ source .venv/bin/activate          # on Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 ```
 
-The `dev` extra installs pytest, pytest-cov, ruff, mypy, pandas and scikit-learn (the last two are
-used only by tests that compare against them). The package itself needs only numpy.
+The `dev` extra installs pytest, pytest-cov, ruff and mypy, among other tools, plus pandas and
+scikit-learn, which only the tests use (to compare against). The package itself needs only numpy.
 
 Optionally, install the pre-commit hooks, which run ruff and some whitespace checks on each commit:
 
