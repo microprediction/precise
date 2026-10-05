@@ -131,7 +131,9 @@ class ConditionalCovariance(BaseOnlineCovariance):
         raise TypeError("vol must be a positional estimator instance or a from_skater(...) factory")
 
     def partial_fit(self, X, y=None) -> ConditionalCovariance:
-        for x in as_rows(X):
+        # Check the whole batch first: a short row used to update the correlation model and some
+        # volatility models before failing, leaving the sub-models out of step.
+        for x in self._check_n_features(as_rows(X)):
             if self._state is None:
                 d = len(x)
                 self.n_features_in_ = d

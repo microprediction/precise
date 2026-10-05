@@ -61,8 +61,9 @@ class BaseOnlineCovariance:
     def partial_fit(self, X, y=None) -> BaseOnlineCovariance:
         """Update the estimate with one observation (1d) or a batch of rows (2d)."""
         self._validate_params()
+        rows = self._check_n_features(as_rows(X))
         use_diff = getattr(self, "diff", False)
-        for x in as_rows(X):
+        for x in rows:
             if use_diff:
                 if self._prev_x is None:
                     self._prev_x = x
@@ -73,6 +74,28 @@ class BaseOnlineCovariance:
                 self._state = self._init_state(len(x))
             self._state = self._update_state(self._state, x)
         return self
+
+    def _check_n_features(self, rows: np.ndarray, expected: int | None = None) -> np.ndarray:
+        """Return ``rows`` if their width matches the stream's fixed dimension, else raise.
+
+        The positional estimators have a fixed dimension. Without this check numpy broadcasting
+        quietly read a one-element row as the same value in every column, and a wider row expanded
+        the estimate past ``n_features_in_``. Checked before any state is touched.
+        """
+        if expected is None:
+            expected = self.n_features_in_
+        if expected is None and self._prev_x is not None:  # diff=True, first level stored
+            expected = len(self._prev_x)
+        width = rows.shape[1]
+        if len(rows) and width == 0:
+            raise ValueError(f"{type(self).__name__}: an observation needs at least one feature.")
+        if expected is not None and width != expected:
+            raise ValueError(
+                f"{type(self).__name__} has {expected} features but got rows with {width}. The "
+                "positional estimators have a fixed dimension; use keyed(...) for a changing "
+                "universe."
+            )
+        return rows
 
     def fit(self, X, y=None) -> BaseOnlineCovariance:
         """Reset and fit on a 2d batch ``X`` (sklearn drop-in)."""
@@ -120,14 +143,15 @@ class BaseOnlineCovariance:
     # ----------------------------------------------------------- scoring
     def mahalanobis(self, X) -> np.ndarray:
         """Squared Mahalanobis distance of each row of ``X`` from ``location_``."""
-        rows = as_rows(X)
+        location = self.location_
+        rows = self._check_n_features(as_rows(X), expected=len(location))
         prec = self.precision_
-        centered = rows - self.location_
+        centered = rows - location
         return np.einsum("ij,jk,ik->i", centered, prec, centered)
 
     def score(self, X, y=None) -> float:
         """Mean Gaussian log-likelihood of the rows of ``X`` under the fitted estimate."""
-        rows = as_rows(X)
+        rows = self._check_n_features(as_rows(X), expected=len(self.location_))
         prec = self.precision_
         _, logdet = np.linalg.slogdet(prec)
         p = rows.shape[1]
