@@ -14,6 +14,7 @@ dependency. The functional update hooks keep the state a plain dict, so ``get_st
 from __future__ import annotations
 
 import inspect
+import warnings
 
 import numpy as np
 
@@ -211,24 +212,45 @@ class BaseOnlineCovariance:
 
     # ------------------------------------------------------- serialization
     def get_state(self) -> dict | None:
-        """Return the current state as a plain, JSON-friendly dict (or None if unfitted)."""
-        if self._state is None:
-            return None
-        return {k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in self._state.items()}
+        """Return the current state as a plain, JSON-friendly dict (or None if unfitted).
+
+        With ``diff=True`` it also carries ``prev_x``, the last raw level, so that a stream resumed
+        from the checkpoint forms the difference that crosses it.
+        """
+        state = None if self._state is None else self._export_state(self._state)
+        if self._prev_x is not None:
+            state = dict(state or {})
+            state["prev_x"] = self._prev_x.tolist()
+        return state
 
     def set_state(self, state: dict | None) -> BaseOnlineCovariance:
         """Restore state previously produced by :meth:`get_state`."""
+        self._prev_x = None  # never carry a level over from whatever this object saw before
         if state is None:
             self._state = None
             self.n_features_in_ = None
             return self
-        restored = {}
-        for k, v in state.items():
-            restored[k] = np.array(v, dtype=float) if isinstance(v, list) else v
-        self._state = restored
-        n_dim = restored.get("n_dim")
+        state = dict(state)
+        prev = state.pop("prev_x", None)
+        if prev is not None:
+            self._prev_x = np.array(prev, dtype=float)
+        elif getattr(self, "diff", False) and state:
+            warnings.warn(
+                f"{type(self).__name__}: this checkpoint has no prev_x (it predates diff=True "
+                "checkpointing), so the difference across it cannot be formed and the next "
+                "observation will only start a new one.",
+                stacklevel=2,
+            )
+        self._state = self._import_state(state) if state else None
+        n_dim = None if self._state is None else self._state.get("n_dim")
         self.n_features_in_ = None if n_dim is None else int(n_dim)
         return self
+
+    def _export_state(self, state: dict) -> dict:
+        return {k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in state.items()}
+
+    def _import_state(self, state: dict) -> dict:
+        return {k: np.array(v, dtype=float) if isinstance(v, list) else v for k, v in state.items()}
 
     def __getstate__(self) -> dict:
         return {
@@ -240,10 +262,11 @@ class BaseOnlineCovariance:
 
     def __setstate__(self, data: dict) -> None:
         self.__init__(**data["params"])  # type: ignore[misc]
-        self.set_state(data["state"])
+        state, prev = data["state"], data.get("prev_x")
+        if prev is not None:  # pickles made before get_state carried prev_x
+            state = {**(state or {}), "prev_x": prev}
+        self.set_state(state)
         self.n_features_in_ = data.get("n_features_in_")
-        prev = data.get("prev_x")
-        self._prev_x = None if prev is None else np.array(prev, dtype=float)
 
     def __repr__(self) -> str:
         params = ", ".join(f"{k}={getattr(self, k)!r}" for k in self._param_names())
