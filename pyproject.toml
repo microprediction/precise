@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
@@ -8,7 +8,8 @@ version = "1.1.0"
 description = "Online (incremental) covariance and correlation estimation — the online complement to sklearn.covariance"
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Peter Cotton", email = "peter.cotton@microprediction.com" }]
 keywords = [
     "covariance",
@@ -21,7 +22,6 @@ keywords = [
     "shrinkage",
 ]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -53,7 +53,7 @@ packages = ["precise"]
 
 [tool.hatch.build.targets.sdist]
 # Ship only the package and its metadata; research/, papers/, tests/, docs/ stay out of the sdist.
-include = ["precise", "README.md", "LICENSE"]
+include = ["/precise", "/README.md", "/LICENSE"]
 
 [tool.black]
 line-length = 100

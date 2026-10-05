@@ -28,6 +28,18 @@ def all_assessors() -> list[Assessor]:
 
 
 def assessor_from_name(name: str) -> Assessor:
+    """Return an instance, with default parameters, of the assessor called ``name``.
+
+    :param name: The assessor's class name, as listed by ``[a.name for a in all_assessors()]``,
+                 for example ``"SteinLoss"``.
+    :raises KeyError: If no registered assessor has that name.
+
+    Example::
+
+        >>> from precise import assessor_from_name
+        >>> assessor_from_name("SteinLoss").name
+        'SteinLoss'
+    """
     for a in all_assessors():
         if a.name == name:
             return a
