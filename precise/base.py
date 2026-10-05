@@ -18,7 +18,7 @@ import inspect
 import numpy as np
 
 from precise import _linalg
-from precise._conventions import as_rows
+from precise._conventions import as_rows, check_rate
 
 
 class NotFittedError(ValueError):
@@ -32,6 +32,17 @@ class BaseOnlineCovariance:
         self._state: dict | None = None
         self.n_features_in_: int | None = None
         self._prev_x: np.ndarray | None = None  # for diff=True
+        self._validate_params()
+
+    def _validate_params(self) -> None:
+        """Raise ``ValueError`` if a hyperparameter is outside its documented domain.
+
+        Called on construction, by ``set_params``, and before every update, so a bad value fails
+        at the source instead of surfacing later as an indefinite or silently different estimate.
+        Subclasses with further constrained hyperparameters extend this and call ``super()``.
+        """
+        if "r" in self._param_names():
+            check_rate(type(self).__name__, "r", getattr(self, "r", None))
 
     # ------------------------------------------------------------------ hooks
     def _init_state(self, n_dim: int) -> dict:
@@ -49,6 +60,7 @@ class BaseOnlineCovariance:
     # -------------------------------------------------------------- fitting
     def partial_fit(self, X, y=None) -> BaseOnlineCovariance:
         """Update the estimate with one observation (1d) or a batch of rows (2d)."""
+        self._validate_params()
         use_diff = getattr(self, "diff", False)
         for x in as_rows(X):
             if use_diff:
@@ -132,8 +144,18 @@ class BaseOnlineCovariance:
         return {k: getattr(self, k) for k in self._param_names()}
 
     def set_params(self, **params) -> BaseOnlineCovariance:
+        old = {key: getattr(self, key) for key in params if hasattr(self, key)}
         for key, value in params.items():
             setattr(self, key, value)
+        try:
+            self._validate_params()
+        except ValueError:
+            for key in params:  # leave the estimator exactly as it was
+                if key in old:
+                    setattr(self, key, old[key])
+                else:
+                    delattr(self, key)
+            raise
         return self
 
     # ------------------------------------------------------- serialization

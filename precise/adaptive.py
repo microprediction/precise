@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from precise._conventions import check_rate
 from precise._linalg import try_invert
 from precise._state import emp_update, ewa_init
 from precise.base import BaseOnlineCovariance
@@ -28,6 +29,15 @@ class AdaptiveEwaCovariance(BaseOnlineCovariance):
         self.max_r = max_r
         self.diff = diff
         super().__init__()
+
+    def _validate_params(self) -> None:
+        super()._validate_params()
+        check_rate(type(self).__name__, "max_r", self.max_r)
+        if self.max_r < self.r:
+            raise ValueError(
+                f"{type(self).__name__}: max_r ({self.max_r!r}) must be at least the baseline "
+                f"rate r ({self.r!r}); otherwise the baseline is never used."
+            )
 
     # Rate at which the surprise signal is smoothed: a regime change is *sustained* surprise,
     # so we drive the forgetting rate off a smoothed ratio rather than a single (possibly outlier)
