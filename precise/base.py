@@ -65,10 +65,11 @@ class BaseOnlineCovariance:
         use_diff = getattr(self, "diff", False)
         for x in rows:
             if use_diff:
+                # Keep a copy: x may be a view of the caller's buffer, which they are free to reuse.
                 if self._prev_x is None:
-                    self._prev_x = x
+                    self._prev_x = x.copy()
                     continue
-                x, self._prev_x = x - self._prev_x, x
+                x, self._prev_x = x - self._prev_x, x.copy()
             if self._state is None:
                 self.n_features_in_ = len(x)
                 self._state = self._init_state(len(x))
