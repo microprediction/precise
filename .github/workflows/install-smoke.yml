@@ -4,7 +4,7 @@ name: install-smoke
 # exercises the published wheel. Three triggers:
 #   * workflow_dispatch — on demand (override the install spec, e.g. precise==1.0.0rc1)
 #   * schedule          — weekly drift canary: does `pip install precise` still work today?
-#   * workflow_run      — right after a successful deploy (validates each release)
+#   * workflow_run      — right after the "Publish to PyPI" workflow (validates each release)
 # Note: schedule/workflow_run only fire once this file is on the default branch.
 
 on:
@@ -16,7 +16,7 @@ on:
   schedule:
     - cron: "0 6 * * 1"   # Mondays 06:00 UTC
   workflow_run:
-    workflows: ["deploy"]
+    workflows: ["Publish to PyPI"]
     types: [completed]
 
 defaults:
