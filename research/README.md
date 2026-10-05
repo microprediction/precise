@@ -28,3 +28,8 @@ The original elo bake-off harness, **targeting the pre-1.0 functional "skater" A
 the now-removed `precise.skaters` / `precise.skatertools` modules). Preserved for reference; it does
 not run against precise 1.0 and is pending a rewrite to the `all_estimators()` / `partial_fit`
 contract. The full pre-1.0 source is also available in git history at commit `3670edd`.
+
+The twelve `battlescriptscustom/manager_info/stocks_*.py` scripts once took their parameters from
+their own file names, which were URL query strings (`stocks?topic=stocks&n_dim=int:151&...`). Git on
+Windows cannot check out a name containing `?` or `:`, so they were renamed and the parameters
+written into each script. `tests/test_repo_paths.py` keeps such names out of the repository.
