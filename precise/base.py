@@ -84,6 +84,7 @@ class BaseOnlineCovariance:
         return self.partial_fit(arr)
 
     def _fitted_state(self) -> dict:
+        self._validate_params()  # a hyperparameter assigned after fitting is read here
         if self._state is None or self._state.get("n_samples", 0) < 1:
             raise NotFittedError(
                 f"{type(self).__name__} has not seen any observations yet; "
