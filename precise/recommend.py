@@ -114,6 +114,13 @@ def _trained_weights(features: dict) -> dict:
 def suggest(X, top: int = 3) -> list:
     """Recommend estimator classes for data ``X``, best first.
 
+    **Experimental.** The recommender is a heuristic ruleset plus a decision tree trained on
+    simulated data in this repository (``research/train_recommender.py``). It has not been
+    validated outside the package, and its choices may change between minor releases. Its own
+    benchmarks find that choosing per data set is close to, and sometimes worse than, always using
+    one good estimator, except when the number of variables approaches the number of observations.
+    Treat its output as a starting point to check, not a verdict.
+
         from precise import suggest
         for Est in suggest(returns):
             est = Est(); ...

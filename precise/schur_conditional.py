@@ -28,6 +28,11 @@ from precise.base import BaseOnlineCovariance
 class SchurConditionalCovariance(BaseOnlineCovariance):
     """Online Schur covariance from damped, ridge-regressed block conditionals.
 
+    **Experimental.** This estimator is a new method introduced with this package. It has not been
+    peer-reviewed or validated outside it, and its behaviour may change between minor releases.
+    For an established shrinkage estimator use :class:`LedoitWolfCovariance`,
+    :class:`OASCovariance` or :class:`NonlinearShrinkageCovariance`.
+
     :param r:         Decay rate of the underlying EWA covariance, in (0, 1].
     :param n_blocks:  Number of contiguous blocks to partition the variables into.
     :param diff:      If ``True``, estimate the covariance of first differences of the stream.
