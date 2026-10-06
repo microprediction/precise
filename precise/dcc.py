@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from precise._conventions import check_rate
 from precise._state import emp_init, ewa_burn_n
 from precise.base import BaseOnlineCovariance
 
@@ -28,6 +29,11 @@ class DCCCovariance(BaseOnlineCovariance):
         self.vol_r = vol_r
         self.diff = diff
         super().__init__()
+
+    def _validate_params(self) -> None:
+        super()._validate_params()
+        if self.vol_r is not None:
+            check_rate(type(self).__name__, "vol_r", self.vol_r)
 
     def _init_state(self, n_dim: int) -> dict:
         s = emp_init(n_dim)

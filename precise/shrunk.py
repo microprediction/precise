@@ -10,10 +10,14 @@ correlation), versus the scaled-identity target that pulls towards zero correlat
 
 from __future__ import annotations
 
+import numbers
+
 import numpy as np
 
 from precise._state import ewa_init, ewa_update
 from precise.base import BaseOnlineCovariance
+
+_TARGETS = ("constant_correlation", "identity")
 
 
 class ShrunkCovariance(BaseOnlineCovariance):
@@ -37,6 +41,17 @@ class ShrunkCovariance(BaseOnlineCovariance):
         self.target = target
         self.diff = diff
         super().__init__()
+
+    def _validate_params(self) -> None:
+        super()._validate_params()
+        name = type(self).__name__
+        if self.target not in _TARGETS:
+            raise ValueError(f"{name}: target must be one of {_TARGETS}, got {self.target!r}.")
+        ok = isinstance(self.delta, numbers.Real) and not isinstance(self.delta, bool)
+        if not (ok and 0.0 <= float(self.delta) <= 1.0):  # also rejects nan
+            # Outside [0, 1] the blend extrapolates past the sample covariance or the target and
+            # can return an indefinite matrix.
+            raise ValueError(f"{name}: delta must be a number in [0, 1], got {self.delta!r}.")
 
     def _init_state(self, n_dim: int) -> dict:
         return ewa_init(n_dim, self.r)
