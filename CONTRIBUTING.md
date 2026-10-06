@@ -16,7 +16,7 @@ Everyone taking part is expected to follow the [Code of Conduct](CODE_OF_CONDUCT
   is no guaranteed response time, but bugs that give silently wrong results are treated as the top
   priority.
 - **Private matters** (a conduct report, or a security problem you would rather not post
-  publicly): email peter.cotton@microprediction.com.
+  publicly): use the [private reporting form](https://github.com/microprediction/precise/security/advisories/new) on the Security tab, which reaches only the maintainer.
 
 ## Governance
 
