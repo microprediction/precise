@@ -94,10 +94,7 @@ class BlockCovariance(BaseOnlineCovariance):
 
     # The state holds a list of per-block sub-dicts (nested arrays), so we serialize it
     # explicitly to flat JSON rather than relying on the base list/array coercion.
-    def get_state(self) -> dict | None:
-        if self._state is None:
-            return None
-        s = self._state
+    def _export_state(self, s: dict) -> dict:
         return {
             "n_dim": int(s["n_dim"]),
             "n_samples": int(s["n_samples"]),
@@ -108,11 +105,7 @@ class BlockCovariance(BaseOnlineCovariance):
             "block_covs": [np.asarray(sub["cov"], dtype=float).tolist() for sub in s["subs"]],
         }
 
-    def set_state(self, state: dict | None) -> BaseOnlineCovariance:
-        if state is None:
-            self._state = None
-            self.n_features_in_ = None
-            return self
+    def _import_state(self, state: dict) -> dict:
         n_samples, r, n_burn = int(state["n_samples"]), float(state["r"]), int(state["n_burn"])
         slices = [(int(a), int(b)) for a, b in state["slices"]]
         subs = [
@@ -126,7 +119,7 @@ class BlockCovariance(BaseOnlineCovariance):
             }
             for (a, b), m, c in zip(slices, state["block_means"], state["block_covs"])
         ]
-        self._state = {
+        return {
             "n_dim": int(state["n_dim"]),
             "n_samples": n_samples,
             "r": r,
@@ -134,5 +127,3 @@ class BlockCovariance(BaseOnlineCovariance):
             "slices": slices,
             "subs": subs,
         }
-        self.n_features_in_ = int(state["n_dim"])
-        return self

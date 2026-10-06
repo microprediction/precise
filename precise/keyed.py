@@ -138,17 +138,19 @@ class FixedUniverse(_KeyedAdapter):
             self._last = np.zeros(len(self.keys))
         assert self._last is not None  # set above on first update
         y = np.empty(len(self.keys))
+        seen = np.zeros(len(self.keys), dtype=bool)
         for i, k in enumerate(self.keys):
             if k in x:
                 y[i] = x[k]
-                self._last[i] = x[k]
+                seen[i] = True
             elif self.impute == "ffill":
                 y[i] = self._last[i]
             elif self.impute == "mean":
                 y[i] = self._est.location_[i] if self._est.n_samples_ > 0 else self._last[i]
             else:  # "zero"
                 y[i] = 0.0
-        self._est.partial_fit(y)
+        self._est.partial_fit(y)  # raises on a bad row, so remember values only once accepted
+        self._last[seen] = y[seen]
         return self
 
     def cov_array(self, keys=None):
