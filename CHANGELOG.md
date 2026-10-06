@@ -4,6 +4,28 @@ All notable changes to `precise` are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- The Schur estimators (`SchurCovariance`, `SchurLedoitWolfCovariance`,
+  `SchurConditionalCovariance`), the `SchurLikelihood` assessor and `suggest()` are documented as
+  **experimental**: new methods, not yet peer-reviewed or validated outside this package, whose
+  behaviour may change between minor releases. No behaviour changed.
+- Packaging declares the licence as a PEP 639 expression (`license = "MIT"`, with
+  `license-files`); the sdist no longer picks up stray `README.md` files from subdirectories.
+- Releases are published by one workflow (`publish.yml`, trusted publishing), which now checks
+  that the tag matches the version.
+
+### Added
+- `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `CITATION.cff` and `AI_USE.md`.
+- Docstrings for `BaseOnlineCovariance`, `estimator_names` and `assessor_from_name`.
+- CI checks the repository out on Windows, enforces a 95% coverage floor, and fails if a tracked
+  file name is one Windows cannot hold.
+
+### Fixed
+- The repository can be cloned on Windows: twelve legacy research scripts whose names contained
+  `?` and `:` were renamed.
+
 ## [1.1.0] — 2026-09-13
 
 ### Added

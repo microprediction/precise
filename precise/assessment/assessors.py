@@ -61,6 +61,11 @@ class SchurLikelihood(Assessor):
     """The γ-regularized Schur likelihood — a tunable bridge between the full and block-diagonal
     likelihoods.
 
+    **Experimental.** The Schur pseudo-likelihood is a new method introduced with this package,
+    and the subject of an unrefereed working paper (``papers/schur_likelihood_paper.pdf``). It has
+    not been peer-reviewed or validated outside the package, and its behaviour may change between
+    minor releases. For an established score use :class:`LogLikelihood` or :class:`SteinLoss`.
+
     Partition the variables into ``n_blocks`` contiguous blocks and interpolate the covariance
     between its block-diagonal part (γ=0) and the full matrix (γ=1) by damping the cross-block
     coupling — i.e. the Schur complement — then score the Gaussian likelihood. ``γ`` is a

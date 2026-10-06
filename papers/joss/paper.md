@@ -5,15 +5,15 @@ tags:
   - covariance estimation
   - streaming algorithms
   - shrinkage
-  - portfolio construction
+  - online learning
 authors:
   - name: Peter Cotton
     orcid: 0000-0003-1832-2924
     affiliation: 1
 affiliations:
-  - name: Microprediction, LLC
+  - name: Microprediction, LLC  # <!-- TODO(Peter): affiliation -->
     index: 1
-date: 12 September 2026
+date: 5 October 2026
 bibliography: paper.bib
 ---
 
@@ -32,7 +32,9 @@ where the plain Gaussian likelihood ranks estimates poorly. A recommender maps o
 of a data window to an estimator choice, trained offline and shipped as a frozen `numpy`-only
 decision tree. Adapters consume name-keyed dictionaries rather than fixed-length vectors, so a
 universe whose members enter and leave over time — the ordinary situation in finance — needs no
-special handling from the caller.
+special handling from the caller. The Schur pseudo-likelihood, the Schur estimators and the
+recommender are new methods, and the documentation marks them experimental; the other estimators
+implement published methods.
 
 # Statement of need
 
@@ -72,12 +74,16 @@ much of this material, including Ledoit–Wolf shrinkage [@ledoit2004], the Orac
 Shrinkage of @chen2010, graphical lasso and robust alternatives. It offers eight estimators, none
 of which implements `partial_fit`; each must see the whole sample at once.
 
-`river` [@river] is the closest comparison, since online estimation is its purpose. Its
-`covariance` module supplies `EmpiricalCovariance`, `EmpiricalPrecision` and an exponentially
-weighted variant, all genuinely incremental. So Python is not without online covariance, and the
-gap `precise` fills is narrower and more specific than absence: breadth of estimator under one
-interface, a shared contract that makes them substitutable and comparable, and shrinkage —
-particularly nonlinear shrinkage — in a streaming form.
+`river` [@river] is the closest comparison, since online learning is its purpose. Its
+`covariance` module had `EmpiricalCovariance` and `EmpiricalPrecision`; in July 2026 river's
+maintainers ported four `precise` estimators into it (exponentially weighted, Ledoit–Wolf, OAS and
+fixed-intensity shrinkage), crediting `precise`, and added an exponentially weighted precision.
+The port followed the author's offer to the `river` maintainers, and for a user already inside a
+`river` pipeline those versions are the natural choice. The two packages are complementary rather
+than duplicates: `river` took what fits its design, which admits only estimators that never invert
+a stored matrix on read, and `precise` remains the home of the rest: nonlinear shrinkage, robust
+M-estimators, DCC and factor models, a single contract under which twenty estimators are
+substitutable and comparable, checkpointable dictionary state, and the assessment layer.
 
 `PyPortfolioOpt` [@martin2021] supplies Ledoit–Wolf and related estimators for portfolio
 construction, batch only. The random-matrix line of work on spectral cleaning
@@ -109,9 +115,11 @@ recursions that exist elsewhere in batch form.
 
 `precise` supports the covariance evaluation work in [@cotton2026schur], which introduces the Schur
 pseudo-likelihood that the assessment layer implements, and the accompanying study of damping in
-portfolio construction. The package is published on PyPI with documentation at
-`precise.microprediction.org`, and the `research/` directory carries the reproduction scripts for
-the comparisons quoted above so a reader can check them rather than take them.
+portfolio construction. Outside the author's own work, `river` adopted four of its estimators in
+version 0.26.0 (pull request 1923, merged July 2026), so they now reach `river`'s users. The package
+is published on PyPI with documentation at `precise.microprediction.org`, and the `research/`
+directory carries the reproduction scripts for the comparisons quoted above so a reader can check
+them rather than take them.
 
 The honest form of the impact claim is that the package is instrumentation. Its studies report what
 the recommender does *not* buy as readily as what it does: choosing an estimator per problem is
@@ -121,8 +129,8 @@ running the bake-off will find it anyway.
 
 # Quality control
 
-Two hundred and ninety-three tests run in continuous integration on Python 3.9, 3.11, 3.12 and
-3.13. Three parametrized tests hold every registered estimator to the shared contract: `test_contract`
+More than 360 tests run in continuous integration on Python 3.9, 3.11, 3.12 and 3.13, again
+with `numpy` as the only dependency, and with a line-coverage floor of 95%. Three parametrized tests hold every registered estimator to the shared contract: `test_contract`
 (symmetry, positive semidefiniteness, unit-diagonal correlation, finite scores),
 `test_fit_equals_stream` (agreement between `fit` and repeated `partial_fit`), and
 `test_state_roundtrip`. Targeted tests pin the properties that make individual estimators correct
@@ -132,15 +140,24 @@ rather than being shrunk into the bulk.
 
 # AI usage disclosure
 
-Generative AI (Claude Code) was used substantially in this work: to draft the nonlinear shrinkage
-estimators from the cited papers, the research scripts, the test suite and this paper. Every
+Generative AI was used substantially in this work, through Claude Code with the Claude Opus 4.8,
+Opus 5, Fable 5 and Opus 5.5 models. It wrote most of the 1.x package code (about 97% of the lines
+in `precise/` were last changed in AI-assisted commits), drafted the nonlinear shrinkage
+estimators from the cited papers, and wrote the research scripts, the test suite, much of the
+documentation and drafts of this paper; it was used for code generation, refactoring, test
+writing, auditing and copy-editing. The pre-1.0 releases were written without it. Every
 quantitative claim here was produced by running the referenced script and is reproducible from the
 repository. The implementations were checked against properties derived independently of the code —
 asymptotic behaviour, invariances, agreement between streaming and batch paths — rather than
 against the generating model's own expectations, and several drafts were corrected in review when
-those checks failed. Responsibility for the content rests with the author.
+those checks failed. The author reviewed, edited and validated all AI-assisted output and made the
+core design decisions, and is responsible for the content. `AI_USE.md` in the repository gives
+the details.
 
 # Acknowledgements
+
+<!-- TODO(Peter): JOSS asks authors to acknowledge all financial support (and whether the sponsor
+had any involvement) and to disclose any conflicts of interest. Add a sentence on each here. -->
 
 The Schur complement machinery grew out of discussions on portfolio construction; the `randomcov`
 package supplies optional generative ensembles for the bake-offs.

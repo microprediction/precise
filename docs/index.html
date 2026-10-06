@@ -89,12 +89,15 @@ estimator_from_name("LedoitWolfCovariance")</pre>
 
         <section class="section" id="estimators">
             <h2>Estimators</h2>
-            <p>Fourteen truly-online estimators across families (no buffered recompute):</p>
+            <p>Twenty truly-online estimators across families (no buffered recompute). Those marked
+            <strong>experimental</strong> are new methods, not yet peer-reviewed or validated outside
+            this package; their behaviour may change between minor releases.</p>
             <table>
                 <thead><tr><th>Class</th><th>Family</th><th>Notes</th></tr></thead>
                 <tbody>
                     <tr><td><code>EmpiricalCovariance</code></td><td>sample</td><td>Welford running covariance</td></tr>
                     <tr><td><code>DiagonalCovariance</code></td><td>sample</td><td>variances only</td></tr>
+                    <tr><td><code>BlockCovariance</code></td><td>sample</td><td>block-diagonal, O(p·b) state for very large p</td></tr>
                     <tr><td><code>EwaCovariance</code></td><td>weighted</td><td>exponentially weighted</td></tr>
                     <tr><td><code>AdaptiveEwaCovariance</code></td><td>weighted</td><td>surprise-smoothed forgetting</td></tr>
                     <tr><td><code>LedoitWolfCovariance</code></td><td>shrinkage</td><td>online linear shrinkage</td></tr>
@@ -103,7 +106,9 @@ estimator_from_name("LedoitWolfCovariance")</pre>
                     <tr><td><code>NonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>analytical nonlinear spectrum shrinkage</td></tr>
                     <tr><td><code>WindowedNonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>nonlinear spectrum shrinkage over a rolling window</td></tr>
                     <tr><td><code>EwaNonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>nonlinear spectrum shrinkage, exponentially weighted</td></tr>
-                    <tr><td><code>SchurCovariance</code></td><td>shrinkage</td><td>cross-block coupling damping (linear/geodesic)</td></tr>
+                    <tr><td><code>SchurCovariance</code></td><td>shrinkage</td><td><strong>experimental</strong> — cross-block coupling damping (linear/geodesic)</td></tr>
+                    <tr><td><code>SchurLedoitWolfCovariance</code></td><td>shrinkage</td><td><strong>experimental</strong> — cross-block damping set by a Ledoit–Wolf reliability estimate</td></tr>
+                    <tr><td><code>SchurConditionalCovariance</code></td><td>shrinkage</td><td><strong>experimental</strong> — damped, ridge-regressed block conditionals</td></tr>
                     <tr><td><code>PartialMomentsCovariance</code></td><td>semi</td><td>downside / semi-covariance</td></tr>
                     <tr><td><code>HuberCovariance</code></td><td>robust</td><td>online Huber M-estimator</td></tr>
                     <tr><td><code>TylerCovariance</code></td><td>robust</td><td>recursive Tyler M-estimator</td></tr>
@@ -137,11 +142,19 @@ all_assessors()                      # LogLikelihood, BlockPseudoLikelihood,
 suggest(X, top=3)                    # recommend estimator classes from data features</pre>
             <p><code>suggest</code> maps observable, truth-free features (p/n, effective rank,
             sphericity, condition number, off-diagonal mass, excess kurtosis) to an estimator via a
-            frozen, numpy-only decision tree.</p>
+            frozen, numpy-only decision tree. It is <strong>experimental</strong>: the tree is
+            trained on simulated data in this repository and has not been validated outside it, and
+            its own benchmarks find that choosing per data set is close to, and sometimes worse than,
+            always using one good estimator, except when the number of variables approaches the
+            number of observations. The <code>SchurLikelihood</code> assessor is experimental too
+            (see below); the other assessors are standard scores.</p>
         </section>
 
         <section class="section" id="schur">
             <h2>The Schur pseudo-likelihood</h2>
+            <p class="text-muted"><strong>Experimental.</strong> This is a new method, introduced with
+            this package and described in an unrefereed working paper. It has not been peer-reviewed
+            or validated elsewhere.</p>
             <p>The full Gaussian likelihood factorizes exactly, through Schur complements, into
             block-conditional terms. A single <em>coupling-strength</em> parameter
             <code>γ ∈ [0,1]</code> damps that conditioning, giving the <strong>Schur

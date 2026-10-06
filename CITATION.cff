@@ -1,0 +1,33 @@
+# Citation metadata for the precise software (Citation File Format 1.2.0, https://citation-file-format.github.io).
+# GitHub shows a "Cite this repository" button generated from this file.
+cff-version: 1.2.0
+message: "If you use precise in your research, please cite it as below."
+type: software
+title: "precise: online covariance, correlation and precision matrix estimation in Python"
+abstract: >-
+  precise estimates covariance, correlation and precision matrices from a stream. Every estimator
+  exposes an sklearn-style partial_fit, does a constant amount of work per observation, and keeps
+  its state in a plain dictionary that can be checkpointed and restored. The package also scores
+  estimates out of sample and recommends an estimator for a given data set. It depends on numpy
+  alone.
+authors:
+  - family-names: Cotton
+    given-names: Peter
+    email: peter.cotton@microprediction.com
+    orcid: "https://orcid.org/0000-0003-1832-2924"
+version: 1.1.0
+date-released: "2026-09-13"
+license: MIT
+repository-code: "https://github.com/microprediction/precise"
+url: "https://precise.microprediction.org"
+keywords:
+  - covariance
+  - correlation
+  - precision matrix
+  - online estimation
+  - streaming
+  - shrinkage
+  - Ledoit-Wolf
+# TODO(Peter): archive a release on Zenodo, then add its concept DOI (the one that resolves to the
+# latest version) on the line below, uncommented, e.g.  doi: 10.5281/zenodo.NNNNNNN
+# doi: 10.5281/zenodo.XXXXXXX

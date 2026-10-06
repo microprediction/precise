@@ -62,6 +62,16 @@ def all_estimators() -> list[type[BaseOnlineCovariance]]:
 
 
 def estimator_names() -> list[str]:
+    """Return the class names of the registered estimators, in registry order.
+
+    Any of these names can be passed to :func:`estimator_from_name`.
+
+    Example::
+
+        >>> from precise import estimator_names
+        >>> "LedoitWolfCovariance" in estimator_names()
+        True
+    """
     return [cls.__name__ for cls in _REGISTRY]
 
 

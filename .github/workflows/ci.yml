@@ -25,8 +25,9 @@ jobs:
         run: ruff check precise tests research
       - name: Type check
         run: mypy precise
-      - name: Test
-        run: pytest
+      - name: Test, with a coverage floor
+        # The README's coverage badge states this floor, so it stays true while main is green.
+        run: pytest --cov=precise --cov-report=term --cov-fail-under=95
 
   docs-up-to-date:
     # The web editions of the papers are generated from their LaTeX sources in papers/.
@@ -67,3 +68,24 @@ jobs:
         run: python -c "import precise; print(precise.estimator_names())"
       - name: Test
         run: pytest
+
+  windows-checkout:
+    # Windows refuses to check out a path containing <>:"|?* or ending in a dot or space, and a
+    # single such file makes the whole repository unclonable there (twelve legacy research scripts
+    # once did, which is what broke install-smoke's Windows job). A real checkout on a Windows
+    # runner is the end-to-end proof; tests/test_repo_paths.py names the offending path, and also
+    # runs in every other job.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install (numpy-only core + pytest)
+        run: |
+          python -m pip install --upgrade pip
+          pip install . pytest
+      - name: Tracked paths are Windows-safe, and the package imports
+        run: |
+          pytest tests/test_repo_paths.py
+          python -c "import precise; print(precise.estimator_names())"

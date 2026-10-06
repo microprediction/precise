@@ -27,6 +27,35 @@ class NotFittedError(ValueError):
 
 
 class BaseOnlineCovariance:
+    """Base class for every online covariance estimator in precise.
+
+    Not used directly: instantiate a subclass such as :class:`~precise.EwaCovariance`. A subclass
+    implements ``_init_state(n_dim)``, returning the initial state as a plain dict of arrays and
+    scalars, and ``_update_state(state, x)``, which folds in one observation ``x`` and returns the
+    new state. It may override ``_state_to_cov`` to defer expensive work until ``covariance_`` is
+    read. Everything else is inherited:
+
+    * fitting: ``partial_fit(X)`` (one observation as a 1-D array, or a 2-D batch of rows) and
+      ``fit(X)`` (reset, then fit a batch);
+    * fitted attributes: ``covariance_``, ``correlation_``, ``precision_``, ``location_``,
+      ``n_samples_``, ``n_features_in_``;
+    * scoring: ``score(X)`` (mean Gaussian log-likelihood) and ``mahalanobis(X)``;
+    * checkpointing: ``get_state()`` / ``set_state(state)``, with a JSON-friendly state;
+    * sklearn-style ``get_params()`` / ``set_params(**params)``.
+
+    Reading a fitted attribute before any data has been seen raises :class:`NotFittedError`.
+
+    Example::
+
+        >>> import numpy as np
+        >>> from precise import EwaCovariance
+        >>> est = EwaCovariance(r=0.05)
+        >>> est.partial_fit(np.random.default_rng(0).standard_normal((100, 3)))
+        EwaCovariance(...)
+        >>> est.covariance_.shape
+        (3, 3)
+    """
+
     # Subclasses may set diff=True (in __init__) to estimate on first differences.
 
     def __init__(self) -> None:

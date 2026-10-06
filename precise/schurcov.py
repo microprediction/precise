@@ -20,6 +20,11 @@ from precise.base import BaseOnlineCovariance
 class SchurCovariance(BaseOnlineCovariance):
     """Online EWA covariance with Schur-style cross-block coupling shrinkage.
 
+    **Experimental.** This estimator is a new method introduced with this package. It has not been
+    peer-reviewed or validated outside it, and its behaviour may change between minor releases.
+    For an established shrinkage estimator use :class:`LedoitWolfCovariance`,
+    :class:`OASCovariance` or :class:`NonlinearShrinkageCovariance`.
+
     :param r:             Decay rate of the underlying EWA covariance, in (0, 1].
     :param n_blocks:      Number of contiguous blocks to partition the variables into.
     :param gamma:         Cross-block shrinkage in [0, 1] (0 = block-diagonal, 1 = full covariance).
