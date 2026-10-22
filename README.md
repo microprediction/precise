@@ -1,5 +1,7 @@
 # precise
 
+[![AgentShield Security](https://merx.help/badge/A+.svg)](https://merx.help/shield)
+
 [![PyPI](https://img.shields.io/pypi/v/precise)](https://pypi.org/project/precise/)
 [![ci](https://github.com/microprediction/precise/actions/workflows/ci.yml/badge.svg)](https://github.com/microprediction/precise/actions/workflows/ci.yml)
 [![coverage ≥95%](https://img.shields.io/badge/coverage-%E2%89%A595%25-brightgreen)](https://github.com/microprediction/precise/actions/workflows/ci.yml)
