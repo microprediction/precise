@@ -78,3 +78,74 @@ def test_run_and_report_cover_every_scenario():
         assert "shared calib" in cells and "Raw EW" in cells
         assert all(np.isfinite(v) and v >= 0 for v in cells.values())
     assert "scenario" in sc.report(results)
+
+
+@pytest.mark.parametrize(
+    "lam, expected",
+    [
+        ([1.0], [0.0]),
+        ([1.0, 1.0], [0.5, 0.5]),
+        ([3.0, 1.0, 1.0, 2.0], [1.0, 1 / 6, 1 / 6, 2 / 3]),
+        ([0.0, 1e-14, 2.0], [0.25, 0.25, 1.0]),
+    ],
+)
+def test_rank_features_use_average_ranks_for_exact_ties(lam, expected):
+    est = sc.CalibratedSpectrumCovariance(mode="rank")
+    est._lam = np.array(lam)
+    np.testing.assert_allclose(est._features()[:, 0], expected)
+
+
+def test_rank_features_leave_distinct_values_including_near_ties_unchanged():
+    est = sc.CalibratedSpectrumCovariance(mode="rank")
+    # No new numerical tolerance: only exact ties after the existing floor are pooled.
+    est._lam = np.array([3.0, 1.0 + 1e-14, 1.0, 2.0])
+    old = np.argsort(np.argsort(est._lam)) / (est._lam.size - 1)
+    np.testing.assert_array_equal(est._features()[:, 0], old)
+
+
+@pytest.mark.parametrize("trained", [False, True])
+def test_rank_cleaned_covariance_ignores_basis_rotation_inside_exact_tie(trained):
+    est = sc.CalibratedSpectrumCovariance(mode="rank")
+    est._lam = np.array([1.0, 1.0, 3.0])
+    est._basis = np.eye(3)
+    if trained:
+        # Deliberately nonconstant learned correction: ordinal ranks would expose the basis.
+        est._map.learn(np.linspace(0, 1, 3)[:, None], np.array([0.2, 2.0, 7.0]))
+    expected = est.covariance_.copy()
+    angle = 0.37
+    c, s = np.cos(angle), np.sin(angle)
+    est._basis = np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+    np.testing.assert_allclose(est.covariance_, expected, rtol=1e-13, atol=1e-13)
+
+
+def test_rank_learning_pools_labels_inside_exact_tie():
+    from copy import deepcopy
+
+    est = sc.CalibratedSpectrumCovariance(mode="rank")
+    est._lam = np.array([1.0, 1.0, 3.0])
+    rotated = deepcopy(est)
+    x = np.array([0.3, 1.7, -0.4])
+    angle = 0.61
+    c, s = np.cos(angle), np.sin(angle)
+    basis = np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+    est._map.learn(est._features(), x**2)
+    rotated._map.learn(rotated._features(), (basis.T @ x) ** 2)
+    np.testing.assert_allclose(rotated._map.num, est._map.num, rtol=1e-13, atol=1e-13)
+    np.testing.assert_allclose(rotated._map.den, est._map.den, rtol=1e-13, atol=1e-13)
+
+
+def test_rank_burn_in_is_permutation_equivariant_at_each_basis_refresh():
+    rng = np.random.default_rng(120)
+    p = 9
+    permutation = rng.permutation(p)
+    est = sc.CalibratedSpectrumCovariance(mode="rank", refresh=1)
+    permuted = sc.CalibratedSpectrumCovariance(mode="rank", refresh=1)
+    # n < p: the null eigenspace changes as observations arrive. Its roundoff eigenvalues
+    # are covered by the existing feature floor. Stale-basis approximations are not tested here.
+    for x in rng.standard_normal((p - 2, p)):
+        est.partial_fit(x)
+        permuted.partial_fit(x[permutation])
+        np.testing.assert_allclose(
+            permuted.covariance_, est.covariance_[np.ix_(permutation, permutation)],
+            rtol=1e-10, atol=1e-10,
+        )

@@ -114,7 +114,8 @@ class CalibratedSpectrumCovariance:
     :param r:        EW decay of the covariance accumulator.
     :param refresh:  Recompute the eigenvector basis every this many observations.
     :param mode:     Which features the calibration map is indexed by --
-                     ``"rank"`` (spectral position only), ``"eigenvalue"`` (observed normalized
+                     ``"rank"`` (spectral position, averaging exact ties after the existing
+                     eigenvalue floor), ``"eigenvalue"`` (observed normalized
                      eigenvalue only), or ``"shared"`` (eigenvalue plus global spectral shape).
     :param rho:      Forgetting rate of the calibration map itself.
     """
@@ -145,7 +146,13 @@ class CalibratedSpectrumCovariance:
         lam = np.maximum(self._lam, 1e-12)
         p = lam.size
         if self.mode == "rank":
-            return (np.argsort(np.argsort(lam)) / max(p - 1, 1))[:, None]
+            # Equal features pool both predictions and squared-projection labels. Distinct
+            # ordinal ranks inside a tied eigenspace would make the result depend on its
+            # arbitrary eigenvector basis. Use midranks; do not merge distinct near-ties.
+            _, inverse, counts = np.unique(lam, return_inverse=True, return_counts=True)
+            starts = np.cumsum(counts) - counts
+            midranks = starts + (counts - 1) / 2.0
+            return (midranks[inverse] / max(p - 1, 1))[:, None]
         g = np.log(lam / lam.mean())
         if self.mode == "eigenvalue":
             return g[:, None]
