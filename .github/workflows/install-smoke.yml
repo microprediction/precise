@@ -25,7 +25,8 @@ defaults:
 
 jobs:
   smoke:
-    runs-on: ${{ matrix.os }}
+    # Preserve Python 3.9 coverage on its supported Linux runner.
+    runs-on: ${{ matrix.os == 'ubuntu-latest' && matrix.python == '3.9' && 'ubuntu-24.04' || matrix.os }}
     strategy:
       fail-fast: false
       matrix:
