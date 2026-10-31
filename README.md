@@ -34,6 +34,7 @@ Research uses so far:
   [*Schur Covariance Evaluation*](https://precise.microprediction.org/papers/schur-likelihood/)
   (scoring covariance estimates in high dimensions),
   [*Two Sides of Schur Damping*](https://precise.microprediction.org/papers/two-sides-of-schur-damping/)
+  ([arXiv:2606.14798](https://arxiv.org/abs/2606.14798))
   and the note [*Spectral Calibration Without a
   Split*](https://precise.microprediction.org/papers/online-spectral-calibration/), with
   reproduction scripts in [`research/`](https://github.com/microprediction/precise/tree/main/research);
