@@ -23,6 +23,8 @@ All notable changes to `precise` are documented here. The format follows
   file name is one Windows cannot hold.
 
 ### Fixed
+- The shared geodesic interpolation helper keeps its eigenvalue guard relative to the starting
+  covariance, restoring endpoint and unit-scaling behavior for small covariances (#108).
 - The repository can be cloned on Windows: twelve legacy research scripts whose names contained
   `?` and `:` were renamed.
 
