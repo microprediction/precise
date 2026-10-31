@@ -8,14 +8,14 @@ set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"     # docs/
 root="$(dirname "$here")"
 
-# build_one <tex-basename> <out-slug> <title> <subtitle>
+# build_one <tex-basename> <out-slug> <title> <subtitle> [arxiv-id]
 # The PDF lives next to the .tex in papers/ and is linked from the web header.
 # The source keeps numbered equation environments (for the arXiv/PDF edition); for the
 # web, docs/_webtex.py reproduces LaTeX's equation numbering: \label{eq:X} becomes a
 # KaTeX \tag{n}, every \eqref{eq:X} in the prose resolves to (n), and the equation
 # environments become \[ \] display math, which KaTeX renders cleanly.
 build_one() {
-  local tex="$1" slug="$2" title="$3" subtitle="$4"
+  local tex="$1" slug="$2" title="$3" subtitle="$4" arxivid="${5:-}"
   # One folder per manuscript is the convention; fall back to the flat layout for any paper
   # not yet migrated, so both can coexist while the move happens.
   local src reldir
@@ -38,6 +38,7 @@ build_one() {
     --metadata title="$title" \
     --metadata subtitle="$subtitle" \
     --metadata pdfurl="$pdfurl" \
+    --metadata arxivid="$arxivid" \
     -o "$here/papers/$slug/index.html"
   rm -f "$websrc"
   # copy any figures the generated page references next to the web edition
@@ -59,7 +60,8 @@ build_one schur_likelihood_paper schur-likelihood \
 
 build_one two_sides_of_schur_damping two-sides-of-schur-damping \
   "Two Sides of Schur Damping" \
-  "High-Dimensional Pseudo-Likelihoods and Portfolio Allocation"
+  "High-Dimensional Pseudo-Likelihoods and Portfolio Allocation" \
+  "2606.14798"
 
 build_one online_spectral_calibration online-spectral-calibration \
   "Spectral Calibration Without a Split" \
