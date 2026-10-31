@@ -132,7 +132,9 @@ def geodesic_step(start: np.ndarray, end: np.ndarray, gamma: float) -> np.ndarra
     end = make_pos_def(end)
 
     evals_s, evecs_s = np.linalg.eigh(start)
-    evals_s = np.clip(evals_s, EPS, None)
+    # Keep the second eigendecomposition guard relative to covariance units.
+    # make_pos_def has already supplied a positive scale (including its zero fallback).
+    evals_s = np.clip(evals_s, EPS * evals_s[-1], None)
     start_sqrt = (evecs_s * np.sqrt(evals_s)) @ evecs_s.T
     start_inv_sqrt = (evecs_s * (1.0 / np.sqrt(evals_s))) @ evecs_s.T
 
