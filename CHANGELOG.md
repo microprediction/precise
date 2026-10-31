@@ -23,6 +23,8 @@ All notable changes to `precise` are documented here. The format follows
   file name is one Windows cannot hold.
 
 ### Fixed
+- `set_params` rejects unknown parameter names before changing any attributes, including mixed
+  valid/invalid requests (#106). Fitted-state behavior for valid parameters is unchanged.
 - The repository can be cloned on Windows: twelve legacy research scripts whose names contained
   `?` and `:` were renamed.
 

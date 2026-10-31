@@ -241,6 +241,14 @@ class BaseOnlineCovariance:
         return {k: getattr(self, k) for k in self._param_names()}
 
     def set_params(self, **params) -> BaseOnlineCovariance:
+        """Set constructor parameters; reject unknown names before changing any attribute."""
+        valid = self._param_names()
+        for key in params:
+            if key not in valid:
+                raise ValueError(
+                    f"Invalid parameter {key!r} for {type(self).__name__}. "
+                    f"Valid parameters are: {valid!r}."
+                )
         old = {key: getattr(self, key) for key in params if hasattr(self, key)}
         for key, value in params.items():
             setattr(self, key, value)
