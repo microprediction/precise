@@ -197,9 +197,13 @@ class DynamicUniverse(_KeyedAdapter):
     contains both, filling never-co-observed pairs with the grand off-diagonal mean and projecting
     to the nearest positive-definite matrix. Everything is online — no replay buffers.
 
+    The current observation's exact key-set is retained when capacity eviction is needed;
+    older universes are ranked by staleness, then shortest longevity. This does not guarantee
+    adequate history for a new entrant or coverage of arbitrary query keys.
+
     :param estimator:      A configured positional estimator instance to wrap (default
                            ``EwaCovariance()``), or an estimator class (with kwargs).
-    :param max_universes:  Maximum number of universes to maintain concurrently.
+    :param max_universes:  Positive integer maximum number of concurrent universes.
     :param max_staleness:  Drop a universe after this many updates without usable data.
     """
 
@@ -214,6 +218,12 @@ class DynamicUniverse(_KeyedAdapter):
         if estimator is None:
             estimator = EwaCovariance()
         self._make = _factory(estimator, estimator_kwargs)
+        if (
+            isinstance(max_universes, bool)
+            or not isinstance(max_universes, (int, np.integer))
+            or max_universes < 1
+        ):
+            raise ValueError("max_universes must be a positive integer")
         self.max_universes = max_universes
         self.max_staleness = max_staleness
         self.states: dict[int, _Universe] = {}
@@ -243,7 +253,8 @@ class DynamicUniverse(_KeyedAdapter):
             self._add_universe(fresh)
             if len(self.states) > self.max_universes:
                 victim = sorted(
-                    self.states.items(), key=lambda kv: (-kv[1].staleness, kv[1].longevity)
+                    ((n, u) for n, u in self.states.items() if u is not fresh),
+                    key=lambda kv: (-kv[1].staleness, kv[1].longevity),
                 )[0][0]
                 del self.states[victim]
         return self
