@@ -23,6 +23,9 @@ All notable changes to `precise` are documented here. The format follows
   file name is one Windows cannot hold.
 
 ### Fixed
+- `DynamicUniverse` retains the current key-set when its capacity is full, so nested
+  expansions can accumulate observations. `max_universes` must be a positive integer.
+  Unknown-key imputation and new-entrant warm-up policies are unchanged.
 - The repository can be cloned on Windows: twelve legacy research scripts whose names contained
   `?` and `:` were renamed.
 
