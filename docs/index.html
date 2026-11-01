@@ -89,7 +89,11 @@ estimator_from_name("LedoitWolfCovariance")</pre>
 
         <section class="section" id="estimators">
             <h2>Estimators</h2>
-            <p>Twenty truly-online estimators across families (no buffered recompute). Those marked
+            <p>Twenty sequential estimators across families, without retaining the full stream history.
+            Most use running summaries; <code>WindowedNonlinearShrinkageCovariance</code> also retains
+            a fixed <code>W &times; p</code> observation buffer. Its moment updates cost O(p&sup2;)
+            amortized, with an O(Wp&sup2;) rebuild every W observations for numerical stability.
+            These costs exclude the spectral work performed when reading the covariance. Those marked
             <strong>experimental</strong> are new methods, not yet peer-reviewed or validated outside
             this package; their behaviour may change between minor releases.</p>
             <table>
@@ -104,7 +108,7 @@ estimator_from_name("LedoitWolfCovariance")</pre>
                     <tr><td><code>OASCovariance</code></td><td>shrinkage</td><td>oracle approximating shrinkage</td></tr>
                     <tr><td><code>ShrunkCovariance</code></td><td>shrinkage</td><td>fixed-intensity target</td></tr>
                     <tr><td><code>NonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>analytical nonlinear spectrum shrinkage</td></tr>
-                    <tr><td><code>WindowedNonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>nonlinear spectrum shrinkage over a rolling window</td></tr>
+                    <tr><td><code>WindowedNonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>nonlinear spectrum shrinkage over a rolling window; O(Wp) observation buffer plus O(p&sup2;) moment state</td></tr>
                     <tr><td><code>EwaNonlinearShrinkageCovariance</code></td><td>shrinkage</td><td>nonlinear spectrum shrinkage, exponentially weighted</td></tr>
                     <tr><td><code>SchurCovariance</code></td><td>shrinkage</td><td><strong>experimental</strong> — cross-block coupling damping (linear/geodesic)</td></tr>
                     <tr><td><code>SchurLedoitWolfCovariance</code></td><td>shrinkage</td><td><strong>experimental</strong> — cross-block damping set by a Ledoit–Wolf reliability estimate</td></tr>

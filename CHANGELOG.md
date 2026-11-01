@@ -23,6 +23,8 @@ All notable changes to `precise` are documented here. The format follows
   file name is one Windows cannot hold.
 
 ### Fixed
+- The estimator overview now documents the rolling-window observation buffer and periodic moment
+  rebuild instead of claiming that every estimator avoids buffered recomputation. No behaviour changed.
 - The repository can be cloned on Windows: twelve legacy research scripts whose names contained
   `?` and `:` were renamed.
 
